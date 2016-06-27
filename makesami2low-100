@@ -1,0 +1,10 @@
+gfortran -fno-range-check -fno-automatic -ffixed-line-length-none -c nrlmsise00low.f
+gfortran -fno-range-check -fno-automatic -ffixed-line-length-none -c grid-1.00.f
+gfortran -fno-range-check -fno-automatic -ffixed-line-length-none -c sami2low-1.00.f
+gfortran -fno-range-check -fno-automatic -ffixed-line-length-none -c hwm93.f
+gfortran -fno-range-check -fno-automatic -ffixed-line-length-none -c hwm07e.f90
+gfortran -fno-range-check -fno-automatic -ffixed-line-length-none -c dwm07b.f90
+gfortran -fno-range-check -fno-automatic -ffixed-line-length-none -c apexcord.f90
+gfortran -fno-range-check -fno-automatic -ffixed-line-length-none -c hwm14.f90
+gfortran -fno-range-check -fno-automatic -ffixed-line-length-none -o sami2low.x sami2low-1.00.o grid-1.00.o hwm93.o hwm07e.o dwm07b.o hwm14.o apexcord.o nrlmsise00low.o 
+rm *.o

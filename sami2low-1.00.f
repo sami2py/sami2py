@@ -702,7 +702,7 @@
       subroutine transprt (nfl)
 
       include 'param-1.00.inc'
-      include 'com-1.00.mod.inc'
+      include 'com-1.00.inc' 
 
       real prod(nz,nion),loss(nz,nion),lossr,
      .     phprodr(nz,nion),chrate(nz,nchem),
@@ -1006,7 +1006,7 @@
       subroutine chemrate ( chrate,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.mod.inc'
+      include 'com-1.00.inc' 
 
       real chrate(nz,nchem)
 
@@ -1163,7 +1163,7 @@
       subroutine update ( tvn,nuin,sumnuj,nuij,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.mod.inc'
+      include 'com-1.00.inc' 
 
       real nuin(nz,nion,nneut),nuij(nz,nion,nion)
       real nuint(nz,nion)
@@ -1461,7 +1461,7 @@
       subroutine htemp ( tti,tiold,tvn,nuin,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.mod.inc'
+      include 'com-1.00.inc' 
 
       real tiold(nz),kapi(nz),s1i(nz),s2i(nz),s3i(nz),s4i(nz),s5i(nz)
       real tvn(nz),nuin(nz,nion,nneut),s6i(nz),s7i(nz),tti(nz)
@@ -1485,7 +1485,7 @@
         kapi(i) = 4.6e+4 * sqrt ( ti(i,nfl,pthp)**5 ) / ne(i,nfl) *
      .            deni(i,nfl,pthp) / sqrt(ami(pthp))
 
-        kapi(i)  = 0.6667 * kapi(i) * evtok 
+        kapi(i)  = 0.6667 * kapi(i)  * evtok 
 
 !       neutrals
 
@@ -1555,7 +1555,7 @@
       subroutine hetemp ( tti,tiold,tvn,nuin,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.mod.inc'
+      include 'com-1.00.inc' 
 
       real tiold(nz),kapi(nz),s1i(nz),s2i(nz),s3i(nz),s4i(nz),s5i(nz)
       real tvn(nz),nuin(nz,nion,nneut),s6i(nz),s7i(nz),tti(nz)
@@ -1648,7 +1648,7 @@
       subroutine otemp ( tti,tiold,tvn,nuin,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.mod.inc'
+      include 'com-1.00.inc' 
 
       real tiold(nz),kapi(nz),s1i(nz),s2i(nz),s3i(nz),s4i(nz),s5i(nz)
       real tvn(nz),nuin(nz,nion,nneut),s6i(nz),s7i(nz),tti(nz)
@@ -1742,7 +1742,7 @@
       subroutine etemp ( tte,te_old,phprodr,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.mod.inc'
+      include 'com-1.00.inc' 
 
 
       real tte(nz),te_old(nz),kape(nz)
@@ -2138,7 +2138,7 @@
       subroutine vsisolv ( vi,vid,viold,snuj,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.mod.inc'
+      include 'com-1.00.inc' 
 
       dimension a(nz), b(nz), c(nz), d(nz)
       real vi(nz),vid(nz),viold(nz),snuj(nz)
@@ -2227,7 +2227,7 @@
       subroutine tisolv(tti,tio,kap,s1,s2,s3,s4,s5,s6,s7,npt,nfl)
 
       include 'param-1.00.inc'
-      include 'com-1.00.mod.inc'
+      include 'com-1.00.inc' 
 
       real a(nz),b(nz),c(nz),d(nz)
       real s1(nz),s2(nz),s3(nz),tti(nz),tio(nz),kap(nz)
@@ -2328,7 +2328,7 @@
       subroutine tesolv(tte,te_old,kap,s1,s2,s3,s4,s5,nfl)
 
       include 'param-1.00.inc'
-      include 'com-1.00.mod.inc'
+      include 'com-1.00.inc' 
 
       dimension a(nz),b(nz),c(nz),d(nz)
       dimension s1(nz),s2(nz),s3(nz),s4(nz),s5(nz)
@@ -2979,7 +2979,7 @@
        subroutine output ( hrut,ntm,istep )
 
        include 'param-1.00.inc'
-       include 'com-1.00.mod.inc'
+       include 'com-1.00.inc' 
 
        hr24   = mod (hrut,24.)
        totsec = hr24 * 3600.
@@ -3053,7 +3053,7 @@
        subroutine exb(hrut)
 
        include 'param-1.00.inc'
-       include 'com-1.00.mod.inc'
+       include 'com-1.00.inc' 
 
        real denic(nz,nf,nion)
        real tic(nz,nf,nion)
@@ -3360,7 +3360,7 @@
        subroutine courant ( hrut )
 
        include 'param-1.00.inc'
-       include 'com-1.00.mod.inc'
+       include 'com-1.00.inc' 
 
        hr24ut = mod(hrut,24.)
        dt00   = dt0
@@ -3441,7 +3441,7 @@ C       JHK => modified to include common data => 21 Mar 2012
 C       ************************************************************
 
         include 'param-1.00.inc'
-        include 'com-1.00.mod.inc'
+        include 'com-1.00.inc' 
 
 !	implicit none
 

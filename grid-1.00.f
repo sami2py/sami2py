@@ -436,7 +436,7 @@
 !     (g joyce june 1998)
 
       include 'param-1.00.inc'
-      include 'com-1.00.mod.inc'
+      include 'com-1.00.inc'
 
 !     coordinates of dipole in km relative to center of earth
 
@@ -521,7 +521,7 @@
 !     (g joyce june 1998)
 
       include 'param-1.00.inc'
-      include 'com-1.00.mod.inc'
+      include 'com-1.00.inc' 
 
       real brad,blond,blatd,grad,glatd,glond
 
@@ -613,7 +613,7 @@
 !       and node A is the 'midpoint' coordinate
 
         include 'param-1.00.inc'
-        include 'com-1.00.mod.inc'
+        include 'com-1.00.inc' 
 
         real x(nzp1,nfp1,2),y(nzp1,nfp1,2),z(nzp1,nfp1,2)
         real voli(nz,nf),volj(nz,nf),volk(nz,nf)
@@ -853,7 +853,7 @@
 !           b: vector from A to C
 
         include 'param-1.00.inc'
-        include 'com-1.00.mod.inc'
+        include 'com-1.00.inc' 
 
         real x(nzp1,nfp1,2),y(nzp1,nfp1,2),z(nzp1,nfp1,2)
 
@@ -954,7 +954,7 @@
 !       calculate length of cell sides
 
         include 'param-1.00.inc'
-        include 'com-1.00.mod.inc'
+        include 'com-1.00.inc' 
 
         real x(nzp1,nfp1,2),y(nzp1,nfp1,2),z(nzp1,nfp1,2)
         real xdelh(nzp1,nfp1)
@@ -1026,7 +1026,7 @@
 !       normal: c = a x b / |a x b|
 
         include 'param-1.00.inc'
-        include 'com-1.00.mod.inc'
+        include 'com-1.00.inc' 
 
         real x(nzp1,nfp1,2),y(nzp1,nfp1,2),z(nzp1,nfp1,2)
 
@@ -1125,7 +1125,7 @@
 !     change p but keep q constant
 
       include 'param-1.00.inc'
-      include 'com-1.00.mod.inc'
+      include 'com-1.00.inc' 
 
       real qs(nz,nf),qss(nzp1,nf),pss(nzp1,nf)
       real brs1(nzp1,nf),blats1(nzp1,nf)
@@ -1277,7 +1277,7 @@
        subroutine igrf_sub(phi0)
 
        include 'param-1.00.inc'
-       include 'com-1.00.mod.inc'
+       include 'com-1.00.inc' 
 
        phi = phi0 * pie / 180.
 
@@ -1595,7 +1595,7 @@
       subroutine vector(brad,blond,blatd,varg,vathg,vaphig) 
  
       include 'param-1.00.inc'
-      include 'com-1.00.mod.inc'
+      include 'com-1.00.inc' 
  
       real brad,blond,blatd,blonr,grad,glat,glon 
       real thetaprime,cosphiprime,sinphiprime 

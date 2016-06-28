@@ -1,9 +1,30 @@
 
 README-1.00 for SAMI2
 J.D. Huba, 3/11
-
+SAMI2low addendum by J. Klenzing, 6/16
 
 ****************************************************************
+
+06/28/2016:
+
+Changes from sami2-1.00 to sami2low-1.00:
+
+1. 4 new variables added to the common block in com-1.00.inc and the namelist.  These are:
+Tinf_scl: Scales the exospheric temperature in MSIS (scalar number)
+euv_scl: Scales the total EUV (scalar number)
+hwm_scl: Scales the magnitude of the hwm output (scalar number)
+hwm_mod: Selects which HWM model is run (93, 07, 14)
+
+2. Tinf_scl is passed through to the MSIS model (renamed nrlmsis200low.f).  This has the effect of modifying the exospheric scale height.
+
+3. Scalars for EUV and HWM magnitude added to sami2-1.00.f. (lines 496, 420-421)
+
+4. Choice of HWM model added. Note that default is 93 (ie, only hwm_mod = 7 or = 14 will change the model). (lines 410-419)
+
+5. A new input file is added for inputting ExB drifts (exb.inp).  This option is active when .fejer. is false and replaces the sine wave model.  Values are input as a tenth-order fourier series (SUMi Ai*cos(i*lt*pi/12) + Bi*sin(i*lt*pi/12)), with each row of data representing a [Ai, Bi] pair.  (lines 3582-3590)
+
+6. 101 format altered to a single column instead of ten for improved matlab read compliance. (line 3039)
+
 
 02/10/2011:
 

@@ -2998,9 +2998,9 @@
 
        if ( fmtout ) then
          write(71,101) deni
-!         write(72,101) ti
+         write(72,101) ti
          write(73,101) vsi
-!         write(75,101) te
+         write(75,101) te
 !         write(78,101) vn
 !         write(81,101) t1
 !         write(82,101) t2
@@ -3017,18 +3017,18 @@
 
        if ( .not. fmtout ) then
          write(71) deni
-!         write(72) ti
+         write(72) ti
          write(73) vsi
-!         write(75) te
+         write(75) te
 !         write(78) vn
 !         write(81) t1
 !         write(82) t2
 !         write(83) t3
-!         write(84) u1
-!         write(85) u2
-!         write(86) u3
-!         write(87) u4
-!         write(88) u5
+         write(84) u1
+         write(85) u2
+         write(86) u3
+         write(87) u4
+         write(88) u5
 !         write(90) vot
 !         write(91) vor
 !         write(92) denn
@@ -3436,7 +3436,7 @@ C                    F10.7cm : F10.7cm solar flux
 C             
 C       OUTPUT:   Y: EQUATORIAL VERTICAL DRIFT
 C
-C       JHK => modified to include common data => 21 Mar 2012
+C       JK => modified to include common data => 21 Mar 2012
 
 C       ************************************************************
 
@@ -3446,7 +3446,7 @@ C       ************************************************************
 !	implicit none
 
         real dmlt
-!        logical fejer   removed, JHK
+!        logical fejer   removed, JK
 
         real param(2),coeff(624),funct(6)
         real coeff1(312),coeff2(312)

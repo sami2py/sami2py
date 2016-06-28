@@ -15,9 +15,9 @@ euv_scl: Scales the total EUV (scalar number)
 hwm_scl: Scales the magnitude of the hwm output (scalar number)
 hwm_mod: Selects which HWM model is run (93, 07, 14)
 
-2. Tinf_scl is passed through to the MSIS model (renamed nrlmsis200low.f).  This has the effect of modifying the exospheric scale height.
+2. Tinf_scl is passed through to the MSIS model (renamed nrlmsis200low.f, see line 628 of this file).  This has the effect of modifying the exospheric scale height.  This is passed through the gtd7 (line 28), gtd7d (line 313), and gts7 (line 531) subroutines, as well as the associated calls (lines 212 and 377) within the msis file.
 
-3. Scalars for EUV and HWM magnitude added to sami2-1.00.f. (lines 496, 420-421)
+3. Scalars for EUV and HWM magnitude added to sami2low-1.00.f. (lines 496, 420-421)
 
 4. Choice of HWM model added. Note that default is 93 (ie, only hwm_mod = 7 or = 14 will change the model). (lines 410-419)
 

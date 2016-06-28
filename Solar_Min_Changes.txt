@@ -1,0 +1,5 @@
+For Klenzing et al, 2013, the following scalars were used to alter MSIS for 2008 conditions:
+
+snn = [0.9697,0.9697,0.9697,0.9697,.7979,0.9697,0.9697,0.9697]
+Tinf_scl = 0.9603
+

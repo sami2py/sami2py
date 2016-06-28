@@ -1,6 +1,7 @@
 *.o
 *.x
 *.mod
+.DS_STORE
 denif.dat
 dennf.dat
 gd2qd.dat

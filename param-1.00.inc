@@ -8,14 +8,14 @@
 
 !      number of altitudes
 
-       parameter ( nf   = 201,
+       parameter ( nf   = 98,
      .             nfp1 = nf + 1,
      .             nfm1 = nf - 1,
      .             nfm2 = nf - 2  )
 
 !      number of grid cells
      
-       parameter ( nz = 201,
+       parameter ( nz = 101,
      .             nzp1 = nz + 1,
      .             nzm1 = nz - 1  )
 

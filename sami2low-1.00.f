@@ -2911,22 +2911,22 @@
       open ( unit=72, file='tiu.dat'       ,form='unformatted' )
       open ( unit=73, file='vsiu.dat'      ,form='unformatted' )
       open ( unit=75, file='teu.dat'       ,form='unformatted' )
-      open ( unit=78, file='vnu.dat'       ,form='unformatted' )
-      open ( unit=90, file='vtu.dat'       ,form='unformatted' )
-      open ( unit=91, file='vru.dat'       ,form='unformatted' )
-      open ( unit=92, file='dennu.dat'     ,form='unformatted' )
-      open ( unit=93, file='vexbu.dat'     ,form='unformatted' )
+!      open ( unit=78, file='vnu.dat'       ,form='unformatted' )
+!      open ( unit=90, file='vtu.dat'       ,form='unformatted' )
+!      open ( unit=91, file='vru.dat'       ,form='unformatted' )
+!      open ( unit=92, file='dennu.dat'     ,form='unformatted' )
+!      open ( unit=93, file='vexbu.dat'     ,form='unformatted' )
 
 !     diagnostic files (unformatted)
 
-      open ( unit=81, file='t1u.dat'  ,form='unformatted' )
-      open ( unit=82, file='t2u.dat'  ,form='unformatted' )
-      open ( unit=83, file='t3u.dat'  ,form='unformatted' )
-      open ( unit=84, file='u1u.dat'  ,form='unformatted' )
-      open ( unit=85, file='u2u.dat'  ,form='unformatted' )
-      open ( unit=86, file='u3u.dat'  ,form='unformatted' )
-      open ( unit=87, file='u4u.dat'  ,form='unformatted' )
-      open ( unit=88, file='u5u.dat'  ,form='unformatted' )
+!      open ( unit=81, file='t1u.dat'  ,form='unformatted' )
+!      open ( unit=82, file='t2u.dat'  ,form='unformatted' )
+!      open ( unit=83, file='t3u.dat'  ,form='unformatted' )
+!      open ( unit=84, file='u1u.dat'  ,form='unformatted' )
+!      open ( unit=85, file='u2u.dat'  ,form='unformatted' )
+!      open ( unit=86, file='u3u.dat'  ,form='unformatted' )
+!      open ( unit=87, file='u4u.dat'  ,form='unformatted' )
+!      open ( unit=88, file='u5u.dat'  ,form='unformatted' )
 
       return
       end
@@ -2948,22 +2948,22 @@
       open ( unit=72, file='tif.dat'       ,form='formatted' )
       open ( unit=73, file='vsif.dat'      ,form='formatted' )
       open ( unit=75, file='tef.dat'       ,form='formatted' )
-      open ( unit=78, file='vnf.dat'       ,form='formatted' )
-      open ( unit=90, file='vtf.dat'       ,form='formatted' )
-      open ( unit=91, file='vrf.dat'       ,form='formatted' )
-      open ( unit=92, file='dennf.dat'     ,form='formatted' )
-      open ( unit=93, file='vexbf.dat'     ,form='formatted' )
+!      open ( unit=78, file='vnf.dat'       ,form='formatted' )
+!      open ( unit=90, file='vtf.dat'       ,form='formatted' )
+!      open ( unit=91, file='vrf.dat'       ,form='formatted' )
+!      open ( unit=92, file='dennf.dat'     ,form='formatted' )
+!      open ( unit=93, file='vexbf.dat'     ,form='formatted' )
 
 !     diagnostic files (formatted)
 
-      open ( unit=81, file='t1f.dat'  ,form='formatted' )
-      open ( unit=82, file='t2f.dat'  ,form='formatted' )
-      open ( unit=83, file='t3f.dat'  ,form='formatted' )
-      open ( unit=84, file='u1f.dat'  ,form='formatted' )
-      open ( unit=85, file='u2f.dat'  ,form='formatted' )
-      open ( unit=86, file='u3f.dat'  ,form='formatted' )
-      open ( unit=87, file='u4f.dat'  ,form='formatted' )
-      open ( unit=88, file='u5f.dat'  ,form='formatted' )
+!      open ( unit=81, file='t1f.dat'  ,form='formatted' )
+!      open ( unit=82, file='t2f.dat'  ,form='formatted' )
+!      open ( unit=83, file='t3f.dat'  ,form='formatted' )
+!      open ( unit=84, file='u1f.dat'  ,form='formatted' )
+!      open ( unit=85, file='u2f.dat'  ,form='formatted' )
+!      open ( unit=86, file='u3f.dat'  ,form='formatted' )
+!      open ( unit=87, file='u4f.dat'  ,form='formatted' )
+!      open ( unit=88, file='u5f.dat'  ,form='formatted' )
 
       return
       end
@@ -3024,11 +3024,11 @@
 !         write(81) t1
 !         write(82) t2
 !         write(83) t3
-         write(84) u1
-         write(85) u2
-         write(86) u3
-         write(87) u4
-         write(88) u5
+!         write(84) u1
+!         write(85) u2
+!         write(86) u3
+!         write(87) u4
+!         write(88) u5
 !         write(90) vot
 !         write(91) vor
 !         write(92) denn

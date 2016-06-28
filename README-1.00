@@ -25,6 +25,8 @@ hwm_mod: Selects which HWM model is run (93, 07, 14)
 
 6. 101 format altered to a single column instead of ten for improved matlab read compliance. (line 3039)
 
+7. Commented out unused output files so that empty files are not created.  See open_u (line 2905) and open_f (line 2942).
+
 
 02/10/2011:
 

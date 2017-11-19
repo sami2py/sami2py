@@ -45,11 +45,13 @@ def run_model(info, tag='test', clean=False):
     '''
     #def generate_namelist(info=info):
 
-    def archive_model(path='',clean):
+    def archive_model(path='',clean=False):
         filelist = ['glonf.dat','glatf.dat','zaltf.dat',
                     'vsif.dat','time.dat','tif.dat','tef.dat',
                     'denif.dat','sami2low-1.00.namelist']
-        if ~os.direxists(path):
+        try:
+            os.stat(path)
+        except:
             os.mkdir(path)
         for i in range(0,len(filelist)):
             shutil.copyfile(filelist[i], path+filelist[i])

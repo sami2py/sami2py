@@ -94,7 +94,11 @@ def run_model(year, day, lat=0, lon=0, f107=120, Tinf_scl=1,
         file.write('  Tinf_scl =  %6.2f,\n' % info['Tinf_scl'])
         file.write('  euv_scl  =  %6.2f,\n' % info['euv_scl'])
         file.write('  hwm_scl  =  %6.2f,\n' % info['hwm_scl'])
+<<<<<<< HEAD
         file.write('  hwm_mod  = %d\n' % info['hwm_mod'])
+=======
+        file.write('  hwm_mod    = %d\n' % info['hwm_mod'])
+>>>>>>> ab6679b817cc7b4487630f401c9755d8ed92da84
         file.write('&end')
 
         file.close()

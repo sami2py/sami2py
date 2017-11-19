@@ -9,12 +9,12 @@
   glat_in  =   0.00,
   glon_in  =    0.00,
   fejer    = .true.
-  rmin     =  4120,
-  rmax     =  18540,
+  rmin     =  100,
+  rmax     =  1000,
   altmin   =   85.,
   fbar     =  117.4778,
-  f10p7    =  110.9,
-  ap       =  9,
+  f10p7    =  120.0,
+  ap       =  0,
   year     = 2011,
   day      =   207,
   mmass    =   48 ,
@@ -31,8 +31,8 @@
   denmin   =    1.e-6,
   alt_crit =    150.,
   cqe      =   7.e-14,
-  Tinf_scl =  1,
-  euv_scl  =  1,
-  hwm_scl  =  1,
+  Tinf_scl =    1.00,
+  euv_scl  =    1.00,
+  hwm_scl  =    1.00,
   hwm_mod    = 14
 &end

@@ -1,6 +1,7 @@
 *.o
 *.x
 *.mod
+*.pyc
 .DS_STORE
 denif.dat
 dennf.dat

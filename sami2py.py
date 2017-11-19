@@ -36,7 +36,8 @@ def generate_path(tag, info):
     return basedir + tag + '/'
 
 
-def run_model(year, day, lat=0, lon=0, tag='test', clean=False):
+def run_model(year, day, lat=0, lon=0, f107=120, Tinf_scl=1,
+              euv_scl=1, hwm_scl=1, hwm_mod=14, tag='test', clean=False):
     '''
     Runs SAMI2 and archives the data in path
 
@@ -49,10 +50,8 @@ def run_model(year, day, lat=0, lon=0, tag='test', clean=False):
         '''
 
         # Check HWM model parameters
-        if ~('hwm_mod' in info):
-            info['hwm_mod'] = 14
-        elif ~(info['hwm_mod'] in [93, 7, 14]):
-            disp('Invalid HWM Model.  Defaulting to HWM14')
+        if ~(info['hwm_mod'] in [93, 7, 14]):
+            #disp('Invalid HWM Model.  Defaulting to HWM14')
             info['hwm_mod']=14
 
         # Print out namelist file
@@ -67,15 +66,15 @@ def run_model(year, day, lat=0, lon=0, tag='test', clean=False):
         file.write('  dthr     =  .2,\n')
         file.write('  hrpr     =  24.,\n')
         file.write('  grad_in  =  300.,\n')
-        file.write('  glat_in  =  %5.2f,\n' % info['lat'])
+        file.write('  glat_in  =  %6.2f,\n' % info['lat'])
         file.write('  glon_in  =  %6.2f,\n' % info['lon'])
         file.write('  fejer    = .true.\n')
-        file.write('  rmin     =  4120,\n')
-        file.write('  rmax     =  18540,\n')
+        file.write('  rmin     =  100,\n')
+        file.write('  rmax     =  1000,\n')
         file.write('  altmin   =   85.,\n')
         file.write('  fbar     =  117.4778,\n')
-        file.write('  f10p7    =  110.9,\n')
-        file.write('  ap       =  9,\n')
+        file.write('  f10p7    =  %5.1f,\n' % info['f107'])
+        file.write('  ap       =  0,\n')
         file.write('  year     = %4d,\n' % info['year'])
         file.write('  day      =   %3d,\n' % info['day'])
         file.write('  mmass    =   48 ,\n')
@@ -92,10 +91,10 @@ def run_model(year, day, lat=0, lon=0, tag='test', clean=False):
         file.write('  denmin   =    1.e-6,\n')
         file.write('  alt_crit =    150.,\n')
         file.write('  cqe      =   7.e-14,\n')
-        file.write('  Tinf_scl =  1,\n')
-        file.write('  euv_scl  =  1,\n')
-        file.write('  hwm_scl  =  1,\n')
-        file.write('  hwm_mod    = %d\n' % info['hwm_mod'])
+        file.write('  Tinf_scl =  %6.2f,\n' % info['Tinf_scl'])
+        file.write('  euv_scl  =  %6.2f,\n' % info['euv_scl'])
+        file.write('  hwm_scl  =  %6.2f,\n' % info['hwm_scl'])
+        file.write('  hwm_mod  = %d\n' % info['hwm_mod'])
         file.write('&end')
 
         file.close()
@@ -114,7 +113,9 @@ def run_model(year, day, lat=0, lon=0, tag='test', clean=False):
             for i in range(0,len(filelist)-1):
                 os.remove(filelist[i])
 
-    info = {'year':year, 'day':day, 'lat':lat, 'lon':lon}
+    info = {'year':year, 'day':day, 'lat':lat, 'lon':lon, 'f107':f107,
+            'Tinf_scl':Tinf_scl,'euv_scl':euv_scl,'hwm_scl':hwm_scl,
+            'hwm_mod':hwm_mod}
     generate_namelist(info)
     path = generate_path(tag,info)
     #os.system('./sami2low.x')

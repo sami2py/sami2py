@@ -1,3 +1,3 @@
 import sami2py
 
-sami2py.run_model(info=1,clean=False)
+sami2py.run_model(day=207,year=2011)

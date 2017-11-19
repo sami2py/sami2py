@@ -1,4 +1,4 @@
- &go 
+&go
   fmtout   = .true.,
   maxstep  =  100000000,
   hrmax    =  24.5,
@@ -6,8 +6,8 @@
   dthr     =  .2,
   hrpr     =  24.,
   grad_in  =  300.,
-  glat_in  =  -19.07,
-  glon_in  =  190.07,
+  glat_in  =   0.00,
+  glon_in  =    0.00,
   fejer    = .true.
   rmin     =  4120,
   rmax     =  18540,
@@ -15,8 +15,8 @@
   fbar     =  117.4778,
   f10p7    =  110.9,
   ap       =  9,
-  year     = 2012,
-  day      =   356,
+  year     = 2011,
+  day      =   207,
   mmass    =   48 ,
   nion1    =    1,
   nion2    =    7,
@@ -34,5 +34,5 @@
   Tinf_scl =  1,
   euv_scl  =  1,
   hwm_scl  =  1,
-  hwm_mod    = 93
- &end
+  hwm_mod    = 14
+&end

@@ -9,18 +9,22 @@
 #
 # Classes: model
 #
-# Methods: generate_path, run_model
+# Methods: _generate_path, run_model
 #
 #---------------------------------------------------------------------------
 
+import os
+import shutil
 import numpy as np
-import os, shutil
+
 
 class model:
+
+
     def __init__(self, tag, lon, year, day):
-        '''
+        """
         Loads a previously run sami2 model and sorts into
-           4D arrays
+           appropriate array shapes
 
         Input:
             tag  = name of run (top-level directory)
@@ -31,19 +35,23 @@ class model:
         Properties:
             ut   = Universal Time (hrs), 1D ndarray
             slt  = Solar Local Time (hr), 1D ndarray
+
             glat = Geographic Latitude (deg), 2D ndarray
             glon = Geographic Longitude (deg), 2D ndarray
             zalt = Altitude (km), 2D ndarray
 
             deni = Ion density by species, 4D ndarray
             vsi  = Ion Velocity by species, 4D ndarray
-        '''
-        def calculate_slt(ut, glon, day):
+            ti   = Ion Temperature by species, 4D ndarray
+            te   = Electron Temperature, 3D ndarray
+        """
 
-            slt = np.mod((ut*60 + glon*4),1440)/60
-            M = 2*np.pi*day/365.242
-            dT = -7.657*np.sin(M) + 9.862*np.sin(2*M + 3.599)
-            slt = slt - dT/60
+        def _calculate_slt(ut, glon, day):
+
+            slt = np.mod((ut*60 + glon*4),1440)/60.0
+            m = 2*np.pi*day/365.242
+            dt = -7.657*np.sin(m) + 9.862*np.sin(2*m + 3.599)
+            slt = slt - dt/60.0
 
             return slt
 
@@ -56,7 +64,7 @@ class model:
         self.year = year
         self.day = day
 
-        path = generate_path(tag,lon,year,day)
+        path = _generate_path(tag,lon,year,day)
 
         # Get NameList
         file = open(path + 'sami2low-1.00.namelist')
@@ -67,13 +75,13 @@ class model:
             self.fejer=True
         else:
             self.fejer=False
-            self.ExBdrifts = np.loadtxt(path+'exb.inp')
+            self.ExB_drifts = np.loadtxt(path+'exb.inp')
         self.hwm_mod = 'HWM' + self.namelist[36][-3:-1]
 
         # Get times
         time = np.loadtxt(path+'time.dat')
         self.ut = time[:,1] + time[:,2]/60 + time[:,3]/3600;
-        self.slt = calculate_slt(self.ut,lon,day)
+        self.slt = _calculate_slt(self.ut,lon,day)
         nt = len(self.ut)
 
         # Get Location
@@ -99,28 +107,31 @@ class model:
     # End __init__ method
 
     def __repr__(self):
-        out = ''
-        out += 'Model Run = ' + self.tag + '\n'
-        out += ('Day %03d, %4d\n' % (self.day,self.year))
-        out += ('Longitude = %d deg\n' % self.lon0)
-        out += ('%d time steps from %4.1f to %4.1f UT\n\n'
+
+        out = ['']
+        out.append('Model Run = %s\n' % self.tag)
+        out.append('Day %03d, %4d\n' % (self.day,self.year))
+        out.append('Longitude = %d deg\n' % self.lon0)
+        out.append('%d time steps from %4.1f to %4.1f UT\n\n'
                 % (len(self.ut), min(self.ut), max(self.ut)))
 
         if self.fejer:
-            out += 'Fejer ExB model used\n'
+            out.append('Fejer ExB model used\n')
         else:
-            out += 'Fourier ExB model used\n'
-        out += 'Wind Model used: ' + self.hwm_mod
-        return out
+            out.append('Fourier ExB model used\n')
+        out.append('Wind Model used: %s' % self.hwm_mod)
+
+        return ''.join(out)
 # End model class
 
-def generate_path(tag, lon, year, day):
-    '''
+
+def _generate_path(tag, lon, year, day):
+    """
     Creates a path based on run tag, date, and longitude
 
     tag: string specifying name of model run
     info: structure to generate namelist
-    '''
+    """
     import platform
 
     if platform.node()=='gs674-jklenmbp.home':
@@ -130,23 +141,27 @@ def generate_path(tag, lon, year, day):
 
     return basedir + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
 
-# End generate_path method
+# End _generate_path method
+
+
 def run_model(year, day, lat=0, lon=0,
               rmin=100, rmax=2000, hrmx=24.5,
               f107=120, f107a=120, ap=0,
-              nx=1, ox=1, exb_scale=1, fejer=True, ExBdrifts=np.zeros((10,2)),
+              nx=1, ox=1, exb_scale=1,
+              fejer=True, ExB_drifts=np.zeros((10,2)),
               Tinf_scale=1, euv_scale=1, hwm_scale=1, hwm_mod=14,
               tag='test', clean=False, test=False):
-    '''
+    """
     Runs SAMI2 and archives the data in path
 
     Methods: generate_namelist, archive_model
 
-    '''
+    """
+
     def generate_namelist(info):
-        '''
+        """
         Generates namelist file for sami2
-        '''
+        """
 
         # Check HWM model parameters
         if (info['hwm_mod'] in [93, 7, 14])==False:
@@ -186,7 +201,8 @@ def run_model(year, day, lat=0, lon=0,
         file.write('  gams     =    3,\n')
         file.write('  gamp     =    3,\n')
         file.write('  snn      =    %4.2f,%4.2f,%4.2f,%4.2f,%4.2f,%4.2f,\n'
-                    % (info['nx'],info['ox'],info['nx'],info['nx'],info['nx'],info['nx']))
+                   % (info['nx'],info['ox'],info['nx'],info['nx'],
+                   info['nx'],info['nx']))
         file.write('  stn      =    1.,\n')
         file.write('  denmin   =    1.e-6,\n')
         file.write('  alt_crit =    150.,\n')
@@ -202,6 +218,7 @@ def run_model(year, day, lat=0, lon=0,
     # End generate_namelist method
 
     def archive_model(path,clean,fejer):
+
         filelist = ['glonf.dat','glatf.dat','zaltf.dat',
                     'vsif.dat','time.dat','tif.dat','tef.dat',
                     'denif.dat','sami2low-1.00.namelist']
@@ -230,12 +247,12 @@ def run_model(year, day, lat=0, lon=0,
         info['fejer'] = '.true.'
     else:
         info['fejer'] = '.false.'
-        if ExBdrifts.shape!=(10,2):
+        if ExB_drifts.shape!=(10,2):
             print('Invalid ExB drift shape!  Must be 10x2 ndarray.')
-        np.savetxt('exb.inp',ExBdrifts)
+        np.savetxt('exb.inp',ExB_drifts)
 
     generate_namelist(info)
-    path = generate_path(tag,lon,year,day)
+    path = _generate_path(tag,lon,year,day)
     if test==False:
         os.system('./sami2low.x')
     archive_model(path,clean,fejer)

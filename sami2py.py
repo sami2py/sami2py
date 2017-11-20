@@ -33,7 +33,7 @@ def generate_path(tag, lon, year, day):
     else:
         basedir = '/Volumes/drive/models/sami2/'
 
-    return basedir + tag + ('/lon%03d/%4d/%03d/' % (lon, year, day))
+    return basedir + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
 
 
 def run_model(year, day, lat=0, lon=0,

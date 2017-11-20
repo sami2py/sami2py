@@ -13,6 +13,7 @@
 #
 #---------------------------------------------------------------------------
 
+import platform
 import os
 import shutil
 import numpy as np
@@ -125,14 +126,32 @@ class model:
 # End model class
 
 
-def _generate_path(tag, lon, year, day):
+def _generate_sami2_path():
     """
-    Creates a path based on run tag, date, and longitude
+    Creates a path based on platform
 
     tag: string specifying name of model run
     info: structure to generate namelist
     """
-    import platform
+
+    if platform.node()=='gs674-jklenmbp.home':
+        path = '/Users/jklenzin/code/sami2py/fortran/'
+    else:
+        path = '/Users/jklenzing/code/sami2low-1.00/fortran/'
+
+    return path
+
+# End _generate_path method
+
+def _generate_path(tag, lon, year, day):
+    """
+    Creates a path based on run tag, date, and longitude
+
+    tag  = string specifying name of model run
+    lon  = longitude of model run
+    year = year of model run
+    day  = day of year of model run
+    """
 
     if platform.node()=='gs674-jklenmbp.home':
         basedir = '/Users/jklenzin/data/sami2/'
@@ -237,6 +256,10 @@ def run_model(year, day, lat=0, lon=0,
 
     # End archive_model method
 
+    current_dir = os.getcwd()
+    model_path = _generate_sami2_path()
+    os.chdir(model_path)
+
     info = {'year':year, 'day':day, 'lat':lat, 'lon':lon,
             'hrmx':hrmx, 'rmin':rmin, 'rmax':rmax,
             'f107':f107, 'f107a':f107a, 'ap':ap,
@@ -256,5 +279,7 @@ def run_model(year, day, lat=0, lon=0,
     if test==False:
         os.system('./sami2low.x')
     archive_model(path,clean,fejer)
+
+    os.chdir(current_dir)
 
 # End run_model method

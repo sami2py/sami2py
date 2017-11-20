@@ -39,7 +39,7 @@ def generate_path(tag, lon, year, day):
 def run_model(year, day, lat=0, lon=0,
               rmin=100, rmax=2000, hrmx=24.5,
               f107=120, f107a=120, ap=0,
-              nx=1, ox=1, exb_scale=1, 
+              nx=1, ox=1, exb_scale=1, fejer=True,
               Tinf_scale=1, euv_scale=1, hwm_scale=1, hwm_mod=14,
               tag='test', clean=False):
     '''
@@ -72,7 +72,7 @@ def run_model(year, day, lat=0, lon=0,
         file.write('  grad_in  =  300.,\n')
         file.write('  glat_in  =  %6.2f,\n' % info['lat'])
         file.write('  glon_in  =  %6.2f,\n' % info['lon'])
-        file.write('  fejer    = .true.\n')
+        file.write('  fejer    = ' + info['fejer'] + '\n')
         file.write('  rmin     =  %7.1f,\n' % info['rmin'])
         file.write('  rmax     =  %7.1f,\n' % info['rmax'])
         file.write('  altmin   =   85.,\n')
@@ -125,6 +125,10 @@ def run_model(year, day, lat=0, lon=0,
             'nx':nx, 'ox':ox, 'exb_scale':exb_scale,
             'Tinf_scale':Tinf_scale,'euv_scale':euv_scale,
             'hwm_scale':hwm_scale, 'hwm_mod':hwm_mod}
+    if fejer:
+        info['fejer'] = '.true.'
+    else:
+        info['fejer'] = '.false.'
 
     generate_namelist(info)
     path = generate_path(tag, lon, year, day)

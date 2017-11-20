@@ -36,9 +36,9 @@ def generate_path(tag, lon, year, day):
     return basedir + tag + ('/lon%03d/%4d/%03d/' % (lon, year, day))
 
 
-def run_model(year, day, lat=0, lon=0, rmin=100, rmax=2000, f107=120, ap=0,
-              Tinf_scl=1, euv_scl=1, hwm_scl=1, hwm_mod=14, tag='test',
-              clean=False):
+def run_model(year, day, lat=0, lon=0, rmin=100, rmax=2000, hrmx=24.5,
+              f107=120, ap=0, Tinf_scl=1, euv_scl=1, hwm_scl=1, hwm_mod=14,
+              tag='test', clean=False):
     '''
     Runs SAMI2 and archives the data in path
 
@@ -62,7 +62,7 @@ def run_model(year, day, lat=0, lon=0, rmin=100, rmax=2000, f107=120, ap=0,
         file.write('&go\n')
         file.write('  fmtout   = .true.,\n')
         file.write('  maxstep  =  100000000,\n')
-        file.write('  hrmax    =  24.5,\n')
+        file.write('  hrmax    =  %4.1f,\n' % info['hrmx'])
         file.write('  dt0      =  30.,\n')
         file.write('  dthr     =  .2,\n')
         file.write('  hrpr     =  24.,\n')
@@ -100,7 +100,7 @@ def run_model(year, day, lat=0, lon=0, rmin=100, rmax=2000, f107=120, ap=0,
 
         file.close()
 
-    def archive_model(path='',clean=False):
+    def archive_model(path='',clean):
         filelist = ['glonf.dat','glatf.dat','zaltf.dat',
                     'vsif.dat','time.dat','tif.dat','tef.dat',
                     'denif.dat','sami2low-1.00.namelist']
@@ -115,7 +115,7 @@ def run_model(year, day, lat=0, lon=0, rmin=100, rmax=2000, f107=120, ap=0,
             for i in range(0,len(filelist)-1):
                 os.remove(filelist[i])
 
-    info = {'year':year, 'day':day, 'lat':lat, 'lon':lon,
+    info = {'year':year, 'day':day, 'lat':lat, 'lon':lon, 'hrmx':hrmx,
             'rmin':rmin, 'rmax':rmax, 'f107':f107, 'ap':ap,
             'Tinf_scl':Tinf_scl,'euv_scl':euv_scl,'hwm_scl':hwm_scl,
             'hwm_mod':hwm_mod}

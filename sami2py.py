@@ -39,8 +39,8 @@ def generate_path(tag, lon, year, day):
 def run_model(year, day, lat=0, lon=0,
               rmin=100, rmax=2000, hrmx=24.5,
               f107=120, f107a=120, ap=0,
-              nx=1, ox=1,
-              Tinf_scl=1, euv_scl=1, hwm_scl=1, hwm_mod=14,
+              nx=1, ox=1, exb_scale=1, 
+              Tinf_scale=1, euv_scale=1, hwm_scale=1, hwm_mod=14,
               tag='test', clean=False):
     '''
     Runs SAMI2 and archives the data in path
@@ -86,7 +86,7 @@ def run_model(year, day, lat=0, lon=0,
         file.write('  nion2    =    7,\n')
         file.write('  hrinit   =    0.,\n')
         file.write('  tvn0     =    1,\n')
-        file.write('  tvexb0   =    1,\n')
+        file.write('  tvexb0   =    %5.2f,\n' % info['exb_scale'])
         file.write('  ve01     =    0.,\n')
         file.write('  gams     =    3,\n')
         file.write('  gamp     =    3,\n')
@@ -96,9 +96,9 @@ def run_model(year, day, lat=0, lon=0,
         file.write('  denmin   =    1.e-6,\n')
         file.write('  alt_crit =    150.,\n')
         file.write('  cqe      =   7.e-14,\n')
-        file.write('  Tinf_scl =  %6.2f,\n' % info['Tinf_scl'])
-        file.write('  euv_scl  =  %6.2f,\n' % info['euv_scl'])
-        file.write('  hwm_scl  =  %6.2f,\n' % info['hwm_scl'])
+        file.write('  Tinf_scale =  %6.2f,\n' % info['Tinf_scale'])
+        file.write('  euv_scale  =  %6.2f,\n' % info['euv_scale'])
+        file.write('  hwm_scale  =  %6.2f,\n' % info['hwm_scale'])
         file.write('  hwm_mod  = %d\n' % info['hwm_mod'])
         file.write('&end')
 
@@ -122,9 +122,9 @@ def run_model(year, day, lat=0, lon=0,
     info = {'year':year, 'day':day, 'lat':lat, 'lon':lon,
             'hrmx':hrmx, 'rmin':rmin, 'rmax':rmax,
             'f107':f107, 'f107a':f107a, 'ap':ap,
-            'nx':nx, 'ox':ox,
-            'Tinf_scl':Tinf_scl,'euv_scl':euv_scl,
-            'hwm_scl':hwm_scl, 'hwm_mod':hwm_mod}
+            'nx':nx, 'ox':ox, 'exb_scale':exb_scale,
+            'Tinf_scale':Tinf_scale,'euv_scale':euv_scale,
+            'hwm_scale':hwm_scale, 'hwm_mod':hwm_mod}
 
     generate_namelist(info)
     path = generate_path(tag, lon, year, day)

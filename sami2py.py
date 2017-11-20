@@ -19,7 +19,7 @@ import os, shutil
 #class model:
 #    def __init__(self, path='/Volumes/drive/sami2/temp/'):
 
-def generate_path(tag, info):
+def generate_path(tag, lon, year, day):
     '''
     Creates a path based on run tag, date, and longitude
 
@@ -33,10 +33,10 @@ def generate_path(tag, info):
     else:
         basedir = '/Volumes/drive/models/sami2/'
 
-    return basedir + tag + '/'
+    return basedir + tag + ('/lon%03d/%4d/%03d/' % (lon, year, day))
 
 
-def run_model(year, day, lat=0, lon=0, rmin=100, rmax=2000, f107=120, ap=0, 
+def run_model(year, day, lat=0, lon=0, rmin=100, rmax=2000, f107=120, ap=0,
               Tinf_scl=1, euv_scl=1, hwm_scl=1, hwm_mod=14, tag='test',
               clean=False):
     '''
@@ -107,7 +107,7 @@ def run_model(year, day, lat=0, lon=0, rmin=100, rmax=2000, f107=120, ap=0,
         try:
             os.stat(path)
         except:
-            os.mkdir(path)
+            os.makedirs(path)
 
         for i in range(0,len(filelist)):
             shutil.copyfile(filelist[i], path+filelist[i])
@@ -120,6 +120,6 @@ def run_model(year, day, lat=0, lon=0, rmin=100, rmax=2000, f107=120, ap=0,
             'Tinf_scl':Tinf_scl,'euv_scl':euv_scl,'hwm_scl':hwm_scl,
             'hwm_mod':hwm_mod}
     generate_namelist(info)
-    path = generate_path(tag,info)
+    path = generate_path(tag, lon, year, day)
     #os.system('./sami2low.x')
     archive_model(path, clean)

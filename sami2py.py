@@ -9,7 +9,7 @@
 #
 # Classes: model
 #
-# Methods: run_model
+# Methods: generate_path, run_model
 #
 #---------------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ def generate_path(tag, lon, year, day):
 
     return basedir + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
 
-
+# End generate_path method
 def run_model(year, day, lat=0, lon=0,
               rmin=100, rmax=2000, hrmx=24.5,
               f107=120, f107a=120, ap=0,
@@ -104,6 +104,8 @@ def run_model(year, day, lat=0, lon=0,
 
         file.close()
 
+    # End generate_namelist method
+
     def archive_model(path,clean,fejer):
         filelist = ['glonf.dat','glatf.dat','zaltf.dat',
                     'vsif.dat','time.dat','tif.dat','tef.dat',
@@ -120,6 +122,8 @@ def run_model(year, day, lat=0, lon=0,
                 os.remove(filelist[i])
         if fejer:
             shutil.copyfile('exb.inp', path+'exb.inp')
+
+    # End archive_model method
 
     info = {'year':year, 'day':day, 'lat':lat, 'lon':lon,
             'hrmx':hrmx, 'rmin':rmin, 'rmax':rmax,
@@ -139,3 +143,4 @@ def run_model(year, day, lat=0, lon=0,
     path = generate_path(tag,lon,year,day)
     os.system('./sami2low.x')
     archive_model(path,clean,fejer)
+# End run_model method

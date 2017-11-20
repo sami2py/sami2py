@@ -16,8 +16,74 @@
 import numpy as np
 import os, shutil
 
-#class model:
-#    def __init__(self, path='/Volumes/drive/sami2/temp/'):
+class model:
+    def __init__(self, tag, lon, year, day):
+        '''
+        Loads a previously run sami2 model and sorts into
+           4D arrays
+
+        Input:
+            tag  = name of run (top-level directory)
+            lon  = longitude reference
+            year = year
+            day  = day of year
+
+        Properties:
+            ut   = Universal Time (hrs), 1D ndarray
+            slt  = Solar Local Time (hr), 1D ndarray
+            glat = Geographic Latitude (deg), 2D ndarray
+            glon = Geographic Longitude (deg), 2D ndarray
+            zalt = Altitude (km), 2D ndarray
+
+            deni = Ion density by species, 4D ndarray
+            vsi  = Ion Velocity by species, 4D ndarray
+        '''
+        def calculate_slt(ut, glon, day):
+
+            slt = np.mod((ut*60 + glon*4),1440)/60
+            M = 2*np.pi*day/365.242
+            dT = -7.657*np.sin(M) + 9.862*np.sin(2*M + 3.599)
+            slt = slt - dT/60
+
+            return slt
+
+        nf = 98
+        nz = 101
+        ni = 7
+
+        self.tag = tag
+
+        path = generate_path(tag,lon,year,day)
+
+        # Get times
+        time = np.loadtxt(path+'time.dat')
+        self.ut = time[:,1] + time[:,2]/60 + time[:,3]/3600;
+        self.slt = calculate_slt(self.ut,lon,day)
+        nt = len(self.ut)
+
+        # Get Location
+        glat = np.loadtxt(path+'glatf.dat')
+        self.glat = np.reshape(glat,(nz,nf),order="F")
+        glon = np.loadtxt(path+'glonf.dat')
+        self.glon = np.reshape(glon,(nz,nf),order="F")
+        zalt = np.loadtxt(path+'zaltf.dat')
+        self.zalt = np.reshape(zalt,(nz,nf),order="F")
+        del glat, glon, zalt
+
+        # Get plasma values
+        deni = np.loadtxt(path+'denif.dat')
+        self.deni = np.reshape(deni,(nz,nf,ni,nt),order="F")
+        vsi = np.loadtxt(path+'vsif.dat')
+        self.vsi = np.reshape(vsi,(nz,nf,ni,nt),order="F")
+        ti = np.loadtxt(path+'tif.dat')
+        self.ti = np.reshape(ti,(nz,nf,ni,nt),order="F")
+        te = np.loadtxt(path+'tef.dat')
+        self.te = np.reshape(te,(nz,nf,nt),order="F")
+        del deni, vsi, ti, te
+
+    # End __init__ method
+
+# End model class
 
 def generate_path(tag, lon, year, day):
     '''
@@ -96,11 +162,11 @@ def run_model(year, day, lat=0, lon=0,
         file.write('  denmin   =    1.e-6,\n')
         file.write('  alt_crit =    150.,\n')
         file.write('  cqe      =   7.e-14,\n')
-        file.write('  Tinf_scale =  %6.2f,\n' % info['Tinf_scale'])
-        file.write('  euv_scale  =  %6.2f,\n' % info['euv_scale'])
-        file.write('  hwm_scale  =  %6.2f,\n' % info['hwm_scale'])
+        file.write('  Tinf_scl =  %4.2f,\n' % info['Tinf_scale'])
+        file.write('  euv_scl  =  %6.2f,\n' % info['euv_scale'])
+        file.write('  hwm_scl  =  %6.2f,\n' % info['hwm_scale'])
         file.write('  hwm_mod  = %d\n' % info['hwm_mod'])
-        file.write('&end')
+        file.write('&end\n')
 
         file.close()
 
@@ -144,4 +210,5 @@ def run_model(year, day, lat=0, lon=0,
     if test==False:
         os.system('./sami2low.x')
     archive_model(path,clean,fejer)
+
 # End run_model method

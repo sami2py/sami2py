@@ -36,8 +36,9 @@ def generate_path(tag, info):
     return basedir + tag + '/'
 
 
-def run_model(year, day, lat=0, lon=0, f107=120, Tinf_scl=1,
-              euv_scl=1, hwm_scl=1, hwm_mod=14, tag='test', clean=False):
+def run_model(year, day, lat=0, lon=0, rmin=100, rmax=2000, f107=120, ap=0, 
+              Tinf_scl=1, euv_scl=1, hwm_scl=1, hwm_mod=14, tag='test',
+              clean=False):
     '''
     Runs SAMI2 and archives the data in path
 
@@ -69,12 +70,12 @@ def run_model(year, day, lat=0, lon=0, f107=120, Tinf_scl=1,
         file.write('  glat_in  =  %6.2f,\n' % info['lat'])
         file.write('  glon_in  =  %6.2f,\n' % info['lon'])
         file.write('  fejer    = .true.\n')
-        file.write('  rmin     =  100,\n')
-        file.write('  rmax     =  1000,\n')
+        file.write('  rmin     =  %7.1f,\n' % info['rmin'])
+        file.write('  rmax     =  %7.1f,\n' % info['rmax'])
         file.write('  altmin   =   85.,\n')
         file.write('  fbar     =  117.4778,\n')
         file.write('  f10p7    =  %5.1f,\n' % info['f107'])
-        file.write('  ap       =  0,\n')
+        file.write('  ap       =  %d,\n' % info['ap'])
         file.write('  year     = %4d,\n' % info['year'])
         file.write('  day      =   %3d,\n' % info['day'])
         file.write('  mmass    =   48 ,\n')
@@ -94,11 +95,7 @@ def run_model(year, day, lat=0, lon=0, f107=120, Tinf_scl=1,
         file.write('  Tinf_scl =  %6.2f,\n' % info['Tinf_scl'])
         file.write('  euv_scl  =  %6.2f,\n' % info['euv_scl'])
         file.write('  hwm_scl  =  %6.2f,\n' % info['hwm_scl'])
-<<<<<<< HEAD
         file.write('  hwm_mod  = %d\n' % info['hwm_mod'])
-=======
-        file.write('  hwm_mod    = %d\n' % info['hwm_mod'])
->>>>>>> ab6679b817cc7b4487630f401c9755d8ed92da84
         file.write('&end')
 
         file.close()
@@ -111,13 +108,15 @@ def run_model(year, day, lat=0, lon=0, f107=120, Tinf_scl=1,
             os.stat(path)
         except:
             os.mkdir(path)
+
         for i in range(0,len(filelist)):
             shutil.copyfile(filelist[i], path+filelist[i])
         if clean:
             for i in range(0,len(filelist)-1):
                 os.remove(filelist[i])
 
-    info = {'year':year, 'day':day, 'lat':lat, 'lon':lon, 'f107':f107,
+    info = {'year':year, 'day':day, 'lat':lat, 'lon':lon,
+            'rmin':rmin, 'rmax':rmax, 'f107':f107, 'ap':ap,
             'Tinf_scl':Tinf_scl,'euv_scl':euv_scl,'hwm_scl':hwm_scl,
             'hwm_mod':hwm_mod}
     generate_namelist(info)

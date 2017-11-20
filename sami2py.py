@@ -136,6 +136,6 @@ def run_model(year, day, lat=0, lon=0,
         np.savetxt('exb.inp',ExBdrifts)
 
     generate_namelist(info)
-    path = generate_path(tag, lon, year, day)
+    path = generate_path(tag,lon,year,day)
     os.system('./sami2low.x')
-    archive_model(path, clean, fejer)
+    archive_model(path,clean,fejer)

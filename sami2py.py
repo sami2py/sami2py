@@ -41,7 +41,7 @@ def run_model(year, day, lat=0, lon=0,
               f107=120, f107a=120, ap=0,
               nx=1, ox=1, exb_scale=1, fejer=True, ExBdrifts=np.zeros((10,2)),
               Tinf_scale=1, euv_scale=1, hwm_scale=1, hwm_mod=14,
-              tag='test', clean=False):
+              tag='test', clean=False, test=False):
     '''
     Runs SAMI2 and archives the data in path
 
@@ -54,7 +54,7 @@ def run_model(year, day, lat=0, lon=0,
         '''
 
         # Check HWM model parameters
-        if ~(info['hwm_mod'] in [93, 7, 14]):
+        if (info['hwm_mod'] in [93, 7, 14])==False:
             print('Invalid HWM Model.  Defaulting to HWM14')
             info['hwm_mod']=14
 
@@ -120,7 +120,7 @@ def run_model(year, day, lat=0, lon=0,
         if clean:
             for i in range(0,len(filelist)-1):
                 os.remove(filelist[i])
-        if fejer:
+        if fejer==False:
             shutil.copyfile('exb.inp', path+'exb.inp')
 
     # End archive_model method
@@ -141,6 +141,7 @@ def run_model(year, day, lat=0, lon=0,
 
     generate_namelist(info)
     path = generate_path(tag,lon,year,day)
-    os.system('./sami2low.x')
+    if test==False:
+        os.system('./sami2low.x')
     archive_model(path,clean,fejer)
 # End run_model method

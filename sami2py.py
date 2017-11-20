@@ -55,7 +55,7 @@ def run_model(year, day, lat=0, lon=0,
 
         # Check HWM model parameters
         if ~(info['hwm_mod'] in [93, 7, 14]):
-            #disp('Invalid HWM Model.  Defaulting to HWM14')
+            print('Invalid HWM Model.  Defaulting to HWM14')
             info['hwm_mod']=14
 
         # Print out namelist file
@@ -131,6 +131,8 @@ def run_model(year, day, lat=0, lon=0,
         info['fejer'] = '.true.'
     else:
         info['fejer'] = '.false.'
+        if ExBdrifts.shape!=(10,2):
+            print('Invalid ExB drift shape!  Must be 10x2 ndarray.')
         np.savetxt('exb.inp',ExBdrifts)
 
     generate_namelist(info)

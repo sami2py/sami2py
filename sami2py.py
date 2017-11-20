@@ -119,8 +119,8 @@ def run_model(year, day, lat=0, lon=0, rmin=100, rmax=2000, hrmx=24.5,
             'rmin':rmin, 'rmax':rmax, 'f107':f107, 'ap':ap,
             'Tinf_scl':Tinf_scl,'euv_scl':euv_scl,'hwm_scl':hwm_scl,
             'hwm_mod':hwm_mod}
-            
+
     generate_namelist(info)
     path = generate_path(tag, lon, year, day)
-    #os.system('./sami2low.x')
+    os.system('./sami2low.x')
     archive_model(path, clean)

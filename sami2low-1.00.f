@@ -1,6 +1,6 @@
 !     *******************************************
 !     *******************************************
- 
+
 !                  SAMI2-1.00
 
 !     *******************************************
@@ -12,33 +12,33 @@
 !     *******************************************
 !     *******************************************
 
-!     I hereby agree to the following terms governing the use and 
-!     redistribution of the SAMI2 software release written and 
+!     I hereby agree to the following terms governing the use and
+!     redistribution of the SAMI2 software release written and
 !     developed by J.D. Huba, G. Joyce and M. Swisdak.
 
-!     Redistribution and use in source and binary forms, with or 
-!     without modification, are permitted provided that (1) source code 
-!     distributions retain this paragraph in its entirety, (2) distributions 
-!     including binary code include this paragraph in its entirety in 
-!     the documentation or other materials provided with the distribution, 
-!     (3) improvements, additions and upgrades to the software will be 
-!     provided to NRL Authors in computer readable form, with an unlimited, 
-!     royalty-free license to use these improvements, additions and upgrades, 
-!     and the authority to grant unlimited royalty-free sublicenses to these 
-!     improvements and (4) all published research 
-!     using this software display the following acknowledgment ``This 
-!     work uses the SAMI2 ionosphere model written and developed 
-!     by the Naval Research Laboratory.'' 
+!     Redistribution and use in source and binary forms, with or
+!     without modification, are permitted provided that (1) source code
+!     distributions retain this paragraph in its entirety, (2) distributions
+!     including binary code include this paragraph in its entirety in
+!     the documentation or other materials provided with the distribution,
+!     (3) improvements, additions and upgrades to the software will be
+!     provided to NRL Authors in computer readable form, with an unlimited,
+!     royalty-free license to use these improvements, additions and upgrades,
+!     and the authority to grant unlimited royalty-free sublicenses to these
+!     improvements and (4) all published research
+!     using this software display the following acknowledgment ``This
+!     work uses the SAMI2 ionosphere model written and developed
+!     by the Naval Research Laboratory.''
 
-!     Neither the name of NRL or its contributors, nor any entity of the 
-!     United States Government may be used to endorse or promote products 
-!     derived from this software, nor does the inclusion of the NRL written 
-!     and developed software directly or indirectly suggest NRL's or the 
+!     Neither the name of NRL or its contributors, nor any entity of the
+!     United States Government may be used to endorse or promote products
+!     derived from this software, nor does the inclusion of the NRL written
+!     and developed software directly or indirectly suggest NRL's or the
 !     United States Government's endorsement of this product.
 
 
-!     THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED 
-!     WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF 
+!     THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED
+!     WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 !     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 
 
@@ -48,7 +48,7 @@
       program main
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
 !     open input files
 
@@ -64,14 +64,14 @@
       open ( unit=67, file='zaltnt.inp')
 
       call initial
-  
+
 !     open output files
 
       if ( fmtout ) then
         call open_f
       else
         call open_u
-      endif 
+      endif
 
       ntm   = 0
       istep = 0
@@ -99,11 +99,11 @@
       tneut   = 0.
       time    = 0.
 
-      call neutambt (hrinit) 
+      call neutambt (hrinit)
 
 
-        
-      do while (      istep .le. maxstep 
+
+      do while (      istep .le. maxstep
      .          .and. time  .lt. timemax  )
 
 !       parallel transport
@@ -111,11 +111,11 @@
         do nfl = nf,1,-1
           call zenith (hrut,nfl)
           call transprt (nfl)
-        enddo         
+        enddo
 
 !       perpendicular transport
 
-        call exb(hrut)         
+        call exb(hrut)
 
 !       time/step advancement
 
@@ -130,7 +130,7 @@
 !       update neutrals
 
         if ( tneut .ge. 0.25 ) then
-          call neutambt (hrut) 
+          call neutambt (hrut)
           tneut = 0.
         endif
 
@@ -184,7 +184,7 @@
       subroutine initial
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real f1026(nz,nf,91),f584(nz,nf,91),
      .     f304 (nz,nf,91),f1216(nz,nf,91)
@@ -203,10 +203,10 @@
      .                Tinf_scl,euv_scl,hwm_scl,hwm_mod
 
 
-!     read in parameters and initial ion density data 
+!     read in parameters and initial ion density data
 
       read(10,go)
-      
+
       dt = dt0
 
       ami(pthp)  = 1.
@@ -241,7 +241,7 @@
 
       do i = 1,10
         read(11,*) fourierA(i),fourierB(i)
-      enddo      
+      enddo
 
 !     read in initial density data
 
@@ -265,7 +265,7 @@
         do j = 1,nneut
           do i = nion1,nion2
             ireact(i,j,k) = 0
-            if (      i .eq. ichem(k,1) 
+            if (      i .eq. ichem(k,1)
      .          .and. j .eq. ichem(k,2) ) ireact(i,j,k) = 1.
           enddo
         enddo
@@ -304,10 +304,10 @@
 ! MS: chicrit is the zenith angle below which the Sun is visible.
 ! For points on the surface this is just pi/2, but at higher
 ! altitudes it is bigger.
-       
+
       do j = 1,nf
         do i = 1,nz
-          coschicrit(i,j) = cos(pie - 
+          coschicrit(i,j) = cos(pie -
      .                asin( 1./ (1. + alts(i,j)/re) ))
         enddo
       enddo
@@ -333,7 +333,7 @@
             if ( n .eq. 5 ) k = ptn2p
             if ( n .eq. 6 ) k = ptnop
             if ( n .eq. 7 ) k = pto2p
-            slope   = ( denii(j0+1,n) - denii(j0,n) ) 
+            slope   = ( denii(j0+1,n) - denii(j0,n) )
      .                / ( zi   (j0+1)   - zi   (j0) )
             deni(i,l,k) = denii(j0,n) + ( alts(i,l) - zi(j0) ) * slope
             deni(i,l,k) = amax1 ( deni(i,l,k) , denmin )
@@ -370,9 +370,9 @@
           denn(i,j,ptn2)  = snn(ptn2) * d(3) + 1.e-30
           denn(i,j,pto2)  = snn(pto2) * d(4) + 1.e-30
           tn(i,j)         = stn * temp(2)
-          denn(i,j,ptno)  = 0.4 * exp( -3700. / tn(i,j) ) 
-     .                      * denn(i,j,pto2) 
-     .                      + 5.0e-7 * denn(i,j,pto) 
+          denn(i,j,ptno)  = 0.4 * exp( -3700. / tn(i,j) )
+     .                      * denn(i,j,pto2)
+     .                      + 5.0e-7 * denn(i,j,pto)
         enddo
       enddo
 
@@ -387,12 +387,12 @@
         enddo
       enddo
 
-!     initialize ion velocity to zero 
+!     initialize ion velocity to zero
 
       do k = nion1,nion2
         do j = 1,nf
           do i = 1,nz
-            vsi(i,j,k)     = 0. 
+            vsi(i,j,k)     = 0.
             sumvsi(i,j,k)  = 0.
           enddo
         enddo
@@ -426,15 +426,15 @@
 
       do i = 1,linesuv
         read (50,105) (sigabsdt(i,j), j=1,3)
- 105    format (3f7.2) 
-      enddo 
+ 105    format (3f7.2)
+      enddo
 
-      do j = 1,3 
+      do j = 1,3
         do i = 1,linesuv
-          sigabsdt(i,j) = tm18 * sigabsdt(i,j) 
-        enddo 
-      enddo 
- 
+          sigabsdt(i,j) = tm18 * sigabsdt(i,j)
+        enddo
+      enddo
+
 !     initialize photoionization rates to zero
 
       do j = 1,nneut
@@ -461,9 +461,9 @@
 
       do j = 1,nion
         do i = 1,linesuv
-          sigidt(i,j) = tm18 * sigidt(i,j) 
-        enddo 
-      enddo 
+          sigidt(i,j) = tm18 * sigidt(i,j)
+        enddo
+      enddo
 
 !     read in nighttime photoionization line data
 !     (only o, n_2, n0, o_2)
@@ -478,9 +478,9 @@
 
       do j = 1,nion
         do i = 1,linesnt
-          sigint(i,j) = tm18 * sigint(i,j) 
-        enddo 
-      enddo 
+          sigint(i,j) = tm18 * sigint(i,j)
+        enddo
+      enddo
 
 !     read in f74113, ai data and set euv flux
 !     (from richards et al., jgr 99, 8981, 1994)
@@ -496,7 +496,7 @@
         flux(i) = f74 * xflux * 1.e9 * euv_scl
 !        if ( flux(i) .lt. 0 ) flux(i) = 0.
 !        print *,'i,flux',i,flux(i)
-      enddo 
+      enddo
  107  format (f6.3,1pe11.4)
 
 !      stop
@@ -527,10 +527,10 @@
         call sf1216 ( f1216,4,j )
         do k = 1,91
           do i = 1,nz
-            fluxnt(i,j,k,1) = f1026(i,j,k)            
-            fluxnt(i,j,k,2) = f584 (i,j,k)            
-            fluxnt(i,j,k,3) = f304 (i,j,k)            
-            fluxnt(i,j,k,4) = f1216(i,j,k)            
+            fluxnt(i,j,k,1) = f1026(i,j,k)
+            fluxnt(i,j,k,2) = f584 (i,j,k)
+            fluxnt(i,j,k,3) = f304 (i,j,k)
+            fluxnt(i,j,k,4) = f1216(i,j,k)
           enddo
         enddo
       enddo
@@ -565,7 +565,7 @@
 *******************************************
 *******************************************
 
-!            neutambt            
+!            neutambt
 
 *******************************************
 *******************************************
@@ -578,7 +578,7 @@
 
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real d(9),temp(2)
       real whm07(2),app(2)
@@ -611,7 +611,7 @@
 !                    to current time
 !        mass - mass number (only density for selected gas is
 !                 calculated.  mass 0 is temperature.  mass 48 for all.
-!     output: 
+!     output:
 !        d(1) - he number density(cm-3)
 !        d(2) - o number density(cm-3)
 !        d(3) - n2 number density(cm-3)
@@ -639,9 +639,9 @@
           denn(i,j,ptn2)  = snn(ptn2) * d(3) + 1.e-30
           denn(i,j,pto2)  = snn(pto2) * d(4) + 1.e-30
           tn(i,j)         = stn * temp(2)
-          denn(i,j,ptno)  = 0.4 * exp( -3700. / tn(i,j) ) 
-     .                      * denn(i,j,pto2) 
-     .                      + 5.0e-7 * denn(i,j,pto) 
+          denn(i,j,ptno)  = 0.4 * exp( -3700. / tn(i,j) )
+     .                      * denn(i,j,pto2)
+     .                      + 5.0e-7 * denn(i,j,pto)
         enddo
       enddo
 
@@ -649,7 +649,7 @@
 
 !        iyd - year and day as yyddd
 !        sec - ut(sec)  (not important in lower atmosphere)
-!        alt - altitude(km) 
+!        alt - altitude(km)
 !        glat - geodetic latitude(deg)
 !        glong - geodetic longitude(deg)
 !        stl - local apparent solar time(hrs)
@@ -659,7 +659,7 @@
 !             ap(1) = magnetic index(daily) (use 4 in lower atmos.)
 !             ap(2)=current 3hr ap index (used only when sw(9)=-1.)
 !     note:  ut, local time, and longitude are used independently in the
-!            model and are not of equal importance for every situation.  
+!            model and are not of equal importance for every situation.
 !            for the most physically realistic calculation these three
 !            variables should be consistent.
 !      output
@@ -689,7 +689,7 @@
       enddo
 
       return
-      end 
+      end
 
 *******************************************
 *******************************************
@@ -702,7 +702,7 @@
       subroutine transprt (nfl)
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real prod(nz,nion),loss(nz,nion),lossr,
      .     phprodr(nz,nion),chrate(nz,nchem),
@@ -721,7 +721,7 @@
 !       chprod:  chemical production term
 !       relossr: recombination loss rates
 
-!     initialize tvn and gs 
+!     initialize tvn and gs
 
       do i = 1,nz
         tvn(i) = 0.
@@ -734,35 +734,35 @@
         te_old(i)   = te(i,nfl)
         do j = nion1,nion2
           deni_old(i,j) = deni(i,nfl,j)
-          ne(i,nfl)     = ne(i,nfl) + deni(i,nfl,j)  
+          ne(i,nfl)     = ne(i,nfl) + deni(i,nfl,j)
           ti_old(i,j)   = ti(i,nfl,j)
           vsi_old(i,j)  = vsi(i,nfl,j)
         enddo
 
-       enddo 
+       enddo
 
        call photprod ( cx,phprodr,nfl   )         ! calculates phprodr
        call chemrate ( chrate,nfl               ) ! calculates chrate
        call chempl   ( chrate,chloss,chprod,nfl ) ! calcualtes chloss,chprod
        call recorate ( relossr,nfl              ) ! calculates relossr
 
-       do i = 1,nz      
+       do i = 1,nz
 
         do j = nion1,nion2
-          prod  (i,j) =  phprodr(i,j) * denn(i,nfl,j)        
+          prod  (i,j) =  phprodr(i,j) * denn(i,nfl,j)
      .                   + chprod(i,j)
-          lossr       =  relossr(i,j) * deni(i,nfl,j) * ne(i,nfl) 
+          lossr       =  relossr(i,j) * deni(i,nfl,j) * ne(i,nfl)
      .                   + chloss(i,j)
           loss (i,j)  =  lossr / deni(i,nfl,j)
         enddo
 
-!       gravity and neutral wind 
+!       gravity and neutral wind
 !       modified 9/19/05 (MS)
 
         gs(i)   =  gzero * arg(i,nfl)
      .             * ( re / (re + alts(i,nfl)) ) ** 2
 
-        tvn(i)  = (  v(i,nfl) * athg(i,nfl) 
+        tvn(i)  = (  v(i,nfl) * athg(i,nfl)
      .             - u(i,nfl) * aphig(i,nfl) )
 
         tvn(i)    = tvn0 * tvn(i) ! tvn0 used to modify tvn
@@ -779,7 +779,7 @@
         do nni = nion1,nion2
           sumvsi(i,nfl,nni) = 0.
           do nj = nion1,nion2
-          sumvsi(i,nfl,nni) =   sumvsi(i,nfl,nni) 
+          sumvsi(i,nfl,nni) =   sumvsi(i,nfl,nni)
      .                     + nuij(i,nni,nj)*vsi(i,nfl,nj)
           enddo
         enddo
@@ -871,7 +871,7 @@
         ti(i,nfl,pthp)  = amax1(tn(i,nfl),tin(i,pthp))
         ti(i,nfl,pthp)  = amin1(ti(i,nfl,pthp),1.e4)
         if ( ti(i,nfl,pthp) .lt. 0 ) then
-          print *,' T(H) negative: i,nfl',i,nfl 
+          print *,' T(H) negative: i,nfl',i,nfl
           stop
         endif
       enddo
@@ -881,7 +881,7 @@
         ti(i,nfl,pthep)  = amax1(tn(i,nfl),tin(i,pthep))
         ti(i,nfl,pthep)  = amin1(ti(i,nfl,pthep),1.e4)
         if ( ti(i,nfl,pthep) .lt. 0 ) then
-          print *,' T(He) negative: i,nfl',i,nfl 
+          print *,' T(He) negative: i,nfl',i,nfl
           stop
         endif
       enddo
@@ -891,7 +891,7 @@
         ti(i,nfl,ptop)  = amax1(tn(i,nfl),tin(i,ptop))
         ti(i,nfl,ptop)  = amin1(ti(i,nfl,ptop),1.e4)
         if ( ti(i,nfl,ptop) .lt. 0 ) then
-          print *,' T(O) negative: i,nfl',i,nfl 
+          print *,' T(O) negative: i,nfl',i,nfl
           stop
         endif
       enddo
@@ -915,12 +915,12 @@
 *******************************************
 *******************************************
 
-!     photoproduction rates 
+!     photoproduction rates
 
       subroutine photprod ( cxl,phprodr,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real cxl(nz,nf)
       real phprodr(nz,nion),xmass(3)
@@ -945,14 +945,14 @@
          idx(3) = pto2
 
          rp    = alts(iz,nfl) + re
-         rp2   = rp * rp  
-         
+         rp2   = rp * rp
+
 !         if ( coschi .ge. 0. ) then ! sun is up
          if ( coschi .ge. coschicrit(iz,nfl) ) then ! sun is up
 
-!     daytime deposition 
+!     daytime deposition
 
-            do i = 1,3 
+            do i = 1,3
                hscale   = hcof * tn(iz,nfl) * rp2 / amn(idx(i))
                xscale   = rp / hscale
                y1       = sqrt ( .5 * xscale ) * abs(coschi)
@@ -962,11 +962,11 @@
             enddo
 
             do l=1,linesuv
-               exa =   xmass(1) * sigabsdt(l,1) 
-     .              + xmass(2) * sigabsdt(l,2) 
+               exa =   xmass(1) * sigabsdt(l,1)
+     .              + xmass(2) * sigabsdt(l,2)
      .              + xmass(3) * sigabsdt(l,3)
                if(exa .gt. 35.) exa = 35.
-               flx = flux(l) * exp(-exa) 
+               flx = flux(l) * exp(-exa)
                do j=nion1,nion2
                   phprodr(iz,j) = phprodr(iz,j) + sigidt(l,j) * flx
                enddo
@@ -981,7 +981,7 @@
             itheta = int ( amax1 ( float(itheta), 1. ) )
             do l = 1,linesnt
                do j=nion1,nion2
-                  phprodr(iz,j) =   phprodr(iz,j) 
+                  phprodr(iz,j) =   phprodr(iz,j)
      .                 + sigint(l,j) * fluxnt(iz,nfl,itheta,l)
                enddo
             enddo
@@ -1006,7 +1006,7 @@
       subroutine chemrate ( chrate,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real chrate(nz,nchem)
 
@@ -1014,7 +1014,7 @@
 
       ti300o = ti(iz,nfl,ptop) / 300.
 
-      chrate (iz,1) = 2.2e-11 
+      chrate (iz,1) = 2.2e-11
      .            * sqrt( ti(iz,nfl,pthp) )       ! h+ + o --> o+ + h (bb)
 
       chrate (iz,2) = 3.5e-10                        ! he+ + n2 --> n2+ + he (bb)
@@ -1033,13 +1033,13 @@
 
       chrate (iz,9) = 2.0e-11                        ! n+ + no --> no+ + o (schunk)
 
-      chrate(iz,10) = 2.5e-11 
+      chrate(iz,10) = 2.5e-11
      .             * sqrt( tn(iz,nfl) )           ! o+ + h --> h+ + o   (bb)
- 
+
       chrate(iz,11) = 1.533e-12 -                    ! o+ + n2 --> no+ + n (bb)
      .             5.920e-13 * ti300o +
      .             8.600e-14 * ti300o ** 2
-      if ( ti(iz,nfl,ptop) .gt. 1700 ) 
+      if ( ti(iz,nfl,ptop) .gt. 1700 )
      .  chrate(iz,11) = 2.730e-12 -
      .                1.155e-12 * ti300o +
      .                1.483e-13 * ti300o ** 2
@@ -1082,13 +1082,13 @@
 *******************************************
 *******************************************
 
-!     recombination rates 
+!     recombination rates
 !     bb: bailley and balan (red book, 1996)
 
       subroutine recorate ( relossr,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real relossr(nz,nion)
 
@@ -1096,7 +1096,7 @@
 
         te300 = te(iz,nfl) / 300.
 
-        relossr(iz,pthp)  = 4.43e-12 / te300 ** .7 
+        relossr(iz,pthp)  = 4.43e-12 / te300 ** .7
         relossr(iz,pthep) = relossr(iz,pthp)
         relossr(iz,ptnp)  = relossr(iz,pthp)
         relossr(iz,ptop)  = relossr(iz,pthp)
@@ -1116,17 +1116,17 @@
 
 *******************************************
 *******************************************
-        
+
 !     chemical loss (chloss) and production (chprod)
 
 !     chrate: chemical reaction rates calculated in chemrate
 !     ichem: input data file showing loss, neutral, production
-!            species for each reaction 
+!            species for each reaction
 
       subroutine chempl ( chrate,chloss,chprod,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real chrate(nz,nchem),chloss(nz,nion),chprod(nz,nion)
 
@@ -1145,7 +1145,7 @@
            chem  = denn(iz,nfl,in) * chrate(iz,k)
            tdeni = deni(iz,nfl,il) * chem
            chloss(iz,il) = tdeni + chloss(iz,il)
-           chprod(iz,ip) = tdeni + chprod(iz,ip)           
+           chprod(iz,ip) = tdeni + chprod(iz,ip)
         enddo
       enddo
 
@@ -1163,7 +1163,7 @@
       subroutine update ( tvn,nuin,sumnuj,nuij,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real nuin(nz,nion,nneut),nuij(nz,nion,nion)
       real nuint(nz,nion)
@@ -1198,7 +1198,7 @@
 !     hybrid used in the other terms. I've changed that.
 
 !            teff    = 0.5 * ( ti(i,nfl,ni) + tn(i,nfl) ) ! original
-            teff    = ti(i,nfl,ni) 
+            teff    = ti(i,nfl,ni)
             fac     = ( 1.00 - .047 * alog10(teff) ) ** 2
             tfactor = sqrt(teff) * fac
             nuin(i,ni,nn)  = 6.61e-11 * denn(i,nfl,nn) * tfactor
@@ -1210,7 +1210,7 @@
           endif
           nuint(i,ni) = nuint(i,ni) + nuin(i,ni,nn)
         enddo
-      enddo      
+      enddo
 
 !     helium (He)
 
@@ -1223,7 +1223,7 @@
           nuin(i,ni,nn) = nufacin * denn(i,nfl,nn)
           nuint(i,ni) = nuint(i,ni) + nuin(i,ni,nn)
         enddo
-      enddo      
+      enddo
 
 !     nitrogen (N)
 
@@ -1236,7 +1236,7 @@
           nuin(i,ni,nn) = nufacin * denn(i,nfl,nn)
           nuint(i,ni) = nuint(i,ni) + nuin(i,ni,nn)
         enddo
-      enddo      
+      enddo
 
 !     oxygen (O)
 
@@ -1256,7 +1256,7 @@
           endif
           nuint(i,ni) = nuint(i,ni) + nuin(i,ni,nn)
         enddo
-      enddo      
+      enddo
 
 !     nitrogen 2(N2)
 
@@ -1279,7 +1279,7 @@
           endif
           nuint(i,ni) = nuint(i,ni) + nuin(i,ni,nn)
         enddo
-      enddo      
+      enddo
 
 !     nitrous oxide (N0)
 
@@ -1292,7 +1292,7 @@
           nuin(i,ni,nn) = nufacin * denn(i,nfl,nn)
           nuint(i,ni) = nuint(i,ni) + nuin(i,ni,nn)
         enddo
-      enddo      
+      enddo
 
 !     oxygen 2(O2)
 
@@ -1312,7 +1312,7 @@
           endif
           nuint(i,ni) = nuint(i,ni) + nuin(i,ni,nn)
         enddo
-      enddo      
+      enddo
 
 !     ion-ion collision frequency
 
@@ -1329,7 +1329,7 @@
           if ( ni .ne. nj ) then
              do i = 1,nz
               alame1  = ( ami(ni) + ami(nj) ) * evtok /
-     .                ( ami(ni)*ti(i,nfl,nj) + ami(nj)*ti(i,nfl,ni) ) 
+     .                ( ami(ni)*ti(i,nfl,nj) + ami(nj)*ti(i,nfl,ni) )
               alame2  = deni(i,nfl,ni) * evtok / ti(i,nfl,ni) +
      .                  deni(i,nfl,nj) * evtok / ti(i,nfl,nj)
               if ( alame2 .lt. 0 ) then
@@ -1363,8 +1363,8 @@
             sumnuj(i,ni) = sumnuj(i,ni) + nuij(i,ni,nj)
           enddo
           sumnuj(i,ni) = sumnuj(i,ni) + nuint(i,ni)
-        enddo     
-      enddo              
+        enddo
+      enddo
 
 !     update ne
 
@@ -1394,7 +1394,7 @@
 !     reversed order of do loops
 
 !        do i = 2,nz-1              ! original
-!          do ni = nion1,nion2      ! original 
+!          do ni = nion1,nion2      ! original
 
       do ni = nion1,nion2
         do i = 2,nz-1
@@ -1405,9 +1405,9 @@
      .                    + deni(i,nfl,ni)   * ti(i,nfl,ni)   )
           pim   = 0.5 * (   deni(i,nfl,ni)   * ti(i,nfl,ni)
      .                    + deni(i-1,nfl,ni) * ti(i-1,nfl,ni) )
-          denid = 
-     .             (        deni(i-1,nfl,ni) 
-     .               + 4. * deni(i,nfl,ni) 
+          denid =
+     .             (        deni(i-1,nfl,ni)
+     .               + 4. * deni(i,nfl,ni)
      .               +      deni(i+1,nfl,ni)  ) / 6.
           term2 =  - bms(i,nfl) * k0 /  denid
      .             * ( pip - pim ) / d22s(i,nfl)
@@ -1415,19 +1415,19 @@
      .                    + ne(i,nfl)   * te(i,nfl)   )
           pem   = 0.5 * (   ne(i,nfl)   * te(i,nfl)
      .                    + ne(i-1,nfl) * te(i-1,nfl) )
-          dened = 
+          dened =
      .  ( ne(i-1,nfl) + 4. * ne(i,nfl) + ne(i+1,nfl) ) / 6.
           term3 =  - bms(i,nfl) * k0 /  dened
      .             * ( pep - pem ) / d22s(i,nfl)
 
-          vsid(i,nfl,ni)  =  term1 + term2 + term3 
+          vsid(i,nfl,ni)  =  term1 + term2 + term3
 
-          if ( deni(i,nfl,ni) .le. .0001*ne(i,nfl) ) 
-     .      vsid(i,nfl,ni) =   vsid(i,nfl,ni) 
+          if ( deni(i,nfl,ni) .le. .0001*ne(i,nfl) )
+     .      vsid(i,nfl,ni) =   vsid(i,nfl,ni)
      .                       * exp ( -.0001*ne(i,nfl)/deni(i,nfl,ni) )
 
         enddo
-      enddo 
+      enddo
 
 !     fix up end points for vsid
 
@@ -1436,7 +1436,7 @@
         vsid (nz,nfl,ni)   = vsid (nz-1,nfl,ni)
       enddo
 
-!     calculate collisional ion velocity 
+!     calculate collisional ion velocity
 !     not used; simply a diagnostic
 
 !      do i = 1,nz
@@ -1461,7 +1461,7 @@
       subroutine htemp ( tti,tiold,tvn,nuin,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real tiold(nz),kapi(nz),s1i(nz),s2i(nz),s3i(nz),s4i(nz),s5i(nz)
       real tvn(nz),nuin(nz,nion,nneut),s6i(nz),s7i(nz),tti(nz)
@@ -1485,25 +1485,25 @@
         kapi(i) = 4.6e+4 * sqrt ( ti(i,nfl,pthp)**5 ) / ne(i,nfl) *
      .            deni(i,nfl,pthp) / sqrt(ami(pthp))
 
-        kapi(i)  = 0.6667 * kapi(i)  * evtok 
+        kapi(i)  = 0.6667 * kapi(i)  * evtok
 
 !       neutrals
 
         do nn = 1,nneut
-          redmass = 
-     .     ami(pthp) * amn(nn) / ( ami(pthp) + amn(nn) ) ** 2 
-          s2i(i) = s2i(i) + 2. * nuin(i,pthp,nn) * redmass 
+          redmass =
+     .     ami(pthp) * amn(nn) / ( ami(pthp) + amn(nn) ) ** 2
+          s2i(i) = s2i(i) + 2. * nuin(i,pthp,nn) * redmass
           s3i(i) = s3i(i)
-     .      + convfac * amn(nn) 
-     .                * abs ( vsi(i,nfl,pthp) - tvn(i) ) ** 2 
-     .      * 2. * nuin(i,pthp,nn) * redmass 
+     .      + convfac * amn(nn)
+     .                * abs ( vsi(i,nfl,pthp) - tvn(i) ) ** 2
+     .      * 2. * nuin(i,pthp,nn) * redmass
         enddo
 
-        s1i(i) = s2i(i) * tn(i,nfl) 
+        s1i(i) = s2i(i) * tn(i,nfl)
 
-!       electrons 
+!       electrons
 
-        s4i(i) = 7.7e-6 * ne(i,nfl) / ami(pthp) 
+        s4i(i) = 7.7e-6 * ne(i,nfl) / ami(pthp)
      .                   / te(i,nfl) / sqrt(te(i,nfl))
      .                   * .66667 * evtok
         s5i(i) = s4i(i) * te(i,nfl)
@@ -1513,31 +1513,31 @@
         do ni = nion1,nion2
 !          if ( ni .ne. ptop ) then
           if ( ni .ne. pthp ) then
-            tfac    =    ti(i,nfl,pthp) / ami(pthp) 
+            tfac    =    ti(i,nfl,pthp) / ami(pthp)
      .                +  ti(i,nfl,ni) / ami(ni)
             xs6i    = 3.3e-4 * deni(i,nfl,ni) / ami(pthp) / ami(ni)
      .                / tfac / sqrt(tfac) * .66667 * evtok
             xs7i    = xs6i * ti(i,nfl,ni)
             s6i(i) = s6i(i) + xs6i
-            s7i(i) = s7i(i) + xs7i 
+            s7i(i) = s7i(i) + xs7i
           endif
         enddo
 
       enddo
 
-! MS: Neglected term, divergence of ExB drift 
-! Divergence of the ExB drift; requires equatorial drift 
+! MS: Neglected term, divergence of ExB drift
+! Divergence of the ExB drift; requires equatorial drift
 
-      nzh = (nz+1)/2 
+      nzh = (nz+1)/2
       vexbeq = vexb(nzh,nfl)
-      do i = 1,nz 
-        divvexb(i) = 6.*vexbeq / 
-     .               (ps(i,nfl)*re*1.e5) * 
-     .               cos(blats(i,nfl)*po180)**2 * 
-     .               (1.+sin(blats(i,nfl)*po180)**2) / 
-     .               (1.+3.*sin(blats(i,nfl)*po180)**2)**2 
+      do i = 1,nz
+        divvexb(i) = 6.*vexbeq /
+     .               (ps(i,nfl)*re*1.e5) *
+     .               cos(blats(i,nfl)*po180)**2 *
+     .               (1.+sin(blats(i,nfl)*po180)**2) /
+     .               (1.+3.*sin(blats(i,nfl)*po180)**2)**2
         s2i(i) = s2i(i) - 0.6667 * divvexb(i)
-      enddo 
+      enddo
 
       call tisolv(tti,tiold,kapi,s1i,s2i,s3i,s4i,s5i,s6i,s7i,pthp,nfl)
 
@@ -1555,7 +1555,7 @@
       subroutine hetemp ( tti,tiold,tvn,nuin,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real tiold(nz),kapi(nz),s1i(nz),s2i(nz),s3i(nz),s4i(nz),s5i(nz)
       real tvn(nz),nuin(nz,nion,nneut),s6i(nz),s7i(nz),tti(nz)
@@ -1578,25 +1578,25 @@
 
         kapi(i) = 4.6e+4 * sqrt ( ti(i,nfl,pthep)**5 ) / ne(i,nfl) *
      .            deni(i,nfl,pthep) / sqrt(ami(pthep))
-        kapi(i)  = 0.6667 * kapi(i) * evtok 
+        kapi(i)  = 0.6667 * kapi(i) * evtok
 
 !       neutrals
 
         do nn = 1,nneut
-          redmass = 
-     .     ami(pthep) * amn(nn) / ( ami(pthep) + amn(nn) ) ** 2 
-          s2i(i) = s2i(i) + 2. * nuin(i,pthep,nn) * redmass 
+          redmass =
+     .     ami(pthep) * amn(nn) / ( ami(pthep) + amn(nn) ) ** 2
+          s2i(i) = s2i(i) + 2. * nuin(i,pthep,nn) * redmass
           s3i(i) = s3i(i)
-     .      + convfac * amn(nn) 
-     .                * abs ( vsi(i,nfl,pthep) - tvn(i) ) ** 2 
-     .      * 2. * nuin(i,pthep,nn) * redmass 
+     .      + convfac * amn(nn)
+     .                * abs ( vsi(i,nfl,pthep) - tvn(i) ) ** 2
+     .      * 2. * nuin(i,pthep,nn) * redmass
         enddo
 
-        s1i(i) = s2i(i) * tn(i,nfl) 
+        s1i(i) = s2i(i) * tn(i,nfl)
 
 !       electrons
 
-        s4i(i) = 7.7e-6 * ne(i,nfl) / ami(pthep) 
+        s4i(i) = 7.7e-6 * ne(i,nfl) / ami(pthep)
      .                   / te(i,nfl) / sqrt(te(i,nfl))
      .                   * .66667 * evtok
         s5i(i) = s4i(i) * te(i,nfl)
@@ -1606,31 +1606,31 @@
         do ni = nion1,nion2
 !          if ( ni .ne. ptop ) then
           if ( ni .ne. pthep ) then
-            tfac    =   ti(i,nfl,pthep) / ami(pthep) 
+            tfac    =   ti(i,nfl,pthep) / ami(pthep)
      .                + ti(i,nfl,ni) / ami(ni)
             xs6i    = 3.3e-4 * deni(i,nfl,ni) / ami(pthep) / ami(ni)
      .                / tfac / sqrt(tfac) * .66667 * evtok
             xs7i    = xs6i * ti(i,nfl,ni)
             s6i(i) = s6i(i) + xs6i
-            s7i(i) = s7i(i) + xs7i 
+            s7i(i) = s7i(i) + xs7i
           endif
         enddo
 
       enddo
 
-! MS: Neglected term, divergence of ExB drift 
-! Divergence of the ExB drift; requires equatorial drift 
+! MS: Neglected term, divergence of ExB drift
+! Divergence of the ExB drift; requires equatorial drift
 
-      nzh = (nz+1)/2 
+      nzh = (nz+1)/2
       vexbeq = vexb(nzh,nfl)
-      do i = 1,nz 
-        divvexb(i) = 6.*vexbeq / 
-     .               (ps(i,nfl)*re*1.e5) * 
-     .               cos(blats(i,nfl)*po180)**2 * 
-     .               (1.+sin(blats(i,nfl)*po180)**2) / 
-     .               (1.+3.*sin(blats(i,nfl)*po180)**2)**2 
+      do i = 1,nz
+        divvexb(i) = 6.*vexbeq /
+     .               (ps(i,nfl)*re*1.e5) *
+     .               cos(blats(i,nfl)*po180)**2 *
+     .               (1.+sin(blats(i,nfl)*po180)**2) /
+     .               (1.+3.*sin(blats(i,nfl)*po180)**2)**2
         s2i(i) = s2i(i) - 0.6667 * divvexb(i)
-      enddo 
+      enddo
 
       call tisolv(tti,tiold,kapi,s1i,s2i,s3i,s4i,s5i,s6i,s7i,pthep,nfl)
 
@@ -1648,7 +1648,7 @@
       subroutine otemp ( tti,tiold,tvn,nuin,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real tiold(nz),kapi(nz),s1i(nz),s2i(nz),s3i(nz),s4i(nz),s5i(nz)
       real tvn(nz),nuin(nz,nion,nneut),s6i(nz),s7i(nz),tti(nz)
@@ -1671,25 +1671,25 @@
 
         kapi(i) = 4.6e+4 * sqrt ( ti(i,nfl,ptop)**5 ) / ne(i,nfl) *
      .            deni(i,nfl,ptop) / sqrt(ami(ptop))
-        kapi(i)  = 0.6667 * kapi(i) * evtok 
+        kapi(i)  = 0.6667 * kapi(i) * evtok
 
 !       neutrals
 
         do nn = 1,nneut
-          redmass = 
-     .     ami(ptop) * amn(nn) / ( ami(ptop) + amn(nn) ) ** 2 
-          s2i(i) = s2i(i) + 2. * nuin(i,ptop,nn) * redmass 
+          redmass =
+     .     ami(ptop) * amn(nn) / ( ami(ptop) + amn(nn) ) ** 2
+          s2i(i) = s2i(i) + 2. * nuin(i,ptop,nn) * redmass
           s3i(i) = s3i(i)
-     .      + convfac * amn(nn) 
-     .                * abs ( vsi(i,nfl,ptop) - tvn(i) ) ** 2 
-     .      * 2. * nuin(i,ptop,nn) * redmass 
+     .      + convfac * amn(nn)
+     .                * abs ( vsi(i,nfl,ptop) - tvn(i) ) ** 2
+     .      * 2. * nuin(i,ptop,nn) * redmass
         enddo
 
-        s1i(i) = s2i(i) * tn(i,nfl) 
+        s1i(i) = s2i(i) * tn(i,nfl)
 
 !       electrons
 
-        s4i(i) = 7.7e-6 * ne(i,nfl) / ami(ptop) 
+        s4i(i) = 7.7e-6 * ne(i,nfl) / ami(ptop)
      .                   / te(i,nfl) / sqrt(te(i,nfl))
      .                   * .66667 * evtok
         s5i(i) = s4i(i) * te(i,nfl)
@@ -1698,31 +1698,31 @@
 
         do ni = nion1,nion2
           if ( ni .ne. ptop ) then
-            tfac    =    ti(i,nfl,ptop) / ami(ptop) 
+            tfac    =    ti(i,nfl,ptop) / ami(ptop)
      .                 + ti(i,nfl,ni) / ami(ni)
             xs6i    = 3.3e-4 * deni(i,nfl,ni) / ami(ptop) / ami(ni)
      .                / tfac / sqrt(tfac) * .66667 * evtok
             xs7i    = xs6i * ti(i,nfl,ni)
             s6i(i) = s6i(i) + xs6i
-            s7i(i) = s7i(i) + xs7i 
+            s7i(i) = s7i(i) + xs7i
           endif
         enddo
 
       enddo
 
-! MS: Neglected term, divergence of ExB drift 
-! Divergence of the ExB drift; requires equatorial drift 
+! MS: Neglected term, divergence of ExB drift
+! Divergence of the ExB drift; requires equatorial drift
 
-      nzh = (nz+1)/2 
+      nzh = (nz+1)/2
       vexbeq = vexb(nzh,nfl)
-      do i = 1,nz 
-        divvexb(i) = 6.*vexbeq / 
-     .               (ps(i,nfl)*re*1.e5) * 
-     .               cos(blats(i,nfl)*po180)**2 * 
-     .               (1.+sin(blats(i,nfl)*po180)**2) / 
-     .               (1.+3.*sin(blats(i,nfl)*po180)**2)**2 
+      do i = 1,nz
+        divvexb(i) = 6.*vexbeq /
+     .               (ps(i,nfl)*re*1.e5) *
+     .               cos(blats(i,nfl)*po180)**2 *
+     .               (1.+sin(blats(i,nfl)*po180)**2) /
+     .               (1.+3.*sin(blats(i,nfl)*po180)**2)**2
         s2i(i) = s2i(i) - 0.6667 * divvexb(i)
-      enddo 
+      enddo
 
       call tisolv(tti,tiold,kapi,s1i,s2i,s3i,s4i,s5i,s6i,s7i,ptop,nfl)
 
@@ -1742,7 +1742,7 @@
       subroutine etemp ( tte,te_old,phprodr,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
 
       real tte(nz),te_old(nz),kape(nz)
@@ -1766,15 +1766,15 @@
 
       do i = 1,nz
 
-        fac1 = denn(i,nfl,pto)  * 1.1e-16  
+        fac1 = denn(i,nfl,pto)  * 1.1e-16
      .          * ( 1. + 5.7e-4 * te(i,nfl) )
         fac2 = denn(i,nfl,ptn2) * 2.82e-17 * sqrt(te(i,nfl))
      .          * ( 1  - 1.2e-4 * te(i,nfl) )
-        fac3 = denn(i,nfl,pto2) * 2.2e-16  
+        fac3 = denn(i,nfl,pto2) * 2.2e-16
      .         * ( 1. + 3.6e-2  * sqrt(te(i,nfl)) )
         akpefac = fac1 + fac2 + fac3
 
-        kape(i) = 7.7e5 * sqrt ( te(i,nfl)**5 ) * 0.6667 * evtok 
+        kape(i) = 7.7e5 * sqrt ( te(i,nfl)**5 ) * 0.6667 * evtok
      .      / ( 1. + 3.22e4 * ( te(i,nfl)**2 / ne(i,nfl) * akpefac) )
 
 
@@ -1786,16 +1786,16 @@
 !       removed (2/16/01)
 
         qen(i,ptn2) = .6667 *  evtok * denn(i,nfl,ptn2) *
-     .                  ( 1.2e-19 * ( 1. - 1.2e-4 * te(i,nfl) ) 
+     .                  ( 1.2e-19 * ( 1. - 1.2e-4 * te(i,nfl) )
      .                            * te(i,nfl) +
-     .                    2.e-14 / sqrt(te(i,nfl)) 
+     .                    2.e-14 / sqrt(te(i,nfl))
      .                    + 6.5e-22 * ( tn(i,nfl) - 310 ) ** 2 *
      .                      exp(.0023*(te(i,nfl) - tn(i,nfl))) )
 
 !       O2
 
         qen(i,pto2) = .6667 * evtok * denn(i,nfl,pto2) *
-     .                 ( 7.9e-19 * ( 1. + 3.6e-2 * sqrt(te(i,nfl)) ) * 
+     .                 ( 7.9e-19 * ( 1. + 3.6e-2 * sqrt(te(i,nfl)) ) *
      .                     sqrt(te(i,nfl)) +
      .                   7.e-14 / sqrt(te(i,nfl)) )
 
@@ -1807,24 +1807,24 @@
 !       H
 
         qen(i,pth) = .6667 * 6.3e-16 * evtok * denn(i,nfl,pth) *
-     .                  ( 1. - 1.35e-4 * te(i,nfl) ) * 
+     .                  ( 1. - 1.35e-4 * te(i,nfl) ) *
      .                  sqrt(te(i,nfl))
 
         do nn = 1,nneut
           s2e(i) = s2e(i) + qen(i,nn)
         enddo
 
-        s1e(i) = s2e(i) * tn(i,nfl) 
+        s1e(i) = s2e(i) * tn(i,nfl)
 
 !       ions (Ti - Te) term
 
         do ni = nion1,nion2
-          xs3e    = 7.7e-6 * deni(i,nfl,ni) / ami(ni) 
+          xs3e    = 7.7e-6 * deni(i,nfl,ni) / ami(ni)
      .                     / te(i,nfl) / sqrt(te(i,nfl))
      .                     * .66667 * evtok
           xs4e    = xs3e * ti(i,nfl,ni)
           s3e(i) = s3e(i) + xs3e
-          s4e(i) = s4e(i) + xs4e 
+          s4e(i) = s4e(i) + xs4e
         enddo
 
       enddo
@@ -1846,34 +1846,34 @@
 ! iz300s/iz300n are redefined here
 
       do i = 1,nz
-        ratio(i) = ne(i,nfl) / 
+        ratio(i) = ne(i,nfl) /
      .             (0.1*denn(i,nfl,pto)+
-     .              denn(i,nfl,pto2)+denn(i,nfl,ptn2)) 
+     .              denn(i,nfl,pto2)+denn(i,nfl,ptn2))
       enddo
 
-      i = 1 
-      do while ( ratio(i) .le. 3.e-3 .and. i .lt. nz ) 
-         iz300s(nfl) = i 
-         i         = i + 1 
-      enddo 
- 
-      i = nz 
-      do while ( ratio(i) .le. 3.e-3 .and. i .gt. 1 )  
-         iz300n(nfl) = i 
-         i         = i - 1 
-      enddo 
+      i = 1
+      do while ( ratio(i) .le. 3.e-3 .and. i .lt. nz )
+         iz300s(nfl) = i
+         i         = i + 1
+      enddo
+
+      i = nz
+      do while ( ratio(i) .le. 3.e-3 .and. i .gt. 1 )
+         iz300n(nfl) = i
+         i         = i - 1
+      enddo
 
       if ( iz300s(nfl) .gt. iz300n(nfl) ) then
 
         do i = 1,nz
-            xarg =   ne(i,nfl) 
-     .             / (        denn(i,nfl,pto2) 
-     .                 +      denn(i,nfl,ptn2) 
+            xarg =   ne(i,nfl)
+     .             / (        denn(i,nfl,pto2)
+     .                 +      denn(i,nfl,ptn2)
      .                 + .1 * denn(i,nfl,pto)   )
             x    = alog ( xarg )
-            earg =     12.75 
-     .               + 6.941 * x 
-     .               + 1.166 * x ** 2 
+            earg =     12.75
+     .               + 6.941 * x
+     .               + 1.166 * x ** 2
      .               + 0.08034 * x ** 3
      .               + 0.001996 * x ** 4
             epsi = exp ( -earg )
@@ -1881,55 +1881,55 @@
           enddo
       else
           do i = 1,iz300s(nfl)
-            xarg =   ne(i,nfl) 
-     .             / (        denn(i,nfl,pto2) 
-     .                 +      denn(i,nfl,ptn2) 
+            xarg =   ne(i,nfl)
+     .             / (        denn(i,nfl,pto2)
+     .                 +      denn(i,nfl,ptn2)
      .                 + .1 * denn(i,nfl,pto)   )
             x    = alog ( xarg )
-            earg =     12.75 
-     .               + 6.941 * x 
-     .               + 1.166 * x ** 2 
+            earg =     12.75
+     .               + 6.941 * x
+     .               + 1.166 * x ** 2
      .               + 0.08034 * x ** 3
      .               + 0.001996 * x ** 4
             epsi = exp ( -earg )
             qphe(i) = epsi * phprod(i)
           enddo
 
-!       smooth things at 300 km 
+!       smooth things at 300 km
 
         izs       = iz300s(nfl)
-!        facts = (250.-alts(izs,nfl)) / 
+!        facts = (250.-alts(izs,nfl)) /
 !     .             (alts(izs+1,nfl)-alts(izs,nfl))
-        facts = (3.e-3-ratio(izs)) / 
+        facts = (3.e-3-ratio(izs)) /
      .          (ratio(izs+1)-ratio(izs))
         ne300s = ne(izs,nfl) + (ne(izs+1,nfl)-ne(izs,nfl)) * facts
-        o2300 = denn(izs,nfl,pto2) + 
+        o2300 = denn(izs,nfl,pto2) +
      .         (denn(izs+1,nfl,pto2)-denn(izs,nfl,pto2)) * facts
-        n2300 = denn(izs,nfl,ptn2) + 
+        n2300 = denn(izs,nfl,ptn2) +
      .         (denn(izs+1,nfl,ptn2)-denn(izs,nfl,ptn2)) * facts
-        o300 = denn(izs,nfl,pto) + 
+        o300 = denn(izs,nfl,pto) +
      .         (denn(izs+1,nfl,pto)-denn(izs,nfl,pto)) * facts
-        phprod300 = phprod(izs) + 
+        phprod300 = phprod(izs) +
      .        (phprod(izs+1)-phprod(izs)) * facts
         xarg300 = ne300s / ( o2300 + n2300 + 0.1*o300 )
         x300 = alog( xarg300)
-        earg300 =     12.75 + 
-     .        6.941 * x300 + 
-     .        1.166 * x300 ** 2 + 
-     .        0.08034 * x300 ** 3 + 
+        earg300 =     12.75 +
+     .        6.941 * x300 +
+     .        1.166 * x300 ** 2 +
+     .        0.08034 * x300 ** 3 +
      .        0.001996 * x300 ** 4
         epsi300 = exp ( -earg300 )
         q0s = epsi300 * phprod300 / ne300s
 
         do i = iz300n(nfl),nz
-          xarg =   ne(i,nfl) 
-     .           / (       denn(i,nfl,pto2) 
-     .              +      denn(i,nfl,ptn2) 
+          xarg =   ne(i,nfl)
+     .           / (       denn(i,nfl,pto2)
+     .              +      denn(i,nfl,ptn2)
      .              + .1 * denn(i,nfl,pto) )
           x    = alog ( xarg )
-          earg =     12.75 
-     .             + 6.941 * x 
-     .             + 1.166 * x ** 2 
+          earg =     12.75
+     .             + 6.941 * x
+     .             + 1.166 * x ** 2
      .             + 0.08034 * x ** 3
      .             + 0.001996 * x ** 4
           epsi = exp ( -earg )
@@ -1937,26 +1937,26 @@
         enddo
 
         izn      = iz300n(nfl)
-!        factn = (250.-alts(izn,nfl)) / 
+!        factn = (250.-alts(izn,nfl)) /
 !     .             (alts(izn-1,nfl)-alts(izn,nfl))
-        factn = (3.e-3-ratio(izn)) / 
+        factn = (3.e-3-ratio(izn)) /
      .           (ratio(izn-1)-ratio(izn))
-        ne300n = ne(izn,nfl) + 
+        ne300n = ne(izn,nfl) +
      .        (ne(izn-1,nfl)-ne(izn,nfl)) * factn
-        o2300 = denn(izn,nfl,pto2) + 
+        o2300 = denn(izn,nfl,pto2) +
      .        (denn(izn-1,nfl,pto2)-denn(izn,nfl,pto2)) * factn
-        n2300 = denn(izn,nfl,ptn2) + 
+        n2300 = denn(izn,nfl,ptn2) +
      .        (denn(izn-1,nfl,ptn2)-denn(izn,nfl,ptn2)) * factn
-        o300 = denn(izn,nfl,pto) + 
+        o300 = denn(izn,nfl,pto) +
      .        (denn(izn-1,nfl,pto)-denn(izn,nfl,pto)) * factn
-        phprod300 = phprod(izn) + 
+        phprod300 = phprod(izn) +
      .        (phprod(izn-1)-phprod(izn)) * factn
         xarg300 = ne300n / ( o2300 + n2300 + 0.1*o300 )
         x300 = alog( xarg300)
-        earg300 =     12.75 + 
-     .        6.941 * x300 + 
-     .        1.166 * x300 ** 2 + 
-     .        0.08034 * x300 ** 3 + 
+        earg300 =     12.75 +
+     .        6.941 * x300 +
+     .        1.166 * x300 ** 2 +
+     .        0.08034 * x300 ** 3 +
      .        0.001996 * x300 ** 4
         epsi300 = exp ( -earg300 )
         q0n = epsi300 * phprod300 / ne300n
@@ -1968,15 +1968,15 @@
         dels300s = dels(iz300s(nfl),nfl) * facts
         dels300n = dels(iz300n(nfl)-1,nfl) * factn
 
-        ! MS: Old code used a wasteful way to calculate xn. 
-        ! Cleaner version here. 
-        xn = 0. 
-        ! Set bottom integration bound to 300 km. 
-        xn =   xn + 0.5 * ( ne(iz300n(nfl)-1,nfl) + ne300n ) * 
-     .        (dels(iz300n(nfl)-1,nfl) - dels300n ) 
-        do i =iz300n(nfl)-2,iz300s(nfl)+1,-1 
-           xn = xn + 0.5 * ( ne(i,nfl) + ne(i+1,nfl) ) * dels(i,nfl) 
-        enddo 
+        ! MS: Old code used a wasteful way to calculate xn.
+        ! Cleaner version here.
+        xn = 0.
+        ! Set bottom integration bound to 300 km.
+        xn =   xn + 0.5 * ( ne(iz300n(nfl)-1,nfl) + ne300n ) *
+     .        (dels(iz300n(nfl)-1,nfl) - dels300n )
+        do i =iz300n(nfl)-2,iz300s(nfl)+1,-1
+           xn = xn + 0.5 * ( ne(i,nfl) + ne(i+1,nfl) ) * dels(i,nfl)
+        enddo
 
 !        cqe   = 6.e-14                     ! constant (now in namelist)
 
@@ -1990,43 +1990,43 @@
 
         xs    = 0.
 
-        do i = iz300s(nfl)+1,iz300n(nfl)-1 
-           if (i .eq. iz300s(nfl)+1) then 
-             xs = xs + 0.5*( ne300s + ne(i,nfl) ) * 
-     .           (dels(iz300s(nfl),nfl) - dels300s) 
-           else 
-              xs = xs + 0.5 * ( ne(i,nfl) + ne(i-1,nfl) ) 
-     .                         * dels(i-1,nfl) 
-              xn = xn - 0.5 * ( ne(i,nfl) + ne(i-1,nfl) ) 
-     .                         * dels(i-1,nfl) 
-           endif 
- 
-           xints = cqe*xs  
-           xintn = cqe*xn 
-           xqs    = ne(i,nfl) * q0s * bms(i,nfl) / xbms * exp(-xints) 
-           xqn    = ne(i,nfl) * q0n * bms(i,nfl) / xbmn * exp(-xintn) 
-           qphe(i) = xqs + xqn 
-        enddo 
+        do i = iz300s(nfl)+1,iz300n(nfl)-1
+           if (i .eq. iz300s(nfl)+1) then
+             xs = xs + 0.5*( ne300s + ne(i,nfl) ) *
+     .           (dels(iz300s(nfl),nfl) - dels300s)
+           else
+              xs = xs + 0.5 * ( ne(i,nfl) + ne(i-1,nfl) )
+     .                         * dels(i-1,nfl)
+              xn = xn - 0.5 * ( ne(i,nfl) + ne(i-1,nfl) )
+     .                         * dels(i-1,nfl)
+           endif
+
+           xints = cqe*xs
+           xintn = cqe*xn
+           xqs    = ne(i,nfl) * q0s * bms(i,nfl) / xbms * exp(-xints)
+           xqn    = ne(i,nfl) * q0n * bms(i,nfl) / xbmn * exp(-xintn)
+           qphe(i) = xqs + xqn
+        enddo
 
       endif
 
       do i = 1,nz
         s5e(i) = 0.66667 * evtok * qphe(i) / ne(i,nfl) ! * .15
-      enddo 
+      enddo
 
-! MS: Neglected term, divergence of ExB drift 
-! Divergence of the ExB drift; requires equatorial drift 
+! MS: Neglected term, divergence of ExB drift
+! Divergence of the ExB drift; requires equatorial drift
 
-      nzh    = (nz+1)/2 
+      nzh    = (nz+1)/2
       vexbeq = vexb(nzh,nfl)
-      do i = 1,nz 
-        divvexb(i) = 6.*vexbeq / 
-     .                 (ps(i,nfl)*re*1.e5) * 
-     .                 cos(blats(i,nfl)*po180)**2 * 
-     .                 (1.+sin(blats(i,nfl)*po180)**2) / 
-     .                 (1.+3.*sin(blats(i,nfl)*po180)**2)**2 
+      do i = 1,nz
+        divvexb(i) = 6.*vexbeq /
+     .                 (ps(i,nfl)*re*1.e5) *
+     .                 cos(blats(i,nfl)*po180)**2 *
+     .                 (1.+sin(blats(i,nfl)*po180)**2) /
+     .                 (1.+3.*sin(blats(i,nfl)*po180)**2)**2
         s2e(i) = s2e(i) - 0.6667 * divvexb(i)
-      enddo 
+      enddo
 
       call tesolv(tte,te_old,kape,s1e,s2e,s3e,s4e,s5e,nfl)
 
@@ -2045,7 +2045,7 @@
       subroutine densolv2( ni,tdeni,prod,loss,oldion,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real tdeni(nz)
       real oldion(nz), prod(nz), loss(nz)
@@ -2063,7 +2063,7 @@
 
       do j = 2,nz-1
 
-      ujm1  = vsi(j-1,nfl,ni)/bms(j-1,nfl) 
+      ujm1  = vsi(j-1,nfl,ni)/bms(j-1,nfl)
       uj    = vsi(j,nfl,ni)  /bms(j,nfl)
       ujp1  = vsi(j+1,nfl,ni)/bms(j+1,nfl)
       ur = .5*( uj +ujp1)
@@ -2108,15 +2108,15 @@
       a(1) = 0.
       b(1) = 1.
       c(1) = 0.
-      d(1) = 
+      d(1) =
      .  sqrt ( tdeni(1) * prod(1) / loss(1) ) + denmin
 
-!     upper bc 
+!     upper bc
 
       a(nz) = 0.
       b(nz) = 1.
       c(nz) = 0.
-      d(nz) = 
+      d(nz) =
      .  sqrt ( tdeni(nz) * prod(nz) / loss(nz) ) + denmin
 
 
@@ -2138,7 +2138,7 @@
       subroutine vsisolv ( vi,vid,viold,snuj,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       dimension a(nz), b(nz), c(nz), d(nz)
       real vi(nz),vid(nz),viold(nz),snuj(nz)
@@ -2203,7 +2203,7 @@
       d(1) = 0.
 
 !     upper bc
- 
+
       a(nz) = 0.
       b(nz) = 1.
       c(nz) = 0.
@@ -2227,7 +2227,7 @@
       subroutine tisolv(tti,tio,kap,s1,s2,s3,s4,s5,s6,s7,npt,nfl)
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real a(nz),b(nz),c(nz),d(nz)
       real s1(nz),s2(nz),s3(nz),tti(nz),tio(nz),kap(nz)
@@ -2271,22 +2271,22 @@
           c0 = ur
         endif
 
-        a(j) =     a0 / d22s(j,nfl) 
+        a(j) =     a0 / d22s(j,nfl)
      .         - ( bms(j,nfl)**2 / deni(j,nfl,npt) ) / d22s(j,nfl)
      .           *.5 * ( kap(j) + kap(j-1) ) / ds(j,nfl)
-        
-        b(j) = 1. / dt + b0 / d22s(j,nfl) 
-     .         -.333333 * ( bms(j,nfl) 
-     .                     * (vsi(j+1,nfl,npt) - vsi(j-1,nfl,npt) ) 
-     .                     + 5. * vsi(j,nfl,npt) 
+
+        b(j) = 1. / dt + b0 / d22s(j,nfl)
+     .         -.333333 * ( bms(j,nfl)
+     .                     * (vsi(j+1,nfl,npt) - vsi(j-1,nfl,npt) )
+     .                     + 5. * vsi(j,nfl,npt)
      .                          * (bms(j+1,nfl) - bms(j-1,nfl) ) )
-     .         / d2s(j,nfl) 
+     .         / d2s(j,nfl)
      .         +  ( bms(j,nfl)**2 / deni(j,nfl,npt) ) / d22s(j,nfl)
-     .           *(.5* (kap(j+1) + kap(j) ) / ds(j+1,nfl) 
-     .         +.5 * (kap(j) + kap(j-1) ) / ds(j,nfl)) 
+     .           *(.5* (kap(j+1) + kap(j) ) / ds(j+1,nfl)
+     .         +.5 * (kap(j) + kap(j-1) ) / ds(j,nfl))
      .         + s2(j) + s4(j) + s6(j)
- 
-        c(j) =     c0 / d22s(j,nfl) 
+
+        c(j) =     c0 / d22s(j,nfl)
      .         - ( bms(j,nfl)**2 / deni(j,nfl,npt) ) /d22s(j,nfl)
      .           *.5 * (kap(j+1) + kap(j) ) / ds(j+1,nfl)
 
@@ -2305,7 +2305,7 @@
       d(1) = tn(1,nfl)
 
 !     upper bc
- 
+
       a(nz) = 0.
       b(nz) = 1.
       c(nz) = 0.
@@ -2328,7 +2328,7 @@
       subroutine tesolv(tte,te_old,kap,s1,s2,s3,s4,s5,nfl)
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       dimension a(nz),b(nz),c(nz),d(nz)
       dimension s1(nz),s2(nz),s3(nz),s4(nz),s5(nz)
@@ -2351,8 +2351,8 @@
      .         *.5 * ( kap(j) + kap(j-1) ) / ds(j,nfl)
 
         b(j) = 1. / dt + bms(j,nfl)**2 / ne(j,nfl) / d22s(j,nfl)
-     .        *(  .5 * (kap(j+1) + kap(j)   ) /ds(j+1,nfl) 
-     .           +.5 * (kap(j)   + kap(j-1) ) /ds(j,nfl)   ) 
+     .        *(  .5 * (kap(j+1) + kap(j)   ) /ds(j+1,nfl)
+     .           +.5 * (kap(j)   + kap(j-1) ) /ds(j,nfl)   )
      .        + s2(j) + s3(j)
 
         c(j) = - bms(j,nfl)**2 / ne(j,nfl) /d22s(j,nfl)
@@ -2373,7 +2373,7 @@
       d(1) = tn(1,nfl)
 
 !     upper bc
- 
+
       a(nz) = 0.
       b(nz) = 1.
       c(nz) = 0.
@@ -2393,7 +2393,7 @@
 *******************************************
 
       subroutine rtryds(a,b,c,d,x,n)
-      
+
       include 'param-1.00.inc'
 
 !     arrays a,b,c, and d may be used for stoage of alfa, beta and x
@@ -2453,7 +2453,7 @@
 
       subroutine msistim ( iyr,iday,hrl,glong,iyd,secut )
 
-!     msistim calculates time parameters for the 
+!     msistim calculates time parameters for the
 !     nrlmsise00 neutral atmosphere model.
 
 !     the arguments are defined as follows:
@@ -2492,7 +2492,7 @@
        subroutine zenith (hrut,nfl)
 
        include 'param-1.00.inc'
-       include 'com-1.00.inc' 
+       include 'com-1.00.inc'
 
 !      geometric variables
 
@@ -2508,13 +2508,13 @@
          sinsdec      = sin ( po180 * sdec )
          clat         = cos ( po180 * glats(i,nfl) )
          slat         = sin ( po180 * glats(i,nfl) )
-         cx(i,nfl)    =   slat * sinsdec 
+         cx(i,nfl)    =   slat * sinsdec
      .                  - clat * cossdec * cos ( 15.0*po180*hrl )
 !         u3(i,nfl)    = cx(i,nfl)
 ! MS: Since we will be taking acos of this value in photprod, make
 ! sure that the absolute value does not minutely exceed 1 because of
 ! round-off error.
-        if (abs(abs(cx(i,nfl))-1.) .lt. 1.e-6) 
+        if (abs(abs(cx(i,nfl))-1.) .lt. 1.e-6)
      .     cx(i,nfl) = sign(1.,cx(i,nfl))
        enddo
 
@@ -2535,10 +2535,10 @@
         include 'param-1.00.inc'
 
           t          = 1. / (1 + pas * x)
-          xerfcexp   = (   z1 * t 
-     .                   + z2 * t ** 2 
-     .                   + z3 * t ** 3 
-     .                   + z4 * t ** 4 
+          xerfcexp   = (   z1 * t
+     .                   + z2 * t ** 2
+     .                   + z3 * t ** 3
+     .                   + z4 * t ** 4
      .                   + z5 * t ** 5  )
 
         return
@@ -2558,7 +2558,7 @@
       subroutine sf1026 ( f,line,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real f(nz,nf,91)
 
@@ -2584,21 +2584,21 @@
           imax = i
         else
           do k = 1,4
-            f( i,nfl,   int(thetant(line,k))+1-90 ) = 
+            f( i,nfl,   int(thetant(line,k))+1-90 ) =
      .      f( imax,nfl,int(thetant(line,k))+1-90 )
           enddo
-        endif           
+        endif
       enddo
 
       do k = 1,4
         do i = 1,nz
-          f( i,nfl,int(thetant(line,k))+1-90 ) = 
-     .    amax1 ( 1., f( i,nfl,int(thetant(line,k))+1-90 ) ) 
+          f( i,nfl,int(thetant(line,k))+1-90 ) =
+     .    amax1 ( 1., f( i,nfl,int(thetant(line,k))+1-90 ) )
         enddo
       enddo
 
 !     now interpolate to all valuse of theta (90 - 180)
- 
+
       do k = 1,91
         k90 = 90 + k - 1
         ji  = 1
@@ -2611,13 +2611,13 @@
         enddo
         jip1 = ji + 1
         kip1 = int(thetant(line,jip1))
-        delk = float (   int(thetant(line,jip1)) 
+        delk = float (   int(thetant(line,jip1))
      .                 - int(thetant(line,ji  )) )
         do i = 1,nz
-          flog =   alog10(f(i,nfl,ki+1-90)) 
-     .           + (k90 - ki) / delk 
-     .                        * (  alog10(f(i,nfl,kip1+1-90)) 
-     .                           - alog10(f(i,nfl,ki  +1-90)) ) 
+          flog =   alog10(f(i,nfl,ki+1-90))
+     .           + (k90 - ki) / delk
+     .                        * (  alog10(f(i,nfl,kip1+1-90))
+     .                           - alog10(f(i,nfl,ki  +1-90)) )
           f(i,nfl,k) = 10 ** flog
         enddo
       enddo
@@ -2639,7 +2639,7 @@
       subroutine sf584 ( f,line,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real f(nz,nf,91)
 
@@ -2655,31 +2655,31 @@
         elseif ( zaltnt(line,1) .le. alts(i,nfl) .and.
      .           alts(i,nfl) .le. zaltnt(line,2)       ) then
           f( i,nfl,int(thetant(line,1))+1-90 ) =
-     .       1.85e5 * ( alts(i,nfl) - 170. ) ** 1.20        
+     .       1.85e5 * ( alts(i,nfl) - 170. ) ** 1.20
           f( i,nfl,int(thetant(line,2))+1-90 ) =
-     .       2.60e4 * ( alts(i,nfl) - 170. ) ** 1.25        
+     .       2.60e4 * ( alts(i,nfl) - 170. ) ** 1.25
           f( i,nfl,int(thetant(line,3))+1-90 ) =
-     .       2.60e3 * ( alts(i,nfl) - 170. ) ** 1.20        
+     .       2.60e3 * ( alts(i,nfl) - 170. ) ** 1.20
           f( i,nfl,int(thetant(line,4))+1-90 ) =
-     .       2.60e2 * ( alts(i,nfl) - 170. ) ** 1.20       
+     .       2.60e2 * ( alts(i,nfl) - 170. ) ** 1.20
           imax = i
         else
           do k = 1,4
-            f( i   ,nfl,int(thetant(line,k))+1-90 ) = 
+            f( i   ,nfl,int(thetant(line,k))+1-90 ) =
      .      f( imax,nfl,int(thetant(line,k))+1-90 )
           enddo
-        endif           
+        endif
       enddo
 
       do k = 1,4
         do i = 1,nz
-          f( i,nfl,int(thetant(line,k))+1-90 ) = 
-     .    amax1 ( 1., f( i,nfl,int(thetant(line,k))+1-90 ) ) 
+          f( i,nfl,int(thetant(line,k))+1-90 ) =
+     .    amax1 ( 1., f( i,nfl,int(thetant(line,k))+1-90 ) )
         enddo
       enddo
 
 !     now interpolate to all valuse of theta (90 - 180)
-!     set f(i,nfl,theta=180) = 1. 
+!     set f(i,nfl,theta=180) = 1.
 
       do k = 1,91
         k90 = 90 + k - 1
@@ -2694,23 +2694,23 @@
         if ( ji .ne. 4 ) then
           jip1 = ji + 1
           kip1 = int(thetant(line,jip1))
-          delk = float (   int(thetant(line,jip1)) 
+          delk = float (   int(thetant(line,jip1))
      .                   - int(thetant(line,ji  )) )
           do i = 1,nz
-            flog =   alog10(f(i,nfl,ki+1-90)) 
-     .             + (k90 - ki) / delk 
-     .                          * (  alog10(f(i,nfl,kip1+1-90)) 
-     .                             - alog10(f(i,nfl,ki  +1-90)) ) 
+            flog =   alog10(f(i,nfl,ki+1-90))
+     .             + (k90 - ki) / delk
+     .                          * (  alog10(f(i,nfl,kip1+1-90))
+     .                             - alog10(f(i,nfl,ki  +1-90)) )
             f(i,nfl,k) = 10 ** flog
           enddo
         else
-          delk = float (   180 
+          delk = float (   180
      .                   - int(thetant(line,ji  )) )
           do i = 1,nz
-            flog =   alog10(f(i,nfl,ki+1-90)) 
-     .             + (k90 - ki) / delk 
-     .                          * (  alog10(1.) 
-     .                             - alog10(f(i,nfl,ki  +1-90)) ) 
+            flog =   alog10(f(i,nfl,ki+1-90))
+     .             + (k90 - ki) / delk
+     .                          * (  alog10(1.)
+     .                             - alog10(f(i,nfl,ki  +1-90)) )
             f(i,nfl,k) = 10 ** flog
           enddo
         endif
@@ -2733,7 +2733,7 @@
       subroutine sf304 ( f,line,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real f(nz,nf,91)
 
@@ -2759,21 +2759,21 @@
           imax = i
         else
           do k = 1,4
-            f( i,   nfl,int(thetant(line,k))+1-90 ) = 
+            f( i,   nfl,int(thetant(line,k))+1-90 ) =
      .      f( imax,nfl,int(thetant(line,k))+1-90 )
           enddo
-        endif           
+        endif
       enddo
 
       do k = 1,4
         do i = 1,nz
-          f( i,nfl,int(thetant(line,k))+1-90 ) = 
-     .    amax1 ( 1., f( i,nfl,int(thetant(line,k))+1-90 ) ) 
+          f( i,nfl,int(thetant(line,k))+1-90 ) =
+     .    amax1 ( 1., f( i,nfl,int(thetant(line,k))+1-90 ) )
         enddo
       enddo
 
 !     now interpolate to all valuse of theta (90 - 180)
-!     set f(i,nfl,theta=180) = 1. 
+!     set f(i,nfl,theta=180) = 1.
 
       do k = 1,91
         k90 = 90 + k - 1
@@ -2788,23 +2788,23 @@
         if ( ji .ne. 4 ) then
           jip1 = ji + 1
           kip1 = int(thetant(line,jip1))
-          delk = float (   int(thetant(line,jip1)) 
+          delk = float (   int(thetant(line,jip1))
      .                   - int(thetant(line,ji  )) )
           do i = 1,nz
-            flog =   alog10(f(i,nfl,ki+1-90)) 
-     .             + (k90 - ki) / delk 
-     .                          * (  alog10(f(i,nfl,kip1+1-90)) 
-     .                             - alog10(f(i,nfl,ki  +1-90)) ) 
+            flog =   alog10(f(i,nfl,ki+1-90))
+     .             + (k90 - ki) / delk
+     .                          * (  alog10(f(i,nfl,kip1+1-90))
+     .                             - alog10(f(i,nfl,ki  +1-90)) )
             f(i,nfl,k) = 10 ** flog
           enddo
         else
-          delk = float (   180 
+          delk = float (   180
      .                   - int(thetant(line,ji  )) )
           do i = 1,nz
-            flog =   alog10(f(i,nfl,ki+1-90)) 
-     .             + (k90 - ki) / delk 
-     .                          * (  alog10(1.) 
-     .                             - alog10(f(i,nfl,ki  +1-90)) ) 
+            flog =   alog10(f(i,nfl,ki+1-90))
+     .             + (k90 - ki) / delk
+     .                          * (  alog10(1.)
+     .                             - alog10(f(i,nfl,ki  +1-90)) )
             f(i,nfl,k) = 10 ** flog
           enddo
         endif
@@ -2827,7 +2827,7 @@
       subroutine sf1216 ( f,line,nfl )
 
       include 'param-1.00.inc'
-      include 'com-1.00.inc' 
+      include 'com-1.00.inc'
 
       real f(nz,nf,91)
 
@@ -2853,21 +2853,21 @@
           imax = i
         else
           do k = 1,4
-            f( i,   nfl,int(thetant(line,k))+1-90 ) = 
+            f( i,   nfl,int(thetant(line,k))+1-90 ) =
      .      f( imax,nfl,int(thetant(line,k))+1-90 )
           enddo
-        endif           
+        endif
       enddo
 
       do k = 1,4
         do i = 1,nz
-          f( i,nfl,int(thetant(line,k))+1-90 ) = 
-     .    amax1 ( 1., f( i,nfl,int(thetant(line,k))+1-90 ) ) 
+          f( i,nfl,int(thetant(line,k))+1-90 ) =
+     .    amax1 ( 1., f( i,nfl,int(thetant(line,k))+1-90 ) )
         enddo
       enddo
 
 !     now interpolate to all valuse of theta (90 - 180)
- 
+
       do k = 1,91
         k90 = 90 + k - 1
         ji  = 1
@@ -2880,13 +2880,13 @@
         enddo
         jip1 = ji + 1
         kip1 = int(thetant(line,jip1))
-        delk = float (   int(thetant(line,jip1)) 
+        delk = float (   int(thetant(line,jip1))
      .                 - int(thetant(line,ji  )) )
         do i = 1,nz
-          flog =   alog10(f(i,nfl,ki+1-90)) 
-     .           + (k90 - ki) / delk 
-     .                        * (  alog10(f(i,nfl,kip1+1-90)) 
-     .                           - alog10(f(i,nfl,ki  +1-90)) ) 
+          flog =   alog10(f(i,nfl,ki+1-90))
+     .           + (k90 - ki) / delk
+     .                        * (  alog10(f(i,nfl,kip1+1-90))
+     .                           - alog10(f(i,nfl,ki  +1-90)) )
           f(i,nfl,k) = 10 ** flog
         enddo
       enddo
@@ -2906,7 +2906,7 @@
 
 !     open output files (unformatted, except time.dat)
 
-      open ( unit=70, file='time.dat'      ,form='formatted'   )  
+      open ( unit=70, file='time.dat'      ,form='formatted'   )
       open ( unit=71, file='deniu.dat'     ,form='unformatted' )
       open ( unit=72, file='tiu.dat'       ,form='unformatted' )
       open ( unit=73, file='vsiu.dat'      ,form='unformatted' )
@@ -2943,7 +2943,7 @@
 
 !     open output files (formatted)
 
-      open ( unit=70, file='time.dat'      ,form='formatted' )  
+      open ( unit=70, file='time.dat'      ,form='formatted' )
       open ( unit=71, file='denif.dat'     ,form='formatted' )
       open ( unit=72, file='tif.dat'       ,form='formatted' )
       open ( unit=73, file='vsif.dat'      ,form='formatted' )
@@ -2979,7 +2979,7 @@
        subroutine output ( hrut,ntm,istep )
 
        include 'param-1.00.inc'
-       include 'com-1.00.inc' 
+       include 'com-1.00.inc'
 
        hr24   = mod (hrut,24.)
        totsec = hr24 * 3600.
@@ -3013,7 +3013,7 @@
 !         write(90,101) vot
 !         write(91,101) vor
 !         write(92,101) denn
-       endif 
+       endif
 
        if ( .not. fmtout ) then
          write(71) deni
@@ -3053,7 +3053,7 @@
        subroutine exb(hrut)
 
        include 'param-1.00.inc'
-       include 'com-1.00.inc' 
+       include 'com-1.00.inc'
 
        real denic(nz,nf,nion)
        real tic(nz,nf,nion)
@@ -3073,7 +3073,7 @@
 !     note: modification of vexb because of field line variation
 !           uses cos^3/sqrt(1.+3sin^2) instead of
 !           uses sin^3/sqrt(1.+3cos^2) because
-!           blats = 0 at the magnetic equator 
+!           blats = 0 at the magnetic equator
 !           (as opposed to pi/2 in spherical coordinates)
 
 
@@ -3084,11 +3084,11 @@
       do j = 1,nf
 !        altfac = ( alts(nzh,j) + re ) / re ! L^2 dependence on E x B drift
         altfac = 1.
-        vexb0 = 100. * vd * tvexb0 * altfac * altfac ! convert to cm/s 
+        vexb0 = 100. * vd * tvexb0 * altfac * altfac ! convert to cm/s
         do i = 1,nz
           vexb(i,j) = 0.
           blat = blats(i,j) * po180
-          vexb(i,j) = vexb0 * 
+          vexb(i,j) = vexb0 *
      .                cos(blat) * cos(blat) * cos(blat)/
      .                sqrt( 1. + 3. * sin(blat)* sin(blat) )
         enddo
@@ -3108,7 +3108,7 @@
         vexb(nzp1,j) = vexb(nz,j)
       enddo
       do i = 1,nzp1
-        vexb(i,nfp1) = vexb(i,nf) 
+        vexb(i,nfp1) = vexb(i,nf)
       enddo
 
 !     sweep in p-direction
@@ -3122,7 +3122,7 @@
       enddo
 
 !     sweep in s-direction
-      
+
       do j = 1,nf
         do i = 1,nzp1
           vexbs(i,j) = vexb(i,j) * ( vnx(i,j) * xnorms(i,j) +
@@ -3149,9 +3149,9 @@
 !       do ni = nion1,nion2
 !         do j = 1,nf
 !           do i = 1,nz
-!             vot(i,j,ni)   =  vsi(i,j,ni) * cosdips(i,j) + 
+!             vot(i,j,ni)   =  vsi(i,j,ni) * cosdips(i,j) +
 !     .                        vexbp(i,j)  * sindips(i,j)
-!             vor(i,j,ni)   = -vsi(i,j,ni) * sindips(i,j) + 
+!             vor(i,j,ni)   = -vsi(i,j,ni) * sindips(i,j) +
 !     .                        vexbp(i,j)  * cosdips(i,j)
 !           enddo
 !         enddo
@@ -3188,9 +3188,9 @@
                fluxtp(i,j,ni) = ti(i,j,ni)   * vexbp(i,j)
                if ( j .eq. nf ) then
                  fluxnp(i,j,ni) = fluxnp(i,j-1,ni)
-     .                            * areap(i,j-1)/areap(i,j)       
+     .                            * areap(i,j-1)/areap(i,j)
                  fluxtp(i,j,ni) = fluxtp(i,j-1,ni)
-     .                            * areap(i,j-1)/areap(i,j)       
+     .                            * areap(i,j-1)/areap(i,j)
 
                  if ( ni .eq. 1 ) then
                  fluxnp(i,j,ni) = (deni(i,j-1,ni) -
@@ -3221,9 +3221,9 @@
              fluxtep(i,j) = te(i,j)   * vexbp(i,j)
              if ( j .eq. nf ) then
                 fluxtep(i,j) = fluxtep(i,j-1)
-     .                        * areap(i,j-1)/areap(i,j)       
-                
-                if (ni .eq. 1 ) 
+     .                        * areap(i,j-1)/areap(i,j)
+
+                if (ni .eq. 1 )
      .          fluxtep(i,j) = fluxtep(i,j-1) -
      .                         (areas(i,j-1) / areas(i,j-2)) *
      .                         (fluxtep(i,j-2) - fluxtep(i,j-1))
@@ -3266,13 +3266,13 @@
        do ni = nion1,nion2
          do j = 2,nfm1
            do i = 2,nzm1
-             denic(i,j,ni) = denic(i,j,ni) 
+             denic(i,j,ni) = denic(i,j,ni)
      .                       + dt * ( areap(i,j)   * fluxnp(i,j,ni) -
      .                                areap(i,j+1) * fluxnp(i,j+1,ni) )
      .                       + dt * ( areas(i,j)   * fluxns(i,j,ni) -
      .                                areas(i+1,j) * fluxns(i+1,j,ni) )
              deni(i,j,ni)  = denic(i,j,ni) / vol(i,j)
-             tic(i,j,ni) = tic(i,j,ni) 
+             tic(i,j,ni) = tic(i,j,ni)
      .                       + dt * ( areap(i,j)   * fluxtp(i,j,ni) -
      .                                areap(i,j+1) * fluxtp(i,j+1,ni) )
      .                       + dt * ( areas(i,j)   * fluxts(i,j,ni) -
@@ -3284,7 +3284,7 @@
 
        do j = 2,nfm1
          do i = 2,nzm1
-           tec(i,j) = tec(i,j) 
+           tec(i,j) = tec(i,j)
      .                     + dt * ( areap(i,j)   * fluxtep(i,j) -
      .                              areap(i,j+1) * fluxtep(i,j+1) )
      .                     + dt * ( areas(i,j)   * fluxtes(i,j) -
@@ -3343,7 +3343,7 @@
            te(ie,1)  = tn(ie,1)
          enddo
        endif
-       
+
 
        return
        end
@@ -3360,7 +3360,7 @@
        subroutine courant ( hrut )
 
        include 'param-1.00.inc'
-       include 'com-1.00.inc' 
+       include 'com-1.00.inc'
 
        hr24ut = mod(hrut,24.)
        dt00   = dt0
@@ -3423,17 +3423,17 @@ C       ************************************************************
 C       ************************************************************
 
 C       ************************************************************
-C       SUBROUTINE CALCULATES EQUATORIAL VERTICAL DRIFT AS DESCRIBED 
+C       SUBROUTINE CALCULATES EQUATORIAL VERTICAL DRIFT AS DESCRIBED
 C       IN SCHERLIESS AND FEJER, JGR, 104, 6829-6842, 1999
 C       ************************************************************
 
 C       INPUT:   XT: SOLAR LOCAL TIME
 C                XL: GEOGRAPHIC LONGITUDE (+ EAST)
-C               
+C
 C             PARAM: 2-DIM ARRAY (DOY,F10.7CM)
 C                    DOY     :Day of Year has to run from 1 to 365 (366)
 C                    F10.7cm : F10.7cm solar flux
-C             
+C
 C       OUTPUT:   Y: EQUATORIAL VERTICAL DRIFT
 C
 C       JK => modified to include common data => 21 Mar 2012
@@ -3441,7 +3441,7 @@ C       JK => modified to include common data => 21 Mar 2012
 C       ************************************************************
 
         include 'param-1.00.inc'
-        include 'com-1.00.inc' 
+        include 'com-1.00.inc'
 
 !	implicit none
 
@@ -3460,7 +3460,7 @@ C       ************************************************************
 	integer nfunc/6/
 
         data coeff1/
-     *  -10.80592, -9.63722,-11.52666,  -0.05716,-0.06288,  0.03564,    
+     *  -10.80592, -9.63722,-11.52666,  -0.05716,-0.06288,  0.03564,
      *   -5.80962, -7.86988, -8.50888, -0.05194, -0.05798, -0.00138,
      *    2.09876,-19.99896, -5.11393, -0.05370, -0.06585,  0.03171,
      *  -10.22653, -3.62499,-14.85924, -0.04023, -0.01190, -0.09656,
@@ -3571,7 +3571,7 @@ C       ************************************************************
           coeff(i)     = coeff1(i)
           coeff(i+312) = coeff2(i)
         enddo
-        
+
         xt = mod(xt,24.)
 
 !       sinusoid e x b model
@@ -3588,7 +3588,7 @@ C       ************************************************************
 !          y = y + vpre*exp(-((xt-22)/dpre)**2.)
           return
         endif
-        
+
 
 !       fejer-scherliess e x b model
 
@@ -3607,7 +3607,7 @@ C       **********************************
 	    end do
           end do
          end do
-         
+
 	end
 C------------------------------------------------------------------
 
@@ -3617,7 +3617,7 @@ c       *************************************************
 c       *************************************************
         real function bspl4_time(i,x1)
 c       *************************************************
-	implicit none 
+	implicit none
 
 	integer i,order/4/,j,k
 	real t_t(0:39)
@@ -3632,7 +3632,7 @@ c       *************************************************
      *          45.00,48.00,50.75,52.75,53.50,
      *          54.25,55.25,58.00,62.00,65.25,
      *          66.00,66.75,67.75,69.00,72.00/
-       
+
 	x=x1
         if(i.ge.0) then
           if (x.lt.t_t(i-0)) then
@@ -3649,9 +3649,9 @@ c       *************************************************
 
 	do j=2,order
 	     do k=i,i+order-j
-		b(k,j) = ( x - t_t(k) ) / ( t_t(k+j-1) - t_t(k) ) * 
+		b(k,j) = ( x - t_t(k) ) / ( t_t(k+j-1) - t_t(k) ) *
      .                   b(k,j-1)
-		b(k,j) = b(k,j) + 
+		b(k,j) = b(k,j) +
      .                   ( t_t(k+j)-x ) / ( t_t(k+j) - t_t(k+1) ) *
      .                    b(k+1,j-1)
 	     end do
@@ -3667,7 +3667,7 @@ c       *************************************************
 c       *************************************************
         real function bspl4_long(i,x1)
 c       *************************************************
-	implicit none 
+	implicit none
 
 	integer i,order/4/,j,k
 	real t_l(0:24)
@@ -3677,7 +3677,7 @@ c       *************************************************
      *          0,10,100,190,200,250,280,310,
      *          360,370,460,550,560,610,640,670,
      *          720,730,820,910,920,970,1000,1030,1080/
-       
+
 	x=x1
         if(i.ge.0) then
           if (x.lt.t_l(i-0)) then
@@ -3791,9 +3791,9 @@ C*  fitness for a particular purpose.                                *C
 C*                                                                   *C
 C*********************************************************************C
 C*
-C*	To calculate the Chapman Function, Ch(X,chi0), the column 
-C*	depth of an exponential atmosphere integrated along a line 
-C*	from a given point to the sun, divided by the column depth for 
+C*	To calculate the Chapman Function, Ch(X,chi0), the column
+C*	depth of an exponential atmosphere integrated along a line
+C*	from a given point to the sun, divided by the column depth for
 C*	a vertical sun.
 C*
 C*  USAGE:
@@ -3815,7 +3815,7 @@ C*	  depth = atm8_chap_num(X,chi0)	! numerical (chi0 .le. 90)
 C*
 C*  PERFORMANCE:
 C*
-C*	Compiled and linked using Microsoft FORTRAN 5.1, and executed 
+C*	Compiled and linked using Microsoft FORTRAN 5.1, and executed
 C*	in MS-DOS mode under Windows 95 on a 160 MHz PC.
 C*
 C*    TIMING (in microseconds, typical)
@@ -3834,19 +3834,19 @@ C*	1.E-15	atm8_chap_num (convergence test)
 C*
 C*    CODING
 C*
-C*	No claims are made that the code is optimized for speed, 
-C*	accuracy, or compactness.  The principal objectives were 
+C*	No claims are made that the code is optimized for speed,
+C*	accuracy, or compactness.  The principal objectives were
 C*
 C*	  (1) Robustness with respect to argument values
 C*	  (2) Rigorous mathematical derivation and error control
 C*	  (3) Maximal use of "well known" mathematical functions
 C*	  (4) Ease of readability and mapping of theory to coding
 C*
-C*	The real*8 accuracy could be improved with more accurate 
+C*	The real*8 accuracy could be improved with more accurate
 C*	representations of E1(), erfc(), I0(), I1(), K0(), K1().
 C*
-C*	In the course of development, many representations and 
-C*	approximations of the Chapman Function were attempted that 
+C*	In the course of development, many representations and
+C*	approximations of the Chapman Function were attempted that
 C*	failed to be robustly extendable to machine-precision.
 C*
 C*  INTERNET ACCESS:
@@ -3867,18 +3867,18 @@ C*  THEORY:
 C*
 C*    INTRODUCTION
 C*
-C*	    This computer code models the absorption of solar radiation 
-C*	by an atmosphere that depends exponentionally on altitude.  In 
-C*	specific we calculate the effective column depth of a species 
-C*	of local density, n(z), from a point at a given altitude, z0, 
-C*	to the sun at a given solar zenith angle, chi0.  Following Rees 
-C*	[Re89, Section 2.2] we write the column depth for chi0 .le. 90 
+C*	    This computer code models the absorption of solar radiation
+C*	by an atmosphere that depends exponentionally on altitude.  In
+C*	specific we calculate the effective column depth of a species
+C*	of local density, n(z), from a point at a given altitude, z0,
+C*	to the sun at a given solar zenith angle, chi0.  Following Rees
+C*	[Re89, Section 2.2] we write the column depth for chi0 .le. 90
 C*	degrees as
 C*
-C*   (A)  N(z0,chi0) = int{z=z0,infinity} 
+C*   (A)  N(z0,chi0) = int{z=z0,infinity}
 C*	     [ n(z)/sqrt( 1 - ( sin(chi0) * (R+z0) / (R+z) ) **2 ) dz ]
 C*
-C*	where R is the radius of the solid planet (e.g. Earth).  For 
+C*	where R is the radius of the solid planet (e.g. Earth).  For
 C*	chi0 .gt. 90 degrees we write
 C*
 C*	  N(z0,chi0) = 2*N(zs,90) - N(z0,180-chi0)
@@ -3889,34 +3889,34 @@ C*	    For an exponential atmosphere, with
 C*
 C*	  n(z) = n(z0) * exp(-(z-z0)/H)
 C*
-C*	with a constant scale height, H, the column depth can be 
-C*	represented by the Chapman function, Ch(X,chi0), named after 
-C*	the author of the first quantitative mathematical investigation 
+C*	with a constant scale height, H, the column depth can be
+C*	represented by the Chapman function, Ch(X,chi0), named after
+C*	the author of the first quantitative mathematical investigation
 C*	[Ch31b] trough the relation
 C*
 C*	  N(z0,chi0) = H * n(z0) * Ch(X,chi0)
 C*
-C*	where X = (R+z0)/H is a dimensionless measure of the radius 
+C*	where X = (R+z0)/H is a dimensionless measure of the radius
 C*	of curvature, with values from about 300 to 1300 on Earth.
 C*
 C*
 C*    APPROACH
 C*
-C*	    We provide function entry points for very stable and 
-C*	reasonably efficient evaluation of Ch(X,chi0) with full 
-C*	single-precision accuracy (.le. 6.0E-7 relative) for a wide 
-C*	range of parameters.  A 15-digit-accurate double precision 
+C*	    We provide function entry points for very stable and
+C*	reasonably efficient evaluation of Ch(X,chi0) with full
+C*	single-precision accuracy (.le. 6.0E-7 relative) for a wide
+C*	range of parameters.  A 15-digit-accurate double precision
 C*	numerical integration routine is also provided.
 C*
-C*	    Below we will develop (1) a compact asymptotic expansion of 
-C*	good accuracy for moderately large values of X (.gt. 36) and all 
-C*	values of chi0, (2) an efficient numerical integral for 
-C*	all values of X and chi0, and (3) an explicit analytical 
-C*	representation, valid for all values of X and chi0, based 
+C*	    Below we will develop (1) a compact asymptotic expansion of
+C*	good accuracy for moderately large values of X (.gt. 36) and all
+C*	values of chi0, (2) an efficient numerical integral for
+C*	all values of X and chi0, and (3) an explicit analytical
+C*	representation, valid for all values of X and chi0, based
 C*	the differential equation satisfied by Ch(X,chi0).
 C*
-C*	    All three of these represent new research results as well 
-C*	as significant computational improvements over the previous 
+C*	    All three of these represent new research results as well
+C*	as significant computational improvements over the previous
 C*	literature, much of which is cited below.
 C*
 C*
@@ -3927,7 +3927,7 @@ C*
 C*   (B)  Ch(X,chi0) = X * int{y=0,infinity}
 C*	     [ exp(-X*y) / sqrt( 1 - ( sin(chi0) / (1+y) )**2 ) dy ]
 C*
-C*	The futher substitutions s = (1+y)/sin(chi0), s0 = 1/sin(chi0) 
+C*	The futher substitutions s = (1+y)/sin(chi0), s0 = 1/sin(chi0)
 C*	give
 C*
 C*   (C)  Ch(X,chi0) = X*sin(chi0) * int{s=s0,infinity}
@@ -3940,7 +3940,7 @@ C*
 C*	[AS64, Equations 9.6.23 and 9.6.27].  If we now substitute
 C*	s = 1/sin(lambda) we obtain
 C*
-C*   (D)  Ch(X,chi0) = X*sin(chi0) * int{lambda=0,chi0} 
+C*   (D)  Ch(X,chi0) = X*sin(chi0) * int{lambda=0,chi0}
 C*	    [ exp(X*(1-sin(chi0)*csc(lambda))) * csc(lambda)**2 dlambda]
 C*
 C*	which is the same as Chapman's original formulation [Ch31b, p486,
@@ -3948,20 +3948,20 @@ C*	eqn (10)].  If we first expand the square root in (B)
 C*
 C*	  1/sqrt(1-q) = 1 + q/( sqrt(1-q)*(1+sqrt(1-q)) )
 C*
-C*	with q = ( sin(chi0) / (1+y) )**2 = sin(lambda)**2, we obtain 
-C*	a new form of (D) without numerical sigularities and simple 
+C*	with q = ( sin(chi0) / (1+y) )**2 = sin(lambda)**2, we obtain
+C*	a new form of (D) without numerical sigularities and simple
 C*	convergence to Ch(0,chi0) = Ch(X,0) = 1
 C*
-C*   (E)  Ch(X,chi0) = 1 + X*sin(chi0) * int{lambda=0,chi0} 
-C*	    [ exp(X*(1-sin(chi0)*csc(lambda))) 
+C*   (E)  Ch(X,chi0) = 1 + X*sin(chi0) * int{lambda=0,chi0}
+C*	    [ exp(X*(1-sin(chi0)*csc(lambda)))
 C*		/ (1 + cos(lambda) ) dlambda ]
 C*
-C*	Alternatively, we may substitute t**2 = y + t0**2, 
+C*	Alternatively, we may substitute t**2 = y + t0**2,
 C*	into Equation (B), with t0**2 = 1-sin(chi0), finding
 C*
-C*   (F)  Ch(X,chi0) = X * int{s=t0,infinity} 
+C*   (F)  Ch(X,chi0) = X * int{s=t0,infinity}
 C*	    [ exp(-X*(t**2-t0**2)) * f(t,chi0) dt ]
-C* 
+C*
 C*	where
 C*
 C*	  f(t,chi0) = (t**2 + sin(chi0)) / sqrt(t**2+2*sin(chi0))
@@ -3969,59 +3969,59 @@ C*
 C*	  f(t,chi0) = (t**2-t0**2+1)/sqrt(t**2-t0**2+1+sin(chi0))
 C*
 C*	    Below we will use Equation (F) above to develop a
-C*	compact asymptotic expansion of good accuracy for moderately 
-C*	large values of X (.gt. 36) and all values of chi0, Equation (E) 
-C*	to develop an efficient numerical integral for Ch(X,chi0) for 
-C*	all values of X and chi0, and Equation (C) to derive an explicit 
-C*	analytical representation, valid for all values of X and chi0,  
+C*	compact asymptotic expansion of good accuracy for moderately
+C*	large values of X (.gt. 36) and all values of chi0, Equation (E)
+C*	to develop an efficient numerical integral for Ch(X,chi0) for
+C*	all values of X and chi0, and Equation (C) to derive an explicit
+C*	analytical representation, valid for all values of X and chi0,
 C*	based on the differential equation satisfied by Ch(X,chi0).
 C*
 C*    atm_chapman(X,chi0) and atm8_chapman(X,chi0)
 C*
 C*	These routines return real*4 and real*8 values of Ch(X,chi0)
-C*	selecting the asymptotic expansion or differential equation 
-C*	approaches, depending on the value of X.  These routines also 
+C*	selecting the asymptotic expansion or differential equation
+C*	approaches, depending on the value of X.  These routines also
 C*	handle the case of chi0 .gt. 90 degrees.
 C*
 C*    atm_chap_num(X,chi0) and atm8_chap_num(X,chi0)
 C*
 C*	These routines return real*4 and real*8 values of Ch(X,chi0)
-C*	evaluated numerically.  They are both more accurate than the 
-C*	corresponding atm*_chapman() functions, but take significantly 
+C*	evaluated numerically.  They are both more accurate than the
+C*	corresponding atm*_chapman() functions, but take significantly
 C*	more CPU time.
 C*
 C*
 C*    ASYMPTOTIC EXPANSION
 C*
-C*	From Equation (F) we expand, with t0**2 = 1-sin(chi0), 
+C*	From Equation (F) we expand, with t0**2 = 1-sin(chi0),
 C*
 C*	  f(t,chi0) = sum{n=0,3} [ C(n,chi0) * (t**2-t0**2)**n ]
 C*
-C*	The function atm8_chap_asy(X,chi0) evaluates integrals of the 
+C*	The function atm8_chap_asy(X,chi0) evaluates integrals of the
 C*	form
 C*
 C*	  int{t=t0,infinity} [exp(-X*(t**2-t0**2))*(t**2-t0**2)**n dt]
 C*
-C*	in terms of incomplete gamma functions, and sums them to 
-C*	compute Ch(X,chi0).  For large values of X, this results in an 
-C*	asymptotic expansion in negative powers of X, with coefficients 
+C*	in terms of incomplete gamma functions, and sums them to
+C*	compute Ch(X,chi0).  For large values of X, this results in an
+C*	asymptotic expansion in negative powers of X, with coefficients
 C*	that are stable for all values of chi0.
 C*
-C*	In contrast, the asymptotic expansions of Chapman [Ch31b, 
-C*	p488, Equation (22) and p490, Equation (38)], Hulburt [He39], 
-C*	and Swider [Sw64, p777, Equation (43)] use negative powers of 
-C*	X*cos(chi0)**2 or X*sin(chi0), and are accurate only for 
+C*	In contrast, the asymptotic expansions of Chapman [Ch31b,
+C*	p488, Equation (22) and p490, Equation (38)], Hulburt [He39],
+C*	and Swider [Sw64, p777, Equation (43)] use negative powers of
+C*	X*cos(chi0)**2 or X*sin(chi0), and are accurate only for
 C*	small values or large values of chi0, respectively.
 C*
-C*	Taking only the first term in the present expansion gives the 
+C*	Taking only the first term in the present expansion gives the
 C*	simple formula
 C*
 C*	  Ch(X,chi0) = sqrt(pi*X/(1+sin(chi0))) * exp(X*(1-sin(chi0)))
 C*		* erfc( sqrt(X*(1-sin(chi0))) )
 C*
-C*	This is slightly more accurate than the semiempirical 
-C*	formula of Fitzmaurice [Fi64, Equation (3)], and sightly less 
-C*	accurate than that of Swider [Sw64, p780, Equation (52), 
+C*	This is slightly more accurate than the semiempirical
+C*	formula of Fitzmaurice [Fi64, Equation (3)], and sightly less
+C*	accurate than that of Swider [Sw64, p780, Equation (52),
 C*	corrected in SG69].
 C*
 C*
@@ -4029,63 +4029,63 @@ C*    NUMERICAL INTEGRATION
 C*
 C*	We are integrating
 C*
-C*   (E)  Ch(X,chi0) = 1 + X*sin(chi0) * int{lambda=0,chi0} 
-C*	    [ exp(X*(1-sin(chi0)*csc(lambda))) 
+C*   (E)  Ch(X,chi0) = 1 + X*sin(chi0) * int{lambda=0,chi0}
+C*	    [ exp(X*(1-sin(chi0)*csc(lambda)))
 C*		/ ( 1 + cos(lambda) ) dlambda ]
 C*
-C*	The integrand is numerically very smooth, and rapidly varying 
-C*	only near lambda = 0.  For X .ne. 0 we choose the lower limit 
-C*	of numerical integration such that the integrand is 
-C*	exponentially small, 7.0E-13 (3.0E-20 for real*8).  The domain 
-C*	of integration is divided into 64 equal intervals (6000 for 
-C*	real*8), and integrated numerically using the 9-point closed 
+C*	The integrand is numerically very smooth, and rapidly varying
+C*	only near lambda = 0.  For X .ne. 0 we choose the lower limit
+C*	of numerical integration such that the integrand is
+C*	exponentially small, 7.0E-13 (3.0E-20 for real*8).  The domain
+C*	of integration is divided into 64 equal intervals (6000 for
+C*	real*8), and integrated numerically using the 9-point closed
 C*	Newton-Cotes formula from Hildebrand [Hi56a, page 75, Equation
 C*	(3.5.17)].
 C*
 C*
 C*    INHOMOGENOUS DIFFERENTIAL EQUATION
 C*
-C*	    The function atm8_chap_deq(X,chi0) calculates Ch(X,chi0), 
-C*	based on Equation (C) above, using the inhomogeneous 
-C*	Bessel's equation as described below.  Consider the function 
+C*	    The function atm8_chap_deq(X,chi0) calculates Ch(X,chi0),
+C*	based on Equation (C) above, using the inhomogeneous
+C*	Bessel's equation as described below.  Consider the function
 C*
 C*	  Z(Q) = int{s=s0,infinity} [ exp(-Q*s) / sqrt(s**2-1) ds ]
 C*
-C*	Differentiating with respect to Q we find that 
+C*	Differentiating with respect to Q we find that
 C*
 C*	  Ch(X,chi0) = - Q * exp(X) * d/dQ [ Z(Q) ]
 C*
-C*	with Q = X*sin(chi0), s0 = 1/sin(chi0).  Differentiating 
+C*	with Q = X*sin(chi0), s0 = 1/sin(chi0).  Differentiating
 C*	inside the integral, we find that
 C*
 C*	  Z"(Q) + Z'(Q)/Q - Z(Q) = sqrt(s0**2-1) * exp(-Q*s0) / Q
 C*
-C*	giving us an inhomogeneous modified Bessel's equation of order 
-C*	zero.  Following Rabenstein [Ra66, pp43-45,149] the solution 
+C*	giving us an inhomogeneous modified Bessel's equation of order
+C*	zero.  Following Rabenstein [Ra66, pp43-45,149] the solution
 C*	of this equation can be written as
 C*
-C*	  Z(Q) = A*I0(Q) + B*K0(Q) - sqrt(s0**2-1) 
-C*	         * int{t=Q,infinity} [ exp(-t*s0) 
-C*		   * ( I0(Q)*K0(t) - I0(t)*K0(Q) ) dt ] 
+C*	  Z(Q) = A*I0(Q) + B*K0(Q) - sqrt(s0**2-1)
+C*	         * int{t=Q,infinity} [ exp(-t*s0)
+C*		   * ( I0(Q)*K0(t) - I0(t)*K0(Q) ) dt ]
 C*
-C*	with coefficients A and B to be determined by matching 
+C*	with coefficients A and B to be determined by matching
 C*	boundary conditions.
 C*
 C*	    Differentiating with respect to Q we obtain
 C*
-C*	  Ch(X,chi0) = X*sin(chi0)*exp(X)*( 
-C*		- A*I1(X*sin(chi0)) + B*K1(X*sin(chi0)) 
-C*		+ cos(chi0) * int{y=X,infinity} [ exp(-y) 
+C*	  Ch(X,chi0) = X*sin(chi0)*exp(X)*(
+C*		- A*I1(X*sin(chi0)) + B*K1(X*sin(chi0))
+C*		+ cos(chi0) * int{y=X,infinity} [ exp(-y)
 C*		  * ( I1(X*sin(chi0))*K0(y*sin(chi0))
 C*		    + K1(X*sin(chi0))*I0(y*sin(chi0)) ) dy ] )
 C*
-C*	Applying the boundary condition Ch(X,0) = 1 requires that 
-C*	B = 0.  Similarly, the requirement that Ch(X,chi0) approach 
-C*	the finite value of sec(chi0) as X approaches infinity [Ch31b, 
+C*	Applying the boundary condition Ch(X,0) = 1 requires that
+C*	B = 0.  Similarly, the requirement that Ch(X,chi0) approach
+C*	the finite value of sec(chi0) as X approaches infinity [Ch31b,
 C*	p486, Equation (12)] implies A = 0.  Thus we have
 C*
 C*	  Ch(X,chi0) = X*sin(chi0)*cos(chi0)*exp(X)*
-C*		int{y=X,infinity} [ exp(-y) 
+C*		int{y=X,infinity} [ exp(-y)
 C*		  * ( I1(X*sin(chi0))*K0(y*sin(chi0))
 C*		    + K1(X*sin(chi0))*I0(y*sin(chi0)) ) dy ]
 C*
@@ -4104,14 +4104,14 @@ C*	and descending power series expansions of I0(z) and K0(z).
 C*
 C*  REFERENCES:
 C*
-C*	AS64	M. Abramowitz and I. A. Stegun, "Handbook of 
-C*		Mathematical Functions," NBS AMS 55 (USGPO, 
+C*	AS64	M. Abramowitz and I. A. Stegun, "Handbook of
+C*		Mathematical Functions," NBS AMS 55 (USGPO,
 C*		Washington, DC, June 1964, 9th printing, November 1970).
 C*
 C*	Ch31b	S. Chapman, "The Absorption and Dissociative or
 C*		Ionizing Effect of Monochromatic Radiation in an
 C*		Atmosphere on a Rotating Earth: Part II. Grazing
-C*		Incidence," Proc. Phys. Soc. (London), _43_, 483-501 
+C*		Incidence," Proc. Phys. Soc. (London), _43_, 483-501
 C*		(1931).
 C*
 C*	Fi64	J. A. Fitzmaurice, "Simplfication of the Chapman
@@ -4121,11 +4121,11 @@ C*
 C*	Hi56a	F. B. Hildebrand, "Introduction to Numerical
 C*		Analysis," (McGraw-Hill, New York, 1956).
 C*
-C*	Hu39	E. O. Hulburt, "The E Region of the Ionosphere," 
+C*	Hu39	E. O. Hulburt, "The E Region of the Ionosphere,"
 C*		Phys. Rev. _55_, 639-645 (1939).
 C*
-C*	PFT86	W. H. Press, B. P. Flannery, S. A. Teukolsky, and 
-C*		W. T. Vetterling, "Numerical Recipes," (Cambridge, 
+C*	PFT86	W. H. Press, B. P. Flannery, S. A. Teukolsky, and
+C*		W. T. Vetterling, "Numerical Recipes," (Cambridge,
 C*		1986).
 C*
 C*	Ra66	A. L. Rabenstein, "Introduction to Ordinary
@@ -4134,12 +4134,12 @@ C*
 C*	Re89	M. H. Rees, "Physics and Chemistry of the Upper
 C*		Atmosphere," (Cambridge, 1989).
 C*
-C*	SG69	W. Swider, Jr., and M. E. Gardner, "On the Accuracy 
+C*	SG69	W. Swider, Jr., and M. E. Gardner, "On the Accuracy
 C*		of Chapman Function Approximations," Appl. Opt. _8_,
 C*		725 (1969).
 C*
-C*	Sw64	W. Swider, Jr., "The Determination of the Optical 
-C*		Depth at Large Solar Zenith Angles," Planet. Space 
+C*	Sw64	W. Swider, Jr., "The Determination of the Optical
+C*		Depth at Large Solar Zenith Angles," Planet. Space
 C*		Sci. _12_, 761-782 (1964).
 C
 C  ####################################################################
@@ -4163,11 +4163,11 @@ C  ====================================================================
 C
 C	These are the entries for the user to call.
 C
-C	chi0 can range from 0 to 180 in degrees.  For chi0 .gt. 90, the 
-C	product X*(1-sin(chi0)) must not be too large, otherwise we 
+C	chi0 can range from 0 to 180 in degrees.  For chi0 .gt. 90, the
+C	product X*(1-sin(chi0)) must not be too large, otherwise we
 C	will get an exponential overflow.
 C
-C	For chi0 .le. 90 degrees, X can range from 0 to thousands 
+C	For chi0 .le. 90 degrees, X can range from 0 to thousands
 C	without overflow.
 C
 C  ====================================================================
@@ -4214,7 +4214,7 @@ c
 c	this chapman function routine calculates
 c
 c	  ch(x,chi0) = atm8_chap_asy(x,chi0)
-c		     = sum{n=0,3} [c(n) * int{t=t0,infinity} 
+c		     = sum{n=0,3} [c(n) * int{t=t0,infinity}
 c			[ exp(-x*(t**2-t0**2) * (t**2-t0**2)**n dy ] ]
 c
 c	with t0**2 = 1 - sin(chi0)
@@ -4269,8 +4269,8 @@ c	this chapman function routine calculates
 c
 c	  ch(x,chi0) = atm8_chap_deq(x,chi0)
 c		     = x * sin(chi0) * cos(chi0) * exp(x*sin(chi0))
-c		       * int{y=x,infinity} [ exp(-y)*( 
-c			 i1(x*sin(chi0))*k0(y*sin(chi0)) 
+c		       * int{y=x,infinity} [ exp(-y)*(
+c			 i1(x*sin(chi0))*k0(y*sin(chi0))
 c			 + k1(x*sin(chi0))*i0(y*sin(chi0)) ) dy ]
 c
 c  ====================================================================
@@ -4287,7 +4287,7 @@ c  --------------------------------------------------------------------
 c
 c	this code fragment calculates
 c
-c	  yi0 = exp(x*(1-sin(chi0))) * cos(chi0) * 
+c	  yi0 = exp(x*(1-sin(chi0))) * cos(chi0) *
 c		int{y=x,infinity} [ exp(-y) * i0(y*sin(chi0)) dy ]
 c
 c  --------------------------------------------------------------------
@@ -4298,7 +4298,7 @@ c  --------------------------------------------------------------------
 c
 c	this code fragment calculates
 c
-c	  yk0 = exp(x*(1+sin(chi0))) x * sin(chi0) * cos(chi0) * 
+c	  yk0 = exp(x*(1+sin(chi0))) x * sin(chi0) * cos(chi0) *
 c		int{y=x,infinity} [ exp(-y) * k0(y*sin(chi0)) dy ]
 c
 c  --------------------------------------------------------------------
@@ -4448,8 +4448,8 @@ c  ====================================================================
 
 c  ####################################################################
 c
-c	the following "bessel integral" routines return various 
-c	combinations of integrals of bessel functions, powers, 
+c	the following "bessel integral" routines return various
+c	combinations of integrals of bessel functions, powers,
 c	and exponentials, involving trigonometric functions of chi0.
 c
 c	for small values of z = x*sin(chi0) we expand
@@ -4462,7 +4462,7 @@ c
 c	  i0(z) = exp(z) * sum{n=0,8} [ bi0(n) * z**(-n-0.5) ]
 c	  k0(z) = exp(-z) * sum{n=0,6} [ bk0(n) * z**(-n-0.5) ]
 c
-c	the expansion coefficients are calculated from those given 
+c	the expansion coefficients are calculated from those given
 c	by abramowitz and stegun [as64, pp378-9, section 9.8] and
 c	press et al. [pft86, pp177-8, bessi0.for, bessk0.for].
 c
@@ -4496,7 +4496,7 @@ c  ====================================================================
 c
 c	this bessel integral routine calculates
 c
-c	  yi0 = exp(x*(1-sin(chi0))) * cos(chi0) * 
+c	  yi0 = exp(x*(1-sin(chi0))) * cos(chi0) *
 c		int{y=x,infinity} [ exp(-y) * i0(y*sin(chi0)) dy ]
 c
 c  ====================================================================
@@ -4545,7 +4545,7 @@ c1900	format(i5,1p5d14.6)
 	  do n=7,0,-1
 	    sum2 = sum2/3.75d0 + bi0(n)*qbeta(n)
 	  end do
-	  atm8_chap_yi0 = exp(-alpha)*coschi*sum 
+	  atm8_chap_yi0 = exp(-alpha)*coschi*sum
      *		+ exp((x-x1)*sc1m)*sum2*cost*sqrt(2/sinchi)
 	else
 	  call atm8_chap_gq85( x*sc1m, qbeta )
@@ -4562,7 +4562,7 @@ c  ====================================================================
 c
 c	this bessel integral routine calculates
 c
-c	  yk0 = exp(x*(1+sin(chi0))) x * sin(chi0) * cos(chi0) * 
+c	  yk0 = exp(x*(1+sin(chi0))) x * sin(chi0) * cos(chi0) *
 c		int{y=x,infinity} [ exp(-y) * k0(y*sin(chi0)) dy ]
 c
 c  ====================================================================
@@ -4572,7 +4572,7 @@ c  ====================================================================
 	parameter (rad=57.2957795130823208768d0)
 	dimension ai0(0:6), ak0(0:6), bk0(0:6)
 	dimension gf(0:6), gg(0:6), qgamma(0:8)
-	
+
         data ai0/ 1.0000000d+00, 2.4999985d-01, 1.5625190d-02,
      *      4.3393973d-04, 6.8012343d-06, 6.5601736d-08,
      *      5.9239791d-10/
@@ -4644,7 +4644,7 @@ c	this bessel function math routine returns
 c
 c	  xi1 = exp(-|z|) * i1(z)
 c
-c	following press et al [pft86, page 178, bessi1.for] and 
+c	following press et al [pft86, page 178, bessi1.for] and
 c	abrahamson and stegun [as64, page 378, 9.8.3, 9.8.4].
 c
 c  ====================================================================
@@ -4691,7 +4691,7 @@ c	this bessel function math routine returns
 c
 c	  xk1 = z * exp(+z) * k1(z)
 c
-c	following press et al [pft86, page 179, bessk1.for] and 
+c	following press et al [pft86, page 179, bessk1.for] and
 c	abrahamson and stegun [as64, page 379, 9.8.7, 9.8.8].
 c
 c  ====================================================================
@@ -4716,7 +4716,7 @@ c  ====================================================================
 	  do i=5,0,-1
 	    sum = sum*z2 + ak1(i)
 	  end do
-	  atm8_chap_xk1 = xz * ( sum 
+	  atm8_chap_xk1 = xz * ( sum
      *		+ z*log(z/2)*atm8_chap_xi1(z)*xz )
 	else
 	  sum = bk1(6)
@@ -5076,56 +5076,54 @@ c  ====================================================================
 !
 ! *********************
 
-      subroutine smoothz(finout,ncomp) 
- 
-      include 'param-1.00.inc' 
- 
-      dimension finout(nz), tempz(nz) 
- 
-c 
-c This is the binomial filter (in x space) as described in  
-c Birdsall appendix C. 
-c We have the choice of a compensating filter or not. 
-c if ncomp=0, no compensation, else compensation 
-c 
- 
-c do smoothz in the z direction 
- 
-       do i = 1,nz 
-          ip1 = i +1 
-          if(i .eq. nz) ip1 = 1 
-          im1 = i -1 
-          if(i .eq. 1) im1 = nz 
-          tempz(i) = .25*(finout(im1) +2.*finout(i)  
-     &                   +finout(ip1)) 
-       enddo 
-       do i = 1,nz 
-          finout(i) = tempz(i) 
-       enddo 
- 
-       if ( ncomp .ne. 0 ) then 
- 
-c put in compensator  
-c the alogrithm below is equivalent to  
-c fftmp(i)=(1./16.)*(-ff0(i-2)+4.*ff0(i-1)+10.*ff0(i)+4.*ff0(i+1)-ff0(i+2)) 
- 
-c do compensation in the z direction 
- 
-       const = sqrt(1.4571072) 
-       do i = 1,nz  
-          ip1 = i +1 
-          if(i .eq. nz) ip1 = 1 
-          finout(i) = const*(finout(i) -.171573*finout(ip1)) 
-       enddo 
-       do i = nz,1,-1 
-          im1 = i -1 
-          if(i .eq. 1) im1 = nz 
-          finout(i) = const*(finout(i) -.171573*finout(im1)) 
-       enddo 
- 
-      endif 
- 
-      return 
-      end 
-      
+      subroutine smoothz(finout,ncomp)
 
+      include 'param-1.00.inc'
+
+      dimension finout(nz), tempz(nz)
+
+c
+c This is the binomial filter (in x space) as described in
+c Birdsall appendix C.
+c We have the choice of a compensating filter or not.
+c if ncomp=0, no compensation, else compensation
+c
+
+c do smoothz in the z direction
+
+       do i = 1,nz
+          ip1 = i +1
+          if(i .eq. nz) ip1 = 1
+          im1 = i -1
+          if(i .eq. 1) im1 = nz
+          tempz(i) = .25*(finout(im1) +2.*finout(i)
+     &                   +finout(ip1))
+       enddo
+       do i = 1,nz
+          finout(i) = tempz(i)
+       enddo
+
+       if ( ncomp .ne. 0 ) then
+
+c put in compensator
+c the alogrithm below is equivalent to
+c fftmp(i)=(1./16.)*(-ff0(i-2)+4.*ff0(i-1)+10.*ff0(i)+4.*ff0(i+1)-ff0(i+2))
+
+c do compensation in the z direction
+
+       const = sqrt(1.4571072)
+       do i = 1,nz
+          ip1 = i +1
+          if(i .eq. nz) ip1 = 1
+          finout(i) = const*(finout(i) -.171573*finout(ip1))
+       enddo
+       do i = nz,1,-1
+          im1 = i -1
+          if(i .eq. 1) im1 = nz
+          finout(i) = const*(finout(i) -.171573*finout(im1))
+       enddo
+
+      endif
+
+      return
+      end

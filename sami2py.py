@@ -52,8 +52,23 @@ class model:
         ni = 7
 
         self.tag = tag
+        self.lon0 = lon
+        self.year = year
+        self.day = day
 
         path = generate_path(tag,lon,year,day)
+
+        # Get NameList
+        file = open(path + 'sami2low-1.00.namelist')
+        self.namelist = file.readlines()
+        file.close()
+
+        if self.namelist[10][-6:-2]=='true':
+            self.fejer=True
+        else:
+            self.fejer=False
+            self.ExBdrifts = np.loadtxt(path+'exb.inp')
+        self.hwm_mod = 'HWM' + self.namelist[36][-3:-1]
 
         # Get times
         time = np.loadtxt(path+'time.dat')
@@ -83,6 +98,20 @@ class model:
 
     # End __init__ method
 
+    def __repr__(self):
+        out = ''
+        out += 'Model Run = ' + self.tag + '\n'
+        out += ('Day %03d, %4d\n' % (self.day,self.year))
+        out += ('Longitude = %d deg\n' % self.lon0)
+        out += ('%d time steps from %4.1f to %4.1f UT\n\n'
+                % (len(self.ut), min(self.ut), max(self.ut)))
+
+        if self.fejer:
+            out += 'Fejer ExB model used\n'
+        else:
+            out += 'Fourier ExB model used\n'
+        out += 'Wind Model used: ' + self.hwm_mod
+        return out
 # End model class
 
 def generate_path(tag, lon, year, day):

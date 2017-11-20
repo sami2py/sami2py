@@ -39,7 +39,7 @@ def generate_path(tag, lon, year, day):
 def run_model(year, day, lat=0, lon=0,
               rmin=100, rmax=2000, hrmx=24.5,
               f107=120, f107a=120, ap=0,
-              nx=1, ox=1, exb_scale=1, fejer=True,
+              nx=1, ox=1, exb_scale=1, fejer=True, ExBdrifts=np.zeros((10,2)),
               Tinf_scale=1, euv_scale=1, hwm_scale=1, hwm_mod=14,
               tag='test', clean=False):
     '''
@@ -104,7 +104,7 @@ def run_model(year, day, lat=0, lon=0,
 
         file.close()
 
-    def archive_model(path='',clean):
+    def archive_model(path,clean,fejer):
         filelist = ['glonf.dat','glatf.dat','zaltf.dat',
                     'vsif.dat','time.dat','tif.dat','tef.dat',
                     'denif.dat','sami2low-1.00.namelist']
@@ -118,6 +118,8 @@ def run_model(year, day, lat=0, lon=0,
         if clean:
             for i in range(0,len(filelist)-1):
                 os.remove(filelist[i])
+        if fejer:
+            shutil.copyfile('exb.inp', path+'exb.inp')
 
     info = {'year':year, 'day':day, 'lat':lat, 'lon':lon,
             'hrmx':hrmx, 'rmin':rmin, 'rmax':rmax,
@@ -129,8 +131,9 @@ def run_model(year, day, lat=0, lon=0,
         info['fejer'] = '.true.'
     else:
         info['fejer'] = '.false.'
+        np.savetxt('exb.inp',ExBdrifts)
 
     generate_namelist(info)
     path = generate_path(tag, lon, year, day)
     os.system('./sami2low.x')
-    archive_model(path, clean)
+    archive_model(path, clean, fejer)

@@ -36,8 +36,10 @@ def generate_path(tag, lon, year, day):
     return basedir + tag + ('/lon%03d/%4d/%03d/' % (lon, year, day))
 
 
-def run_model(year, day, lat=0, lon=0, rmin=100, rmax=2000, hrmx=24.5,
-              f107=120, ap=0, Tinf_scl=1, euv_scl=1, hwm_scl=1, hwm_mod=14,
+def run_model(year, day, lat=0, lon=0,
+              rmin=100, rmax=2000, hrmx=24.5,
+              f107=120, f107a=120, ap=0,
+              Tinf_scl=1, euv_scl=1, hwm_scl=1, hwm_mod=14,
               tag='test', clean=False):
     '''
     Runs SAMI2 and archives the data in path
@@ -73,7 +75,7 @@ def run_model(year, day, lat=0, lon=0, rmin=100, rmax=2000, hrmx=24.5,
         file.write('  rmin     =  %7.1f,\n' % info['rmin'])
         file.write('  rmax     =  %7.1f,\n' % info['rmax'])
         file.write('  altmin   =   85.,\n')
-        file.write('  fbar     =  117.4778,\n')
+        file.write('  fbar     =  %5.1f,\n' % info['f107a'])
         file.write('  f10p7    =  %5.1f,\n' % info['f107'])
         file.write('  ap       =  %d,\n' % info['ap'])
         file.write('  year     = %4d,\n' % info['year'])
@@ -115,10 +117,11 @@ def run_model(year, day, lat=0, lon=0, rmin=100, rmax=2000, hrmx=24.5,
             for i in range(0,len(filelist)-1):
                 os.remove(filelist[i])
 
-    info = {'year':year, 'day':day, 'lat':lat, 'lon':lon, 'hrmx':hrmx,
-            'rmin':rmin, 'rmax':rmax, 'f107':f107, 'ap':ap,
-            'Tinf_scl':Tinf_scl,'euv_scl':euv_scl,'hwm_scl':hwm_scl,
-            'hwm_mod':hwm_mod}
+    info = {'year':year, 'day':day, 'lat':lat, 'lon':lon,
+            'hrmx':hrmx, 'rmin':rmin, 'rmax':rmax,
+            'f107':f107, 'f107a':f107a, 'ap':ap,
+            'Tinf_scl':Tinf_scl,'euv_scl':euv_scl,
+            'hwm_scl':hwm_scl, 'hwm_mod':hwm_mod}
 
     generate_namelist(info)
     path = generate_path(tag, lon, year, day)

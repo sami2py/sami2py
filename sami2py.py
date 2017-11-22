@@ -173,7 +173,7 @@ def run_model(year, day, lat=0, lon=0,
     """
     Runs SAMI2 and archives the data in path
 
-    Methods: generate_namelist, archive_model
+    Methods: _generate_namelist, archive_model
 
     Inputs
 
@@ -259,7 +259,7 @@ def run_model(year, day, lat=0, lon=0,
 
     """
 
-    def generate_namelist(info):
+    def _generate_namelist(info):
         """
         Generates namelist file for sami2
         """
@@ -316,7 +316,7 @@ def run_model(year, day, lat=0, lon=0,
 
         file.close()
 
-    # End generate_namelist method
+    # End _generate_namelist method
 
     def archive_model(path,clean,fejer):
 
@@ -356,7 +356,7 @@ def run_model(year, day, lat=0, lon=0,
             print('Invalid ExB drift shape!  Must be 10x2 ndarray.')
         np.savetxt('exb.inp',ExB_drifts)
 
-    generate_namelist(info)
+    _generate_namelist(info)
     path = _generate_path(tag,lon,year,day)
     if test==False:
         os.system('./sami2low.x')

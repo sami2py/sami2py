@@ -254,7 +254,7 @@ def run_model(year, day, lat=0, lon=0,
             (default = False)
         test : (boolean)
             A True value will not run the sami2 executable.  Used for debugging the framework.
-            A False value will run the sami2 executable. 
+            A False value will run the sami2 executable
             (default = False)
 
     """

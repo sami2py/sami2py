@@ -164,7 +164,7 @@ def _generate_path(tag, lon, year, day):
 
 
 def run_model(year, day, lat=0, lon=0,
-              rmin=100, rmax=2000, hrmx=24.5,
+              rmin=100, rmax=2000, hrmax=24.5,
               f107=120, f107a=120, ap=0,
               nx=1, ox=1, exb_scale=1,
               fejer=True, ExB_drifts=np.zeros((10,2)),
@@ -174,6 +174,88 @@ def run_model(year, day, lat=0, lon=0,
     Runs SAMI2 and archives the data in path
 
     Methods: generate_namelist, archive_model
+
+    Inputs
+
+        year : (int)
+            year of desired run, integer
+        day : (int)
+            day of year from Jan 1, acceptable range is [1,366]
+        lat : (float)
+            latitude intercept of sami2 plane
+            (default = 0)
+        lon : (float)
+            longitude intercept of sami2 plane
+            (default = 0)
+
+        rmin : (float)
+            apex altitude of bottom field line in km
+            (default = 100)
+        rmax : (float)
+            apex altitude of top field line in km
+            (default = 2000)
+        hrmax : (float)
+            total time to run model in hours
+            (note that output occurs after 24 hours)
+            (default = 24.5)
+
+        f107 : (float)
+            Daily F10.7 solar flux value in SFU
+            (default = 120)
+        f107a : (float)
+            81-day average of F10.7 in SFU
+            (default = 120)
+        ap : (float)
+            quasi-logarithmic geomagnetic index of 3-hour range relative to an
+            assumed quiet-day curve.  Integer version of Kp index.
+            (default = 0)
+
+        ox : (float)
+            Scaled input to modify MSIS neutral monatomic oxygen densities
+            (default = 1)
+        nx : (float)
+            Scaled input to modify MSIS neutral all other densities
+            (default = 1)
+
+        exb_scale : (float)
+            Multiplier for ExB model to scale vertical drifts
+            (default = 1)
+        fejer : (boolean)
+            A True value will use the Fejer-Scherliess model of ExB drifts
+            A False value will use a user-specified Fourier series for ExB drifts
+            (default = True)
+        ExB_drifts : (10x2 ndarray of floats)
+            Matrix of Fourier series coefficients dependent on solar local time
+            (SLT) in hours where
+            ExB_total = ExB_drifts[i,0]*cos((i+1)*pi*SLT/12)
+                      + ExB_drifts[i,1]*sin((i+1)*pi*SLT/12)
+            (default = np.zeros((10,2)))
+
+        Tinf_scale : (float)
+            Multiplier to scale Exospheric temperature in MSIS
+            (default = 1)
+        euv_scale : (float)
+            Multiplier to scale total ionization in EUVAC
+            (default = 1)
+        hwm_scale : (float)
+            Multiplier to scale Neutral Winds from HWM
+            (default = 1)
+        hwm_mod : (int)
+            Specifies which version of HWM to use.
+            Allowable values are 93, 7, 14
+            (default = 14)
+
+        tag : (string)
+            Name of run for data archive.  First-level directory under save directory
+            (default = 'test')
+        clean : (boolean)
+            A True value will delete the local files after archiving
+            A False value will not delete local save files
+            (default = False)
+        test : (boolean)
+            A True value will not run the sami2 executable.  Used for debugging the framework.
+            A False value will run the sami2 executable. 
+            (default = False)
 
     """
 
@@ -261,7 +343,7 @@ def run_model(year, day, lat=0, lon=0,
     os.chdir(model_path)
 
     info = {'year':year, 'day':day, 'lat':lat, 'lon':lon,
-            'hrmx':hrmx, 'rmin':rmin, 'rmax':rmax,
+            'hrmx':hrmax, 'rmin':rmin, 'rmax':rmax,
             'f107':f107, 'f107a':f107a, 'ap':ap,
             'nx':nx, 'ox':ox, 'exb_scale':exb_scale,
             'Tinf_scale':Tinf_scale,'euv_scale':euv_scale,

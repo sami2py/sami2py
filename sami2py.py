@@ -141,12 +141,20 @@ class model:
         out.append('Wind Model used: %s' % self.hwm_mod)
 
         return ''.join(out)
-# End model class
 
 
 def _generate_sami2_path():
     """
     Creates a path based on platform
+
+    parameters
+    ----------
+    None
+
+    Returns
+    -------
+    path : (string)
+        complete path pointing to sami2 fortran and executables
 
     """
 
@@ -157,12 +165,13 @@ def _generate_sami2_path():
 
     return path
 
-# End _generate_path method
 
 def _generate_path(tag, lon, year, day):
     """
     Creates a path based on run tag, date, and longitude
 
+    Parameters
+    ----------
     tag : (string)
         specifies name of model run
     lon : (int)
@@ -171,6 +180,11 @@ def _generate_path(tag, lon, year, day):
         year of model run
     day : (int)
         day of year of model run
+
+    Returns
+    -------
+    path : (string)
+        Complete path pointing to model archive for a given run
     """
 
     if platform.node()=='gs674-jklenmbp.home':
@@ -178,9 +192,8 @@ def _generate_path(tag, lon, year, day):
     else:
         basedir = '/Volumes/drive/models/sami2/'
 
-    return basedir + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
-
-# End _generate_path method
+    path = basedir + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
+    return path
 
 
 def run_model(year, day, lat=0, lon=0, alt=300,

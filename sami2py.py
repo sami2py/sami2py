@@ -183,12 +183,18 @@ def _generate_path(tag, lon, year, day):
 # End _generate_path method
 
 
-def run_model(year, day, lat=0, lon=0,
-              rmin=100, rmax=2000, hrmax=24.5,
+def run_model(year, day, lat=0, lon=0, alt=300,
               f107=120, f107a=120, ap=0,
-              nx=1, ox=1, exb_scale=1,
-              fejer=True, ExB_drifts=np.zeros((10,2)),
-              Tinf_scale=1, euv_scale=1, hwm_scale=1, hwm_mod=14,
+              rmin=100, rmax=2000, gams=3, gamp=3, altmin=85.,
+              dthr=0.25, hrinit=0., hrpr=24., hrmax=48.,
+              dt0=30., maxstep=100000000, denmin=1.e-6,
+              nion1=1, nion2=7, mmass=48.0, h_scale=1, o_scale=1
+              no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
+              Tinf_scale=1, Tn_scale=1., euv_scale=1,
+              wind_scale=1, hwm_model=14,
+              fejer=True, ExB_drifts=np.zeros((10,2)), ve01=0., exb_scale=1,
+              alt_crit=150., cqe=7.e-14,
+
               tag='test', clean=False, test=False):
     """
     Runs SAMI2 and archives the data in path
@@ -205,17 +211,9 @@ def run_model(year, day, lat=0, lon=0,
     lon : (float)
         longitude intercept of sami2 plane
         (default = 0)
-
-    rmin : (float)
-        apex altitude of bottom field line in km
-        (default = 100)
-    rmax : (float)
-        apex altitude of top field line in km
-        (default = 2000)
-    hrmax : (float)
-        total time to run model in hours
-        (note that output occurs after 24 hours)
-        (default = 24.5)
+    alt : (float)
+        The input altitude in km.
+        (default = 300)
 
     f107 : (float)
         Daily F10.7 solar flux value in SFU
@@ -228,16 +226,104 @@ def run_model(year, day, lat=0, lon=0,
         assumed quiet-day curve.  Integer version of Kp index.
         (default = 0)
 
-    ox : (float)
-        Scaled input to modify MSIS neutral monatomic oxygen densities
+    rmin : (float)
+        Maximum altitude of the lowest field line in km
+        (default = 100)
+    rmax : (float)
+        Maximum altitude of the highest field line in km
+        This has to be less than 20,000 km.
+        (default = 2000)
+    gams : (int)
+        Determines grid spacing along the geomagnetic field. As this
+        parameter is increased, the spacing between grid points along
+        the field line increases at high altitudes. As it is decreased,
+        the spacing becomes more uniform.
+        (default=3)
+    gamp : (int)
+        Determines grid spacing orthogonal to the geomagnetic field.
+        As this parameter is increased, the spacing between field lines
+        increases at high altitudes. As it is decreased, the spacing
+        becomes more uniform.
+        (default=3)
+    altmin : (float)
+        Altitude of the base of a field line (km).
+        (default=85)
+
+    dthr : (float)
+        Defines how often the data is output (hr).
+        (default = 0.25)
+    hrinit : (float)
+        Local time at the start of the run (hr).
+        (default=0)
+    hrpr : (float)
+        The time period that elapses before the data is output (hr).
+        (default = 24)
+    hrmax : (float)
+        The number of hours for the run (hr). The first 24 hrs
+        allows transients to clear the system.
+        (default = 48)
+    dt0 : (float)
+         The maximum time step allowed (sec). This shouldn't be changed.
+        (default=30)
+    maxstep : (int)
+        The maximum number of time steps allowed.
+        (default = 100000000)
+    denmin : (float)
+        Miniumum ion density allowed.
+        (default=1.e-6)
+
+    nion1 : (int)
+        Minimum ion specie index.
+        1: H+, 2: O+, 3: NO+, 4: O2+, 5: He+, 6: N2+, 7: N+
+        (default=1)
+    nion2 : (int)
+        Maximum ion specie index (see above). One can use 4 and consider
+        only the dominant ions in the ionosphere (H, O, NO, O2). This will
+        speed up the run time of the code by about 30%.
+        (default=7)
+    mmass : (float)
+        Average neutral mass density.
+        (default = 48)
+
+    h_scale : (float)
+        Multiplier to scale MSIS neutral H densities
         (default = 1)
-    nx : (float)
-        Scaled input to modify MSIS neutral all other densities
+    o_scale : (float)
+        Multiplier to scale MSIS neutral O densities
+        (default = 1)
+    no_scale : (float)
+        Multiplier to scale MSIS neutral NO densities
+        (default = 1)
+    o2_scale : (float)
+        Multiplier to scale MSIS neutral O2 densities
+        (default = 1)
+    he_scale : (float)
+        Multiplier to scale MSIS neutral He densities
+        (default = 1)
+    n2_scale : (float)
+        Multiplier to scale MSIS neutral N2 densities
+        (default = 1)
+    n_scale : (float)
+        Multiplier to scale MSIS neutral all other densities
         (default = 1)
 
-    exb_scale : (float)
-        Multiplier for ExB model to scale vertical drifts
+    Tinf_scale : (float)
+        Multiplier to scale Exospheric temperature in MSIS
         (default = 1)
+    Tn_scale : (float)
+        Multiplier to scale Neutral temperature in MSIS
+        (default = 1)
+    euv_scale : (float)
+        Multiplier to scale total ionization in EUVAC
+        (default = 1)
+    wind_scale : (float)
+        Multiplier to scale Neutral Winds from HWM
+        (default = 1)
+    hwm_model : (int)
+        Specifies which version of HWM to use.
+        Allowable values are 93, 7, 14
+        (default = 14)
+
     fejer : (boolean)
         A True value will use the Fejer-Scherliess model of ExB drifts
         A False value will use a user-specified Fourier series for ExB drifts
@@ -248,20 +334,24 @@ def run_model(year, day, lat=0, lon=0,
         ExB_total = ExB_drifts[i,0]*cos((i+1)*pi*SLT/12)
                   + ExB_drifts[i,1]*sin((i+1)*pi*SLT/12)
         (default = np.zeros((10,2)))
-
-    Tinf_scale : (float)
-        Multiplier to scale Exospheric temperature in MSIS
-        (default = 1)
-    euv_scale : (float)
-        Multiplier to scale total ionization in EUVAC
-        (default = 1)
-    hwm_scale : (float)
-        Multiplier to scale Neutral Winds from HWM
-        (default = 1)
-    hwm_mod : (int)
-        Specifies which version of HWM to use.
-        Allowable values are 93, 7, 14
-        (default = 14)
+    ve01 : (float)
+        Constant offset for Fourier ExB drifts (m/s)
+        (default=0)
+    exb_scale : (float)
+        Multiplier for ExB model to scale vertical drifts
+        (default=1)
+    alt_crit : (float)
+        The E x B drift is exponentially decreased below this
+        altitude with a scale length 20 km.  [This is done to
+        allow rmin to be less than 150 km without using an
+        extremely small time step.]
+        (default=150)
+    cqe : (float)
+        Constant used in the subroutine 'etemp' associated
+        with photoelectron heating. The typical range is
+        3e-14 -- 8e-14. The higher this value, the lower
+        the electron temperature above 300 km.
+        (default=7e-14)
 
     tag : (string)
         Name of run for data archive.  First-level directory under save directory
@@ -274,6 +364,7 @@ def run_model(year, day, lat=0, lon=0,
         A True value will not run the sami2 executable.  Used for debugging the framework.
         A False value will run the sami2 executable
         (default = False)
+
 
     Methods
     ----------
@@ -304,48 +395,52 @@ def run_model(year, day, lat=0, lon=0,
 
         file.write('&go\n')
         file.write('  fmtout   = .true.,\n')
-        file.write('  maxstep  =  100000000,\n')
-        file.write('  hrmax    =  %4.1f,\n' % info['hrmx'])
-        file.write('  dt0      =  30.,\n')
-        file.write('  dthr     =  .2,\n')
-        file.write('  hrpr     =  24.,\n')
-        file.write('  grad_in  =  300.,\n')
-        file.write('  glat_in  =  %6.2f,\n' % info['lat'])
-        file.write('  glon_in  =  %6.2f,\n' % info['lon'])
-        file.write('  fejer    = ' + info['fejer'] + '\n')
-        file.write('  rmin     =  %7.1f,\n' % info['rmin'])
-        file.write('  rmax     =  %7.1f,\n' % info['rmax'])
-        file.write('  altmin   =   85.,\n')
-        file.write('  fbar     =  %5.1f,\n' % info['f107a'])
-        file.write('  f10p7    =  %5.1f,\n' % info['f107'])
+        file.write('  maxstep  =  %d,\n' % info['maxstep'])
+        file.write('  hrmax    =  %f,\n' % info['hrmax'])
+        file.write('  dt0      =  %f,\n' % info['dt0'])
+        file.write('  dthr     =  %f,\n' % info['dthr'])
+        file.write('  hrpr     =  %f,\n' % info['hrpr'])
+        file.write('  grad_in  =  %f,\n' % info['alt'])
+        file.write('  glat_in  =  %f,\n' % info['lat'])
+        file.write('  glon_in  =  %f,\n' % info['lon'])
+        file.write('  fejer    =  %s,\n' % info['fejer'])
+        file.write('  rmin     =  %f,\n' % info['rmin'])
+        file.write('  rmax     =  %f,\n' % info['rmax'])
+        file.write('  altmin   =  %f,\n' % info['altmin'])
+        file.write('  fbar     =  %f,\n' % info['f107a'])
+        file.write('  f10p7    =  %f,\n' % info['f107'])
         file.write('  ap       =  %d,\n' % info['ap'])
-        file.write('  year     = %4d,\n' % info['year'])
-        file.write('  day      =   %3d,\n' % info['day'])
-        file.write('  mmass    =   48 ,\n')
-        file.write('  nion1    =    1,\n')
-        file.write('  nion2    =    7,\n')
-        file.write('  hrinit   =    0.,\n')
-        file.write('  tvn0     =    1,\n')
-        file.write('  tvexb0   =    %5.2f,\n' % info['exb_scale'])
-        file.write('  ve01     =    0.,\n')
-        file.write('  gams     =    3,\n')
-        file.write('  gamp     =    3,\n')
-        file.write('  snn      =    %4.2f,%4.2f,%4.2f,%4.2f,%4.2f,%4.2f,\n'
-                   % (info['nx'],info['ox'],info['nx'],info['nx'],
-                   info['nx'],info['nx']))
-        file.write('  stn      =    1.,\n')
-        file.write('  denmin   =    1.e-6,\n')
-        file.write('  alt_crit =    150.,\n')
-        file.write('  cqe      =   7.e-14,\n')
-        file.write('  Tinf_scl =  %4.2f,\n' % info['Tinf_scale'])
-        file.write('  euv_scl  =  %6.2f,\n' % info['euv_scale'])
-        file.write('  hwm_scl  =  %6.2f,\n' % info['hwm_scale'])
-        file.write('  hwm_mod  = %d\n' % info['hwm_mod'])
+        file.write('  year     =  %d,\n' % info['year'])
+        file.write('  day      =  %d,\n' % info['day'])
+        file.write('  mmass    =  %f,\n' % info['mmass'])
+        file.write('  nion1    =  %d,\n' % info['nion1'])
+        file.write('  nion2    =  %d,\n' % info['nion2'])
+        file.write('  hrinit   =  %f,\n' % info['hrinit'])
+        file.write('  tvn0     =  %f,\n' % info['wind_scale'])
+        file.write('  tvexb0   =  %f,\n' % info['exb_scale'])
+        file.write('  ve01     =  %f,\n' % info['ve01'])
+        file.write('  gams     =  %d,\n' % info['gams'])
+        file.write('  gamp     =  %d,\n' % info['gamp'])
+        file.write('  snn      =  %f,%f,%f,%f,%f,%f,\n'
+                   % (info['h_scale'],
+                      info['o_scale'],
+                      info['no_scale'],
+                      info['o2_scale'],
+                      info['he_scale'],
+                      info['n2_scale'],
+                      info['n_scale']))
+        file.write('  stn      =  %f,\n' % info['Tn_scale'])
+        file.write('  denmin   =  %e,\n' % info['denmin'])
+        file.write('  alt_crit =  %f,\n' % info['alt_crit'])
+        file.write('  cqe      =  %e,\n' % info['cqe'])
+        file.write('  Tinf_scl =  %f,\n' % info['Tinf_scale'])
+        file.write('  euv_scl  =  %f,\n' % info['euv_scale'])
+        file.write('  hwm_scl  =  %f,\n' % info['wind_scale']) # Duplicate!
+        file.write('  hwm_mod  =  %d\n' % info['hwm_model'])
         file.write('&end\n')
 
         file.close()
 
-    # End _generate_namelist method
 
     def archive_model(path,clean,fejer):
         """ Moves the model output files to a common archive
@@ -378,18 +473,22 @@ def run_model(year, day, lat=0, lon=0,
         if fejer==False:
             shutil.copyfile('exb.inp', path+'exb.inp')
 
-    # End archive_model method
 
     current_dir = os.getcwd()
     model_path = _generate_sami2_path()
     os.chdir(model_path)
 
-    info = {'year':year, 'day':day, 'lat':lat, 'lon':lon,
-            'hrmx':hrmax, 'rmin':rmin, 'rmax':rmax,
+    info = {'year':year, 'day':day, 'lat':lat, 'lon':lon, 'alt':alt,
             'f107':f107, 'f107a':f107a, 'ap':ap,
-            'nx':nx, 'ox':ox, 'exb_scale':exb_scale,
-            'Tinf_scale':Tinf_scale,'euv_scale':euv_scale,
-            'hwm_scale':hwm_scale, 'hwm_mod':hwm_mod}
+            'rmin':rmin, 'rmax':rmax, 'gams':gams, 'gamp':gamp, 'altmin':altmin,
+            'dthr':dthr, 'hrinit':hrinit, 'hrpr':hrpr, 'hrmax':hrmax,
+            'dt0':dt0, 'maxstep':maxstep, 'denmin':denmin,
+            'nion1':nion1, 'nion2':nion2, 'mmass':mmass,'h_scale':h_scale,
+            'o_scale':o_scale, 'no_scale':no_scale, 'o2_scale':o2_scale,
+            'he_scale':he_scale, 'n2_scale':n2_scale, 'n_scale':n_scale,
+            'exb_scale':exb_scale, 'alt_crit':alt_crit, 'cqe':cqe,
+            'Tinf_scale':Tinf_scale, 'Tn_scale':Tn_scale, 'euv_scale':euv_scale,
+            'hwm_scale':hwm_scale, 'hwm_model':hwm_model}
     if fejer:
         info['fejer'] = '.true.'
     else:
@@ -398,6 +497,7 @@ def run_model(year, day, lat=0, lon=0,
             print('Invalid ExB drift shape!  Must be 10x2 ndarray.')
         np.savetxt('exb.inp',ExB_drifts)
 
+
     _generate_namelist(info)
     path = _generate_path(tag,lon,year,day)
     if test==False:
@@ -405,5 +505,3 @@ def run_model(year, day, lat=0, lon=0,
     archive_model(path,clean,fejer)
 
     os.chdir(current_dir)
-
-# End run_model method

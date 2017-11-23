@@ -185,8 +185,7 @@ Source Code Description
       tvexb0:       Multiplicative factor for the E x B drift velocity.
                     The default value is 1. For example, if
                     tvexb0 = 0,  the E x B drift velocity is turned off.
-      ve01:         Maximum E x B drift velocity for the sinusoidal
-                    drift model (m/sec). Typical values are
+      ve01:         Constant offset for Fourier ExB model. Typical values are
                     5 m/s - 30 m/s.
       snn:          Multiplicative factors for the neutral density.
                     The default values are 1. For example, the neutral

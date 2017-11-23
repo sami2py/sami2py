@@ -188,7 +188,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
               rmin=100, rmax=2000, gams=3, gamp=3, altmin=85.,
               dthr=0.25, hrinit=0., hrpr=24., hrmax=48.,
               dt0=30., maxstep=100000000, denmin=1.e-6,
-              nion1=1, nion2=7, mmass=48.0, h_scale=1, o_scale=1
+              nion1=1, nion2=7, mmass=48.0, h_scale=1, o_scale=1,
               no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
               Tinf_scale=1, Tn_scale=1., euv_scale=1,
               wind_scale=1, hwm_model=14,
@@ -385,9 +385,9 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         """
 
         # Check HWM model parameters
-        if (info['hwm_mod'] in [93, 7, 14])==False:
+        if (info['hwm_model'] in [93, 7, 14])==False:
             print('Invalid HWM Model.  Defaulting to HWM14')
-            info['hwm_mod']=14
+            info['hwm_model']=14
 
         # Print out namelist file
 
@@ -421,7 +421,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         file.write('  ve01     =  %f,\n' % info['ve01'])
         file.write('  gams     =  %d,\n' % info['gams'])
         file.write('  gamp     =  %d,\n' % info['gamp'])
-        file.write('  snn      =  %f,%f,%f,%f,%f,%f,\n'
+        file.write('  snn      =  %f,%f,%f,%f,%f,%f,%f,\n'
                    % (info['h_scale'],
                       info['o_scale'],
                       info['no_scale'],
@@ -486,9 +486,9 @@ def run_model(year, day, lat=0, lon=0, alt=300,
             'nion1':nion1, 'nion2':nion2, 'mmass':mmass,'h_scale':h_scale,
             'o_scale':o_scale, 'no_scale':no_scale, 'o2_scale':o2_scale,
             'he_scale':he_scale, 'n2_scale':n2_scale, 'n_scale':n_scale,
-            'exb_scale':exb_scale, 'alt_crit':alt_crit, 'cqe':cqe,
+            'exb_scale':exb_scale, 've01':ve01, 'alt_crit':alt_crit, 'cqe':cqe,
             'Tinf_scale':Tinf_scale, 'Tn_scale':Tn_scale, 'euv_scale':euv_scale,
-            'hwm_scale':hwm_scale, 'hwm_model':hwm_model}
+            'wind_scale':wind_scale, 'hwm_model':hwm_model}
     if fejer:
         info['fejer'] = '.true.'
     else:

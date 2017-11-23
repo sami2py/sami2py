@@ -1,17 +1,25 @@
 #!/usr/bin/env python
-#---------------------------------------------------------------------------
-# sami2py
-#
-# Author: Jeff Klenzing, NASA/GSFC,  2017
-#
-#
-# Comments: Tools for specifying, running, and archiving sami2low-1.00
-#
-# Classes: model
-#
-# Methods: _generate_path, run_model
-#
-#---------------------------------------------------------------------------
+# -*- coding: utf-8 -*-
+# Copyright (C) 2017, JK & JH
+# Full license can be found in License.md
+#-----------------------------------------------------------------------------
+""" Tools for calculating integrated solar indices.
+
+Functions
+-------------------------------------------------------------------------------
+
+Classes
+-------------------------------------------------------------------------------
+
+Moduleauthor
+-------------------------------------------------------------------------------
+Jeff Klenzing (JK), 22 Nov 2017, Goddard Space Flight Center (GSFC)
+
+References
+-------------------------------------------------------------------------------
+
+
+"""
 
 import platform
 import os

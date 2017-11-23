@@ -23,28 +23,46 @@ class model:
 
 
     def __init__(self, tag, lon, year, day):
-        """
-        Loads a previously run sami2 model and sorts into
-           appropriate array shapes
+        """ Loads a previously run sami2 model and sorts into
+            appropriate array shapes
 
-        Input:
-            tag  = name of run (top-level directory)
-            lon  = longitude reference
-            year = year
-            day  = day of year
+        Parameters
+        ----------
+        tag : (string)
+            name of run (top-level directory)
+        lon : (int)
+            longitude reference
+        year : (int)
+            year
+        day : (int)
+            day of year from Jan 1
 
-        Properties:
-            ut   = Universal Time (hrs), 1D ndarray
-            slt  = Solar Local Time (hr), 1D ndarray
+        Returns
+        ---------
+        self : model class object containing OCB file data
 
-            glat = Geographic Latitude (deg), 2D ndarray
-            glon = Geographic Longitude (deg), 2D ndarray
-            zalt = Altitude (km), 2D ndarray
+        Attributes
+        ----------
+        ut : (1D ndarray)
+            Universal Time (hrs)
+        slt : (1D ndarray)
+            Solar Local Time (hr)
 
-            deni = Ion density by species, 4D ndarray
-            vsi  = Ion Velocity by species, 4D ndarray
-            ti   = Ion Temperature by species, 4D ndarray
-            te   = Electron Temperature, 3D ndarray
+        glat : (2D ndarray)
+            Geographic Latitude (deg)
+        glon : (2D ndarray)
+            Geographic Longitude (deg)
+        zalt : (2D ndarray)
+            Altitude (km)
+
+        deni : (4D ndarray)
+            Ion density by species (cm^-3)
+        vsi : (4D ndarray)
+            Ion Velocity by species (m/s)
+        ti : (4D ndarray)
+            Ion Temperature by species (K)
+        te : (3D ndarray)
+            Electron Temperature (K)
         """
 
         def _calculate_slt(ut, glon, day):
@@ -130,8 +148,6 @@ def _generate_sami2_path():
     """
     Creates a path based on platform
 
-    tag: string specifying name of model run
-    info: structure to generate namelist
     """
 
     if platform.node()=='gs674-jklenmbp.home':
@@ -147,10 +163,14 @@ def _generate_path(tag, lon, year, day):
     """
     Creates a path based on run tag, date, and longitude
 
-    tag  = string specifying name of model run
-    lon  = longitude of model run
-    year = year of model run
-    day  = day of year of model run
+    tag : (string)
+        specifies name of model run
+    lon : (int)
+        longitude of model run
+    year : (int)
+        year of model run
+    day : (int)
+        day of year of model run
     """
 
     if platform.node()=='gs674-jklenmbp.home':
@@ -173,95 +193,104 @@ def run_model(year, day, lat=0, lon=0,
     """
     Runs SAMI2 and archives the data in path
 
-    Methods: _generate_namelist, archive_model
+    Parameters
+    ----------
+    year : (int)
+        year of desired run, integer
+    day : (int)
+        day of year from Jan 1, acceptable range is [1,366]
+    lat : (float)
+        latitude intercept of sami2 plane
+        (default = 0)
+    lon : (float)
+        longitude intercept of sami2 plane
+        (default = 0)
 
-    Inputs
+    rmin : (float)
+        apex altitude of bottom field line in km
+        (default = 100)
+    rmax : (float)
+        apex altitude of top field line in km
+        (default = 2000)
+    hrmax : (float)
+        total time to run model in hours
+        (note that output occurs after 24 hours)
+        (default = 24.5)
 
-        year : (int)
-            year of desired run, integer
-        day : (int)
-            day of year from Jan 1, acceptable range is [1,366]
-        lat : (float)
-            latitude intercept of sami2 plane
-            (default = 0)
-        lon : (float)
-            longitude intercept of sami2 plane
-            (default = 0)
+    f107 : (float)
+        Daily F10.7 solar flux value in SFU
+        (default = 120)
+    f107a : (float)
+        81-day average of F10.7 in SFU
+        (default = 120)
+    ap : (float)
+        quasi-logarithmic geomagnetic index of 3-hour range relative to an
+        assumed quiet-day curve.  Integer version of Kp index.
+        (default = 0)
 
-        rmin : (float)
-            apex altitude of bottom field line in km
-            (default = 100)
-        rmax : (float)
-            apex altitude of top field line in km
-            (default = 2000)
-        hrmax : (float)
-            total time to run model in hours
-            (note that output occurs after 24 hours)
-            (default = 24.5)
+    ox : (float)
+        Scaled input to modify MSIS neutral monatomic oxygen densities
+        (default = 1)
+    nx : (float)
+        Scaled input to modify MSIS neutral all other densities
+        (default = 1)
 
-        f107 : (float)
-            Daily F10.7 solar flux value in SFU
-            (default = 120)
-        f107a : (float)
-            81-day average of F10.7 in SFU
-            (default = 120)
-        ap : (float)
-            quasi-logarithmic geomagnetic index of 3-hour range relative to an
-            assumed quiet-day curve.  Integer version of Kp index.
-            (default = 0)
+    exb_scale : (float)
+        Multiplier for ExB model to scale vertical drifts
+        (default = 1)
+    fejer : (boolean)
+        A True value will use the Fejer-Scherliess model of ExB drifts
+        A False value will use a user-specified Fourier series for ExB drifts
+        (default = True)
+    ExB_drifts : (10x2 ndarray of floats)
+        Matrix of Fourier series coefficients dependent on solar local time
+        (SLT) in hours where
+        ExB_total = ExB_drifts[i,0]*cos((i+1)*pi*SLT/12)
+                  + ExB_drifts[i,1]*sin((i+1)*pi*SLT/12)
+        (default = np.zeros((10,2)))
 
-        ox : (float)
-            Scaled input to modify MSIS neutral monatomic oxygen densities
-            (default = 1)
-        nx : (float)
-            Scaled input to modify MSIS neutral all other densities
-            (default = 1)
+    Tinf_scale : (float)
+        Multiplier to scale Exospheric temperature in MSIS
+        (default = 1)
+    euv_scale : (float)
+        Multiplier to scale total ionization in EUVAC
+        (default = 1)
+    hwm_scale : (float)
+        Multiplier to scale Neutral Winds from HWM
+        (default = 1)
+    hwm_mod : (int)
+        Specifies which version of HWM to use.
+        Allowable values are 93, 7, 14
+        (default = 14)
 
-        exb_scale : (float)
-            Multiplier for ExB model to scale vertical drifts
-            (default = 1)
-        fejer : (boolean)
-            A True value will use the Fejer-Scherliess model of ExB drifts
-            A False value will use a user-specified Fourier series for ExB drifts
-            (default = True)
-        ExB_drifts : (10x2 ndarray of floats)
-            Matrix of Fourier series coefficients dependent on solar local time
-            (SLT) in hours where
-            ExB_total = ExB_drifts[i,0]*cos((i+1)*pi*SLT/12)
-                      + ExB_drifts[i,1]*sin((i+1)*pi*SLT/12)
-            (default = np.zeros((10,2)))
+    tag : (string)
+        Name of run for data archive.  First-level directory under save directory
+        (default = 'test')
+    clean : (boolean)
+        A True value will delete the local files after archiving
+        A False value will not delete local save files
+        (default = False)
+    test : (boolean)
+        A True value will not run the sami2 executable.  Used for debugging the framework.
+        A False value will run the sami2 executable
+        (default = False)
 
-        Tinf_scale : (float)
-            Multiplier to scale Exospheric temperature in MSIS
-            (default = 1)
-        euv_scale : (float)
-            Multiplier to scale total ionization in EUVAC
-            (default = 1)
-        hwm_scale : (float)
-            Multiplier to scale Neutral Winds from HWM
-            (default = 1)
-        hwm_mod : (int)
-            Specifies which version of HWM to use.
-            Allowable values are 93, 7, 14
-            (default = 14)
+    Methods
+    ----------
+    _generate_namelist(info)
 
-        tag : (string)
-            Name of run for data archive.  First-level directory under save directory
-            (default = 'test')
-        clean : (boolean)
-            A True value will delete the local files after archiving
-            A False value will not delete local save files
-            (default = False)
-        test : (boolean)
-            A True value will not run the sami2 executable.  Used for debugging the framework.
-            A False value will run the sami2 executable
-            (default = False)
+    archive_model(path,clean,fejer)
 
     """
 
     def _generate_namelist(info):
         """
         Generates namelist file for sami2
+
+        Parameters
+        ----------
+        info : (dict)
+            Contains variables for each line of the namelist file
         """
 
         # Check HWM model parameters
@@ -319,6 +348,19 @@ def run_model(year, day, lat=0, lon=0,
     # End _generate_namelist method
 
     def archive_model(path,clean,fejer):
+        """ Moves the model output files to a common archive
+
+        Parameters
+        ----------
+        path : (string)
+            full path of file destination
+        clean : (boolean)
+            If True, then delete dat files locally
+        fejer : (boolean)
+            Specifies whether Fejer-Scherliess model is used
+            If False, then 'exb.inp' is also archived
+
+        """
 
         filelist = ['glonf.dat','glatf.dat','zaltf.dat',
                     'vsif.dat','time.dat','tif.dat','tef.dat',

@@ -151,28 +151,6 @@ class model:
         return ''.join(out)
 
 
-def _generate_sami2_path():
-    """
-    Creates a path based on platform
-
-    parameters
-    ----------
-    None
-
-    Returns
-    -------
-    path : (string)
-        complete path pointing to sami2 fortran and executables
-
-    """
-
-    if platform.node()=='gs674-jklenmbp.home':
-        path = '/Users/jklenzin/code/sami2py/fortran/'
-    else:
-        path = '/Users/jklenzing/code/sami2low-1.00/fortran/'
-
-    return path
-
 
 def _generate_path(tag, lon, year, day):
     """
@@ -461,6 +439,29 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         file.write('&end\n')
 
         file.close()
+
+
+    def _generate_sami2_path():
+        """
+        Creates a path based on platform
+
+        parameters
+        ----------
+        None
+
+        Returns
+        -------
+        path : (string)
+            complete path pointing to sami2 fortran and executables
+
+        """
+
+        if platform.node()=='gs674-jklenmbp.home':
+            path = '/Users/jklenzin/code/sami2py/fortran/'
+        else:
+            path = '/Users/jklenzing/code/sami2low-1.00/fortran/'
+
+        return path
 
 
     def archive_model(path,clean,fejer):

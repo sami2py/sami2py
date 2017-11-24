@@ -8,8 +8,30 @@
 Functions
 -------------------------------------------------------------------------------
 
+def run_model(year, day, lat=0, lon=0, alt=300,
+              f107=120, f107a=120, ap=0,
+              rmin=100, rmax=2000, gams=3, gamp=3, altmin=85.,
+              dthr=0.25, hrinit=0., hrpr=24., hrmax=48.,
+              dt0=30., maxstep=100000000, denmin=1.e-6,
+              nion1=1, nion2=7, mmass=48.0, h_scale=1, o_scale=1,
+              no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
+              Tinf_scale=1, Tn_scale=1., euv_scale=1,
+              wind_scale=1, hwm_model=14,
+              fejer=True, ExB_drifts=np.zeros((10,2)), ve01=0., exb_scale=1,
+              alt_crit=150., cqe=7.e-14,
+              tag='test', clean=False, test=False)
+
+    Initializes a run of the SAMI2 model and archives the data.
+
+
+_generate_path(tag, lon, year, day)
+    Generates path to archived model runs based on input paramters.
+
 Classes
 -------------------------------------------------------------------------------
+
+model   Loads, reshapes, and holds SAMI2 output for a given model run
+        specified by the user.
 
 Moduleauthor
 -------------------------------------------------------------------------------
@@ -193,7 +215,6 @@ def run_model(year, day, lat=0, lon=0, alt=300,
               wind_scale=1, hwm_model=14,
               fejer=True, ExB_drifts=np.zeros((10,2)), ve01=0., exb_scale=1,
               alt_crit=150., cqe=7.e-14,
-
               tag='test', clean=False, test=False):
     """
     Runs SAMI2 and archives the data in path

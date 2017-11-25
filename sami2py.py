@@ -203,7 +203,15 @@ class model:
         self.MetaData['ap'] = int(re.findall(r"\d+", namelist[16])[0])
 
         self.MetaData['Neutral Atmosphere Model'] = 'NRLMSISe-2000'
-
+        neutral_scalars = re.findall(r"\d*\.\d+|\d+", namelist[28])
+        self.MetaData['H Multiplier'] = float(neutral_scalars[0])
+        self.MetaData['O Multiplier'] = float(neutral_scalars[1])
+        self.MetaData['NO Multiplier'] = float(neutral_scalars[2])
+        self.MetaData['O2 Multiplier'] = float(neutral_scalars[3])
+        self.MetaData['He Multiplier'] = float(neutral_scalars[4])
+        self.MetaData['N2 Multiplier'] = float(neutral_scalars[5])
+        self.MetaData['N Multiplier'] = float(neutral_scalars[6])
+           
         if '.true.' in namelist[10]:
             self.MetaData['ExB model'] = 'Fejer-Scherliess'
         else:

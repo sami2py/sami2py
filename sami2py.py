@@ -195,12 +195,23 @@ class model:
     def _generate_metadata(self,namelist):
         """ Reads the namelist and generates MetaData based on Parameters
         """
-        if namelist[10][-7:-3]=='true':
-            self.MetaData['ExBmodel'] = 'Fejer-Scherliess'
+
+        import re
+
+        self.MetaData['F10.7A'] = float(re.findall(r"\d*\.\d+|\d+", namelist[14])[0])
+        self.MetaData['F10.7'] = float(re.findall(r"\d*\.\d+|\d+", namelist[15])[2])
+        self.MetaData['ap'] = int(re.findall(r"\d+", namelist[16])[0])
+
+        self.MetaData['Neutral Atmosphere Model'] = 'NRLMSISe-2000'
+
+        if '.true.' in namelist[10]:
+            self.MetaData['ExB model'] = 'Fejer-Scherliess'
         else:
-            self.MetaData['ExBmodel'] = 'Fourier Series'
-            self.MetaData['FourierCoeffs'] = np.loadtxt(path+'exb.inp')
-        self.MetaData['Wind Model'] = 'HWM' + self.namelist[36][-3:-1]
+            self.MetaData['ExB model'] = 'Fourier Series'
+            self.MetaData['Fourier Coeffs'] = np.loadtxt(path+'exb.inp')
+
+        wind_model = int(re.findall(r"\d+",namelist[36])[0])
+        self.MetaData['Wind Model'] = ('HWM-%02d' % wind_model)
 
 def _generate_path(tag, lon, year, day):
     """

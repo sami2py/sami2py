@@ -113,11 +113,18 @@ class model:
         out.append('%d time steps from %4.1f to %4.1f UT\n\n'
                 % (len(self.ut), min(self.ut), max(self.ut)))
 
-        #if self.fejer:
-        #    out.append('Fejer ExB model used\n')
-        #else:
-        #    out.append('Fourier ExB model used\n')
-        #out.append('Wind Model used: %s' % self.hwm_mod)
+        out.append('Solar Activity\n')
+        out.append('--------------\n')
+        out.append('F10.7: %5.1f sfu\n' % self.MetaData['F10.7'])
+        out.append('F10.7A: %5.1f sfu\n' % self.MetaData['F10.7A'])
+        out.append('ap: %d \n\n' % self.MetaData['ap'])
+
+        out.append('Component Models Used\n')
+        out.append('---------------------\n')
+        out.append('Neutral Atmosphere: %s\n' % self.MetaData['Neutral Atmosphere Model'])
+        out.append('Winds: %s\n' % self.MetaData['Wind Model'])
+        out.append('Photoproduction: %s\n' % self.MetaData['EUV Model'])
+        out.append('ExB Drifts: %s\n\n' % self.MetaData['ExB model'])
 
         return ''.join(out)
 
@@ -203,6 +210,7 @@ class model:
         self.MetaData['ap'] = int(re.findall(r"\d+", namelist[16])[0])
 
         self.MetaData['Neutral Atmosphere Model'] = 'NRLMSISe-2000'
+        self.MetaData['EUV Model'] = 'EUVAC'
         neutral_scalars = re.findall(r"\d*\.\d+|\d+", namelist[28])
         self.MetaData['H Multiplier'] = float(neutral_scalars[0])
         self.MetaData['O Multiplier'] = float(neutral_scalars[1])
@@ -211,7 +219,7 @@ class model:
         self.MetaData['He Multiplier'] = float(neutral_scalars[4])
         self.MetaData['N2 Multiplier'] = float(neutral_scalars[5])
         self.MetaData['N Multiplier'] = float(neutral_scalars[6])
-           
+
         if '.true.' in namelist[10]:
             self.MetaData['ExB model'] = 'Fejer-Scherliess'
         else:

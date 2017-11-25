@@ -95,15 +95,6 @@ class model:
             Electron Temperature (K)
         """
 
-        def _calculate_slt(ut, glon, day):
-
-            slt = np.mod((ut*60 + glon*4),1440)/60.0
-            m = 2*np.pi*day/365.242
-            dt = -7.657*np.sin(m) + 9.862*np.sin(2*m + 3.599)
-            slt = slt - dt/60.0
-
-            return slt
-
         nf = 98
         nz = 101
         ni = 7
@@ -120,7 +111,7 @@ class model:
         self.namelist = file.readlines()
         file.close()
 
-        if self.namelist[10][-6:-2]=='true':
+        if self.namelist[10][-7:-3]=='true':
             self.fejer=True
         else:
             self.fejer=False
@@ -130,7 +121,7 @@ class model:
         # Get times
         time = np.loadtxt(path+'time.dat')
         self.ut = time[:,1] + time[:,2]/60 + time[:,3]/3600;
-        self.slt = _calculate_slt(self.ut,lon,day)
+        self._calculate_slt()
         nt = len(self.ut)
 
         # Get Location
@@ -171,6 +162,26 @@ class model:
         out.append('Wind Model used: %s' % self.hwm_mod)
 
         return ''.join(out)
+
+    def _calculate_slt(self):
+        """ Calculates Solar Local Time for reference point of model
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        self.slt : (float)
+            Solar Local Time in hours
+
+        """
+
+        slt = np.mod((self.ut*60 + self.lon0*4),1440)/60.0
+        m = 2*np.pi*self.day/365.242
+        dt = -7.657*np.sin(m) + 9.862*np.sin(2*m + 3.599)
+        self.slt = slt - dt/60.0
+
 
 
 

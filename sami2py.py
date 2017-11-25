@@ -95,28 +95,76 @@ class model:
             Electron Temperature (K)
         """
 
-        nf = 98
-        nz = 101
-        ni = 7
-
         self.tag = tag
         self.lon0 = lon
         self.year = year
         self.day = day
 
-        path = _generate_path(tag,lon,year,day)
+        self._load_model()
+
+    # End __init__ method
+
+    def __repr__(self):
+
+        out = ['']
+        out.append('Model Run = %s\n' % self.tag)
+        out.append('Day %03d, %4d\n' % (self.day,self.year))
+        out.append('Longitude = %d deg\n' % self.lon0)
+        out.append('%d time steps from %4.1f to %4.1f UT\n\n'
+                % (len(self.ut), min(self.ut), max(self.ut)))
+
+        #if self.fejer:
+        #    out.append('Fejer ExB model used\n')
+        #else:
+        #    out.append('Fourier ExB model used\n')
+        #out.append('Wind Model used: %s' % self.hwm_mod)
+
+        return ''.join(out)
+
+    def _calculate_slt(self):
+        """ Calculates Solar Local Time for reference point of model
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        self.slt : (float)
+            Solar Local Time in hours
+
+        """
+
+        slt = np.mod((self.ut*60 + self.lon0*4),1440)/60.0
+        m = 2*np.pi*self.day/365.242
+        dt = -7.657*np.sin(m) + 9.862*np.sin(2*m + 3.599)
+        self.slt = slt - dt/60.0
+
+    def _load_model(self):
+        """ Loads model results
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+
+        """
+
+        nf = 98
+        nz = 101
+        ni = 7
+
+        path = _generate_path(self.tag,self.lon0,self.year,self.day)
 
         # Get NameList
         file = open(path + 'sami2low-1.00.namelist')
         self.namelist = file.readlines()
         file.close()
 
-        if self.namelist[10][-7:-3]=='true':
-            self.fejer=True
-        else:
-            self.fejer=False
-            self.ExB_drifts = np.loadtxt(path+'exb.inp')
-        self.hwm_mod = 'HWM' + self.namelist[36][-3:-1]
+        self.MetaData = dict()
+        self._generate_metadata(self.namelist)
 
         # Get times
         time = np.loadtxt(path+'time.dat')
@@ -144,46 +192,15 @@ class model:
         self.te = np.reshape(te,(nz,nf,nt),order="F")
         del deni, vsi, ti, te
 
-    # End __init__ method
-
-    def __repr__(self):
-
-        out = ['']
-        out.append('Model Run = %s\n' % self.tag)
-        out.append('Day %03d, %4d\n' % (self.day,self.year))
-        out.append('Longitude = %d deg\n' % self.lon0)
-        out.append('%d time steps from %4.1f to %4.1f UT\n\n'
-                % (len(self.ut), min(self.ut), max(self.ut)))
-
-        if self.fejer:
-            out.append('Fejer ExB model used\n')
-        else:
-            out.append('Fourier ExB model used\n')
-        out.append('Wind Model used: %s' % self.hwm_mod)
-
-        return ''.join(out)
-
-    def _calculate_slt(self):
-        """ Calculates Solar Local Time for reference point of model
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        self.slt : (float)
-            Solar Local Time in hours
-
+    def _generate_metadata(self,namelist):
+        """ Reads the namelist and generates MetaData based on Parameters
         """
-
-        slt = np.mod((self.ut*60 + self.lon0*4),1440)/60.0
-        m = 2*np.pi*self.day/365.242
-        dt = -7.657*np.sin(m) + 9.862*np.sin(2*m + 3.599)
-        self.slt = slt - dt/60.0
-
-
-
+        if namelist[10][-7:-3]=='true':
+            self.MetaData['ExBmodel'] = 'Fejer-Scherliess'
+        else:
+            self.MetaData['ExBmodel'] = 'Fourier Series'
+            self.MetaData['FourierCoeffs'] = np.loadtxt(path+'exb.inp')
+        self.MetaData['Wind Model'] = 'HWM' + self.namelist[36][-3:-1]
 
 def _generate_path(tag, lon, year, day):
     """

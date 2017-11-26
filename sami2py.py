@@ -179,25 +179,37 @@ class model:
         self._calculate_slt()
         nt = len(self.ut)
 
-        # Get Location
-        glat = np.loadtxt(path+'glatf.dat')
-        self.glat = np.reshape(glat,(nz,nf),order="F")
-        glon = np.loadtxt(path+'glonf.dat')
-        self.glon = np.reshape(glon,(nz,nf),order="F")
-        zalt = np.loadtxt(path+'zaltf.dat')
-        self.zalt = np.reshape(zalt,(nz,nf),order="F")
-        del glat, glon, zalt
+        if self.MetaData['fmtout']:
+            # Get Location
+            glat = np.loadtxt(path+'glatf.dat')
+            glon = np.loadtxt(path+'glonf.dat')
+            zalt = np.loadtxt(path+'zaltf.dat')
 
-        # Get plasma values
-        deni = np.loadtxt(path+'denif.dat')
+            # Get plasma values
+            deni = np.loadtxt(path+'denif.dat')
+            vsi = np.loadtxt(path+'vsif.dat')
+            ti = np.loadtxt(path+'tif.dat')
+            te = np.loadtxt(path+'tef.dat')
+        else:
+            # Get Location
+            glat = np.loadtxt(path+'glatf.dat')
+            glon = np.loadtxt(path+'glonf.dat')
+            zalt = np.loadtxt(path+'zaltf.dat')
+
+            # Get plasma values
+            deni = np.loadtxt(path+'denif.dat')
+            vsi = np.loadtxt(path+'vsif.dat')
+            ti = np.loadtxt(path+'tif.dat')
+            te = np.loadtxt(path+'tef.dat')
+
+        self.glat = np.reshape(glat,(nz,nf),order="F")
+        self.glon = np.reshape(glon,(nz,nf),order="F")
+        self.zalt = np.reshape(zalt,(nz,nf),order="F")
         self.deni = np.reshape(deni,(nz,nf,ni,nt),order="F")
-        vsi = np.loadtxt(path+'vsif.dat')
         self.vsi = np.reshape(vsi,(nz,nf,ni,nt),order="F")
-        ti = np.loadtxt(path+'tif.dat')
         self.ti = np.reshape(ti,(nz,nf,ni,nt),order="F")
-        te = np.loadtxt(path+'tef.dat')
         self.te = np.reshape(te,(nz,nf,nt),order="F")
-        del deni, vsi, ti, te
+        del glat, glon, zalt, deni, vsi, ti, te
 
     def _generate_metadata(self,namelist):
         """ Reads the namelist and generates MetaData based on Parameters

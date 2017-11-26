@@ -205,6 +205,8 @@ class model:
 
         import re
 
+        self.MetaData['fmtout'] = ('.true.' in namelist[1])
+
         self.MetaData['F10.7A'] = float(re.findall(r"\d*\.\d+|\d+", namelist[14])[0])
         self.MetaData['F10.7'] = float(re.findall(r"\d*\.\d+|\d+", namelist[15])[2])
         self.MetaData['ap'] = int(re.findall(r"\d+", namelist[16])[0])

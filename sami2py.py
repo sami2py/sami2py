@@ -557,7 +557,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         return path
 
 
-    def archive_model(path,clean,fejer):
+    def _archive_model(path,clean,fejer,fmtout):
         """ Moves the model output files to a common archive
 
         Parameters
@@ -572,9 +572,15 @@ def run_model(year, day, lat=0, lon=0, alt=300,
 
         """
 
-        filelist = ['glonf.dat','glatf.dat','zaltf.dat',
-                    'vsif.dat','time.dat','tif.dat','tef.dat',
-                    'denif.dat','sami2low-1.00.namelist']
+        if fmtout:
+            filelist = ['glonf.dat','glatf.dat','zaltf.dat',
+                        'vsif.dat','time.dat','tif.dat','tef.dat',
+                        'denif.dat','sami2low-1.00.namelist']
+        else:
+            filelist = ['glonf.dat','glatf.dat','zaltf.dat',
+                        'vsif.dat','time.dat','tif.dat','tef.dat',
+                        'denif.dat','sami2low-1.00.namelist']
+
         try:
             os.stat(path)
         except:
@@ -622,6 +628,6 @@ def run_model(year, day, lat=0, lon=0, alt=300,
     path = _generate_path(tag,lon,year,day)
     if test==False:
         os.system('./sami2low.x')
-    archive_model(path,clean,fejer)
+    _archive_model(path,clean,fejer,fmtout)
 
     os.chdir(current_dir)

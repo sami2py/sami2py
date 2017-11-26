@@ -284,7 +284,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
               wind_scale=1, hwm_model=14,
               fejer=True, ExB_drifts=np.zeros((10,2)), ve01=0., exb_scale=1,
               alt_crit=150., cqe=7.e-14,
-              tag='test', clean=False, test=False):
+              tag='test', clean=False, test=False, fmtout=True):
     """
     Runs SAMI2 and archives the data in path
 
@@ -453,6 +453,9 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         A True value will not run the sami2 executable.  Used for debugging the framework.
         A False value will run the sami2 executable
         (default = False)
+    fmtout : (boolean)
+        If true, sami2 will output as text files.
+        If false, sami2 will output as binary.
 
 
     Methods
@@ -483,7 +486,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         file = open('sami2low-1.00.namelist','w')
 
         file.write('&go\n')
-        file.write('  fmtout   = .true.,\n')
+        file.write('  fmtout   = %s,\n' % info['fmtout'])
         file.write('  maxstep  =  %d,\n' % info['maxstep'])
         file.write('  hrmax    =  %f,\n' % info['hrmax'])
         file.write('  dt0      =  %f,\n' % info['dt0'])
@@ -608,6 +611,11 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         if ExB_drifts.shape!=(10,2):
             print('Invalid ExB drift shape!  Must be 10x2 ndarray.')
         np.savetxt('exb.inp',ExB_drifts)
+
+    if fmtout:
+        info['fmtout'] = '.true.'
+    else:
+        info['fmtout'] = '.false.'
 
 
     _generate_namelist(info)

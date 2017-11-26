@@ -13,7 +13,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
               rmin=100, rmax=2000, gams=3, gamp=3, altmin=85.,
               dthr=0.25, hrinit=0., hrpr=24., hrmax=48.,
               dt0=30., maxstep=100000000, denmin=1.e-6,
-              nion1=1, nion2=7, mmass=48.0, h_scale=1, o_scale=1,
+              nion1=1, nion2=7, mmass=48, h_scale=1, o_scale=1,
               no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
               Tinf_scale=1, Tn_scale=1., euv_scale=1,
               wind_scale=1, hwm_model=14,
@@ -278,7 +278,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
               rmin=100, rmax=2000, gams=3, gamp=3, altmin=85.,
               dthr=0.25, hrinit=0., hrpr=24., hrmax=48.,
               dt0=30., maxstep=100000000, denmin=1.e-6,
-              nion1=1, nion2=7, mmass=48.0, h_scale=1, o_scale=1,
+              nion1=1, nion2=7, mmass=48, h_scale=1, o_scale=1,
               no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
               Tinf_scale=1, Tn_scale=1., euv_scale=1,
               wind_scale=1, hwm_model=14,
@@ -370,7 +370,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         only the dominant ions in the ionosphere (H, O, NO, O2). This will
         speed up the run time of the code by about 30%.
         (default=7)
-    mmass : (float)
+    mmass : (int)
         Average neutral mass density.
         (default = 48)
 
@@ -504,7 +504,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         file.write('  ap       =  %d,\n' % info['ap'])
         file.write('  year     =  %d,\n' % info['year'])
         file.write('  day      =  %d,\n' % info['day'])
-        file.write('  mmass    =  %f,\n' % info['mmass'])
+        file.write('  mmass    =  %d,\n' % info['mmass'])
         file.write('  nion1    =  %d,\n' % info['nion1'])
         file.write('  nion2    =  %d,\n' % info['nion2'])
         file.write('  hrinit   =  %f,\n' % info['hrinit'])

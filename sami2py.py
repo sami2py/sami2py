@@ -574,12 +574,12 @@ def run_model(year, day, lat=0, lon=0, alt=300,
 
         if fmtout:
             filelist = ['glonf.dat','glatf.dat','zaltf.dat',
-                        'vsif.dat','time.dat','tif.dat','tef.dat',
-                        'denif.dat','sami2low-1.00.namelist']
+                        'denif.dat','vsif.dat','tif.dat','tef.dat',
+                        'time.dat','sami2low-1.00.namelist']
         else:
-            filelist = ['glonf.dat','glatf.dat','zaltf.dat',
-                        'vsif.dat','time.dat','tif.dat','tef.dat',
-                        'denif.dat','sami2low-1.00.namelist']
+            filelist = ['glonu.dat','glatu.dat','zaltu.dat',
+                        'deniu.dat','vsiu.dat','tiu.dat','teu.dat',
+                        'time.dat','sami2low-1.00.namelist']
 
         try:
             os.stat(path)

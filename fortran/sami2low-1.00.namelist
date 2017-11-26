@@ -1,7 +1,7 @@
 &go
-  fmtout   = .true.,
+  fmtout   = .false.,
   maxstep  =  100000000,
-  hrmax    =  48.000000,
+  hrmax    =  24.500000,
   dt0      =  30.000000,
   dthr     =  0.250000,
   hrpr     =  24.000000,
@@ -17,7 +17,7 @@
   ap       =  0,
   year     =  2011,
   day      =  207,
-  mmass    =  48.000000,
+  mmass    =  48,
   nion1    =  1,
   nion2    =  7,
   hrinit   =  0.000000,

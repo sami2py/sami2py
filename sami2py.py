@@ -243,6 +243,20 @@ class model:
         wind_model = int(re.findall(r"\d+",namelist[36])[0])
         self.MetaData['Wind Model'] = ('HWM-%02d' % wind_model)
 
+    def check_standard_model(self, model_type="all"):
+        """ Checks for standard atmospheric inputs
+        """
+        mod_keys = list()
+        meta_keys = self.MetaData.keys()
+
+        for mkey in meta_keys:
+            if mkey.find('Multiplier') > 0:
+                if self.MetaData[mkey] != 1:
+                    mod_keys.append(mkey)
+
+        return mod_keys
+    
+
 def _generate_path(tag, lon, year, day):
     """
     Creates a path based on run tag, date, and longitude

@@ -27,9 +27,6 @@ References
 """
 
 import platform
-import os
-import shutil
-import numpy as np
 
 
 def _generate_path(tag, lon, year, day):

@@ -278,7 +278,7 @@ def _generate_path(tag, lon, year, day):
         Complete path pointing to model archive for a given run
     """
 
-    if platform.node()=='gs674-jklenmbp.home':
+    if 'gs674-jklenmbp' in platform.node():
         basedir = '/Users/jklenzin/data/sami2/'
     else:
         basedir = '/Volumes/drive/models/sami2/'
@@ -563,7 +563,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
 
         """
 
-        if platform.node()=='gs674-jklenmbp.home':
+        if 'gs674-jklenmbp' in platform.node():
             path = '/Users/jklenzin/code/sami2py/fortran/'
         else:
             path = '/Users/jklenzing/code/sami2low-1.00/fortran/'

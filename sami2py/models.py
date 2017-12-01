@@ -25,8 +25,6 @@ References
 
 
 """
-import numpy as np
-
 
 class Sami2Model(object):
 

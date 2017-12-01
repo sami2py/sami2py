@@ -26,8 +26,6 @@ References
 
 """
 
-import platform
-
 
 def _generate_path(tag, lon, year, day):
     """

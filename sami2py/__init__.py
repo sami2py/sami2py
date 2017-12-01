@@ -22,6 +22,11 @@ Modules
 ---------------------------------------------------------------------------
 """
 import logging
+import platform
+import os
+import shutil
+import numpy as np
+
 
 __version__ = str('0.1a1')
 

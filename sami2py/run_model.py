@@ -38,11 +38,6 @@ References
 
 """
 
-import platform
-import os
-import shutil
-import numpy as np
-
 def run_model(year, day, lat=0, lon=0, alt=300,
               f107=120, f107a=120, ap=0,
               rmin=100, rmax=2000, gams=3, gamp=3, altmin=85.,

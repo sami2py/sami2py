@@ -245,6 +245,17 @@ class model:
 
     def check_standard_model(self, model_type="all"):
         """ Checks for standard atmospheric inputs
+
+        parameters
+        -----------
+        model_type : (str)
+            Limit check to certain models (default='all')
+
+        Returns
+        --------
+        mod_keys : (list)
+            List of modified keyword for self.MetaData, empty
+            if no modifications were made
         """
         mod_keys = list()
         meta_keys = self.MetaData.keys()
@@ -255,7 +266,7 @@ class model:
                     mod_keys.append(mkey)
 
         return mod_keys
-    
+
 
 def _generate_path(tag, lon, year, day):
     """

@@ -28,7 +28,7 @@ References
 from .common import generate_path
 import numpy as np
 
-class Sami2Model(object):
+class model(object):
 
 
     def __init__(self, tag, lon, year, day):

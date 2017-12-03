@@ -22,8 +22,6 @@ Modules
 ---------------------------------------------------------------------------
 """
 import logging
-import platform
-
 
 __version__ = str('0.1a1')
 
@@ -31,7 +29,9 @@ __version__ = str('0.1a1')
 #---------------------------------------------------------------------
 
 try:
-    from sami2py import (models, run_model, common)
-    from sami2py.models import (Sami2Model)
+    from sami2py import (run_model, common, model)
+    from sami2py.run_model import (run_model)
+    #from sami2py.common import (generate_path)
+    from sami2py.model import (model)
 except ImportError as e:
     logging.exception('problem importing sami2py: ' + str(e))

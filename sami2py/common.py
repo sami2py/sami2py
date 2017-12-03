@@ -8,7 +8,7 @@
 Functions
 -------------------------------------------------------------------------------
 
-_generate_path(tag, lon, year, day)
+generate_path(tag, lon, year, day)
     Generates path to archived model runs based on input paramters.
 
 
@@ -26,8 +26,9 @@ References
 
 """
 
+import platform
 
-def _generate_path(tag, lon, year, day):
+def generate_path(tag, lon, year, day):
     """
     Creates a path based on run tag, date, and longitude
 

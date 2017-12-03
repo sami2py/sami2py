@@ -25,6 +25,8 @@ References
 
 
 """
+from .common import generate_path
+import numpy as np
 
 class Sami2Model(object):
 
@@ -78,8 +80,6 @@ class Sami2Model(object):
         self.day = day
 
         self._load_model()
-
-    # End __init__ method
 
     def __repr__(self):
 
@@ -140,7 +140,7 @@ class Sami2Model(object):
         nz = 101
         ni = 7
 
-        path = _generate_path(self.tag,self.lon0,self.year,self.day)
+        path = generate_path(self.tag,self.lon0,self.year,self.day)
 
         # Get NameList
         file = open(path + 'sami2low-1.00.namelist')

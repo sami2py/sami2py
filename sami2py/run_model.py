@@ -37,6 +37,11 @@ References
 
 
 """
+import numpy as np
+import os
+import shutil
+from .common import generate_path
+
 
 def run_model(year, day, lat=0, lon=0, alt=300,
               f107=120, f107a=120, ap=0,
@@ -231,6 +236,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
 
     """
 
+
     def _generate_namelist(info):
         """
         Generates namelist file for sami2
@@ -390,7 +396,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
 
 
     _generate_namelist(info)
-    path = _generate_path(tag,lon,year,day)
+    path = generate_path(tag,lon,year,day)
     if test==False:
         os.system('./sami2low.x')
     _archive_model(path,clean,fejer,fmtout)

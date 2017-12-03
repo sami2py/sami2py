@@ -4,6 +4,7 @@
 *.mod
 
 .DS_STORE
+*.namelist
 *f.dat
 *u.dat
 time.dat

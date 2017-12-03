@@ -25,7 +25,7 @@ References
 
 
 """
-from .common import generate_path
+from .utils import generate_path
 import numpy as np
 
 class model(object):

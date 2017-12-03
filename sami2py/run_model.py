@@ -39,7 +39,7 @@ References
 """
 import numpy as np
 import os
-from .common import generate_path
+from .utils import generate_path
 
 
 def run_model(year, day, lat=0, lon=0, alt=300,
@@ -319,12 +319,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
 
         """
 
-        import platform
-
-        if 'gs674-jklenmbp' in platform.node():
-            path = '/Users/jklenzin/code/sami2py/sami2py/fortran/'
-        else:
-            path = '/Users/jklenzing/code/sami2low-1.00/sami2py/fortran/'
+        path = os.path.join(os.path.expanduser('~'),'code/sami2py/sami2py/fortran/')
 
         return path
 

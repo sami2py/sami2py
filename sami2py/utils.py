@@ -26,8 +26,6 @@ References
 
 """
 
-import platform
-
 def generate_path(tag, lon, year, day):
     """
     Creates a path based on run tag, date, and longitude
@@ -49,10 +47,33 @@ def generate_path(tag, lon, year, day):
         Complete path pointing to model archive for a given run
     """
 
-    if 'gs674-jklenmbp' in platform.node():
-        basedir = '/Users/jklenzin/data/sami2/'
-    else:
-        basedir = '/Volumes/drive/models/sami2/'
+    from sami2py import model_dir
 
-    path = basedir + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
+    path = model_dir + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
+
     return path
+
+def set_model_dir(path=None, store=None):
+    """
+    Set the top level directory pysat uses to look for data and reload.
+
+    Parameters
+    ----------
+    path : string
+        valid path to directory pysat uses to look for data
+    store : bool
+        if True, store data directory for future runs
+
+
+    """
+    import os
+    import sami2py
+    if store is None:
+        store = True
+    if os.path.isdir(path):
+        if store:
+            with open(os.path.join(os.path.expanduser('~'), '.sami2py', 'model_path.txt'), 'w') as f:
+                f.write(path)
+        sami2py.model_dir = path
+    else:
+        raise ValueError('Path does not lead to a valid directory.')

@@ -49,7 +49,7 @@ else:
 
 if model_dir == '':
     print(''.join(('Run sami2py.utils.set_model_dir to set the path',
-        ' to top-level directory that will/does contain science data.')))
+        ' to top-level directory that will/does contain model outputs.')))
 
 # import main functions
 try:

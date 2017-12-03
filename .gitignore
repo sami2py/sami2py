@@ -4,7 +4,7 @@
 *.mod
 
 .DS_STORE
-*.namelist
+sami2low-1.00.namelist
 *f.dat
 *u.dat
 time.dat

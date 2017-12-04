@@ -24,7 +24,6 @@ run_model(year, day, lat=0, lon=0, alt=300,
               tag='test', clean=False, test=False)
 
     Initializes a run of the SAMI2 model and archives the data.
-
 ---------------------------------------------------------------------------
 
 Classes

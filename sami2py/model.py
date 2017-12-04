@@ -170,36 +170,36 @@ class model(object):
         else:
             # Get Location
             f = open(path+'glatu.dat','rb')
-        	glat = np.fromfile(f, dtype='float32')[1:-1]
-        	f.close()
+            glat = np.fromfile(f, dtype='float32')[1:-1]
+            f.close()
 
             f = open(path+'glonu.dat','rb')
-        	glon = np.fromfile(f, dtype='float32')[1:-1]
-        	f.close()
+            glon = np.fromfile(f, dtype='float32')[1:-1]
+            f.close()
 
             f = open(path+'zaltu.dat','rb')
-        	zalt = np.fromfile(f, dtype='float32')[1:-1]
-        	f.close()
+            zalt = np.fromfile(f, dtype='float32')[1:-1]
+            f.close()
 
             # Get plasma values
-        	f = open(path+'deniu.dat','rb')
-        	temp = np.fromfile(f, dtype='float32')
-        	f.close()
+            f = open(path+'deniu.dat','rb')
+            temp = np.fromfile(f, dtype='float32')
+            f.close()
             deni = temp.reshape((nz*nf*ni+2),nt,order='F')[1:-1,:]
 
             f = open(path+'vsiu.dat','rb')
-        	temp = np.fromfile(f, dtype='float32')
-        	f.close()
+            temp = np.fromfile(f, dtype='float32')
+            f.close()
             vsi = temp.reshape((nz*nf*ni+2),nt,order='F')[1:-1,:]
 
             f = open(path+'tiu.dat','rb')
-        	temp = np.fromfile(f, dtype='float32')
-        	f.close()
+            temp = np.fromfile(f, dtype='float32')
+            f.close()
             ti = temp.reshape((nz*nf*ni+2),nt,order='F')[1:-1,:]
 
             f = open(path+'teu.dat','rb')
-        	temp = np.fromfile(f, dtype='float32')
-        	f.close()
+            temp = np.fromfile(f, dtype='float32')
+            f.close()
             te = temp.reshape((nz*nf+2),nt,order='F')[1:-1,:]
 
         self.glat = np.reshape(glat,(nz,nf),order="F")

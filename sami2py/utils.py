@@ -11,6 +11,8 @@ Functions
 generate_path(tag, lon, year, day)
     Generates path to archived model runs based on input paramters.
 
+set_model_dir(path=None, store=None)
+    Allows user to specify the location where the model outputs will be stored
 
 Classes
 -------------------------------------------------------------------------------

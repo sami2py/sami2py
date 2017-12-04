@@ -12,8 +12,9 @@ Functions
 Classes
 -------------------------------------------------------------------------------
 
-Sami2Model   Loads, reshapes, and holds SAMI2 output for a given model run
-        specified by the user.
+model
+    Loads, reshapes, and holds SAMI2 output for a given model run
+    specified by the user.
 
 
 Moduleauthor

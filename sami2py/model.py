@@ -106,6 +106,15 @@ class model(object):
         out.append('Photoproduction: %s\n' % self.MetaData['EUV Model'])
         out.append('ExB Drifts: %s\n\n' % self.MetaData['ExB model'])
 
+        mod_keys = self.check_standard_model()
+        if len(mod_keys)==0:
+            out.append('No modifications to empirical models\n\n')
+        else:
+            out.append('Multipliers used\n')
+            out.append('----------------\n')
+            for mkey in mod_keys:
+                out.append('%s: %f\n' % (mkey, self.MetaData[mkey]))
+
         return ''.join(out)
 
     def _calculate_slt(self):

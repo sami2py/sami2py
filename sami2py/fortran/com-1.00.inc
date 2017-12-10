@@ -13,14 +13,14 @@
 
       common / nmlst / fmtout,maxstep,hrmax,dt0,dthr,hrpr,
      .                 grad_in,glat_in,glon_in,
-     .                 fejer, 
+     .                 fejer,
      .                 rmin,rmax,
      .                 altmin,
      .                 fbar,f10p7,ap,
      .                 year,day,mmass,
      .                 nion1,nion2,hrinit,tvn0,tvexb0,ve01,
      .                 gams,gamp,snn,stn,denmin,alt_crit,cqe,
-     .                 Tinf_scl,euv_scl,hwm_scl,hwm_mod   ! Added new input variables - JK
+     .                 Tinf_scl,euv_scl,hwm_mod   ! Added new input variables - JK
 
 
 !     s grid data
@@ -52,7 +52,7 @@
 !       ds,d2,
 !       d22s     differential `distances' used in diff eqs
 !       dels     actual arc length of grid in s direction
- 
+
 !     p grid data
 
       real delsp(nz,nfp1),vol(nz,nf)
@@ -71,9 +71,9 @@
 !     vol        volume (i.e., area) of cell
 
 !     alternate ExB data - JK
-      
+
       real fourierA(10), fourierB(10)
-      
+
       common  / altexb / fourierA, fourierB
 
 !     chemical reaction data
@@ -94,7 +94,7 @@
       common / var / deni,denn,ne,te,ti,tn,u,v,vsi,vsid
      .              ,sumvsi,vpi,vsic,ftc,dt
 
-!     velocity in radial (vor) and theta (vot) directions 
+!     velocity in radial (vor) and theta (vot) directions
 
       real vot(nz,nf,nion),vor(nz,nf,nion)
 
@@ -132,8 +132,3 @@
 
       real x0,y0,z0,plat,plon,bb0
       common / igrfstuff / x0,y0,z0,plat,plon,bb0
-
-
-
-
-      

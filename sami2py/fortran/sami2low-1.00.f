@@ -200,7 +200,7 @@
      .                year,day,mmass,
      .                nion1,nion2,hrinit,tvn0,tvexb0,ve01,
      .                gams,gamp,snn,stn,denmin,alt_crit,cqe,
-     .                Tinf_scl,euv_scl,hwm_scl,hwm_mod
+     .                Tinf_scl,euv_scl,hwm_mod
 
 
 !     read in parameters and initial ion density data
@@ -417,8 +417,8 @@
             call gws5 ( iyd,sec,alts(i,j),glats(i,j),glons(i,j),
      .                hrl,fbar,f10p7,app,whm07                )
           endif
-          v(i,j)   = 100. * whm07(1) * hwm_scl
-          u(i,j)   = 100. * whm07(2) * hwm_scl
+          v(i,j)   = 100. * whm07(1) * tvn0
+          u(i,j)   = 100. * whm07(2) * tvn0
         enddo
       enddo
 
@@ -683,8 +683,8 @@
             call gws5 ( iyd,sec,alts(i,j),glats(i,j),glons(i,j),
      .                hrl,fbar,f10p7,app,whm07                )
           endif
-          v(i,j)   = 100. * whm07(1) * hwm_scl  ! convert to cm/sec
-          u(i,j)   = 100. * whm07(2) * hwm_scl   ! convert to cm/sec
+          v(i,j)   = 100. * whm07(1) * tvn0  ! convert to cm/sec
+          u(i,j)   = 100. * whm07(2) * tvn0   ! convert to cm/sec
         enddo
       enddo
 

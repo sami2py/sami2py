@@ -252,7 +252,7 @@ class model(object):
             self.MetaData['ExB model'] = 'Fourier Series'
             self.MetaData['Fourier Coeffs'] = np.loadtxt(path+'exb.inp')
 
-        wind_model = int(re.findall(r"\d+",namelist[36])[0])
+        wind_model = int(re.findall(r"\d+",namelist[35])[0])
         self.MetaData['Wind Model'] = ('HWM-%02d' % wind_model)
 
     def check_standard_model(self, model_type="all"):

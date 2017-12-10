@@ -298,7 +298,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         file.write('  cqe      =  %e,\n' % info['cqe'])
         file.write('  Tinf_scl =  %f,\n' % info['Tinf_scale'])
         file.write('  euv_scl  =  %f,\n' % info['euv_scale'])
-        file.write('  hwm_scl  =  %f,\n' % info['wind_scale']) # Duplicate!
+        #file.write('  hwm_scl  =  %f,\n' % info['wind_scale']) # Duplicate!
         file.write('  hwm_mod  =  %d\n' % info['hwm_model'])
         file.write('&end\n')
 

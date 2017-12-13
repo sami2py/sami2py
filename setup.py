@@ -12,8 +12,9 @@ from setuptools import setup, find_packages
 def read(fname):
     return open(path.join(path.dirname(__file__), fname)).read()
 
+# generate path for fortran model files
 here = path.abspath(path.dirname(__file__))
-fortran_path = here + '/sami2py/fortran/'
+fortran_path = path.join(here,'sami2py','fortran')
 with open(path.join(path.expanduser('~'), '.sami2py', 'fortran_path.txt'), 'w') as f:
     f.write(fortran_path)
 

@@ -24,7 +24,9 @@ Additionally, you must make and install the fortran executables.
   $ cd sami2py/fortran
   $ make clean
   $ make compile
-````
+```
+
+Now you can run the sami2 executable (sami2low.x) from anywhere.
 
 # Example
 
@@ -43,7 +45,9 @@ Note that the sami2 model runs for 24 hours to clear transients, then begins to 
 
 Now load the resultant data:
 
-`````
+```
   $ S = sami2py.model(tag='test',lon=lon,year=year,day=day)
 
 ```
+
+Plotting features coming soon...

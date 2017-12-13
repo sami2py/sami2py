@@ -87,35 +87,36 @@ class model(object):
     def __repr__(self):
 
         out = ['']
-        out.append('Model Run = %s\n' % self.tag)
-        out.append('Day %03d, %4d\n' % (self.day,self.year))
-        out.append('Longitude = %d deg\n' % self.lon0)
-        out.append('%d time steps from %4.1f to %4.1f UT\n\n'
+        out.append('Model Run Name = %s' % self.tag)
+        out.append('Day %03d, %4d' % (self.day,self.year))
+        out.append('Longitude = %d deg' % self.lon0)
+        out.append('%d time steps from %4.1f to %4.1f UT'
                 % (len(self.ut), min(self.ut), max(self.ut)))
+        out.append('Ions Used: %s' % self.MetaData['Ions Used'])
 
-        out.append('Solar Activity\n')
-        out.append('--------------\n')
-        out.append('F10.7: %5.1f sfu\n' % self.MetaData['F10.7'])
-        out.append('F10.7A: %5.1f sfu\n' % self.MetaData['F10.7A'])
-        out.append('ap: %d \n\n' % self.MetaData['ap'])
+        out.append('\nSolar Activity')
+        out.append('--------------')
+        out.append('F10.7: %5.1f sfu' % self.MetaData['F10.7'])
+        out.append('F10.7A: %5.1f sfu' % self.MetaData['F10.7A'])
+        out.append('ap: %d' % self.MetaData['ap'])
 
-        out.append('Component Models Used\n')
-        out.append('---------------------\n')
-        out.append('Neutral Atmosphere: %s\n' % self.MetaData['Neutral Atmosphere Model'])
-        out.append('Winds: %s\n' % self.MetaData['Wind Model'])
-        out.append('Photoproduction: %s\n' % self.MetaData['EUV Model'])
-        out.append('ExB Drifts: %s\n\n' % self.MetaData['ExB model'])
+        out.append('\nComponent Models Used')
+        out.append('---------------------')
+        out.append('Neutral Atmosphere: %s' % self.MetaData['Neutral Atmosphere Model'])
+        out.append('Winds: %s' % self.MetaData['Wind Model'])
+        out.append('Photoproduction: %s' % self.MetaData['EUV Model'])
+        out.append('ExB Drifts: %s' % self.MetaData['ExB model'])
 
         mod_keys = self.check_standard_model()
         if len(mod_keys)==0:
-            out.append('No modifications to empirical models\n\n')
+            out.append('\nNo modifications to empirical models')
         else:
-            out.append('Multipliers used\n')
-            out.append('----------------\n')
+            out.append('\nMultipliers used')
+            out.append('----------------')
             for mkey in mod_keys:
-                out.append('%s: %f\n' % (mkey, self.MetaData[mkey]))
+                out.append('%s: %f' % (mkey, self.MetaData[mkey]))
 
-        return ''.join(out)
+        return '\n'.join(out)
 
     def _calculate_slt(self):
         """ Calculates Solar Local Time for reference point of model
@@ -243,7 +244,6 @@ class model(object):
         # Ions Used
         nion1 = wind_model = int(re.findall(r"\d+",namelist[20])[1]) - 1
         nion2 = wind_model = int(re.findall(r"\d+",namelist[21])[1]) - 1
-        print((nion1,nion2))
         ions = ['H+', 'O+', 'NO+', 'O2+', 'He+', 'N2+', 'N+']
         self.MetaData['Ions Used'] = ', '.join(ions[nion1:nion2])
 

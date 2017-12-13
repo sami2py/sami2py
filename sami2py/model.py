@@ -263,9 +263,9 @@ class model(object):
         self.MetaData['EUV Multiplier'] = float(
             re.findall(r"\d*\.\d+|\d+", namelist[34])[0])
         self.MetaData['ExB Drift Multiplier'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[24])[0])
+            re.findall(r"\d*\.\d+|\d+", namelist[24])[1])
         self.MetaData['Wind Multiplier'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[23])[0])
+            re.findall(r"\d*\.\d+|\d+", namelist[23])[1])
 
         if '.true.' in namelist[10]:
             self.MetaData['ExB model'] = 'Fejer-Scherliess'

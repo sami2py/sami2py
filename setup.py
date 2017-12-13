@@ -12,6 +12,12 @@ from setuptools import setup, find_packages
 def read(fname):
     return open(path.join(path.dirname(__file__), fname)).read()
 
+here = path.abspath(path.dirname(__file__))
+fortran_path = here + '/sami2py/fortran/'
+with open(path.join(path.expanduser('~'), '.sami2py', 'fortran_path.txt'), 'w') as f:
+    f.write(fortran_path)
+
+
 # Define a test suite
 
 # def sami2_test_suite():

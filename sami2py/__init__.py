@@ -50,7 +50,7 @@ __version__ = str('0.1a1')
 home_dir = os.path.expanduser('~')
 # set sami2py directory path in home directory
 sami2py_dir = os.path.join(home_dir, '.sami2py')
-# make sure a sami2py directory exists
+# make sure a sami2py directory for model output exists
 if not os.path.isdir(sami2py_dir):
     # create directory
     os.mkdir(sami2py_dir)
@@ -67,6 +67,11 @@ else:
 if model_dir == '':
     print(''.join(('Run sami2py.utils.set_model_dir to set the path',
         ' to top-level directory that will/does contain model outputs.')))
+
+# load fortran directory
+with open(os.path.join(sami2py_dir, 'fortran_path.txt'),'r') as f:
+    fortran_dir = f.readline()
+
 
 # import main functions
 try:

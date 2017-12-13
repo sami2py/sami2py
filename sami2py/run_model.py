@@ -305,26 +305,6 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         file.close()
 
 
-    def _generate_sami2_path():
-        """
-        Creates a path based on platform
-
-        parameters
-        ----------
-        None
-
-        Returns
-        -------
-        path : (string)
-            complete path pointing to sami2 fortran and executables
-
-        """
-
-        path = os.path.join(os.path.expanduser('~'),'code/sami2py/sami2py/fortran/')
-
-        return path
-
-
     def _archive_model(path,clean,fejer,fmtout):
         """ Moves the model output files to a common archive
 
@@ -366,8 +346,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
 
 
     current_dir = os.getcwd()
-    model_path = _generate_sami2_path()
-    os.chdir(model_path)
+    os.chdir(fortran_dir)
 
     info = {'year':year, 'day':day, 'lat':lat, 'lon':lon, 'alt':alt,
             'f107':f107, 'f107a':f107a, 'ap':ap,

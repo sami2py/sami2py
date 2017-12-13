@@ -241,8 +241,9 @@ class model(object):
         self.MetaData['EUV Model'] = 'EUVAC'
 
         # Ions Used
-        nion1 = wind_model = int(re.findall(r"\d+",namelist[20])[0]) - 1
-        nion2 = wind_model = int(re.findall(r"\d+",namelist[21])[0]) - 1
+        nion1 = wind_model = int(re.findall(r"\d+",namelist[20])[1]) - 1
+        nion2 = wind_model = int(re.findall(r"\d+",namelist[21])[1]) - 1
+        print((nion1,nion2))
         ions = ['H+', 'O+', 'NO+', 'O2+', 'He+', 'N2+', 'N+']
         self.MetaData['Ions Used'] = ', '.join(ions[nion1:nion2])
 

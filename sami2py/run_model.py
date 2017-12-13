@@ -236,6 +236,8 @@ def run_model(year, day, lat=0, lon=0, alt=300,
 
     """
 
+    from sami2py import fortran_dir
+
 
     def _generate_namelist(info):
         """

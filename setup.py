@@ -17,9 +17,9 @@ here = path.abspath(path.dirname(__file__))
 fortran_path = path.join(here,'sami2py','fortran')
 
 file_path = path.join(path.expanduser('~'), '.sami2py')
-if ~path.isdir(file_path):
+if path.isdir(file_path)==False:
     mkdir(file_path)
-    
+
 with open(path.join(file_path, 'fortran_path.txt'), 'w+') as f:
     f.write(fortran_path)
 

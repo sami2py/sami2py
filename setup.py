@@ -4,7 +4,7 @@
 # Full license can be found in License.md
 #-----------------------------------------------------------------------------
 
-from os import path
+from os import path, mkdir
 from setuptools import setup, find_packages
 
 # Define a read function for using README for long_description
@@ -15,7 +15,12 @@ def read(fname):
 # generate path for fortran model files
 here = path.abspath(path.dirname(__file__))
 fortran_path = path.join(here,'sami2py','fortran')
-with open(path.join(path.expanduser('~'), '.sami2py', 'fortran_path.txt'), 'w') as f:
+
+file_path = path.join(path.expanduser('~'), '.sami2py')
+if ~path.isdir(file_path):
+    mkdir(file_path)
+    
+with open(path.join(file_path, 'fortran_path.txt'), 'w+') as f:
     f.write(fortran_path)
 
 

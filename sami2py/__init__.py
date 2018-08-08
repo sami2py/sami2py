@@ -55,18 +55,18 @@ if not os.path.isdir(sami2py_dir):
     # create directory
     os.mkdir(sami2py_dir)
 
-model_archive_path = os.path.join(sami2py_dir, 'model_path.txt')
-if os.path.isfile(model_archive_path):
+archive_path = os.path.join(sami2py_dir, 'archive_path.txt')
+if os.path.isfile(archive_path):
     # load up stored data path
-    with open(model_archive_path,'r') as f:
-        model_dir = f.readline()
+    with open(archive_path,'r') as f:
+        archive_dir = f.readline()
 else:
     # create file
-    with open(model_archive_path,'w+') as f:
+    with open(archive_path,'w+') as f:
         f.write('')
     print('Created .sami2py directory in user home directory to store settings.')
-    model_dir=''
-    print(''.join(('Run sami2py.utils.set_model_dir to set the path',
+    archive_dir=''
+    print(''.join(('Run sami2py.utils.set_archive_dir to set the path',
         ' to top-level directory that will/does contain model outputs.')))
 
 # load fortran directory

@@ -11,7 +11,7 @@ Functions
 generate_path(tag, lon, year, day)
     Generates path to archived model runs based on input paramters.
 
-set_model_dir(path=None, store=None)
+set_archive_dir(path=None, store=None)
     Allows user to specify the location where the model outputs will be stored
 -------------------------------------------------------------------------------
 
@@ -52,13 +52,13 @@ def generate_path(tag, lon, year, day):
         Complete path pointing to model archive for a given run
     """
 
-    from sami2py import model_dir
+    from sami2py import archive_dir
 
-    path = model_dir + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
+    path = archive_dir + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
 
     return path
 
-def set_model_dir(path=None, store=None):
+def set_archive_dir(path=None, store=None):
     """
     Set the top level directory pysat uses to look for data and reload.
 
@@ -79,6 +79,6 @@ def set_model_dir(path=None, store=None):
         if store:
             with open(os.path.join(os.path.expanduser('~'), '.sami2py', 'model_path.txt'), 'w') as f:
                 f.write(path)
-        sami2py.model_dir = path
+        sami2py.archive_dir = path
     else:
         raise ValueError('Path does not lead to a valid directory.')

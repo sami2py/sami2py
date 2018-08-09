@@ -377,7 +377,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
 
     _generate_namelist(info)
     path = generate_path(tag,lon,year,day)
-    if test==False:
+    if not test:
         os.system('./sami2low.x')
     _archive_model(path,clean,fejer,fmtout)
 

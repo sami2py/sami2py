@@ -327,13 +327,13 @@ class model(object):
 
         return mod_keys
 
-    def plot_lat_alt(self, time_step=0, *args, **kwargs):
+    def plot_lat_alt(self, time_step=0, species=1, *args, **kwargs):
         """ Plots input parameter as a function of latitude and altitude
 
         """
         import matplotlib.pyplot as plt
 
-        plt.pcolor(self.glat,self.zalt,self.deni[:,:,1,time_step])
+        plt.pcolor(self.glat,self.zalt,self.deni[:,:,species,time_step])
         plt.xlabel('Geo Lat (deg)')
         plt.ylabel('Altitude (km)')
         plt.show()

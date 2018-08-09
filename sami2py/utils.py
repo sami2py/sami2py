@@ -77,7 +77,7 @@ def set_archive_dir(path=None, store=None):
         store = True
     if os.path.isdir(path):
         if store:
-            with open(os.path.join(os.path.expanduser('~'), '.sami2py', 'model_path.txt'), 'w') as f:
+            with open(os.path.join(os.path.expanduser('~'), '.sami2py', 'archive_path.txt'), 'w') as f:
                 f.write(path)
         sami2py.archive_dir = path
     else:

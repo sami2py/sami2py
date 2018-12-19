@@ -38,8 +38,9 @@ References
 
 
 """
-import numpy as np
 import os
+import numpy as np
+from sami2py import fortran_dir
 from .utils import generate_path
 
 
@@ -52,7 +53,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
               no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
               Tinf_scale=1, Tn_scale=1., euv_scale=1,
               wind_scale=1, hwm_model=14,
-              fejer=True, ExB_drifts=np.zeros((10,2)), ve01=0., exb_scale=1,
+              fejer=True, ExB_drifts=np.zeros((10, 2)), ve01=0., exb_scale=1,
               alt_crit=150., cqe=7.e-14,
               tag='test', clean=False, test=False, fmtout=True):
     """
@@ -112,7 +113,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         Defines how often the data is output (hr).
         (default = 0.25)
     hrinit : (float)
-        Local time at the start of the run (hr).
+        Universal time at the start of the run (hr).
         (default=0)
     hrpr : (float)
         The time period that elapses before the data is output (hr).
@@ -236,115 +237,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
 
     """
 
-    from sami2py import fortran_dir
 
-
-    def _generate_namelist(info):
-        """
-        Generates namelist file for sami2
-
-        Parameters
-        ----------
-        info : (dict)
-            Contains variables for each line of the namelist file
-        """
-
-        # Check HWM model parameters
-        if (info['hwm_model'] in [93, 7, 14])==False:
-            print('Invalid HWM Model.  Defaulting to HWM14')
-            info['hwm_model']=14
-
-        # Print out namelist file
-
-        file = open('sami2low-1.00.namelist','w')
-
-        file.write('&go\n')
-        file.write('  fmtout   = %s,\n' % info['fmtout']) #1
-        file.write('  maxstep  =  %d,\n' % info['maxstep']) #2
-        file.write('  hrmax    =  %f,\n' % info['hrmax']) #3
-        file.write('  dt0      =  %f,\n' % info['dt0']) #4
-        file.write('  dthr     =  %f,\n' % info['dthr']) #5
-        file.write('  hrpr     =  %f,\n' % info['hrpr']) #6
-        file.write('  grad_in  =  %f,\n' % info['alt']) #7
-        file.write('  glat_in  =  %f,\n' % info['lat']) #8
-        file.write('  glon_in  =  %f,\n' % info['lon']) #9
-        file.write('  fejer    =  %s,\n' % info['fejer']) #10
-        file.write('  rmin     =  %f,\n' % info['rmin']) #11
-        file.write('  rmax     =  %f,\n' % info['rmax']) #12
-        file.write('  altmin   =  %f,\n' % info['altmin']) #13
-        file.write('  fbar     =  %f,\n' % info['f107a']) #14
-        file.write('  f10p7    =  %f,\n' % info['f107']) #15
-        file.write('  ap       =  %d,\n' % info['ap']) #16
-        file.write('  year     =  %d,\n' % info['year']) #17
-        file.write('  day      =  %d,\n' % info['day']) #18
-        file.write('  mmass    =  %d,\n' % info['mmass']) #19
-        file.write('  nion1    =  %d,\n' % info['nion1']) #20
-        file.write('  nion2    =  %d,\n' % info['nion2'])  #21
-        file.write('  hrinit   =  %f,\n' % info['hrinit']) #22
-        file.write('  tvn0     =  %f,\n' % info['wind_scale']) #23
-        file.write('  tvexb0   =  %f,\n' % info['exb_scale']) #24
-        file.write('  ve01     =  %f,\n' % info['ve01']) #25
-        file.write('  gams     =  %d,\n' % info['gams']) #26
-        file.write('  gamp     =  %d,\n' % info['gamp']) #27
-        file.write('  snn      =  %f,%f,%f,%f,%f,%f,%f,\n'
-                   % (info['h_scale'],
-                      info['o_scale'],
-                      info['no_scale'],
-                      info['o2_scale'],
-                      info['he_scale'],
-                      info['n2_scale'],
-                      info['n_scale'])) #28
-        file.write('  stn      =  %f,\n' % info['Tn_scale']) #29
-        file.write('  denmin   =  %e,\n' % info['denmin']) #30
-        file.write('  alt_crit =  %f,\n' % info['alt_crit']) #31
-        file.write('  cqe      =  %e,\n' % info['cqe']) #32
-        file.write('  Tinf_scl =  %f,\n' % info['Tinf_scale']) #33
-        file.write('  euv_scl  =  %f,\n' % info['euv_scale']) #34
-        #file.write('  hwm_scl  =  %f,\n' % info['wind_scale']) # Duplicate!
-        file.write('  hwm_mod  =  %d\n' % info['hwm_model']) #35
-        file.write('&end\n')
-
-        file.close()
-
-
-    def _archive_model(path,clean,fejer,fmtout):
-        """ Moves the model output files to a common archive
-
-        Parameters
-        ----------
-        path : (string)
-            full path of file destination
-        clean : (boolean)
-            If True, then delete dat files locally
-        fejer : (boolean)
-            Specifies whether Fejer-Scherliess model is used
-            If False, then 'exb.inp' is also archived
-
-        """
-
-        import shutil
-
-        if fmtout:
-            filelist = ['glonf.dat','glatf.dat','zaltf.dat',
-                        'denif.dat','vsif.dat','tif.dat','tef.dat',
-                        'time.dat','sami2low-1.00.namelist']
-        else:
-            filelist = ['glonu.dat','glatu.dat','zaltu.dat',
-                        'deniu.dat','vsiu.dat','tiu.dat','teu.dat',
-                        'time.dat','sami2low-1.00.namelist']
-
-        try:
-            os.stat(path)
-        except:
-            os.makedirs(path)
-
-        for i in range(0,len(filelist)):
-            shutil.copyfile(filelist[i], path+filelist[i])
-        if clean:
-            for i in range(0,len(filelist)-1):
-                os.remove(filelist[i])
-        if fejer==False:
-            shutil.copyfile('exb.inp', path+'exb.inp')
 
 
     current_dir = os.getcwd()
@@ -355,7 +248,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
             'rmin':rmin, 'rmax':rmax, 'gams':gams, 'gamp':gamp, 'altmin':altmin,
             'dthr':dthr, 'hrinit':hrinit, 'hrpr':hrpr, 'hrmax':hrmax,
             'dt0':dt0, 'maxstep':maxstep, 'denmin':denmin,
-            'nion1':nion1, 'nion2':nion2, 'mmass':mmass,'h_scale':h_scale,
+            'nion1':nion1, 'nion2':nion2, 'mmass':mmass, 'h_scale':h_scale,
             'o_scale':o_scale, 'no_scale':no_scale, 'o2_scale':o2_scale,
             'he_scale':he_scale, 'n2_scale':n2_scale, 'n_scale':n_scale,
             'exb_scale':exb_scale, 've01':ve01, 'alt_crit':alt_crit, 'cqe':cqe,
@@ -365,9 +258,9 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         info['fejer'] = '.true.'
     else:
         info['fejer'] = '.false.'
-        if ExB_drifts.shape!=(10,2):
+        if ExB_drifts.shape != (10, 2):
             print('Invalid ExB drift shape!  Must be 10x2 ndarray.')
-        np.savetxt('exb.inp',ExB_drifts)
+        np.savetxt('exb.inp', ExB_drifts)
 
     if fmtout:
         info['fmtout'] = '.true.'
@@ -376,9 +269,117 @@ def run_model(year, day, lat=0, lon=0, alt=300,
 
 
     _generate_namelist(info)
-    path = generate_path(tag,lon,year,day)
+    path = generate_path(tag, lon, year, day)
     if not test:
         os.system('./sami2low.x')
-    _archive_model(path,clean,fejer,fmtout)
+    _archive_model(path, clean, fejer, fmtout)
 
     os.chdir(current_dir)
+
+
+def _generate_namelist(info):
+    """
+    Generates namelist file for sami2
+
+    Parameters
+    ----------
+    info : (dict)
+        Contains variables for each line of the namelist file
+    """
+
+    # Check HWM model parameters
+    if not (info['hwm_model'] in [93, 7, 14]):
+        print('Invalid HWM Model.  Defaulting to HWM14')
+        info['hwm_model'] = 14
+
+    # Print out namelist file
+
+    file = open('sami2low-1.00.namelist', 'w')
+
+    file.write('&go\n')
+    file.write('  fmtout   = %s,\n' % info['fmtout']) #1
+    file.write('  maxstep  =  %d,\n' % info['maxstep']) #2
+    file.write('  hrmax    =  %f,\n' % info['hrmax']) #3
+    file.write('  dt0      =  %f,\n' % info['dt0']) #4
+    file.write('  dthr     =  %f,\n' % info['dthr']) #5
+    file.write('  hrpr     =  %f,\n' % info['hrpr']) #6
+    file.write('  grad_in  =  %f,\n' % info['alt']) #7
+    file.write('  glat_in  =  %f,\n' % info['lat']) #8
+    file.write('  glon_in  =  %f,\n' % info['lon']) #9
+    file.write('  fejer    =  %s,\n' % info['fejer']) #10
+    file.write('  rmin     =  %f,\n' % info['rmin']) #11
+    file.write('  rmax     =  %f,\n' % info['rmax']) #12
+    file.write('  altmin   =  %f,\n' % info['altmin']) #13
+    file.write('  fbar     =  %f,\n' % info['f107a']) #14
+    file.write('  f10p7    =  %f,\n' % info['f107']) #15
+    file.write('  ap       =  %d,\n' % info['ap']) #16
+    file.write('  year     =  %d,\n' % info['year']) #17
+    file.write('  day      =  %d,\n' % info['day']) #18
+    file.write('  mmass    =  %d,\n' % info['mmass']) #19
+    file.write('  nion1    =  %d,\n' % info['nion1']) #20
+    file.write('  nion2    =  %d,\n' % info['nion2'])  #21
+    file.write('  hrinit   =  %f,\n' % info['hrinit']) #22
+    file.write('  tvn0     =  %f,\n' % info['wind_scale']) #23
+    file.write('  tvexb0   =  %f,\n' % info['exb_scale']) #24
+    file.write('  ve01     =  %f,\n' % info['ve01']) #25
+    file.write('  gams     =  %d,\n' % info['gams']) #26
+    file.write('  gamp     =  %d,\n' % info['gamp']) #27
+    file.write('  snn      =  %f,%f,%f,%f,%f,%f,%f,\n'
+               % (info['h_scale'],
+                  info['o_scale'],
+                  info['no_scale'],
+                  info['o2_scale'],
+                  info['he_scale'],
+                  info['n2_scale'],
+                  info['n_scale'])) #28
+    file.write('  stn      =  %f,\n' % info['Tn_scale']) #29
+    file.write('  denmin   =  %e,\n' % info['denmin']) #30
+    file.write('  alt_crit =  %f,\n' % info['alt_crit']) #31
+    file.write('  cqe      =  %e,\n' % info['cqe']) #32
+    file.write('  Tinf_scl =  %f,\n' % info['Tinf_scale']) #33
+    file.write('  euv_scl  =  %f,\n' % info['euv_scale']) #34
+    #file.write('  hwm_scl  =  %f,\n' % info['wind_scale']) # Duplicate!
+    file.write('  hwm_mod  =  %d\n' % info['hwm_model']) #35
+    file.write('&end\n')
+
+    file.close()
+
+
+def _archive_model(path, clean, fejer, fmtout):
+    """ Moves the model output files to a common archive
+
+    Parameters
+    ----------
+    path : (string)
+        full path of file destination
+    clean : (boolean)
+        If True, then delete dat files locally
+    fejer : (boolean)
+        Specifies whether Fejer-Scherliess model is used
+        If False, then 'exb.inp' is also archived
+
+    """
+
+    import shutil
+
+    if fmtout:
+        filelist = ['glonf.dat', 'glatf.dat', 'zaltf.dat',
+                    'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
+                    'time.dat', 'sami2low-1.00.namelist']
+    else:
+        filelist = ['glonu.dat', 'glatu.dat', 'zaltu.dat',
+                    'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
+                    'time.dat', 'sami2low-1.00.namelist']
+
+    try:
+        os.stat(path)
+    except FileNotFoundError:
+        os.makedirs(path)
+
+    for list_file in filelist:
+        shutil.copyfile(list_file, path+list_file)
+    if clean:
+        for list_file in filelist[:-1]:
+            os.remove(list_file)
+    if not fejer:
+        shutil.copyfile('exb.inp', path+'exb.inp')

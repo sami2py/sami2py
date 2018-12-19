@@ -234,11 +234,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
     _generate_namelist(info)
 
     archive_model(path,clean,fejer)
-
     """
-
-
-
 
     current_dir = os.getcwd()
     os.chdir(fortran_dir)
@@ -293,7 +289,6 @@ def _generate_namelist(info):
         info['hwm_model'] = 14
 
     # Print out namelist file
-
     file = open('sami2low-1.00.namelist', 'w')
 
     file.write('&go\n')
@@ -357,9 +352,7 @@ def _archive_model(path, clean, fejer, fmtout):
     fejer : (boolean)
         Specifies whether Fejer-Scherliess model is used
         If False, then 'exb.inp' is also archived
-
     """
-
     import shutil
 
     if fmtout:

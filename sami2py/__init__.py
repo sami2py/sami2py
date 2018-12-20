@@ -81,5 +81,5 @@ try:
     from sami2py import (run_model, utils, model)
     from sami2py.run_model import (run_model)
     from sami2py.model import (model)
-except ImportError as e:
-    logging.exception('problem importing sami2py: ' + str(e))
+except ImportError as errstr:
+    logging.exception('problem importing sami2py: ' + str(errstr))

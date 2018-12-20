@@ -54,7 +54,11 @@ def generate_path(tag, lon, year, day):
 
     from sami2py import archive_dir
 
-    path = archive_dir + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
+    if archive_dir:
+        path = archive_dir + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
+    else:
+        raise NameError(''.join(('Archive Directory Not Specified: ',
+                                 'Run sami2py.utils.set_archive_dir')))
 
     return path
 
@@ -68,17 +72,19 @@ def set_archive_dir(path=None, store=None):
         valid path to directory pysat uses to look for data
     store : bool
         if True, store data directory for future runs
-
-
     """
     import os
     import sami2py
+
     if store is None:
         store = True
+
     if os.path.isdir(path):
         if store:
-            with open(os.path.join(os.path.expanduser('~'), '.sami2py', 'archive_path.txt'), 'w') as f:
-                f.write(path)
+            with open(os.path.join(os.path.expanduser('~'),
+                                   '.sami2py', 'archive_path.txt'),
+                      'w') as archive_file:
+                archive_file.write(path)
         sami2py.archive_dir = path
     else:
         raise ValueError('Path does not lead to a valid directory.')

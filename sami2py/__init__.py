@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 """
 sami2py
 -----------
@@ -43,9 +43,6 @@ import os
 
 __version__ = str('0.1a1')
 
-# Imports
-#---------------------------------------------------------------------
-
 # get home directory
 home_dir = os.path.expanduser('~')
 # set sami2py directory path in home directory
@@ -61,18 +58,18 @@ if not os.path.isdir(sami2py_dir):
 archive_path = os.path.join(sami2py_dir, 'archive_path.txt')
 if os.path.isfile(archive_path):
     # load up stored data path
-    with open(archive_path,'r') as f:
+    with open(archive_path, 'r') as f:
         archive_dir = f.readline()
 else:
     # create file
-    with open(archive_path,'w+') as f:
+    with open(archive_path, 'w+') as f:
         f.write('')
-    archive_dir=''
+    archive_dir = ''
     print(''.join(('Run sami2py.utils.set_archive_dir to set the path to',
                    ' top-level directory for model outputs.')))
 
 # load fortran directory
-with open(os.path.join(sami2py_dir, 'fortran_path.txt'),'r') as f:
+with open(os.path.join(sami2py_dir, 'fortran_path.txt'), 'r') as f:
     fortran_dir = f.readline()
 
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 """ Wrapper for running sami2 model
 
 Functions
@@ -30,6 +30,7 @@ References
 
 
 """
+
 
 def generate_path(tag, lon, year, day):
     """
@@ -61,6 +62,7 @@ def generate_path(tag, lon, year, day):
                                  'Run sami2py.utils.set_archive_dir')))
 
     return path
+
 
 def set_archive_dir(path=None, store=None):
     """

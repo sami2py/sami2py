@@ -1,20 +1,21 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # Copyright (C) 2017, JK
 # Full license can be found in License.md
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 from os import path, mkdir
 from setuptools import setup, find_packages
 
-# Define a read function for using README for long_description
 
+# Define a read function for using README for long_description
 def read(fname):
     return open(path.join(path.dirname(__file__), fname)).read()
 
+
 # generate path for fortran model files
 here = path.abspath(path.dirname(__file__))
-fortran_path = path.join(here,'sami2py','fortran')
+fortran_path = path.join(here, 'sami2py', 'fortran')
 
 file_path = path.join(path.expanduser('~'), '.sami2py')
 if not path.isdir(file_path):
@@ -60,4 +61,4 @@ setup(name='sami2py',
       include_package_data=True,
       zip_safe=False,
       test_suite='setup.sami2py_test_suite',
-)
+      )

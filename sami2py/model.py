@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 """ Wrapper for running sami2 model
 
 Functions
@@ -31,8 +31,8 @@ References
 from .utils import generate_path
 import numpy as np
 
-class model(object):
 
+class model(object):
 
     def __init__(self, tag, lon, year, day):
         """ Loads a previously run sami2 model and sorts into
@@ -88,10 +88,10 @@ class model(object):
 
         out = ['']
         out.append('Model Run Name = %s' % self.tag)
-        out.append('Day %03d, %4d' % (self.day,self.year))
+        out.append('Day %03d, %4d' % (self.day, self.year))
         out.append('Longitude = %d deg' % self.lon0)
-        out.append('%d time steps from %4.1f to %4.1f UT'
-                % (len(self.ut), min(self.ut), max(self.ut)))
+        out.append('%d time steps from %4.1f to %4.1f UT' %
+                   (len(self.ut), min(self.ut), max(self.ut)))
         out.append('Ions Used: %s' % self.MetaData['Ions Used'])
 
         out.append('\nSolar Activity')
@@ -102,13 +102,14 @@ class model(object):
 
         out.append('\nComponent Models Used')
         out.append('---------------------')
-        out.append('Neutral Atmosphere: %s' % self.MetaData['Neutral Atmosphere Model'])
+        out.append('Neutral Atmosphere: %s' %
+                   self.MetaData['Neutral Atmosphere Model'])
         out.append('Winds: %s' % self.MetaData['Wind Model'])
         out.append('Photoproduction: %s' % self.MetaData['EUV Model'])
         out.append('ExB Drifts: %s' % self.MetaData['ExB model'])
 
         mod_keys = self.check_standard_model()
-        if len(mod_keys)==0:
+        if len(mod_keys) == 0:
             out.append('\nNo modifications to empirical models')
         else:
             out.append('\nMultipliers used')
@@ -132,7 +133,7 @@ class model(object):
 
         """
 
-        slt = np.mod((self.ut*60 + self.lon0*4),1440)/60.0
+        slt = np.mod((self.ut*60 + self.lon0*4), 1440)/60.0
         m = 2*np.pi*self.day/365.242
         dt = -7.657*np.sin(m) + 9.862*np.sin(2*m + 3.599)
         self.slt = slt - dt/60.0
@@ -153,7 +154,7 @@ class model(object):
         nz = 101
         ni = 7
 
-        path = generate_path(self.tag,self.lon0,self.year,self.day)
+        path = generate_path(self.tag, self.lon0, self.year, self.day)
 
         # Get NameList
         file = open(path + 'sami2low-1.00.namelist')
@@ -165,7 +166,7 @@ class model(object):
 
         # Get times
         time = np.loadtxt(path+'time.dat')
-        self.ut = time[:,1] + time[:,2]/60 + time[:,3]/3600;
+        self.ut = time[:, 1] + time[:, 2]/60 + time[:, 3]/3600
         self._calculate_slt()
         nt = len(self.ut)
 
@@ -182,49 +183,49 @@ class model(object):
             te = np.loadtxt(path+'tef.dat')
         else:
             # Get Location
-            f = open(path+'glatu.dat','rb')
+            f = open(path+'glatu.dat', 'rb')
             glat = np.fromfile(f, dtype='float32')[1:-1]
             f.close()
 
-            f = open(path+'glonu.dat','rb')
+            f = open(path+'glonu.dat', 'rb')
             glon = np.fromfile(f, dtype='float32')[1:-1]
             f.close()
 
-            f = open(path+'zaltu.dat','rb')
+            f = open(path+'zaltu.dat', 'rb')
             zalt = np.fromfile(f, dtype='float32')[1:-1]
             f.close()
 
             # Get plasma values
-            f = open(path+'deniu.dat','rb')
+            f = open(path+'deniu.dat', 'rb')
             temp = np.fromfile(f, dtype='float32')
             f.close()
-            deni = temp.reshape((nz*nf*ni+2),nt,order='F')[1:-1,:]
+            deni = temp.reshape((nz*nf*ni+2), nt, order='F')[1:-1, :]
 
-            f = open(path+'vsiu.dat','rb')
+            f = open(path+'vsiu.dat', 'rb')
             temp = np.fromfile(f, dtype='float32')
             f.close()
-            vsi = temp.reshape((nz*nf*ni+2),nt,order='F')[1:-1,:]
+            vsi = temp.reshape((nz*nf*ni+2), nt, order='F')[1:-1, :]
 
-            f = open(path+'tiu.dat','rb')
+            f = open(path+'tiu.dat', 'rb')
             temp = np.fromfile(f, dtype='float32')
             f.close()
-            ti = temp.reshape((nz*nf*ni+2),nt,order='F')[1:-1,:]
+            ti = temp.reshape((nz*nf*ni+2), nt, order='F')[1:-1, :]
 
-            f = open(path+'teu.dat','rb')
+            f = open(path+'teu.dat', 'rb')
             temp = np.fromfile(f, dtype='float32')
             f.close()
-            te = temp.reshape((nz*nf+2),nt,order='F')[1:-1,:]
+            te = temp.reshape((nz*nf+2), nt, order='F')[1:-1, :]
 
-        self.glat = np.reshape(glat,(nz,nf),order="F")
-        self.glon = np.reshape(glon,(nz,nf),order="F")
-        self.zalt = np.reshape(zalt,(nz,nf),order="F")
-        self.deni = np.reshape(deni,(nz,nf,ni,nt),order="F")
-        self.vsi = np.reshape(vsi,(nz,nf,ni,nt),order="F")
-        self.ti = np.reshape(ti,(nz,nf,ni,nt),order="F")
-        self.te = np.reshape(te,(nz,nf,nt),order="F")
+        self.glat = np.reshape(glat, (nz, nf), order="F")
+        self.glon = np.reshape(glon, (nz, nf), order="F")
+        self.zalt = np.reshape(zalt, (nz, nf), order="F")
+        self.deni = np.reshape(deni, (nz, nf, ni, nt), order="F")
+        self.vsi = np.reshape(vsi, (nz, nf, ni, nt), order="F")
+        self.ti = np.reshape(ti, (nz, nf, ni, nt), order="F")
+        self.te = np.reshape(te, (nz, nf, nt), order="F")
         del glat, glon, zalt, deni, vsi, ti, te
 
-    def _generate_metadata(self,namelist):
+    def _generate_metadata(self, namelist):
         """ Reads the namelist and generates MetaData based on Parameters
         """
 
@@ -242,8 +243,8 @@ class model(object):
         self.MetaData['EUV Model'] = 'EUVAC'
 
         # Ions Used
-        nion1 = wind_model = int(re.findall(r"\d+",namelist[20])[1]) - 1
-        nion2 = wind_model = int(re.findall(r"\d+",namelist[21])[1]) - 1
+        nion1 = wind_model = int(re.findall(r"\d+", namelist[20])[1]) - 1
+        nion2 = wind_model = int(re.findall(r"\d+", namelist[21])[1]) - 1
         ions = ['H+', 'O+', 'NO+', 'O2+', 'He+', 'N2+', 'N+']
         self.MetaData['Ions Used'] = ', '.join(ions[nion1:nion2])
 
@@ -273,7 +274,7 @@ class model(object):
             self.MetaData['ExB model'] = 'Fourier Series'
             self.MetaData['Fourier Coeffs'] = np.loadtxt(path+'exb.inp')
 
-        wind_model = int(re.findall(r"\d+",namelist[35])[0])
+        wind_model = int(re.findall(r"\d+", namelist[35])[0])
         self.MetaData['Wind Model'] = ('HWM-%02d' % wind_model)
 
         # Model Geometry
@@ -281,8 +282,8 @@ class model(object):
             re.findall(r"\d*\.\d+|\d+", namelist[11])[0])
         self.MetaData['rmax'] = float(
             re.findall(r"\d*\.\d+|\d+", namelist[12])[0])
-        self.MetaData['gams'] = int(re.findall(r"\d+",namelist[26])[0])
-        self.MetaData['gamp'] = int(re.findall(r"\d+",namelist[27])[0])
+        self.MetaData['gams'] = int(re.findall(r"\d+", namelist[26])[0])
+        self.MetaData['gamp'] = int(re.findall(r"\d+", namelist[27])[0])
         self.MetaData['altmin'] = float(
             re.findall(r"\d*\.\d+|\d+", namelist[13])[0])
 
@@ -297,11 +298,9 @@ class model(object):
             re.findall(r"\d*\.\d+|\d+", namelist[3])[0])
         self.MetaData['dt0'] = float(
             re.findall(r"\d*\.\d+|\d+", namelist[4])[0])
-        self.MetaData['maxstep'] = int(re.findall(r"\d+",namelist[2])[0])
+        self.MetaData['maxstep'] = int(re.findall(r"\d+", namelist[2])[0])
         self.MetaData['denmin'] = float(
             re.findall(r"\d*\.\d+|\d+", namelist[30])[0])
-
-
 
     def check_standard_model(self, model_type="all"):
         """ Checks for standard atmospheric inputs
@@ -333,7 +332,7 @@ class model(object):
         """
         import matplotlib.pyplot as plt
 
-        plt.pcolor(self.glat,self.zalt,self.deni[:,:,species,time_step])
+        plt.pcolor(self.glat, self.zalt, self.deni[:, :, species, time_step])
         plt.xlabel('Geo Lat (deg)')
         plt.ylabel('Altitude (km)')
         plt.show()

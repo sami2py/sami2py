@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 """ Wrapper for running sami2 model
 
 Functions
@@ -214,14 +214,16 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         (default=7e-14)
 
     tag : (string)
-        Name of run for data archive.  First-level directory under save directory
+        Name of run for data archive.  First-level directory under save
+        directory
         (default = 'test')
     clean : (boolean)
         A True value will delete the local files after archiving
         A False value will not delete local save files
         (default = False)
     test : (boolean)
-        A True value will not run the sami2 executable.  Used for debugging the framework.
+        A True value will not run the sami2 executable.  Used for debugging
+        the framework.
         A False value will run the sami2 executable
         (default = False)
     fmtout : (boolean)
@@ -239,17 +241,19 @@ def run_model(year, day, lat=0, lon=0, alt=300,
     current_dir = os.getcwd()
     os.chdir(fortran_dir)
 
-    info = {'year':year, 'day':day, 'lat':lat, 'lon':lon, 'alt':alt,
-            'f107':f107, 'f107a':f107a, 'ap':ap,
-            'rmin':rmin, 'rmax':rmax, 'gams':gams, 'gamp':gamp, 'altmin':altmin,
-            'dthr':dthr, 'hrinit':hrinit, 'hrpr':hrpr, 'hrmax':hrmax,
-            'dt0':dt0, 'maxstep':maxstep, 'denmin':denmin,
-            'nion1':nion1, 'nion2':nion2, 'mmass':mmass, 'h_scale':h_scale,
-            'o_scale':o_scale, 'no_scale':no_scale, 'o2_scale':o2_scale,
-            'he_scale':he_scale, 'n2_scale':n2_scale, 'n_scale':n_scale,
-            'exb_scale':exb_scale, 've01':ve01, 'alt_crit':alt_crit, 'cqe':cqe,
-            'Tinf_scale':Tinf_scale, 'Tn_scale':Tn_scale, 'euv_scale':euv_scale,
-            'wind_scale':wind_scale, 'hwm_model':hwm_model}
+    info = {'year': year, 'day': day, 'lat': lat, 'lon': lon, 'alt': alt,
+            'f107': f107, 'f107a': f107a, 'ap': ap,
+            'rmin': rmin, 'rmax': rmax, 'gams': gams, 'gamp': gamp,
+            'altmin': altmin,
+            'dthr': dthr, 'hrinit': hrinit, 'hrpr': hrpr, 'hrmax': hrmax,
+            'dt0': dt0, 'maxstep': maxstep, 'denmin': denmin,
+            'nion1': nion1, 'nion2': nion2, 'mmass': mmass, 'h_scale': h_scale,
+            'o_scale': o_scale, 'no_scale': no_scale, 'o2_scale': o2_scale,
+            'he_scale': he_scale, 'n2_scale': n2_scale, 'n_scale': n_scale,
+            'exb_scale': exb_scale, 've01': ve01, 'alt_crit': alt_crit,
+            'cqe': cqe, 'euv_scale': euv_scale,
+            'Tinf_scale': Tinf_scale, 'Tn_scale': Tn_scale,
+            'wind_scale': wind_scale, 'hwm_model': hwm_model}
     if fejer:
         info['fejer'] = '.true.'
     else:
@@ -262,7 +266,6 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         info['fmtout'] = '.true.'
     else:
         info['fmtout'] = '.false.'
-
 
     _generate_namelist(info)
     path = generate_path(tag, lon, year, day)
@@ -292,33 +295,33 @@ def _generate_namelist(info):
     file = open('sami2low-1.00.namelist', 'w')
 
     file.write('&go\n')
-    file.write('  fmtout   = %s,\n' % info['fmtout']) #1
-    file.write('  maxstep  =  %d,\n' % info['maxstep']) #2
-    file.write('  hrmax    =  %f,\n' % info['hrmax']) #3
-    file.write('  dt0      =  %f,\n' % info['dt0']) #4
-    file.write('  dthr     =  %f,\n' % info['dthr']) #5
-    file.write('  hrpr     =  %f,\n' % info['hrpr']) #6
-    file.write('  grad_in  =  %f,\n' % info['alt']) #7
-    file.write('  glat_in  =  %f,\n' % info['lat']) #8
-    file.write('  glon_in  =  %f,\n' % info['lon']) #9
-    file.write('  fejer    =  %s,\n' % info['fejer']) #10
-    file.write('  rmin     =  %f,\n' % info['rmin']) #11
-    file.write('  rmax     =  %f,\n' % info['rmax']) #12
-    file.write('  altmin   =  %f,\n' % info['altmin']) #13
-    file.write('  fbar     =  %f,\n' % info['f107a']) #14
-    file.write('  f10p7    =  %f,\n' % info['f107']) #15
-    file.write('  ap       =  %d,\n' % info['ap']) #16
-    file.write('  year     =  %d,\n' % info['year']) #17
-    file.write('  day      =  %d,\n' % info['day']) #18
-    file.write('  mmass    =  %d,\n' % info['mmass']) #19
-    file.write('  nion1    =  %d,\n' % info['nion1']) #20
-    file.write('  nion2    =  %d,\n' % info['nion2'])  #21
-    file.write('  hrinit   =  %f,\n' % info['hrinit']) #22
-    file.write('  tvn0     =  %f,\n' % info['wind_scale']) #23
-    file.write('  tvexb0   =  %f,\n' % info['exb_scale']) #24
-    file.write('  ve01     =  %f,\n' % info['ve01']) #25
-    file.write('  gams     =  %d,\n' % info['gams']) #26
-    file.write('  gamp     =  %d,\n' % info['gamp']) #27
+    file.write('  fmtout   = %s,\n' % info['fmtout'])  # 1
+    file.write('  maxstep  =  %d,\n' % info['maxstep'])  # 2
+    file.write('  hrmax    =  %f,\n' % info['hrmax'])  # 3
+    file.write('  dt0      =  %f,\n' % info['dt0'])  # 4
+    file.write('  dthr     =  %f,\n' % info['dthr'])  # 5
+    file.write('  hrpr     =  %f,\n' % info['hrpr'])  # 6
+    file.write('  grad_in  =  %f,\n' % info['alt'])  # 7
+    file.write('  glat_in  =  %f,\n' % info['lat'])  # 8
+    file.write('  glon_in  =  %f,\n' % info['lon'])  # 9
+    file.write('  fejer    =  %s,\n' % info['fejer'])  # 10
+    file.write('  rmin     =  %f,\n' % info['rmin'])  # 11
+    file.write('  rmax     =  %f,\n' % info['rmax'])  # 12
+    file.write('  altmin   =  %f,\n' % info['altmin'])  # 13
+    file.write('  fbar     =  %f,\n' % info['f107a'])  # 14
+    file.write('  f10p7    =  %f,\n' % info['f107'])  # 15
+    file.write('  ap       =  %d,\n' % info['ap'])  # 16
+    file.write('  year     =  %d,\n' % info['year'])  # 17
+    file.write('  day      =  %d,\n' % info['day'])  # 18
+    file.write('  mmass    =  %d,\n' % info['mmass'])  # 19
+    file.write('  nion1    =  %d,\n' % info['nion1'])  # 20
+    file.write('  nion2    =  %d,\n' % info['nion2'])  # 21
+    file.write('  hrinit   =  %f,\n' % info['hrinit'])  # 22
+    file.write('  tvn0     =  %f,\n' % info['wind_scale'])  # 23
+    file.write('  tvexb0   =  %f,\n' % info['exb_scale'])  # 24
+    file.write('  ve01     =  %f,\n' % info['ve01'])  # 25
+    file.write('  gams     =  %d,\n' % info['gams'])  # 26
+    file.write('  gamp     =  %d,\n' % info['gamp'])  # 27
     file.write('  snn      =  %f,%f,%f,%f,%f,%f,%f,\n'
                % (info['h_scale'],
                   info['o_scale'],
@@ -326,15 +329,14 @@ def _generate_namelist(info):
                   info['o2_scale'],
                   info['he_scale'],
                   info['n2_scale'],
-                  info['n_scale'])) #28
-    file.write('  stn      =  %f,\n' % info['Tn_scale']) #29
-    file.write('  denmin   =  %e,\n' % info['denmin']) #30
-    file.write('  alt_crit =  %f,\n' % info['alt_crit']) #31
-    file.write('  cqe      =  %e,\n' % info['cqe']) #32
-    file.write('  Tinf_scl =  %f,\n' % info['Tinf_scale']) #33
-    file.write('  euv_scl  =  %f,\n' % info['euv_scale']) #34
-    #file.write('  hwm_scl  =  %f,\n' % info['wind_scale']) # Duplicate!
-    file.write('  hwm_mod  =  %d\n' % info['hwm_model']) #35
+                  info['n_scale']))  # 28
+    file.write('  stn      =  %f,\n' % info['Tn_scale'])  # 29
+    file.write('  denmin   =  %e,\n' % info['denmin'])  # 30
+    file.write('  alt_crit =  %f,\n' % info['alt_crit'])  # 31
+    file.write('  cqe      =  %e,\n' % info['cqe'])  # 32
+    file.write('  Tinf_scl =  %f,\n' % info['Tinf_scale'])  # 33
+    file.write('  euv_scl  =  %f,\n' % info['euv_scale'])  # 34
+    file.write('  hwm_mod  =  %d\n' % info['hwm_model'])  # 35
     file.write('&end\n')
 
     file.close()

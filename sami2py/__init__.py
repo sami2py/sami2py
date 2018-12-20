@@ -54,6 +54,9 @@ sami2py_dir = os.path.join(home_dir, '.sami2py')
 if not os.path.isdir(sami2py_dir):
     # create directory
     os.mkdir(sami2py_dir)
+    print(''.join(('Created .sami2py directory in user home directory to',
+                   'store settings.')))
+
 
 archive_path = os.path.join(sami2py_dir, 'archive_path.txt')
 if os.path.isfile(archive_path):
@@ -64,10 +67,9 @@ else:
     # create file
     with open(archive_path,'w+') as f:
         f.write('')
-    print('Created .sami2py directory in user home directory to store settings.')
     archive_dir=''
-    print(''.join(('Run sami2py.utils.set_archive_dir to set the path',
-        ' to top-level directory that will/does contain model outputs.')))
+    print(''.join(('Run sami2py.utils.set_archive_dir to set the path to',
+                   ' top-level directory for model outputs.')))
 
 # load fortran directory
 with open(os.path.join(sami2py_dir, 'fortran_path.txt'),'r') as f:

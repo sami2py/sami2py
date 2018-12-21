@@ -34,7 +34,7 @@ import numpy as np
 
 class model(object):
 
-    def __init__(self, tag, lon, year, day):
+    def __init__(self, tag, lon, year, day, test=False):
         """ Loads a previously run sami2 model and sorts into
             appropriate array shapes
 
@@ -81,6 +81,7 @@ class model(object):
         self.lon0 = lon
         self.year = year
         self.day = day
+        self.test = test
 
         self._load_model()
 
@@ -154,7 +155,8 @@ class model(object):
         nz = 101
         ni = 7
 
-        path = generate_path(self.tag, self.lon0, self.year, self.day)
+        path = generate_path(self.tag, self.lon0, self.year, self.day,
+                             self.test)
 
         # Get NameList
         file = open(path + 'sami2low-1.00.namelist')

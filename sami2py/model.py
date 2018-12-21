@@ -32,6 +32,13 @@ from .utils import generate_path
 import numpy as np
 
 
+def get_unformatted_data(var_name):
+    f = open(path+var_name+'u.dat', 'rb')
+    ret = np.fromfile(f, dtype='float32')[1:-1]
+    f.close
+    return ret
+
+
 class model(object):
 
     def __init__(self, tag, lon, year, day, test=False):

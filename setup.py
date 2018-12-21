@@ -24,7 +24,7 @@ if not path.isdir(file_path):
 
 with open(path.join(file_path, 'fortran_path.txt'), 'w+') as f:
     f.write(fortran_path)
-with open(path.join(file_path, 'test_data_path.txt'), 'w_') as f:
+with open(path.join(file_path, 'test_data_path.txt'), 'w+') as f:
     f.write(test_data_path)
 
 # Define a test suite

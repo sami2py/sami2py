@@ -214,14 +214,17 @@ def run_model(year, day, lat=0, lon=0, alt=300,
 
     tag : (string)
         Name of run for data archive.  First-level directory under save directory
+        Note that this is not passed through to sami2 executable
         (default = 'test')
     clean : (boolean)
         A True value will delete the local files after archiving
         A False value will not delete local save files
+        Note that this is not passed through to sami2 executable
         (default = False)
     test : (boolean)
         A True value will not run the sami2 executable.  Used for debugging the framework.
         A False value will run the sami2 executable
+        Note that this is not passed through to sami2 executable
         (default = False)
     fmtout : (boolean)
         If true, sami2 will output as text files.

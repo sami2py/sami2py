@@ -32,9 +32,18 @@ from .utils import generate_path
 import numpy as np
 
 
+def get_unformatted_data(var_name, reshape=False):
+    f = open(path+var_name+'u.dat', 'rb')
+    ret = np.fromfile(f, dtype='float32')[1:-1]
+    f.close
+    if reshape:
+        ret = ret.reshape((nz*nf*ni+2), nt, order='F')[1:-1, :]
+    return ret
+
+
 class model(object):
 
-    def __init__(self, tag, lon, year, day):
+    def __init__(self, tag, lon, year, day, test=False):
         """ Loads a previously run sami2 model and sorts into
             appropriate array shapes
 
@@ -81,6 +90,7 @@ class model(object):
         self.lon0 = lon
         self.year = year
         self.day = day
+        self.test = test
 
         self._load_model()
 
@@ -154,7 +164,8 @@ class model(object):
         nz = 101
         ni = 7
 
-        path = generate_path(self.tag, self.lon0, self.year, self.day)
+        path = generate_path(self.tag, self.lon0, self.year, self.day,
+                             self.test)
 
         # Get NameList
         file = open(path + 'sami2low-1.00.namelist')
@@ -183,38 +194,15 @@ class model(object):
             te = np.loadtxt(path+'tef.dat')
         else:
             # Get Location
-            f = open(path+'glatu.dat', 'rb')
-            glat = np.fromfile(f, dtype='float32')[1:-1]
-            f.close()
-
-            f = open(path+'glonu.dat', 'rb')
-            glon = np.fromfile(f, dtype='float32')[1:-1]
-            f.close()
-
-            f = open(path+'zaltu.dat', 'rb')
-            zalt = np.fromfile(f, dtype='float32')[1:-1]
-            f.close()
+            glat = get_unformatted_data('glat')
+            glon = get_unformatted_data('glon')
+            zalt = get_unformatted_data('zalt')
 
             # Get plasma values
-            f = open(path+'deniu.dat', 'rb')
-            temp = np.fromfile(f, dtype='float32')
-            f.close()
-            deni = temp.reshape((nz*nf*ni+2), nt, order='F')[1:-1, :]
-
-            f = open(path+'vsiu.dat', 'rb')
-            temp = np.fromfile(f, dtype='float32')
-            f.close()
-            vsi = temp.reshape((nz*nf*ni+2), nt, order='F')[1:-1, :]
-
-            f = open(path+'tiu.dat', 'rb')
-            temp = np.fromfile(f, dtype='float32')
-            f.close()
-            ti = temp.reshape((nz*nf*ni+2), nt, order='F')[1:-1, :]
-
-            f = open(path+'teu.dat', 'rb')
-            temp = np.fromfile(f, dtype='float32')
-            f.close()
-            te = temp.reshape((nz*nf+2), nt, order='F')[1:-1, :]
+            deni = get_unformatted_data('deni', reshape=True)
+            vsi = get_unformatted_data('vsi', reshape=True)
+            ti = get_unformatted_data('ti', reshape=True)
+            te = get_unformatted_data('te', reshape=True)
 
         self.glat = np.reshape(glat, (nz, nf), order="F")
         self.glon = np.reshape(glon, (nz, nf), order="F")

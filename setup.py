@@ -16,14 +16,16 @@ def read(fname):
 # generate path for fortran model files
 here = path.abspath(path.dirname(__file__))
 fortran_path = path.join(here, 'sami2py', 'fortran')
-
+test_data_path = path.join(here, 'sami2py', 'tests', 'test_data')
 file_path = path.join(path.expanduser('~'), '.sami2py')
+
 if not path.isdir(file_path):
     mkdir(file_path)
 
 with open(path.join(file_path, 'fortran_path.txt'), 'w+') as f:
     f.write(fortran_path)
-
+with open(path.join(file_path, 'test_data_path.txt'), 'w+') as f:
+    f.write(test_data_path)
 
 # Define a test suite
 

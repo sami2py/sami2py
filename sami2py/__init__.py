@@ -71,6 +71,9 @@ else:
 # load fortran directory
 with open(os.path.join(sami2py_dir, 'fortran_path.txt'), 'r') as f:
     fortran_dir = f.readline()
+# load test_data directory
+with open(os.path.join(sami2py_dir, 'test_data_path.txt'), 'r') as f:
+    test_data_dir = f.readline()
 
 
 # import main functions

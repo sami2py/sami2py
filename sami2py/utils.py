@@ -32,7 +32,7 @@ References
 """
 
 
-def generate_path(tag, lon, year, day):
+def generate_path(tag, lon, year, day, test=False):
     """
     Creates a path based on run tag, date, and longitude
 
@@ -52,11 +52,15 @@ def generate_path(tag, lon, year, day):
     path : (string)
         Complete path pointing to model archive for a given run
     """
+    if test:
+        from sami2py import test_data_dir
+        top_directory = test_data_dir
+    else:
+        from sami2py import archive_dir
+        top_directory = archive
 
-    from sami2py import archive_dir
-
-    if archive_dir:
-        path = archive_dir + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
+    if top_directory:
+        path = top_directory + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
     else:
         raise NameError(''.join(('Archive Directory Not Specified: ',
                                  'Run sami2py.utils.set_archive_dir')))

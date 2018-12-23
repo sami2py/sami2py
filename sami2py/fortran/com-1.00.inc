@@ -8,7 +8,7 @@
 
 !     namelist data
 
-      logical fejer,fmtout,hwm_07
+      logical fejer,fmtout
       real snn(nneut)
 
       common / nmlst / fmtout,maxstep,hrmax,dt0,dthr,hrpr,

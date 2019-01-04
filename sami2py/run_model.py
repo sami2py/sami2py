@@ -269,7 +269,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
     os.chdir(current_dir)
 
 
-def _generate_drift_info(fejer, ExB_drifts):
+def _generate_drift_info(fejer, ExB_drifts=None):
     if fejer:
         ret = '.true.'
     else:

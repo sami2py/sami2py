@@ -2,6 +2,8 @@
     Unit tests for run_model.py
 '''
 import sami2py
+import os
+import numpy as np
 
 
 class test_basic_model_run():
@@ -12,13 +14,37 @@ class test_basic_model_run():
     def teardown(self):
         return
 
-    def test_fejer_check(self):
-        return
-
     def test_format_check(self):
         return
 
     def test_run_model(self):
+        return
+
+
+class test_generate_drift_info():
+
+    def test_exb_file_creation(self):
+        exb_drifts = np.zeros(10, 2)
+        out = sami2py._generate_drift_info(False, exb_drifts)
+        assert os.stat(exb.inp)
+
+    def test_exb_info_str(self):
+        exb_drifts = np.zeros(10, 2)
+        out = sami2py._generate_drift_info(False, exb_drifts)
+        assert out is '.false.'
+
+    @raises(Exception)
+    def test_exb_exception(self):
+        exb_drifts_wrong = np.zeros(2, 5)
+        out = sami2py._generate_drift_info(False, exb_drifts)
+
+    def test_fejer(self):
+        out = sami2py._generate_drift_info(True)
+        assert out is '.true.'
+
+
+class test_generate_format_info():
+    def test_fmtout_bool(self):
         return
 
 

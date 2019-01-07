@@ -22,7 +22,6 @@ class test_basic_model_run():
 
 
 class test_generate_drift_info():
-
     def test_exb_file_creation(self):
         exb_drifts = np.zeros(10, 2)
         out = sami2py._generate_drift_info(False, exb_drifts)
@@ -45,13 +44,35 @@ class test_generate_drift_info():
 
 class test_generate_format_info():
     def test_fmtout_bool(self):
+        out = sami2py._generate_format_info(True)
+        assert out is '.true.'
+        out = sami2py._generate_format_info(False)
+        assert out is '.false.'
         return
 
 
 class test_generate_namelist():
+    def make_info(self):
+        self.info = {'year': 2012, 'day': 211, 'lat': 0, 'lon': 0,
+                     'alt': 300, 'f107': 120, 'f107a': 120, 'ap': 0,
+                     'rmin': 100, 'rmax': 2000, 'gams': 3, 'gamp': 3,
+                     'altmin': 85., 'dthr': 0.25, 'hrinit': 0., 'hrpr': 24.,
+                     'hrmax': 48., 'dt0': 30., 'maxstep': 100000000,
+                     'denmin': 1.e-6, 'nion1': 1, 'nion2': 7,
+                     'mmass': 48, 'h_scale': 1, 'o_scale': 1,
+                     'no_scale': 1, 'o2_scale': 1,
+                     'he_scale': 1, 'n2_scale': 1,
+                     'n_scale': 1, 'exb_scale': 1, 've01': 0,
+                     'alt_crit': 150., 'cqe': 7.e-14, 'euv_scale': 1,
+                     'Tinf_scale': 1, 'Tn_scale': 1,
+                     'wind_scale': 1, 'hwm_model': 14}
+
     def test_hwm_check(self):
         '''test that the hwm model check works and doesnt
         '''
+        os.chdir(test_data)
+        sami2py._generate_namelist(self.info)
+
         return
 
     def test_generate_namelist(self):

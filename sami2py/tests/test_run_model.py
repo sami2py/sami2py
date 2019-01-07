@@ -71,9 +71,10 @@ class test_generate_namelist():
         '''test that the hwm model check works and doesnt
         '''
         os.chdir(test_data)
+        self.info['hwm_model'] = 45
         sami2py._generate_namelist(self.info)
-
-        return
+        namelist_file = open('sami2low-1.00.namelist', 'rt')
+        assert namelist_file[36] is '  hwm_mod  =  14'
 
     def test_generate_namelist(self):
         '''assert that the namelist stored in the fortran_dir is the same as

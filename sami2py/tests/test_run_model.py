@@ -75,7 +75,8 @@ class test_generate_namelist():
         self.info['hwm_model'] = 45
         sami2py._generate_namelist(self.info)
         namelist_file = open('sami2low-1.00.namelist', 'rt')
-        assert namelist_file[36] is '  hwm_mod  =  14'
+        ref_namelist = open('reference_sami2low-1.00.namelist', 'rt')
+        assert namelist_file == ref_namelist
 
     def test_generate_namelist(self):
         '''assert that the namelist stored in the fortran_dir is the same as
@@ -92,8 +93,12 @@ class test_generate_namelist():
 class test_archive_model():
     def test_path_behavior(self):
         '''test behavior if path exists and if it doesnt
+           need to make test.dat files for archive_model to work.
         '''
-        return
+        path = 'test_data/empty_test_dir'
+        sami2py._archive_model()
+        assert os.stat('test_data/empty_test_dir', False, True, True)
+        os.rm('test_data/empty_test_dir')
 
     def test_improper_copying(self):
         '''test proper copying and relocation of dat files, what could go wrong

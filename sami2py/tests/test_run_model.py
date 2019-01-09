@@ -90,7 +90,7 @@ class test_generate_namelist():
         assert namelist_file == ref_namelist
 
 
-class test_archive_model():
+class test_basic_archive_model():
     def setup(self):
         filelist_fmt = ['glonf.dat', 'glatf.dat', 'zaltf.dat',
                         'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
@@ -99,34 +99,40 @@ class test_archive_model():
                          'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
                          'time.dat', 'sami2low-1.00.namelist']
         for filename in filelist_fmt:
-            os.touch(filename)
+            open(filename, 'w').close()
         for filename in filelist_ufmt:
-            os.touch(filename)
+            open(filename, 'w').close()
 
     def teardown(self):
-        os.rm(*.dat)
-        os.rm('sami2low-1.00.namelist')
+        os.remove(*.dat)
+        os.remove('sami2low-1.00.namelist')
 
     def test_path_behavior(self):
         '''test behavior if path exists and if it doesnt
            need to make test.dat files for archive_model to work.
         '''
         path = 'test_data/empty_test_dir'
-        sami2py._archive_model()
-        assert os.stat('test_data/empty_test_dir', False, True, True)
-        os.rm('test_data/empty_test_dir')
+        sami2py._archive_model('test_data/empty_test_dir', False, True, True)
+        assert os.stat('test_data/empty_test_dir')
+        os.remove('test_data/empty_test_dir')
 
-    def test_improper_copying(self):
-        '''test proper copying and relocation of dat files, what could go wrong
-        '''
-        return
-
+    @raises(FileNotFoundError)
     def test_cleanup(self):
         '''test that clean does in fact remove files, what could go wrong
         '''
-        return
+        sami2py._archive_model('test_data/empty_test_dir', True, True, True)
+        os.stat('glonf.dat')
 
+
+class test_archive_model_exceptions():
+    @raises(FileNotFoundError)
+    def test_copy_no_file(self):
+        '''test proper copying and relocation of dat files, what could go wrong
+        '''
+        sami2py.archive_model('test_data/empty_test_dir', False, True, True)
+
+    @raises(FileNotFoundError)
     def test_non_fejer():
         '''test that exb.inp is properly moved or not depending on flag
         '''
-        return
+        sami2py.archive_model('test_data/empty_test_dir', False, False, True)

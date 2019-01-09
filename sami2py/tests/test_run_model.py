@@ -9,16 +9,32 @@ import numpy as np
 class test_basic_model_run():
 
     def setup(self):
-        return
+        filelist_fmt = ['glonf.dat', 'glatf.dat', 'zaltf.dat',
+                        'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
+                        'time.dat', 'sami2low-1.00.namelist']
+        filelist_ufmt = ['glonu.dat', 'glatu.dat', 'zaltu.dat',
+                         'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
+                         'time.dat', 'sami2low-1.00.namelist']
+        for filename in filelist_fmt:
+            open(filename, 'w').close()
+        for filename in filelist_ufmt:
+            open(filename, 'w').close()
 
     def teardown(self):
-        return
+        os.remove(*.dat)
+        os.remove('sami2low-1.00.namelist')
 
-    def test_format_check(self):
-        return
+    def test_run_model_namelist(self):
+        sami2py.run_model(year=2012, day=211)
+        namelist_file = open(fortran_dir+'sami2low-1.00.namelist', 'rt')
+        ref_namelist = open('tests/test_data/reference_sami2low-1.00.namelist',
+                            'rt')
+        assert namelist_file == ref_namelist
+        assert os.stat('tests/test_data/glonf.dat')
 
-    def test_run_model(self):
-        return
+    def test_run_model_dat_files(self):
+        sami2py.run_model(year=2012, day=211)
+        assert os.stat('tests/test_data/glonf.dat')
 
 
 class test_generate_drift_info():
@@ -52,7 +68,7 @@ class test_generate_format_info():
 
 
 class test_generate_namelist():
-    def make_info(self):
+    def setup(self):
         self.info = {'year': 2012, 'day': 211, 'lat': 0, 'lon': 0,
                      'alt': 300, 'f107': 120, 'f107a': 120, 'ap': 0,
                      'rmin': 100, 'rmax': 2000, 'gams': 3, 'gamp': 3,
@@ -67,11 +83,13 @@ class test_generate_namelist():
                      'Tinf_scale': 1, 'Tn_scale': 1,
                      'wind_scale': 1, 'hwm_model': 14}
 
+    def teardown(self):
+        del self.info
+
     def test_hwm_check(self):
         '''test that the hwm model check works and doesnt
         '''
         os.chdir(test_data)
-        self.make_info()
         self.info['hwm_model'] = 45
         sami2py._generate_namelist(self.info)
         namelist_file = open('sami2low-1.00.namelist', 'rt')
@@ -83,7 +101,6 @@ class test_generate_namelist():
            the nameList in the test_dir
         '''
         os.chdir(test_data)
-        self.make_info()
         sami2py._generate_namelist(self.info)
         namelist_file = open('sami2low-1.00.namelist', 'rt')
         ref_namelist = open('reference_sami2low-1.00.namelist', 'rt')
@@ -132,7 +149,7 @@ class test_archive_model_exceptions():
         sami2py.archive_model('test_data/empty_test_dir', False, True, True)
 
     @raises(FileNotFoundError)
-    def test_non_fejer():
+    def test_non_fejer(self):
         '''test that exb.inp is properly moved or not depending on flag
         '''
         sami2py.archive_model('test_data/empty_test_dir', False, False, True)

@@ -91,6 +91,22 @@ class test_generate_namelist():
 
 
 class test_archive_model():
+    def setup(self):
+        filelist_fmt = ['glonf.dat', 'glatf.dat', 'zaltf.dat',
+                        'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
+                        'time.dat', 'sami2low-1.00.namelist']
+        filelist_ufmt = ['glonu.dat', 'glatu.dat', 'zaltu.dat',
+                         'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
+                         'time.dat', 'sami2low-1.00.namelist']
+        for filename in filelist_fmt:
+            os.touch(filename)
+        for filename in filelist_ufmt:
+            os.touch(filename)
+
+    def teardown(self):
+        os.rm(*.dat)
+        os.rm('sami2low-1.00.namelist')
+
     def test_path_behavior(self):
         '''test behavior if path exists and if it doesnt
            need to make test.dat files for archive_model to work.

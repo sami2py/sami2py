@@ -4,6 +4,7 @@
 import sami2py
 import os
 import numpy as np
+from nose.tools import raises
 
 
 class test_basic_model_run():

@@ -21,8 +21,16 @@ class test_basic_model_run():
             open(filename, 'w').close()
 
     def teardown(self):
-        os.remove(*.dat)
-        os.remove('sami2low-1.00.namelist')
+        filelist_fmt = ['glonf.dat', 'glatf.dat', 'zaltf.dat',
+                        'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
+                        'time.dat', 'sami2low-1.00.namelist']
+        filelist_ufmt = ['glonu.dat', 'glatu.dat', 'zaltu.dat',
+                         'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
+                         'time.dat', 'sami2low-1.00.namelist']
+        for filename in filelist_fmt:
+            os.remove(filename)
+        for filename in filelist_ufmt:
+            os.remove(filename)
 
     def test_run_model_namelist(self):
         sami2py.run_model(year=2012, day=211)

@@ -36,7 +36,7 @@ class test_basic_model_run():
 
     def test_run_model_namelist(self):
         sami2py.run_model(year=2012, day=211, test=True)
-        namelist_file = open(fortran_dir+'sami2low-1.00.namelist', 'rt')
+        namelist_file = open(fortran_dir+'/sami2low-1.00.namelist', 'rt')
         ref_namelist = open('tests/test_data/reference_sami2low-1.00.namelist',
                             'rt')
         assert namelist_file == ref_namelist

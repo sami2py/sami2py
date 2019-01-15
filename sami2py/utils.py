@@ -59,7 +59,7 @@ def generate_path(tag, lon, year, day, test=False):
         top_directory = test_data_dir
     else:
         from sami2py import archive_dir
-        top_directory = archive
+        top_directory = archive_dir
 
     if top_directory:
         path = top_directory + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))

@@ -261,7 +261,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
     info['fejer'] = _generate_drift_info(fejer, ExB_drifts)
     info['fmtout'] = _generate_format_info(fmtout)
     _generate_namelist(info)
-    path = generate_path(tag, lon, year, day)
+    path = generate_path(tag, lon, year, day, test)
     if not test:
         os.system('./sami2low.x')
     _archive_model(path, clean, fejer, fmtout)

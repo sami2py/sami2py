@@ -1,7 +1,7 @@
 &go
   fmtout   = .true.,
   maxstep  =  100000000,
-  hrmax    =  25.000000,
+  hrmax    =  48.000000,
   dt0      =  30.000000,
   dthr     =  0.250000,
   hrpr     =  24.000000,

@@ -12,10 +12,10 @@ class test_basic_model_run():
     def setup(self):
         filelist_fmt = ['glonf.dat', 'glatf.dat', 'zaltf.dat',
                         'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
-                        'time.dat', 'sami2low-1.00.namelist']
+                        'time.dat']
         filelist_ufmt = ['glonu.dat', 'glatu.dat', 'zaltu.dat',
                          'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
-                         'time.dat', 'sami2low-1.00.namelist']
+                         'time.dat']
         for filename in filelist_fmt:
             open(filename, 'w').close()
         for filename in filelist_ufmt:
@@ -24,10 +24,10 @@ class test_basic_model_run():
     def teardown(self):
         filelist_fmt = ['glonf.dat', 'glatf.dat', 'zaltf.dat',
                         'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
-                        'time.dat', 'sami2low-1.00.namelist']
+                        'time.dat']
         filelist_ufmt = ['glonu.dat', 'glatu.dat', 'zaltu.dat',
                          'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
-                         'time.dat', 'sami2low-1.00.namelist']
+                         'time.dat']
         for filename in filelist_fmt:
             os.remove(filename)
         for filename in filelist_ufmt:

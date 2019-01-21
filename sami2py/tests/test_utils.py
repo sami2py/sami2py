@@ -21,5 +21,6 @@ class test_archive_dir():
     def test_set_archive_dir(self):
         return
 
+    @raises(ValueError)
     def test_set_archive_dir_exception(self):
-        return
+        set_archive_dir('dummy_invalid_path')

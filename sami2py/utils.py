@@ -62,7 +62,7 @@ def generate_path(tag, lon, year, day, test=False):
         top_directory = archive_dir
 
     if top_directory:
-        path = top_directory + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
+        path = top_directory + '/' + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
     else:
         raise NameError(''.join(('Archive Directory Not Specified: ',
                                  'Run sami2py.utils.set_archive_dir')))

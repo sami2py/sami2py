@@ -4,6 +4,7 @@
 import sami2py
 import os
 import filecmp
+import shutil
 import numpy as np
 from nose.tools import raises
 from sami2py import fortran_dir, test_data_dir
@@ -31,8 +32,8 @@ class test_basic_model_run():
                         'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
                         'time.dat']
         for filename in filelist_fmt:
-            os.remove(self.path+filename)
             os.remove(fortran_dir+'/'+filename)
+        shutil.rmtree(self.path)
 
     def test_run_model_namelist(self):
         '''the test to ensure that the namelist file is generated properly

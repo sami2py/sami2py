@@ -33,7 +33,8 @@ class test_basic_model_run():
                         'time.dat']
         for filename in filelist_fmt:
             os.remove(fortran_dir+'/'+filename)
-        shutil.rmtree(self.path)
+        if os.path.isdir(self.path):
+            shutil.rmtree(self.path)
 
     def test_run_model_namelist(self):
         '''the test to ensure that the namelist file is generated properly

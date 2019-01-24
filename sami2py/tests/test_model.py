@@ -27,6 +27,9 @@ class test_model_object():
 
     @raises(TypeError)
     def test_model_input_exception(self):
+        '''If _load_model can't find a file a name error should be produced by
+           generate_path in utils.py
+        '''
         return
 
     def test_model_instantiation(self):

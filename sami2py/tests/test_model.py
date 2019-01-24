@@ -33,7 +33,8 @@ class test_model_object():
         sami2py.model(tag='none', lon=420, day=420, year=1969)
 
     def test_model_instantiation(self):
-        return
+        S = sami2py.model(tag='test', lon=256, year=1999, day=256)
+        assert isinstasnce(s, sami2py_model)
 
     def test_model_plot(self):
         return

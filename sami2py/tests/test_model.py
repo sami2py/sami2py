@@ -25,12 +25,12 @@ class test_model_object():
         if os.path.isdir(self.path):
             shutil.rmtree(self.path)
 
-    @raises(TypeError)
+    @raises(NameError)
     def test_model_input_exception(self):
         '''If _load_model can't find a file a name error should be produced by
            generate_path in utils.py
         '''
-        return
+        sami2py.model(tag='none', lon=420, day=420, year=1969)
 
     def test_model_instantiation(self):
         return

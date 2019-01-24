@@ -24,3 +24,29 @@ class test_model_object():
         '''
         if os.path.isdir(self.path):
             shutil.rmtree(self.path)
+
+    @raises(TypeError)
+    def test_model_input_exception(self):
+        return
+
+    def test_model_instantiation(self):
+        return
+
+    def test_model_plot(self):
+        return
+
+    def test_check_standard_model(self):
+        return
+
+
+class test_get_unformatted_data():
+    def test_successful_get(self):
+        return
+
+    @raises()
+    def test_reshape_exception(self):
+        return
+
+    @raises()
+    def file_open_error(self):
+        return

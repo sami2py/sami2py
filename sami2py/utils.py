@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 """ Wrapper for running sami2 model
 
 Functions
@@ -31,7 +31,8 @@ References
 
 """
 
-def generate_path(tag, lon, year, day):
+
+def generate_path(tag, lon, year, day, test=False):
     """
     Creates a path based on run tag, date, and longitude
 
@@ -51,12 +52,24 @@ def generate_path(tag, lon, year, day):
     path : (string)
         Complete path pointing to model archive for a given run
     """
+    import os.path as op
 
-    from sami2py import archive_dir
+    if test:
+        from sami2py import test_data_dir
+        top_directory = test_data_dir
+    else:
+        from sami2py import archive_dir
+        top_directory = archive_dir
 
-    path = archive_dir + tag + ('/lon%03d/%4d_%03d/' % (lon, year, day))
+    if top_directory:
+        path = op.join(top_directory, tag,
+                       ('lon%03d/%4d_%03d/' % (lon, year, day)))
+    else:
+        raise NameError(''.join(('Archive Directory Not Specified: ',
+                                 'Run sami2py.utils.set_archive_dir')))
 
     return path
+
 
 def set_archive_dir(path=None, store=None):
     """
@@ -68,17 +81,19 @@ def set_archive_dir(path=None, store=None):
         valid path to directory pysat uses to look for data
     store : bool
         if True, store data directory for future runs
-
-
     """
     import os
     import sami2py
+
     if store is None:
         store = True
+
     if os.path.isdir(path):
         if store:
-            with open(os.path.join(os.path.expanduser('~'), '.sami2py', 'archive_path.txt'), 'w') as f:
-                f.write(path)
+            with open(os.path.join(os.path.expanduser('~'),
+                                   '.sami2py', 'archive_path.txt'),
+                      'w') as archive_file:
+                archive_file.write(path)
         sami2py.archive_dir = path
     else:
         raise ValueError('Path does not lead to a valid directory.')

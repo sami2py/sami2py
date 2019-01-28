@@ -257,26 +257,35 @@ def run_model(year, day, lat=0, lon=0, alt=300,
             'cqe': cqe, 'euv_scale': euv_scale,
             'Tinf_scale': Tinf_scale, 'Tn_scale': Tn_scale,
             'wind_scale': wind_scale, 'hwm_model': hwm_model}
-    if fejer:
-        info['fejer'] = '.true.'
-    else:
-        info['fejer'] = '.false.'
-        if ExB_drifts.shape != (10, 2):
-            print('Invalid ExB drift shape!  Must be 10x2 ndarray.')
-        np.savetxt('exb.inp', ExB_drifts)
 
-    if fmtout:
-        info['fmtout'] = '.true.'
-    else:
-        info['fmtout'] = '.false.'
-
+    info['fejer'] = _generate_drift_info(fejer, ExB_drifts)
+    info['fmtout'] = _generate_format_info(fmtout)
     _generate_namelist(info)
-    path = generate_path(tag, lon, year, day)
+    path = generate_path(tag, lon, year, day, test)
     if not test:
         os.system('./sami2low.x')
     _archive_model(path, clean, fejer, fmtout)
 
     os.chdir(current_dir)
+
+
+def _generate_drift_info(fejer, ExB_drifts=None):
+    if fejer:
+        ret = '.true.'
+    else:
+        if ExB_drifts.shape != (10, 2):
+            raise Exception('Invalid ExB drift shape!  Must be 10x2 ndarray.')
+        ret = '.false.'
+        np.savetxt('exb.inp', ExB_drifts)
+    return ret
+
+
+def _generate_format_info(fmtout):
+    if fmtout:
+        ret = '.true.'
+    else:
+        ret = '.false.'
+    return ret
 
 
 def _generate_namelist(info):

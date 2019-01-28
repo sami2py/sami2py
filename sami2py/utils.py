@@ -46,6 +46,8 @@ def generate_path(tag, lon, year, day, test=False):
         year of model run
     day : (int)
         day of year of model run
+    test : (boolean)
+        uses the directory where the testing data is stored
 
     Returns
     -------
@@ -71,7 +73,7 @@ def generate_path(tag, lon, year, day, test=False):
     return path
 
 
-def set_archive_dir(path=None, store=None):
+def set_archive_dir(path=None, store=True):
     """
     Set the top level directory pysat uses to look for data and reload.
 
@@ -84,9 +86,6 @@ def set_archive_dir(path=None, store=None):
     """
     import os
     import sami2py
-
-    if store is None:
-        store = True
 
     if os.path.isdir(path):
         if store:

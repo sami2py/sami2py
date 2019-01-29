@@ -273,7 +273,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
     _generate_namelist(info)
     path = generate_path(tag, lon, year, day)
     if not test:
-        os.system('./sami2low.x')
+        os.system('./sami2py.x')
     _archive_model(path, clean, fejer, fmtout)
 
     os.chdir(current_dir)
@@ -295,7 +295,7 @@ def _generate_namelist(info):
         info['hwm_model'] = 14
 
     # Print out namelist file
-    file = open('sami2low-1.00.namelist', 'w')
+    file = open('sami2py-1.00.namelist', 'w')
 
     file.write('&go\n')
     file.write('  fmtout   = %s,\n' % info['fmtout'])  # 1
@@ -363,11 +363,11 @@ def _archive_model(path, clean, fejer, fmtout):
     if fmtout:
         filelist = ['glonf.dat', 'glatf.dat', 'zaltf.dat',
                     'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
-                    'time.dat', 'sami2low-1.00.namelist']
+                    'time.dat', 'sami2py-1.00.namelist']
     else:
         filelist = ['glonu.dat', 'glatu.dat', 'zaltu.dat',
                     'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
-                    'time.dat', 'sami2low-1.00.namelist']
+                    'time.dat', 'sami2py-1.00.namelist']
 
     try:
         os.stat(path)

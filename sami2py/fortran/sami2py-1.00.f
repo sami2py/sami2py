@@ -52,7 +52,7 @@
 
 !     open input files
 
-      open ( unit=10, file='sami2low-1.00.namelist'  )
+      open ( unit=10, file='sami2py-1.00.namelist'  )
       open ( unit=11, file='exb.inp')
       open ( unit=20, file='deni-init.inp')
       open ( unit=30, file='ichem.inp')

@@ -19,6 +19,11 @@ fortran_path = path.join(here, 'sami2py', 'fortran')
 test_data_path = path.join(here, 'sami2py', 'tests', 'test_data')
 file_path = path.join(path.expanduser('~'), '.sami2py')
 
+if not path.isfile(fortran_path + '/sami2py.x'):
+    print('\n'.join(['\nYou will need to compile the fortran files.  Try',
+                     '$  cd sami2py/fortran',
+                     '$  make compile\n']))
+
 if not path.isdir(file_path):
     mkdir(file_path)
 

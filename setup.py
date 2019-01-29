@@ -40,7 +40,7 @@ with open(path.join(file_path, 'test_data_path.txt'), 'w+') as f:
 # Run setup
 
 setup(name='sami2py',
-      version='0.1a1',
+      version='0.1a2',
       url='gitlab.com/jklenzing/sami2py',
       author='Jeff Klenzing',
       author_email='jeffrey.klenzing@nasa.gov',

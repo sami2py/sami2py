@@ -8,7 +8,7 @@ from nose.tools import raises
 from sami2py.utils import generate_path, set_archive_dir
 
 
-class test_generate_path():
+class TestGeneratePath():
     def test_generate_path(self):
         '''test the basic functionality of generating a path
         '''
@@ -27,7 +27,7 @@ class test_generate_path():
         sami2py.archive_dir = tmp_archive_dir
 
 
-class test_archive_dir():
+class TestArchiveDir():
     def test_set_archive_dir(self):
         '''test that set_archive_dir has set and stored the archive directory
         '''

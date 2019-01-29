@@ -11,7 +11,7 @@ from sami2py import fortran_dir, test_data_dir
 from sami2py.utils import generate_path
 
 
-class test_basic_model_run():
+class TestBasicModelRun():
 
     def setup(self):
         '''setup function run before each test method to setup files needed

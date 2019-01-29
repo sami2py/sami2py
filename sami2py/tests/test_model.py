@@ -3,14 +3,18 @@
 '''
 import os
 import shutil
+import sami2py
+from sami2py.utils import generate_path
 
 
-class test_model_object():
-    def setup():
+class TestModelObject():
+    '''test basic model object functionality
+    '''
+    def setup(self):
         '''set up .dat files in properly named director
            for model object to load model
         '''
-        self.path = generate_path('test', 256, 1999, 256, True)
+        self.path = generate_path('test', 256, 1999, 256, test=True)
         if not os.path.exists(self.path):
             os.makedirs(self.path)
         filelist_fmt = ['glonf.dat', 'glatf.dat', 'zaltf.dat',
@@ -19,7 +23,7 @@ class test_model_object():
         for filename in filelist_fmt:
             open(self.path+'/'+filename, 'w').close()
 
-    def teardown():
+    def teardown(self):
         '''remove directory tree with the empty .dat files
         '''
         if os.path.isdir(self.path):
@@ -33,8 +37,10 @@ class test_model_object():
         sami2py.model(tag='none', lon=420, day=420, year=1969)
 
     def test_model_instantiation(self):
+        '''test that model object is instantiated as a sami2py_model
+        '''
         S = sami2py.model(tag='test', lon=256, year=1999, day=256)
-        assert isinstasnce(s, sami2py_model)
+        assert isinstasnce(S, 'sami2py_model')
 
     def test_model_plot(self):
         return
@@ -43,14 +49,22 @@ class test_model_object():
         return
 
 
-class test_get_unformatted_data():
+class TestGetUnformattedData():
+    '''Test basic functionality of get_unformatted_data function
+    '''
     def test_successful_get(self):
+        '''test a successful get of unformatted data
+        '''
         return
 
     @raises()
     def test_reshape_exception(self):
+        '''reshape should raise an error if invalid dimensions are provided
+        '''
         return
 
     @raises()
     def file_open_error(self):
+        '''file open should raise an error if invalid file path provided
+        '''
         return

@@ -168,7 +168,7 @@ class model(object):
                              self.test)
 
         # Get NameList
-        file = open(path + 'sami2low-1.00.namelist')
+        file = open(path + 'sami2py-1.00.namelist')
         self.namelist = file.readlines()
         file.close()
 

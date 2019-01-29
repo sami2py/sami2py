@@ -19,6 +19,11 @@ fortran_path = path.join(here, 'sami2py', 'fortran')
 test_data_path = path.join(here, 'sami2py', 'tests', 'test_data')
 file_path = path.join(path.expanduser('~'), '.sami2py')
 
+if not path.isfile(fortran_path + '/sami2py.x'):
+    print('\n'.join(['\nYou will need to compile the fortran files.  Try',
+                     '$  cd sami2py/fortran',
+                     '$  make compile\n']))
+
 if not path.isdir(file_path):
     mkdir(file_path)
 
@@ -40,7 +45,7 @@ with open(path.join(file_path, 'test_data_path.txt'), 'w+') as f:
 # Run setup
 
 setup(name='sami2py',
-      version='0.1a1',
+      version='0.1a2',
       url='gitlab.com/jklenzing/sami2py',
       author='Jeff Klenzing',
       author_email='jeffrey.klenzing@nasa.gov',

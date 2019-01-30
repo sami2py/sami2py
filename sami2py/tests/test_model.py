@@ -5,6 +5,7 @@ import os
 import shutil
 import sami2py
 from sami2py.utils import generate_path
+from sami2py.model import get_unformatted_data
 from matplotlib.testing.decorators import image_comparison
 
 
@@ -60,16 +61,21 @@ class TestGetUnformattedData():
     def test_successful_get(self):
         '''test a successful get of unformatted data
         '''
-        return
+        from sami2py import test_data_dir
+        path = test_data_dir
+        get_unformatted_data(path, 'glat', nz, nf, ni, nt)
+        assert ret.size == 0
 
-    @raises()
+    @raises(ValueError)
     def test_reshape_exception(self):
         '''reshape should raise an error if invalid dimensions are provided
         '''
-        return
+        path = test_data_dir
+        get_unformatted_data(path, 'glat', nz, nf, ni, nt, reshape=True)
 
-    @raises()
+    @raises(FileNotFoundError)
     def file_open_error(self):
         '''file open should raise an error if invalid file path provided
         '''
-        return
+        path = test_data_dir
+        get_unformatted_data(path, 'glat', nz, nf, ni, nt)

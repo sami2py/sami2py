@@ -15,6 +15,10 @@ import numpy as np
 
 class TestUtils():
 
+    def setup(self):
+        """Runs before every method to create a clean testing setup."""
+        sami2py.archive_dir = 'test'
+
     @raises(TypeError)
     def test_generate_path_w_numeric_tag(self):
         """Tests generation of a path with a numeric tag"""

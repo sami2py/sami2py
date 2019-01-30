@@ -46,6 +46,9 @@ def generate_path(tag, lon, year, day, test=False):
         year of model run
     day : (int)
         day of year of model run
+    test : (bool)
+        If True, use directory for test data.  If False, use archive_dir
+        (default = False)
 
     Returns
     -------
@@ -64,6 +67,8 @@ def generate_path(tag, lon, year, day, test=False):
         from sami2py import archive_dir
         top_directory = archive_dir
 
+    # Check if top_directory is empty string, ie, user has not specified
+    # a directory through set_archive_dir
     if top_directory:
         archive_path = path.join(top_directory, tag,
                                  ('lon%03d/%4d_%03d/' % (lon, year, day)))

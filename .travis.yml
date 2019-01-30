@@ -1,0 +1,23 @@
+language: python
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+sudo: false
+
+addons:
+  apt:
+    packages:
+    - gfortran
+
+before_install:
+  - pip install netCDF4
+install:
+  - source activate test-environment
+  - "python setup.py install"
+  - "cd sami2py/fortran"
+  - "make compile"
+  - "cd ../.."
+script:
+  - "nosetests -vs --with-coverage --cover-package=sami2py"

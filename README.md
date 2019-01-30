@@ -1,3 +1,7 @@
+# sami2py: sami2py is another model of the ionosphere python style
+
+[![Build Status](https://travis-ci.com/jklenzing/sami2py.svg?token=2cVxNXGyxT253xN5hYXp&branch=master)](https://travis-ci.org/jklenzing/sami2py)
+
 # Overview
 
 Sami2py is a python module that runs the sami2 model, as well as archives, loads and plots the resulting modeled values.
@@ -7,7 +11,7 @@ Sami2py is a python module that runs the sami2 model, as well as archives, loads
 First, checkout the repository:
 
 ```
-    $ git clone git@gitlab.com:jklenzing/sami2py.git;
+    $ git clone https://github.com/jklenzing/sami2py.git;
 ```
 
 Change directories into the repository folder and run the setup.py file.  For

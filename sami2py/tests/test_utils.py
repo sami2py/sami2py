@@ -48,3 +48,26 @@ class TestUtils():
         """Tests generation of a path with a nonnumeric longitude"""
 
         sami2py.utils.generate_path(tag='test', lon=0, year=2012, day='277')
+
+
+class TestArchiveDir():
+    def test_set_archive_dir(self):
+        '''test that set_archive_dir has set and stored the archive directory
+        '''
+        from sami2py import test_data_dir
+        tmp_archive_dir = sami2py.archive_dir
+        set_archive_dir(path=test_data_dir)
+        home_dir = os.path.expanduser('~')
+        sami2py_dir = os.path.join(home_dir, '.sami2py')
+        archive_path = os.path.join(sami2py_dir, 'archive_path.txt')
+        with open(archive_path, 'r') as f:
+            archive_dir = f.readline()
+        assert archive_dir == test_data_dir
+        # return the archive dir to its previous value
+        set_archive_dir(path=tmp_archive_dir)
+
+    @raises(ValueError)
+    def test_set_archive_dir_exception(self):
+        '''if the provided path is invalid a value error should be produced
+        '''
+        set_archive_dir('dummy_invalid_path')

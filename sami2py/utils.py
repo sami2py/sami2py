@@ -46,13 +46,19 @@ def generate_path(tag, lon, year, day, test=False):
         year of model run
     day : (int)
         day of year of model run
+    test : (bool)
+        If True, use directory for test data.  If False, use archive_dir
+        (default = False)
 
     Returns
     -------
     path : (string)
         Complete path pointing to model archive for a given run
     """
-    import os.path as op
+    from os import path
+
+    if not isinstance(tag, str):
+        raise TypeError
 
     if test:
         from sami2py import test_data_dir
@@ -61,14 +67,16 @@ def generate_path(tag, lon, year, day, test=False):
         from sami2py import archive_dir
         top_directory = archive_dir
 
+    # Check if top_directory is empty string, ie, user has not specified
+    # a directory through set_archive_dir
     if top_directory:
-        path = op.join(top_directory, tag,
-                       ('lon%03d/%4d_%03d/' % (lon, year, day)))
+        archive_path = path.join(top_directory, tag,
+                                 ('lon%03d/%4d_%03d/' % (lon, year, day)))
     else:
         raise NameError(''.join(('Archive Directory Not Specified: ',
                                  'Run sami2py.utils.set_archive_dir')))
 
-    return path
+    return archive_path
 
 
 def set_archive_dir(path=None, store=None):

@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/jklenzing/sami2py.svg?branch=develop)](https://travis-ci.com/jklenzing/sami2py)
+
 # Overview
 
 Sami2py is a python module that runs the sami2 model, as well as archives, loads and plots the resulting modeled values.

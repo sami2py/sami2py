@@ -54,6 +54,9 @@ def generate_path(tag, lon, year, day, test=False):
     """
     from os import path
 
+    if not isinstance(tag, str):
+        raise TypeError
+
     if test:
         from sami2py import test_data_dir
         top_directory = test_data_dir

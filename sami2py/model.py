@@ -32,7 +32,7 @@ from .utils import generate_path
 import numpy as np
 
 
-def get_unformatted_data(var_name, nz, nf, ni, nt, reshape=False):
+def get_unformatted_data(path, var_name, nz, nf, ni, nt, reshape=False):
     f = open(path+var_name+'u.dat', 'rb')
     ret = np.fromfile(f, dtype='float32')[1:-1]
     f.close
@@ -194,15 +194,19 @@ class model(object):
             te = np.loadtxt(path+'tef.dat')
         else:
             # Get Location
-            glat = get_unformatted_data('glat', nz, nf, ni, nt)
-            glon = get_unformatted_data('glon', nz, nf, ni, nt)
-            zalt = get_unformatted_data('zalt', nz, nf, ni, nt)
+            glat = get_unformatted_data(path, 'glat', nz, nf, ni, nt)
+            glon = get_unformatted_data(path, 'glon', nz, nf, ni, nt)
+            zalt = get_unformatted_data(path, 'zalt', nz, nf, ni, nt)
 
             # Get plasma values
-            deni = get_unformatted_data('deni', nz, nf, ni, nt, reshape=True)
-            vsi = get_unformatted_data('vsi', nz, nf, ni, nt, reshape=True)
-            ti = get_unformatted_data('ti', nz, nf, ni, nt, reshape=True)
-            te = get_unformatted_data('te', nz, nf, ni, nt, reshape=True)
+            deni = get_unformatted_data(path, 'deni', nz, nf, ni, nt,
+                                        reshape=True)
+            vsi = get_unformatted_data(path, 'vsi', nz, nf, ni, nt,
+                                       reshape=True)
+            ti = get_unformatted_data(path, 'ti', nz, nf, ni, nt,
+                                      reshape=True)
+            te = get_unformatted_data(path, 'te', nz, nf, ni, nt,
+                                      reshape=True)
 
         self.glat = np.reshape(glat, (nz, nf), order="F")
         self.glon = np.reshape(glon, (nz, nf), order="F")

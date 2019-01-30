@@ -5,6 +5,7 @@ import os
 import shutil
 import sami2py
 from sami2py.utils import generate_path
+from matplotlib.testing.decorators import image_comparison
 
 
 class TestModelObject():
@@ -42,9 +43,10 @@ class TestModelObject():
         S = sami2py.model(tag='test', lon=256, year=1999, day=256)
         assert isinstasnce(S, 'sami2py_model')
 
+    @image_comparison(ionosphere_images=['blank_model_plot'])
     def test_model_plot(self):
         S = sami2py.model(tag='test', lon=256, year=1999, day=256)
-        return
+        S.plot_lat_alt()
 
     def test_check_standard_model(self):
         S = sami2py.model(tag='test', lon=256, year=1999, day=256)

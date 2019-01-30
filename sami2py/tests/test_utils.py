@@ -19,7 +19,7 @@ class TestUtils():
         """Runs before every method to create a clean testing setup."""
         sami2py.archive_dir = 'test'
 
-    @raises(TypeError)
+    @raises(TypeError or AttributeError)
     def test_generate_path_w_numeric_tag(self):
         """Tests generation of a path with a numeric tag"""
 

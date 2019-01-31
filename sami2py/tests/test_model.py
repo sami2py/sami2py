@@ -51,6 +51,9 @@ class TestModelObject():
         '''basic test that a reasonable plot has been created by testing the
            resulting axis limits
         '''
+        import matplotlib
+        matplotlib.use('Agg')
+
         S = sami2py.model(tag='test', lon=256, year=1999, day=256, test=True)
         S.plot_lat_alt()
         fig = plt.gcf()

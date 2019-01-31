@@ -18,6 +18,8 @@ class TestBasicModelRun():
            to run the test effectively
         '''
         self.path = generate_path('test', 0, 2012, 211, True)
+        if not os.path.exists(self.path):
+            os.makedirs(self.path)
         filelist_fmt = ['glonf.dat', 'glatf.dat', 'zaltf.dat',
                         'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
                         'time.dat']
@@ -33,8 +35,10 @@ class TestBasicModelRun():
                         'time.dat']
         for filename in filelist_fmt:
             os.remove(fortran_dir + '/' + filename)
-        if os.path.isdir(self.path):
-            shutil.rmtree(self.path)
+        if os.path.exists(self.path):
+            path_to_remove = os.path.split(self.path)[0]
+            path_to_remove = os.path.split(path_to_remove)[0]
+            shutil.rmtree(path_to_remove)
 
     def test_run_model_namelist(self):
         '''the test to ensure that the namelist file is generated properly

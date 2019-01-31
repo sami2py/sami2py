@@ -24,7 +24,7 @@ class TestModelObject():
     def test_model_input_exception(self):
         '''file not found error should be produced if the file does not exist
         '''
-        sami2py.model(tag='none', lon=420, day=420, year=1969)
+        sami2py.model(tag='none', lon=428, day=428, year=1969)
 
     def test_model_instantiation(self):
         '''test that model object is instantiated as a sami2py_model
@@ -74,7 +74,7 @@ class TestModelObject():
         nt = 0
         get_unformatted_data(self.path, 'glat', nz, nf, ni, nt, reshape=True)
 
-    @raises(FileNotFoundError)
+    @raises(IOError)
     def file_open_error(self):
         '''file open should raise an error if invalid file path provided
         '''

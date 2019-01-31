@@ -35,6 +35,7 @@ import numpy as np
 
 def get_unformatted_data(dat_dir, var_name, nz, nf, ni, nt, reshape=False):
     f = open(path.join(dat_dir, var_name + 'u.dat'), 'rb')
+
     ret = np.fromfile(f, dtype='float32')[1:-1]
     f.close
     if reshape:
@@ -144,10 +145,10 @@ class model(object):
 
         """
 
-        slt = np.mod((self.ut*60 + self.lon0*4), 1440)/60.0
-        m = 2*np.pi*self.day/365.242
-        dt = -7.657*np.sin(m) + 9.862*np.sin(2*m + 3.599)
-        self.slt = slt - dt/60.0
+        slt = np.mod((self.ut * 60 + self.lon0 * 4), 1440) / 60.0
+        m = 2 * np.pi * self.day / 365.242
+        dt = -7.657 * np.sin(m) + 9.862 * np.sin(2 * m + 3.599)
+        self.slt = slt - dt / 60.0
 
     def _load_model(self):
         """ Loads model results
@@ -178,7 +179,8 @@ class model(object):
 
         # Get times
         time = np.loadtxt(path + 'time.dat')
-        self.ut = time[:, 1] + time[:, 2]/60 + time[:, 3]/3600
+        self.ut = time[:, 1] + time[:, 2] / 60 + time[:, 3] / 3600
+
         self._calculate_slt()
         nt = len(self.ut)
 

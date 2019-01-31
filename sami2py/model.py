@@ -29,11 +29,12 @@ References
 
 """
 from .utils import generate_path
+from os import path
 import numpy as np
 
 
-def get_unformatted_data(path, var_name, nz, nf, ni, nt, reshape=False):
-    f = open(path+var_name+'u.dat', 'rb')
+def get_unformatted_data(dat_dir, var_name, nz, nf, ni, nt, reshape=False):
+    f = open(path.join(dat_dir, var_name+'u.dat'), 'rb')
     ret = np.fromfile(f, dtype='float32')[1:-1]
     f.close
     if reshape:

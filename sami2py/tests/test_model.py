@@ -19,6 +19,21 @@ class TestModelObject():
            for model object to load model
         '''
         self.path = generate_path('test', 256, 1999, 256, test=True)
+        self.tmp_archive_dir = sami2py.archive_dir
+        sami2py.utils.set_archive_dir(path=sami2py.test_data_dir)
+
+    def teardown(self):
+        '''undo any changes made to the archive directory
+        '''
+        if os.path.isdir(self.tmp_archive_dir):
+            sami2py.utils.set_archive_dir(path=self.tmp_archive_dir)
+        else:
+            home_dir = os.path.expanduser('~')
+            sami2py_dir = os.path.join(home_dir, '.sami2py')
+            archive_path = os.path.join(sami2py_dir, 'archive_path.txt')
+            with open(archive_path, 'w') as f:
+                f.write('')
+                sami2py.archive_dir = ''
 
     @raises(IOError)
     def test_model_input_exception(self):

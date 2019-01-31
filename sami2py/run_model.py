@@ -290,7 +290,7 @@ def _generate_namelist(info):
     """
 
     # Check HWM model parameters
-    if not (info['hwm_model'] in [93, 7, 14]):
+    if info['hwm_model'] not in [93, 7, 14]:
         print('Invalid HWM Model.  Defaulting to HWM14')
         info['hwm_model'] = 14
 

@@ -11,6 +11,7 @@ import sami2py
 from nose.tools import assert_raises, raises
 import nose.tools
 import numpy as np
+import os
 
 
 class TestUtils():
@@ -56,7 +57,7 @@ class TestArchiveDir():
         '''
         from sami2py import test_data_dir
         tmp_archive_dir = sami2py.archive_dir
-        set_archive_dir(path=test_data_dir)
+        sami2py.utils.set_archive_dir(path=test_data_dir)
         home_dir = os.path.expanduser('~')
         sami2py_dir = os.path.join(home_dir, '.sami2py')
         archive_path = os.path.join(sami2py_dir, 'archive_path.txt')
@@ -64,10 +65,10 @@ class TestArchiveDir():
             archive_dir = f.readline()
         assert archive_dir == test_data_dir
         # return the archive dir to its previous value
-        set_archive_dir(path=tmp_archive_dir)
+        sami2py.utils.set_archive_dir(path=tmp_archive_dir)
 
     @raises(ValueError)
     def test_set_archive_dir_exception(self):
         '''if the provided path is invalid a value error should be produced
         '''
-        set_archive_dir('dummy_invalid_path')
+        sami2py.utils.set_archive_dir('dummy_invalid_path')

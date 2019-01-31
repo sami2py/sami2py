@@ -40,8 +40,8 @@ class TestBasicModelRun():
         '''the test to ensure that the namelist file is generated properly
         '''
         sami2py.run_model(year=2012, day=211, test=True)
-        namelist_file = self.path+'sami2low-1.00.namelist'
-        ref_namelist = test_data_dir+'/reference_sami2low-1.00.namelist'
+        namelist_file = self.path+'sami2py-1.00.namelist'
+        ref_namelist = test_data_dir+'/reference_sami2py-1.00.namelist'
         assert filecmp.cmp(namelist_file, ref_namelist)
 
     def test_run_model_dat_files(self):

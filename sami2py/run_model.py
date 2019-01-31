@@ -380,7 +380,7 @@ def _archive_model(path, clean, fejer, fmtout):
 
     try:
         os.stat(path)
-    except FileNotFoundError:
+    except IOError:
         os.makedirs(path)
 
     for list_file in filelist:

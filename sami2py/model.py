@@ -34,11 +34,11 @@ import numpy as np
 
 
 def get_unformatted_data(dat_dir, var_name, nz, nf, ni, nt, reshape=False):
-    f = open(path.join(dat_dir, var_name+'u.dat'), 'rb')
+    f = open(path.join(dat_dir, var_name + 'u.dat'), 'rb')
     ret = np.fromfile(f, dtype='float32')[1:-1]
     f.close
     if reshape:
-        ret = ret.reshape((nz*nf*ni+2), nt, order='F')[1:-1, :]
+        ret = ret.reshape((nz*nf*ni + 2), nt, order='F')[1:-1, :]
     return ret
 
 
@@ -177,22 +177,22 @@ class model(object):
         self._generate_metadata(self.namelist)
 
         # Get times
-        time = np.loadtxt(path+'time.dat')
+        time = np.loadtxt(path + 'time.dat')
         self.ut = time[:, 1] + time[:, 2]/60 + time[:, 3]/3600
         self._calculate_slt()
         nt = len(self.ut)
 
         if self.MetaData['fmtout']:
             # Get Location
-            glat = np.loadtxt(path+'glatf.dat')
-            glon = np.loadtxt(path+'glonf.dat')
-            zalt = np.loadtxt(path+'zaltf.dat')
+            glat = np.loadtxt(path + 'glatf.dat')
+            glon = np.loadtxt(path + 'glonf.dat')
+            zalt = np.loadtxt(path + 'zaltf.dat')
 
             # Get plasma values
-            deni = np.loadtxt(path+'denif.dat')
-            vsi = np.loadtxt(path+'vsif.dat')
-            ti = np.loadtxt(path+'tif.dat')
-            te = np.loadtxt(path+'tef.dat')
+            deni = np.loadtxt(path + 'denif.dat')
+            vsi = np.loadtxt(path + 'vsif.dat')
+            ti = np.loadtxt(path + 'tif.dat')
+            te = np.loadtxt(path + 'tef.dat')
         else:
             # Get Location
             glat = get_unformatted_data(path, 'glat', nz, nf, ni, nt)
@@ -265,7 +265,7 @@ class model(object):
             self.MetaData['ExB model'] = 'Fejer-Scherliess'
         else:
             self.MetaData['ExB model'] = 'Fourier Series'
-            self.MetaData['Fourier Coeffs'] = np.loadtxt(path+'exb.inp')
+            self.MetaData['Fourier Coeffs'] = np.loadtxt(path'exb.inp')
 
         wind_model = int(re.findall(r"\d+", namelist[35])[0])
         self.MetaData['Wind Model'] = ('HWM-%02d' % wind_model)

@@ -22,7 +22,7 @@ class TestBasicModelRun():
                         'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
                         'time.dat']
         for filename in filelist_fmt:
-            open(fortran_dir+'/'+filename, 'w').close()
+            open(fortran_dir + '/' + filename, 'w').close()
 
     def teardown(self):
         '''teardown function run before each test method to remove files needed
@@ -32,7 +32,7 @@ class TestBasicModelRun():
                         'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
                         'time.dat']
         for filename in filelist_fmt:
-            os.remove(fortran_dir+'/'+filename)
+            os.remove(fortran_dir + '/' + filename)
         if os.path.isdir(self.path):
             shutil.rmtree(self.path)
 
@@ -40,15 +40,15 @@ class TestBasicModelRun():
         '''the test to ensure that the namelist file is generated properly
         '''
         sami2py.run_model(year=2012, day=211, test=True)
-        namelist_file = self.path+'sami2py-1.00.namelist'
-        ref_namelist = test_data_dir+'/reference_sami2py-1.00.namelist'
+        namelist_file = self.path + 'sami2py-1.00.namelist'
+        ref_namelist = test_data_dir + '/reference_sami2py-1.00.namelist'
         assert filecmp.cmp(namelist_file, ref_namelist)
 
     def test_run_model_dat_files(self):
         '''test to ensure that the dat files are copied properly
         '''
         sami2py.run_model(year=2012, day=211, test=True)
-        assert os.stat(self.path+'glonf.dat')
+        assert os.stat(self.path + 'glonf.dat')
 
     @raises(TypeError)
     def test_input_format(self):

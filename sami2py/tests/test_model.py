@@ -61,7 +61,7 @@ class TestModelObject():
         ni = 7
         nt = 0
         ret_data = get_unformatted_data(self.path, 'glat', nz, nf, ni, nt)
-        glat = np.loadtxt(self.path+'glatf.dat')
+        glat = np.loadtxt(self.path + 'glatf.dat')
         assert ret_data.size == glat.size
 
     @raises(ValueError)

@@ -384,9 +384,9 @@ def _archive_model(path, clean, fejer, fmtout):
         os.makedirs(path)
 
     for list_file in filelist:
-        shutil.copyfile(list_file, path+list_file)
+        shutil.copyfile(list_file, path + list_file)
     if clean:
         for list_file in filelist[:-1]:
             os.remove(list_file)
     if not fejer:
-        shutil.copyfile('exb.inp', path+'exb.inp')
+        shutil.copyfile('exb.inp', path + 'exb.inp')

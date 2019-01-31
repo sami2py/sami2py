@@ -33,6 +33,9 @@ class TestModelObject():
         assert isinstance(S, sami2py.model)
 
     def test_model_plot(self):
+        '''basic test that a reasonable plot has been created by testing the
+           resulting axis limits
+        '''
         S = sami2py.model(tag='test', lon=256, year=1999, day=256, test=True)
         S.plot_lat_alt()
         fig = plt.gcf()
@@ -43,6 +46,9 @@ class TestModelObject():
         plt.close()
 
     def test_check_standard_model(self):
+        '''test that standard model outputs nothing if there are no changes to
+           the standard model
+        '''
         S = sami2py.model(tag='test', lon=256, year=1999, day=256, test=True)
         keys = S.check_standard_model()
         assert keys == list()

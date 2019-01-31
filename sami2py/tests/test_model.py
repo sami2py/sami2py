@@ -20,7 +20,7 @@ class TestModelObject():
         '''
         self.path = generate_path('test', 256, 1999, 256, test=True)
 
-    @raises(FileNotFoundError)
+    @raises(IOError)
     def test_model_input_exception(self):
         '''file not found error should be produced if the file does not exist
         '''

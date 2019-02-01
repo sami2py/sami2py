@@ -31,20 +31,20 @@ class TestUtils():
 
         sami2py.utils.generate_path(tag=7, lon=0, year=2012, day=277)
 
-    @raises(TypeError)
+    @raises(ValueError)
     def test_generate_path_w_nonnumeric_lon(self):
         """Tests generation of a path with a nonnumeric longitude"""
 
         sami2py.utils.generate_path(tag='test', lon='0', year=2012, day=277)
 
-    @raises(TypeError)
+    @raises(ValueError)
     def test_generate_path_w_nonnumeric_year(self):
         """Tests generation of a path with a nonnumeric year"""
 
         sami2py.utils.generate_path(tag='test', lon=0, year='2012', day=277)
 
-    @raises(TypeError)
+    @raises(ValueError)
     def test_generate_path_w_nonnumeric_day(self):
-        """Tests generation of a path with a nonnumeric longitude"""
+        """Tests generation of a path with a nonnumeric day"""
 
         sami2py.utils.generate_path(tag='test', lon=0, year=2012, day='277')

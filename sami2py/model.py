@@ -266,10 +266,10 @@ class model(object):
             self.MetaData['ExB model'] = 'Fejer-Scherliess'
         else:
             self.MetaData['ExB model'] = 'Fourier Series'
-            self.MetaData['Fourier Coeffs'] = np.loadtxt(path+'exb.inp')
+            self.MetaData['Fourier Coeffs'] = np.loadtxt(path + 'exb.inp')
 
         wind_model = int(re.findall(r"\d+", namelist[35])[0])
-        self.MetaData['Wind Model'] = ('HWM-{ver:02d}').format(ver=wind_model)
+        self.MetaData['Wind Model'] = ('HWM-{:02d}').format(wind_model)
 
         # Model Geometry
         self.MetaData['rmin'] = float(

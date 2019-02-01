@@ -5,7 +5,6 @@ import os
 import shutil
 import sami2py
 import numpy as np
-import matplotlib.pyplot as plt
 from nose.tools import raises
 from sami2py.utils import generate_path
 from sami2py.model import get_unformatted_data
@@ -53,7 +52,7 @@ class TestModelObject():
         '''
         import matplotlib
         matplotlib.use('Agg')
-
+        import matplotlib.pyplot as plt
         S = sami2py.model(tag='test', lon=256, year=1999, day=256, test=True)
         S.plot_lat_alt()
         fig = plt.gcf()

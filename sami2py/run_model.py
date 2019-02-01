@@ -379,20 +379,6 @@ def _archive_model(path, clean, fejer, fmtout):
                     'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
                     'time.dat', 'sami2py-1.00.namelist']
 
-<<<<<<< HEAD
-    try:
-        os.stat(path)
-    except IOError:
-        os.makedirs(path)
-
-    for list_file in filelist:
-        shutil.copyfile(list_file, path + list_file)
-    if clean:
-        for list_file in filelist[:-1]:
-            os.remove(list_file)
-    if not fejer:
-        shutil.copyfile('exb.inp', path + 'exb.inp')
-=======
     if os.path.isfile(filelist[0]):
         try:
             os.stat(path)
@@ -408,4 +394,3 @@ def _archive_model(path, clean, fejer, fmtout):
             shutil.copyfile('exb.inp', path + 'exb.inp')
     else:
         print('No files to move!')
->>>>>>> a9cd5229e75726950a33850bf8e09f9c096f0642

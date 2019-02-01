@@ -274,7 +274,8 @@ def run_model(year, day, lat=0, lon=0, alt=300,
     path = generate_path(tag, lon, year, day)
     if not test:
         os.system('./sami2py.x')
-        _archive_model(path, clean, fejer, fmtout)
+
+    _archive_model(path, clean, fejer, fmtout)
 
     os.chdir(current_dir)
 
@@ -369,15 +370,18 @@ def _archive_model(path, clean, fejer, fmtout):
                     'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
                     'time.dat', 'sami2py-1.00.namelist']
 
-    try:
-        os.stat(path)
-    except FileNotFoundError:
-        os.makedirs(path)
+    if os.path.isfile(filelist[0]):
+        try:
+            os.stat(path)
+        except FileNotFoundError:
+            os.makedirs(path)
 
-    for list_file in filelist:
-        shutil.copyfile(list_file, path+list_file)
-    if clean:
-        for list_file in filelist[:-1]:
-            os.remove(list_file)
-    if not fejer:
-        shutil.copyfile('exb.inp', path+'exb.inp')
+        for list_file in filelist:
+            shutil.copyfile(list_file, path + list_file)
+        if clean:
+            for list_file in filelist[:-1]:
+                os.remove(list_file)
+        if not fejer:
+            shutil.copyfile('exb.inp', path + 'exb.inp')
+    else:
+        print('No files to move!')

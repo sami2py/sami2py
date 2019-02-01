@@ -29,15 +29,17 @@ References
 
 """
 from .utils import generate_path
+from os import path
 import numpy as np
 
 
-def get_unformatted_data(var_name, reshape=False):
-    f = open(path + var_name + 'u.dat', 'rb')
+def get_unformatted_data(dat_dir, var_name, nz, nf, ni, nt, reshape=False):
+    f = open(path.join(dat_dir, var_name + 'u.dat'), 'rb')
+
     ret = np.fromfile(f, dtype='float32')[1:-1]
     f.close
     if reshape:
-        ret = ret.reshape((nz*nf*ni+2), nt, order='F')[1:-1, :]
+        ret = ret.reshape((nz*nf*ni + 2), nt, order='F')[1:-1, :]
     return ret
 
 
@@ -182,8 +184,9 @@ class model(object):
         self._generate_metadata(self.namelist)
 
         # Get times
-        time = np.loadtxt(path+'time.dat')
+        time = np.loadtxt(path + 'time.dat')
         self.ut = time[:, 1] + time[:, 2] / 60 + time[:, 3] / 3600
+
         self._calculate_slt()
         nt = len(self.ut)
 
@@ -200,15 +203,19 @@ class model(object):
             te = np.loadtxt(path + 'tef.dat')
         else:
             # Get Location
-            glat = get_unformatted_data('glat')
-            glon = get_unformatted_data('glon')
-            zalt = get_unformatted_data('zalt')
+            glat = get_unformatted_data(path, 'glat', nz, nf, ni, nt)
+            glon = get_unformatted_data(path, 'glon', nz, nf, ni, nt)
+            zalt = get_unformatted_data(path, 'zalt', nz, nf, ni, nt)
 
             # Get plasma values
-            deni = get_unformatted_data('deni', reshape=True)
-            vsi = get_unformatted_data('vsi', reshape=True)
-            ti = get_unformatted_data('ti', reshape=True)
-            te = get_unformatted_data('te', reshape=True)
+            deni = get_unformatted_data(path, 'deni', nz, nf, ni, nt,
+                                        reshape=True)
+            vsi = get_unformatted_data(path, 'vsi', nz, nf, ni, nt,
+                                       reshape=True)
+            ti = get_unformatted_data(path, 'ti', nz, nf, ni, nt,
+                                      reshape=True)
+            te = get_unformatted_data(path, 'te', nz, nf, ni, nt,
+                                      reshape=True)
 
         self.glat = np.reshape(glat, (nz, nf), order="F")
         self.glon = np.reshape(glon, (nz, nf), order="F")

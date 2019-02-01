@@ -11,6 +11,7 @@ import sami2py
 from nose.tools import assert_raises, raises
 import nose.tools
 import numpy as np
+import os
 
 
 class TestUtils():
@@ -48,3 +49,37 @@ class TestUtils():
         """Tests generation of a path with a nonnumeric day"""
 
         sami2py.utils.generate_path(tag='test', lon=0, year=2012, day='277')
+
+
+class TestArchiveDir():
+    def test_set_archive_dir(self):
+        '''test that set_archive_dir has set and stored the archive directory
+
+           to leave the archive directory unchanged it must be gathered and
+           reset after the test is complete
+        '''
+        tmp_archive_dir = sami2py.archive_dir
+
+        from sami2py import test_data_dir
+        sami2py.utils.set_archive_dir(path=test_data_dir)
+
+        home_dir = os.path.expanduser('~')
+        sami2py_dir = os.path.join(home_dir, '.sami2py')
+        archive_path = os.path.join(sami2py_dir, 'archive_path.txt')
+
+        with open(archive_path, 'r') as f:
+            archive_dir = f.readline()
+        assert archive_dir == test_data_dir
+
+        if os.path.isdir(tmp_archive_dir):
+            sami2py.utils.set_archive_dir(path=tmp_archive_dir)
+        else:
+            with open(archive_path, 'w') as f:
+                f.write('')
+                sami2py.archive_dir = ''
+
+    @raises(ValueError)
+    def test_set_archive_dir_exception(self):
+        '''if the provided path is invalid a value error should be produced
+        '''
+        sami2py.utils.set_archive_dir('dummy_invalid_path')

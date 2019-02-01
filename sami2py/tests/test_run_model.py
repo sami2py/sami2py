@@ -54,7 +54,7 @@ class TestBasicModelRun():
         sami2py.run_model(year=2012, day=211, test=True)
         assert os.stat(self.path + 'glonf.dat')
 
-    @raises(TypeError)
+    @raises(ValueError)
     def test_input_format(self):
         '''test for error output upon incorrect input format
            file.write should throw the error when using string formatting to

@@ -99,26 +99,31 @@ class model(object):
     def __repr__(self):
 
         out = ['']
-        out.append('Model Run Name = %s' % self.tag)
-        out.append('Day %03d, %4d' % (self.day, self.year))
-        out.append('Longitude = %d deg' % self.lon0)
-        out.append('%d time steps from %4.1f to %4.1f UT' %
-                   (len(self.ut), min(self.ut), max(self.ut)))
-        out.append('Ions Used: %s' % self.MetaData['Ions Used'])
+        out.append('Model Run Name = ' + self.tag)
+        out.append(('Day {day:03d}, {year:4d}').format(day=self.day,
+                                                       year=self.year))
+        out.append(('Longitude = {lon:d} deg').format(lon=self.lon0))
+        temp_str = '{N:d} time steps from {t0:4.1f} to {tf:4.1f} UT'
+        out.append(temp_str.format(N=len(self.ut),
+                                   t0=min(self.ut),
+                                   tf=max(self.ut)))
+        out.append('Ions Used: ' + self.MetaData['Ions Used'])
 
         out.append('\nSolar Activity')
         out.append('--------------')
-        out.append('F10.7: %5.1f sfu' % self.MetaData['F10.7'])
-        out.append('F10.7A: %5.1f sfu' % self.MetaData['F10.7A'])
-        out.append('ap: %d' % self.MetaData['ap'])
+        temp_str = 'F10.7: {f107:5.1f} sfu'
+        out.append(temp_str.format(f107=self.MetaData['F10.7']))
+        temp_str = 'F10.7A: {f107a:5.1f} sfu'
+        out.append(temp_str.format(f107a=self.MetaData['F10.7A']))
+        out.append(('ap: {ap:d}').format(ap=self.MetaData['ap']))
 
         out.append('\nComponent Models Used')
         out.append('---------------------')
-        out.append('Neutral Atmosphere: %s' %
+        out.append('Neutral Atmosphere: ' +
                    self.MetaData['Neutral Atmosphere Model'])
-        out.append('Winds: %s' % self.MetaData['Wind Model'])
-        out.append('Photoproduction: %s' % self.MetaData['EUV Model'])
-        out.append('ExB Drifts: %s' % self.MetaData['ExB model'])
+        out.append('Winds: ' + self.MetaData['Wind Model'])
+        out.append('Photoproduction: ' + self.MetaData['EUV Model'])
+        out.append('ExB Drifts: ' + self.MetaData['ExB model'])
 
         mod_keys = self.check_standard_model()
         if len(mod_keys) == 0:
@@ -127,7 +132,8 @@ class model(object):
             out.append('\nMultipliers used')
             out.append('----------------')
             for mkey in mod_keys:
-                out.append('%s: %f' % (mkey, self.MetaData[mkey]))
+                out.append(('{s}: {f}').format(s=mkey,
+                                               f=self.MetaData[mkey]))
 
         return '\n'.join(out)
 
@@ -270,7 +276,7 @@ class model(object):
             self.MetaData['Fourier Coeffs'] = np.loadtxt(path + 'exb.inp')
 
         wind_model = int(re.findall(r"\d+", namelist[35])[0])
-        self.MetaData['Wind Model'] = ('HWM-%02d' % wind_model)
+        self.MetaData['Wind Model'] = ('HWM-{:02d}').format(wind_model)
 
         # Model Geometry
         self.MetaData['rmin'] = float(

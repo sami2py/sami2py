@@ -63,18 +63,14 @@ class TestArchiveDir():
         from sami2py import test_data_dir
         sami2py.utils.set_archive_dir(path=test_data_dir)
 
-        home_dir = os.path.expanduser('~')
-        sami2py_dir = os.path.join(home_dir, '.sami2py')
-        archive_path = os.path.join(sami2py_dir, 'archive_path.txt')
-
-        with open(archive_path, 'r') as f:
+        with open(sami2py.archive_path, 'r') as f:
             archive_dir = f.readline()
         assert archive_dir == test_data_dir
 
         if os.path.isdir(tmp_archive_dir):
             sami2py.utils.set_archive_dir(path=tmp_archive_dir)
         else:
-            with open(archive_path, 'w') as f:
+            with open(sami2py.archive_path, 'w') as f:
                 f.write('')
                 sami2py.archive_dir = ''
 

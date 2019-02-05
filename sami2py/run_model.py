@@ -39,6 +39,7 @@ References
 
 """
 import os
+import subprocess
 import numpy as np
 from sami2py import fortran_dir
 from .utils import generate_path
@@ -263,7 +264,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
     _generate_namelist(info)
     path = generate_path(tag, lon, year, day, test)
     if not test:
-        os.system('./sami2py.x')
+        check_model_run = subprocess.check_call('./sami2py.x')
 
     _archive_model(path, clean, fejer, fmtout)
 

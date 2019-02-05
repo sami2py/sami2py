@@ -105,3 +105,25 @@ def set_archive_dir(path=None, store=None):
         sami2py.archive_dir = path
     else:
         raise ValueError('Path does not lead to a valid directory.')
+
+
+def load_msis_scalars(year, case='JTE2010'):
+    """
+    Loads a set of predetermined msis scalars based on previous studies
+
+    Parameters
+    ----------
+    year : (int)
+        The year of interest
+    case : (str)
+        A label for he case study of interest
+        (default = 'JTE2010')
+
+    """
+
+    if case is 'JTE2010':
+        snn = [0.9697, 0.9697, 0.9697, 0.9697, 0.7979, 0.9697, 0.9697, 0.9697]
+        Tinf_scl = 0.9603
+    else:
+        snn = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+        Tinf_scl = 1.0

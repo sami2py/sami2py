@@ -54,8 +54,9 @@ def run_model(year, day, lat=0, lon=0, alt=300,
               Tinf_scale=1, Tn_scale=1., euv_scale=1,
               wind_scale=1, hwm_model=14,
               fejer=True, ExB_drifts=np.zeros((10, 2)), ve01=0., exb_scale=1,
-              alt_crit=150., cqe=7.e-14,
-              tag='test', clean=False, test=False, fmtout=True):
+              alt_crit=150., cqe=7.e-14, fmtout=True,
+              tag='test', clean=False, test=False,
+              msis_solar_min=False):
     """
     Runs SAMI2 and archives the data in path
 
@@ -212,26 +213,33 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         3e-14 -- 8e-14. The higher this value, the lower
         the electron temperature above 300 km.
         (default=7e-14)
+    fmtout : (boolean)
+        If true, sami2 will output as text files.
+        If false, sami2 will output as binary.
+        (default = True)
 
     tag : (string)
         Name of run for data archive.  First-level directory under save
         directory
-        Note that this is not passed through to sami2 executable
+        ** not passed through to sami2 executable **
         (default = 'test')
     clean : (boolean)
         A True value will delete the local files after archiving
         A False value will not delete local save files
-        Note that this is not passed through to sami2 executable
+        ** not passed through to sami2 executable **
         (default = False)
     test : (boolean)
         A True value will not run the sami2 executable.  Used for debugging
         the framework.
         A False value will run the sami2 executable
-        Note that this is not passed through to sami2 executable
+        ** not passed through to sami2 executable **
         (default = False)
-    fmtout : (boolean)
-        If true, sami2 will output as text files.
-        If false, sami2 will output as binary.
+    msis_solar_min : (boolean)
+        If true, use Emmert 201x scalars to contract MSIS between 200x and 201y
+        If false, no changes are made.
+        Note that individual scalars above will take priority over this option
+        ** not passed through to sami2 executable **
+        (default = False)
 
 
     Methods

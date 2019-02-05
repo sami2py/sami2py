@@ -12,7 +12,7 @@ from sami2py.utils import generate_path
 
 
 class TestBasicModelRun():
-
+    '''basic tests of the run_model script'''
     def setup(self):
         '''setup function run before each test method to setup files needed
            to run the test effectively
@@ -62,3 +62,18 @@ class TestBasicModelRun():
            set with the wrong type
         '''
         sami2py.run_model(year='2012', day='211', test=True)
+
+    def test_fortran_executable(self):
+        '''Short run of fortran executable to ensure the code compiles
+           and runs
+        '''
+        tmp_archive_dir = sami2py.archive_dir
+        sami2py.utils.set_archive_dir(path=test_data_dir)
+        sami2py.run_model(year=2012, day=211,
+                          dthr=0.05, hrinit=0.0, hrpr=0.0, hrmax=.11)
+        if os.path.isdir(tmp_archive_dir):
+            sami2py.utils.set_archive_dir(path=tmp_archive_dir)
+        else:
+            with open(sami2py.archive_path, 'w') as f:
+                f.write('')
+                sami2py.archive_dir = ''

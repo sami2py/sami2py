@@ -30,7 +30,7 @@ Additionally, you must make and install the fortran executables.
   $ make compile
 ```
 
-Now you can run the sami2 executable (sami2low.x) from anywhere.
+Now you can run the sami2 executable (sami2py.x) from anywhere.
 
 # Example
 

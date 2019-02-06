@@ -70,8 +70,11 @@ def generate_path(tag, lon, year, day, test=False):
     # Check if top_directory is empty string, ie, user has not specified
     # a directory through set_archive_dir
     if top_directory:
+        str_fmt = 'lon{lon:03d}/{year:4d}_{day:03d}/'
         archive_path = path.join(top_directory, tag,
-                                 ('lon%03d/%4d_%03d/' % (lon, year, day)))
+                                 (str_fmt.format(lon=lon,
+                                                 year=year,
+                                                 day=day)))
     else:
         raise NameError(''.join(('Archive Directory Not Specified: ',
                                  'Run sami2py.utils.set_archive_dir')))
@@ -79,7 +82,7 @@ def generate_path(tag, lon, year, day, test=False):
     return archive_path
 
 
-def set_archive_dir(path=None, store=None):
+def set_archive_dir(path=None, store=True):
     """
     Set the top level directory pysat uses to look for data and reload.
 
@@ -92,9 +95,6 @@ def set_archive_dir(path=None, store=None):
     """
     import os
     import sami2py
-
-    if store is None:
-        store = True
 
     if os.path.isdir(path):
         if store:

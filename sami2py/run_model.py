@@ -251,11 +251,11 @@ def run_model(year, day, lat=0, lon=0, alt=300,
     info['fejer'] = _generate_drift_info(fejer, ExB_drifts)
     info['fmtout'] = _generate_format_info(fmtout)
     _generate_namelist(info)
-    path = generate_path(tag, lon, year, day, test)
+    archive_path = generate_path(tag, lon, year, day, test)
     if not test:
         check_model_run = subprocess.check_call('./sami2py.x')
 
-    _archive_model(path, clean, fejer, fmtout)
+    _archive_model(archive_path, clean, fejer, fmtout)
 
     os.chdir(current_dir)
 

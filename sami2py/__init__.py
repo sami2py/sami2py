@@ -72,8 +72,8 @@ with open(os.path.join(sami2py_dir, 'test_data_path.txt'), 'r') as f:
 
 # import main functions
 try:
-    from sami2py import (run_model, utils, model)
-    from sami2py.run_model import (run_model)
-    from sami2py.model import (model)
+    from sami2py import run_model, utils, model
+    from sami2py.run_model import run_model
+    from sami2py.model import Model
 except ImportError as errstr:
     logging.exception('problem importing sami2py: ' + str(errstr))

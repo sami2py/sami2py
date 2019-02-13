@@ -15,26 +15,15 @@ set_archive_dir(path=None, store=None)
     Allows user to specify the location where the model outputs will be stored
 -------------------------------------------------------------------------------
 
-Classes
--------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------
-
 Moduleauthor
 -------------------------------------------------------------------------------
 Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 -------------------------------------------------------------------------------
-
-References
--------------------------------------------------------------------------------
-
-
 """
 
 
 def generate_path(tag, lon, year, day, test=False):
-    """
-    Creates a path based on run tag, date, and longitude
+    """Creates a path based on run tag, date, and longitude
 
     Parameters
     ----------
@@ -52,7 +41,7 @@ def generate_path(tag, lon, year, day, test=False):
 
     Returns
     -------
-    path : (string)
+    archive_path : (string)
         Complete path pointing to model archive for a given run
     """
     from os import path
@@ -83,8 +72,7 @@ def generate_path(tag, lon, year, day, test=False):
 
 
 def set_archive_dir(path=None, store=True):
-    """
-    Set the top level directory pysat uses to look for data and reload.
+    """Set the top level directory pysat uses to look for data and reload.
 
     Parameters
     ----------

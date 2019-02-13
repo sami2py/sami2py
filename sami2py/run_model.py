@@ -3,7 +3,7 @@
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
-""" Wrapper for running sami2 model
+"""Wrapper for running sami2 model
 
 Functions
 -------------------------------------------------------------------------------
@@ -24,19 +24,10 @@ run_model(year, day, lat=0, lon=0, alt=300,
     Initializes a run of the SAMI2 model and archives the data.
 -------------------------------------------------------------------------------
 
-Classes
--------------------------------------------------------------------------------
--------------------------------------------------------------------------------
-
 Moduleauthor
 -------------------------------------------------------------------------------
 Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 -------------------------------------------------------------------------------
-
-References
--------------------------------------------------------------------------------
-
-
 """
 import os
 import subprocess
@@ -57,8 +48,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
               fejer=True, ExB_drifts=np.zeros((10, 2)), ve01=0., exb_scale=1,
               alt_crit=150., cqe=7.e-14,
               tag='test', clean=False, test=False, fmtout=True):
-    """
-    Runs SAMI2 and archives the data in path
+    """Runs SAMI2 and archives the data in path
 
     Parameters
     ----------
@@ -234,7 +224,6 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         If true, sami2 will output as text files.
         If false, sami2 will output as binary.
 
-
     Methods
     ----------
     _generate_namelist(info)
@@ -272,27 +261,32 @@ def run_model(year, day, lat=0, lon=0, alt=300,
 
 
 def _generate_drift_info(fejer, ExB_drifts=None):
+    """Generates the information regarding the ExB drifts used by the model.
+    This information is later stored in the namelist file for SAMI2
+    """
     if fejer:
-        ret = '.true.'
+        drift_info = '.true.'
     else:
         if ExB_drifts.shape != (10, 2):
             raise Exception('Invalid ExB drift shape!  Must be 10x2 ndarray.')
-        ret = '.false.'
+        drift_info = '.false.'
         np.savetxt('exb.inp', ExB_drifts)
-    return ret
+    return drift_info
 
 
 def _generate_format_info(fmtout):
+    """Generates the namelist information needed to tell the SAMI2 model to
+    output the model results in formatted or unformatted data files
+    """
     if fmtout:
-        ret = '.true.'
+        format_info = '.true.'
     else:
-        ret = '.false.'
-    return ret
+        format_info = '.false.'
+    return format_info
 
 
 def _generate_namelist(info):
-    """
-    Generates namelist file for sami2
+    """Generates namelist file for sami2
 
     Parameters
     ----------
@@ -357,7 +351,7 @@ def _generate_namelist(info):
 
 
 def _archive_model(path, clean, fejer, fmtout):
-    """ Moves the model output files to a common archive
+    """Moves the model output files to a common archive
 
     Parameters
     ----------

@@ -3,11 +3,12 @@
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
-""" Wrapper for running sami2 model
+"""Wrapper for running sami2 model
 
 Functions
 -------------------------------------------------------------------------------
-
+def get_unformatted_data(dat_dir, var_name, nz, nf, ni, nt, reshape=False)
+    routine to interpret unformatted binary files created by the SAMI2 model
 -------------------------------------------------------------------------------
 
 Classes
@@ -22,29 +23,50 @@ Moduleauthor
 -------------------------------------------------------------------------------
 Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 -------------------------------------------------------------------------------
-
-References
--------------------------------------------------------------------------------
-
-
 """
-from .utils import generate_path
 from os import path
 import numpy as np
+from .utils import generate_path
 
 
 def get_unformatted_data(dat_dir, var_name, nz, nf, ni, nt, reshape=False):
-    f = open(path.join(dat_dir, var_name + 'u.dat'), 'rb')
+    """Routine to interpret unformatted binary files created by the SAMI2 model
 
-    ret = np.fromfile(f, dtype='float32')[1:-1]
-    f.close
+    Parameters
+    -----------
+    data_dir : (str)
+        directory where the SAMI2 data is stored
+    var_name : (str)
+        name of unformatted data variable to be loaded
+    nz : (int)
+        number of mesh points along the geomagnetic field line
+    nf : (int)
+        number of mesh points transverse to the geomagnetic field line i.e.
+        number of field lines
+    ni : (int)
+        number of ion species
+    nt : (int)
+        number of time steps
+    reshape : (bool)
+        if true the data is reshaped by the mesh geometry
+
+    Returns
+    -----------
+    float_data : (numpy.ndarray)
+        unformatted data organized into a numpy array for handling in python
+    """
+    binary_file = open(path.join(dat_dir, var_name + 'u.dat'), 'rb')
+
+    float_data = np.fromfile(binary_file, dtype='float32')[1:-1]
+    binary_file.close()
     if reshape:
-        ret = ret.reshape((nz*nf*ni + 2), nt, order='F')[1:-1, :]
-    return ret
+        float_data = float_data.reshape((nz*nf*ni + 2), nt, order='F')[1:-1, :]
+    return float_data
 
 
-class model(object):
-
+class Model(object):
+    """Python object to handle SAMI2 model output data
+    """
     def __init__(self, tag, lon, year, day, test=False):
         """ Loads a previously run sami2 model and sorts into
             appropriate array shapes
@@ -97,6 +119,13 @@ class model(object):
         self._load_model()
 
     def __repr__(self):
+        """Make a printable representation of a Model object
+
+        Returns
+        ---------
+        out : (string)
+            string containing a printable representation of a Model object
+        """
 
         out = ['']
         out.append('Model Run Name = ' + self.tag)
@@ -126,7 +155,7 @@ class model(object):
         out.append('ExB Drifts: ' + self.MetaData['ExB model'])
 
         mod_keys = self.check_standard_model()
-        if len(mod_keys) == 0:
+        if mod_keys:
             out.append('\nNo modifications to empirical models')
         else:
             out.append('\nMultipliers used')
@@ -138,11 +167,7 @@ class model(object):
         return '\n'.join(out)
 
     def _calculate_slt(self):
-        """ Calculates Solar Local Time for reference point of model
-
-        Parameters
-        ----------
-        None
+        """Calculates Solar Local Time for reference point of model
 
         Returns
         -------
@@ -151,40 +176,33 @@ class model(object):
 
         """
 
-        slt = np.mod((self.ut * 60 + self.lon0 * 4), 1440) / 60.0
-        m = 2 * np.pi * self.day / 365.242
-        dt = -7.657 * np.sin(m) + 9.862 * np.sin(2 * m + 3.599)
-        self.slt = slt - dt / 60.0
+        local_time = np.mod((self.ut * 60 + self.lon0 * 4), 1440) / 60.0
+        mean_anomaly = 2 * np.pi * self.day / 365.242
+        delta_t = (-7.657 * np.sin(mean_anomaly) +
+                   9.862 * np.sin(2 * mean_anomaly + 3.599))
+        self.slt = local_time - delta_t / 60.0
 
     def _load_model(self):
-        """ Loads model results
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-
+        """Loads model results
         """
 
         nf = 98
         nz = 101
         ni = 7
 
-        path = generate_path(self.tag, self.lon0, self.year, self.day,
+        model_path = generate_path(self.tag, self.lon0, self.year, self.day,
                              self.test)
 
         # Get NameList
-        file = open(path + 'sami2py-1.00.namelist')
-        self.namelist = file.readlines()
-        file.close()
+        namelist_file = open(model_path + 'sami2py-1.00.namelist')
+        self.namelist = namelist_file.readlines()
+        namelist_file.close()
 
         self.MetaData = dict()
         self._generate_metadata(self.namelist)
 
         # Get times
-        time = np.loadtxt(path + 'time.dat')
+        time = np.loadtxt(model_path + 'time.dat')
         self.ut = time[:, 1] + time[:, 2] / 60 + time[:, 3] / 3600
 
         self._calculate_slt()
@@ -192,29 +210,29 @@ class model(object):
 
         if self.MetaData['fmtout']:
             # Get Location
-            glat = np.loadtxt(path + 'glatf.dat')
-            glon = np.loadtxt(path + 'glonf.dat')
-            zalt = np.loadtxt(path + 'zaltf.dat')
+            glat = np.loadtxt(model_path + 'glatf.dat')
+            glon = np.loadtxt(model_path + 'glonf.dat')
+            zalt = np.loadtxt(model_path + 'zaltf.dat')
 
             # Get plasma values
-            deni = np.loadtxt(path + 'denif.dat')
-            vsi = np.loadtxt(path + 'vsif.dat')
-            ti = np.loadtxt(path + 'tif.dat')
-            te = np.loadtxt(path + 'tef.dat')
+            deni = np.loadtxt(model_path + 'denif.dat')
+            vsi = np.loadtxt(model_path + 'vsif.dat')
+            ti = np.loadtxt(model_path + 'tif.dat')
+            te = np.loadtxt(model_path + 'tef.dat')
         else:
             # Get Location
-            glat = get_unformatted_data(path, 'glat', nz, nf, ni, nt)
-            glon = get_unformatted_data(path, 'glon', nz, nf, ni, nt)
-            zalt = get_unformatted_data(path, 'zalt', nz, nf, ni, nt)
+            glat = get_unformatted_data(model_path, 'glat', nz, nf, ni, nt)
+            glon = get_unformatted_data(model_path, 'glon', nz, nf, ni, nt)
+            zalt = get_unformatted_data(model_path, 'zalt', nz, nf, ni, nt)
 
             # Get plasma values
-            deni = get_unformatted_data(path, 'deni', nz, nf, ni, nt,
+            deni = get_unformatted_data(model_path, 'deni', nz, nf, ni, nt,
                                         reshape=True)
-            vsi = get_unformatted_data(path, 'vsi', nz, nf, ni, nt,
+            vsi = get_unformatted_data(model_path, 'vsi', nz, nf, ni, nt,
                                        reshape=True)
-            ti = get_unformatted_data(path, 'ti', nz, nf, ni, nt,
+            ti = get_unformatted_data(model_path, 'ti', nz, nf, ni, nt,
                                       reshape=True)
-            te = get_unformatted_data(path, 'te', nz, nf, ni, nt,
+            te = get_unformatted_data(model_path, 'te', nz, nf, ni, nt,
                                       reshape=True)
 
         self.glat = np.reshape(glat, (nz, nf), order="F")
@@ -227,7 +245,12 @@ class model(object):
         del glat, glon, zalt, deni, vsi, ti, te
 
     def _generate_metadata(self, namelist):
-        """ Reads the namelist and generates MetaData based on Parameters
+        """Reads the namelist and generates MetaData based on Parameters
+
+        Parameters
+        -----------
+        namelist : (list)
+            variable namelist from SAMI2 model
         """
 
         import re
@@ -272,8 +295,11 @@ class model(object):
         if '.true.' in namelist[10]:
             self.MetaData['ExB model'] = 'Fejer-Scherliess'
         else:
+            model_path = generate_path(self.tag, self.lon0, self.year,
+                                       self.day, self.test)
             self.MetaData['ExB model'] = 'Fourier Series'
-            self.MetaData['Fourier Coeffs'] = np.loadtxt(path + 'exb.inp')
+            self.MetaData['Fourier Coeffs'] = np.loadtxt(model_path +
+                                                         'exb.inp')
 
         wind_model = int(re.findall(r"\d+", namelist[35])[0])
         self.MetaData['Wind Model'] = ('HWM-{:02d}').format(wind_model)
@@ -304,9 +330,9 @@ class model(object):
             re.findall(r"\d*\.\d+|\d+", namelist[30])[0])
 
     def check_standard_model(self, model_type="all"):
-        """ Checks for standard atmospheric inputs
+        """Checks for standard atmospheric inputs
 
-        parameters
+        Parameters
         -----------
         model_type : (str)
             Limit check to certain models (default='all')
@@ -327,9 +353,16 @@ class model(object):
 
         return mod_keys
 
-    def plot_lat_alt(self, time_step=0, species=1, *args, **kwargs):
-        """ Plots input parameter as a function of latitude and altitude
+    def plot_lat_alt(self, time_step=0, species=1):
+        """Plots input parameter as a function of latitude and altitude
 
+        Parameters
+        -----------
+        time_step : (int)
+            time index for SAMI2 model results
+        species : (int)
+            ion species index :
+            1: H+, 2: O+, 3: NO+, 4: O2+, 5: He+, 6: N2+, 7: N+
         """
         import matplotlib.pyplot as plt
 

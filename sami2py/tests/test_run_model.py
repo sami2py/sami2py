@@ -10,9 +10,9 @@ from nose.tools import raises
 
 
 class TestBasicModelRun():
-    """basic tests of the run_model script"""
+    """Basic tests of the run_model script"""
     def setup(self):
-        """setup function run before each test method to setup files needed
+        """Setup function run before each test method to setup files needed
            to run the test effectively
         """
         self.model_path = generate_path('test', 0, 2012, 211, True)
@@ -25,7 +25,7 @@ class TestBasicModelRun():
             open(fortran_dir + '/' + filename, 'w').close()
 
     def teardown(self):
-        """teardown function run before each test method to remove files needed
+        """Teardown function run before each test method to remove files needed
            to run the test effectively
         """
         filelist_fmt = ['glonf.dat', 'glatf.dat', 'zaltf.dat',
@@ -39,7 +39,7 @@ class TestBasicModelRun():
             shutil.rmtree(path_to_remove)
 
     def test_run_model_namelist(self):
-        """the test to ensure that the namelist file is generated properly
+        """The test to ensure that the namelist file is generated properly
         """
         sami2py.run_model(year=2012, day=211, test=True)
         namelist_file = self.model_path + 'sami2py-1.00.namelist'
@@ -47,14 +47,14 @@ class TestBasicModelRun():
         assert filecmp.cmp(namelist_file, ref_namelist)
 
     def test_run_model_dat_files(self):
-        """test to ensure that the dat files are copied properly
+        """Test to ensure that the dat files are copied properly
         """
         sami2py.run_model(year=2012, day=211, test=True)
         assert os.stat(self.model_path + 'glonf.dat')
 
     @raises(ValueError)
     def test_input_format(self):
-        """test for error output upon incorrect input format
+        """Test for error output upon incorrect input format
            file.write should throw the error when using string formatting to
            create the file name. Will happen for any variable in the namelist
            set with the wrong type

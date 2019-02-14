@@ -12,7 +12,7 @@ class TestModelObject():
     """Test basic model object functionality
     """
     def setup(self):
-        """set up .dat files in properly named director
+        """Set up .dat files in properly named director
            for model object to load model
         """
         self.model_path = generate_path('test', 256, 1999, 256, test=True)

@@ -3,10 +3,10 @@
 import os
 import filecmp
 import shutil
+from nose.tools import raises
 import sami2py
 from sami2py import fortran_dir, test_data_dir
 from sami2py.utils import generate_path
-from nose.tools import raises
 
 
 class TestBasicModelRun():

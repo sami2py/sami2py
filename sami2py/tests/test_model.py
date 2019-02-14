@@ -83,6 +83,19 @@ class TestModelObject():
         glat = np.loadtxt(self.model_path + 'glatf.dat')
         assert ret_data.size == glat.size
 
+    def test_get_with_reshape_true(self):
+        """Test a successful get of unformatted data with the reshape flag
+        set to True
+        """
+        nf = 98
+        nz = 101
+        ni = 7
+        nt = 0
+        ret_data = get_unformatted_data(self.model_path, 'deni',
+                                        nz, nf, ni, nt, reshape=True)
+        glat = np.loadtxt(self.model_path + 'glatf.dat')
+        assert ret_data.size == glat.size
+
     @raises(ValueError)
     def test_reshape_exception(self):
         """Reshape should raise an error if invalid dimensions are provided

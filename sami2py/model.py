@@ -210,15 +210,15 @@ class Model(object):
 
         if self.MetaData['fmtout']:
             # Get Location
-            glat = np.loadtxt(model_path + 'glatf.dat')
-            glon = np.loadtxt(model_path + 'glonf.dat')
-            zalt = np.loadtxt(model_path + 'zaltf.dat')
+            glat = np.loadtxt(path.join(model_path, 'glatf.dat'))
+            glon = np.loadtxt(path.join(model_path, 'glonf.dat'))
+            zalt = np.loadtxt(path.join(model_path, 'zaltf.dat'))
 
             # Get plasma values
-            deni = np.loadtxt(model_path + 'denif.dat')
-            vsi = np.loadtxt(model_path + 'vsif.dat')
-            ti = np.loadtxt(model_path + 'tif.dat')
-            te = np.loadtxt(model_path + 'tef.dat')
+            deni = np.loadtxt(path.join(model_path, 'denif.dat'))
+            vsi = np.loadtxt(path.join(model_path, 'vsif.dat'))
+            ti = np.loadtxt(path.join(model_path, 'tif.dat'))
+            te = np.loadtxt(path.join(model_path, 'tef.dat'))
         else:
             # Get Location
             glat = get_unformatted_data(model_path, 'glat', nz, nf, ni, nt)

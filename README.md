@@ -36,15 +36,14 @@ In iPython, run:
 
 ```
   $ import sami2py
-  $ sami2py.run_model(day=210, year=2012, lon=0)
+  $ sami2py.run_model(day=210, year=2012, lon=0, tag='test')
 ```
 Note that the sami2 model runs for 24 hours to clear transients, then begins to output data.
 
 Now load the resultant data:
 
 ```
-  $ ModelRun = sami2py.model(tag='test', lon=lon, year=year, day=day)
-
+  $ ModelRun = sami2py.model(tag='test', lon=0, year=2012, day=210)
 ```
 
 Plotting features coming soon...
@@ -56,4 +55,6 @@ Additionally, please include the following text in the acknowledgements: "This
 work uses the SAMI2 ionosphere model written and developed by the Naval Research Laboratory."
 
 # References
-- Huba, J.D., G. Joyce, and J.A. Fedder, Sami2 is Another Model of the Ionosphere (SAMI2): A new low‐latitude ionosphere model, <it>J. Geophys. Res.</it>, 105, Pages 23035-23053, https://doi.org/10.1029/2000JA000035
+- Huba, J.D., G. Joyce, and J.A. Fedder, Sami2 is Another Model of the Ionosphere (SAMI2): A new low‐latitude ionosphere model, *J. Geophys. Res.*, 105, Pages 23035-23053, https://doi.org/10.1029/2000JA000035, 2000.
+- Emmert et al, 20??
+- Klenzing, J., Burrell, A. G., Heelis, R. A., Huba, J. D., Pfaff, R., and Simões, F.: Exploring the role of ionospheric drivers during the extreme solar minimum of 2008, *Ann. Geophys.*, 31, 2147-2156, https://doi.org/10.5194/angeo-31-2147-2013, 2013.

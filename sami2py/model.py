@@ -56,12 +56,13 @@ def get_unformatted_data(dat_dir, var_name, nz, nf, ni, nt, reshape=False):
         unformatted data organized into a numpy array for handling in python
     """
     binary_file = open(path.join(dat_dir, var_name + 'u.dat'), 'rb')
-
-    float_data = np.fromfile(binary_file, dtype='float32')[1:-1]
+    float_data = np.fromfile(binary_file, dtype='float32')
     binary_file.close()
+
     if reshape:
-        float_data = float_data.reshape((nz*nf*ni + 2), nt, order='F')[1:-1, :]
-    return float_data
+        float_data.shape = ((nz*nf*ni + 2), nt)
+        return float_data[1:-1, :]
+    return float_data[1:-1]
 
 
 class Model(object):

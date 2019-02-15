@@ -5,15 +5,9 @@
 # -----------------------------------------------------------------------------
 """Wrapper for running sami2 model
 
-Functions
--------------------------------------------------------------------------------
-def get_unformatted_data(dat_dir, var_name, nz, nf, ni, nt, reshape=False)
-    routine to interpret unformatted binary files created by the SAMI2 model
--------------------------------------------------------------------------------
-
 Classes
 -------------------------------------------------------------------------------
-model
+Model
     Loads, reshapes, and holds SAMI2 output for a given model run
     specified by the user.
 -------------------------------------------------------------------------------
@@ -26,49 +20,12 @@ Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 """
 from os import path
 import numpy as np
-from .utils import generate_path
-
-
-def get_unformatted_data(dat_dir, var_name, nz, nf, ni, nt, reshape=False):
-    """Routine to interpret unformatted binary files created by the SAMI2 model
-
-    Parameters
-    -----------
-    data_dir : (str)
-        directory where the SAMI2 data is stored
-    var_name : (str)
-        name of unformatted data variable to be loaded
-    nz : (int)
-        number of mesh points along the geomagnetic field line
-    nf : (int)
-        number of mesh points transverse to the geomagnetic field line i.e.
-        number of field lines
-    ni : (int)
-        number of ion species
-    nt : (int)
-        number of time steps
-    reshape : (bool)
-        if true the data is reshaped by the mesh geometry
-
-    Returns
-    -----------
-    float_data : (numpy.ndarray)
-        unformatted data organized into a numpy array for handling in python
-    """
-    binary_file = open(path.join(dat_dir, var_name + 'u.dat'), 'rb')
-    float_data = np.fromfile(binary_file, dtype='float32')
-    binary_file.close()
-
-    if reshape:
-        float_data.shape = ((nz*nf*ni + 2), nt)
-        return float_data[1:-1, :]
-    return float_data[1:-1]
-
+from .utils import generate_path, get_unformatted_data
 
 class Model(object):
     """Python object to handle SAMI2 model output data
     """
-    def __init__(self, tag, lon, year, day, test=False):
+    def __init__(self, tag, year, day, lon, test=False):
         """ Loads a previously run sami2 model and sorts into
             appropriate array shapes
 
@@ -222,19 +179,21 @@ class Model(object):
             te = np.loadtxt(path.join(model_path, 'tef.dat'))
         else:
             # Get Location
-            glat = get_unformatted_data(model_path, 'glat', nz, nf, ni, nt)
-            glon = get_unformatted_data(model_path, 'glon', nz, nf, ni, nt)
-            zalt = get_unformatted_data(model_path, 'zalt', nz, nf, ni, nt)
+            glat = get_unformatted_data(model_path, 'glat')
+            glon = get_unformatted_data(model_path, 'glon')
+            zalt = get_unformatted_data(model_path, 'zalt')
 
             # Get plasma values
-            deni = get_unformatted_data(model_path, 'deni', nz, nf, ni, nt,
-                                        reshape=True)
-            vsi = get_unformatted_data(model_path, 'vsi', nz, nf, ni, nt,
-                                       reshape=True)
-            ti = get_unformatted_data(model_path, 'ti', nz, nf, ni, nt,
-                                      reshape=True)
-            te = get_unformatted_data(model_path, 'te', nz, nf, ni, nt,
-                                      reshape=True)
+            dim0 = nz*nf*ni + 2
+            dim1 = nt
+            deni = get_unformatted_data(model_path, 'deni',
+                                        dim0=dim0, dim1=dim1, reshape=True)
+            vsi = get_unformatted_data(model_path, 'vsi',
+                                       dim0=dim0, dim1=dim1, reshape=True)
+            ti = get_unformatted_data(model_path, 'ti',
+                                      dim0=dim0, dim1=dim1, reshape=True)
+            te = get_unformatted_data(model_path, 'te',
+                                      dim0=dim0, dim1=dim1, reshape=True)
 
         self.glat = np.reshape(glat, (nz, nf), order="F")
         self.glon = np.reshape(glon, (nz, nf), order="F")

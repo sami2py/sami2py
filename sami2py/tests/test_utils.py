@@ -8,6 +8,7 @@
 
 from __future__ import (print_function)
 import os
+import numpy as np
 import sami2py
 from nose.tools import raises
 
@@ -86,3 +87,41 @@ class TestArchiveDir():
         """if the provided path is invalid a value error should be produced
         """
         sami2py.utils.set_archive_dir('dummy_invalid_path')
+
+class testGetUnformattedData():
+    """Test basic functionality of the get_unformatted_data function"""
+    def setup(self):
+        """setup the model_path variable for accessing unformatted data"""
+        self.model_path = sami2py.utils.generate_path('test', 256, 1999, 256,
+                                                      test=True)
+
+    def test_successful_get(self):
+        """Test a successful get of unformatted data"""
+        ret_data = sami2py.utils.get_unformatted_data(self.model_path, 'glat')
+        glat = np.loadtxt(self.model_path + 'glatf.dat')
+        assert ret_data.size == glat.size
+
+    def test_get_with_reshape_true(self):
+        """Test a successful get of unformatted data with the reshape flag
+        set to True
+        """
+        dim0 = 98*101*7 + 2 # nf*nz*ni + 2
+        dim1 = 3            # nt
+        ret_data = sami2py.utils.get_unformatted_data(self.model_path, 'deni',
+                                                      dim0=dim0, dim1=dim1,
+                                                      reshape=True)
+        glat = np.loadtxt(self.model_path + 'denif.dat')
+        assert ret_data.size == glat.size
+
+    @raises(ValueError)
+    def test_reshape_exception(self):
+        """Reshape should raise an error if invalid dimensions are provided"""
+        dim0 = 2
+        dim1 = 2
+        sami2py.utils.get_unformatted_data(self.model_path, 'deni',
+                                           dim0=dim0, dim1=dim1, reshape=True)
+
+    @raises(IOError)
+    def file_open_error(self):
+        """File open should raise an error if invalid file path provided"""
+        sami2py.utils.get_unformatted_data(self.model_path, 'glat')

@@ -3,7 +3,6 @@
 import os
 import sami2py
 from sami2py.utils import generate_path
-from sami2py.model import get_unformatted_data
 import numpy as np
 from nose.tools import raises
 
@@ -15,7 +14,6 @@ class TestModelObject():
         """Set up .dat files in properly named director
            for model object to load model
         """
-        self.model_path = generate_path('test', 256, 1999, 256, test=True)
         self.tmp_archive_dir = sami2py.archive_dir
         sami2py.utils.set_archive_dir(path=sami2py.test_data_dir)
 
@@ -70,49 +68,3 @@ class TestModelObject():
                               test=True)
         keys = model.check_standard_model()
         assert keys == list()
-
-    def test_successful_get(self):
-        """Test a successful get of unformatted data
-        """
-        nf = 98
-        nz = 101
-        ni = 7
-        nt = 0
-        ret_data = get_unformatted_data(self.model_path, 'glat',
-                                        nz, nf, ni, nt)
-        glat = np.loadtxt(self.model_path + 'glatf.dat')
-        assert ret_data.size == glat.size
-
-    def test_get_with_reshape_true(self):
-        """Test a successful get of unformatted data with the reshape flag
-        set to True
-        """
-        nf = 98
-        nz = 101
-        ni = 7
-        nt = 0
-        ret_data = get_unformatted_data(self.model_path, 'deni',
-                                        nz, nf, ni, nt, reshape=True)
-        glat = np.loadtxt(self.model_path + 'glatf.dat')
-        assert ret_data.size == glat.size
-
-    @raises(ValueError)
-    def test_reshape_exception(self):
-        """Reshape should raise an error if invalid dimensions are provided
-        """
-        nf = 500
-        nz = 500
-        ni = 10
-        nt = 0
-        get_unformatted_data(self.model_path, 'glat', nz, nf, ni, nt,
-                             reshape=True)
-
-    @raises(IOError)
-    def file_open_error(self):
-        """File open should raise an error if invalid file path provided
-        """
-        nf = 98
-        nz = 101
-        ni = 7
-        nt = 0
-        get_unformatted_data(self.model_path, 'glat', nz, nf, ni, nt)

@@ -11,21 +11,21 @@ The implementation used here includes the ability to scale the neutral atmospher
 First, checkout the repository:
 
 ```
-  $ git clone git@gitlab.com:jklenzing/sami2py.git;
+  git clone git@gitlab.com:jklenzing/sami2py.git;
 ```
 
 Change directories into the repository folder and run the setup.py file.  For
 a local install use the "--user" flag after "install".
 
 ```
-  $ cd sami2py/
-  $ python setup.py install
+  cd sami2py/
+  python setup.py install
 ```
 
 Additionally, you must make and install the fortran executables.
 
 ```
-  $ make -C sami2py/fortran compile
+  make -C sami2py/fortran compile
 ```
 
 Now you can run the sami2 executable (sami2py.x) from anywhere.
@@ -35,15 +35,15 @@ Now you can run the sami2 executable (sami2py.x) from anywhere.
 In iPython, run:
 
 ```
-  $ import sami2py
-  $ sami2py.run_model(year=2012, day=210, lon=0, tag='test')
+  import sami2py
+  sami2py.run_model(year=2012, day=210, lon=0, tag='test')
 ```
 Note that the sami2 model runs for 24 hours to clear transients, then begins to output data.
 
 Now load the resultant data:
 
 ```
-  $ ModelRun = sami2py.model(tag='test', lon=0, year=2012, day=210)
+  ModelRun = sami2py.model(tag='test', lon=0, year=2012, day=210)
 ```
 
 Plotting features coming soon...

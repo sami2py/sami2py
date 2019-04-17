@@ -8,7 +8,7 @@
 
 !     namelist data
 
-      logical fejer,fmtout
+      logical fejer,fmtout,outn
       real snn(nneut)
 
       common / nmlst / fmtout,maxstep,hrmax,dt0,dthr,hrpr,
@@ -21,6 +21,7 @@
      .                 nion1,nion2,hrinit,tvn0,tvexb0,ve01,
      .                 gams,gamp,snn,stn,denmin,alt_crit,cqe,
      .                 Tinf_scl,euv_scl,hwm_mod   ! Added new input variables - JK
+     .		       outn                       ! Added new variable -JMS
 
 
 !     s grid data

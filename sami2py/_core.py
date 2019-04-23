@@ -19,7 +19,7 @@ run_model(year, day, lat=0, lon=0, alt=300,
               wind_scale=1, hwm_model=14,
               fejer=True, ExB_drifts=np.zeros((10,2)), ve01=0., exb_scale=1,
               alt_crit=150., cqe=7.e-14,
-              tag='test', clean=False, test=False)
+              tag='test', clean=False, test=False, outn=False)
 
     Initializes a run of the SAMI2 model and archives the data.
 -------------------------------------------------------------------------------
@@ -47,7 +47,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
               wind_scale=1, hwm_model=14,
               fejer=True, ExB_drifts=np.zeros((10, 2)), ve01=0., exb_scale=1,
               alt_crit=150., cqe=7.e-14,
-              tag='test', clean=False, test=False, fmtout=True):
+              tag='test', clean=False, test=False, fmtout=True, outn=False):
     """Runs SAMI2 and archives the data in path
 
     Parameters
@@ -223,6 +223,9 @@ def run_model(year, day, lat=0, lon=0, alt=300,
     fmtout : (boolean)
         If true, sami2 will output as text files.
         If false, sami2 will output as binary.
+    outn : (boolean)
+        if true, sami2 will include neutral density and wind in output
+        if false, sami2 will not include neutral density and wind
 
     Methods
     ----------
@@ -250,12 +253,13 @@ def run_model(year, day, lat=0, lon=0, alt=300,
 
     info['fejer'] = _generate_drift_info(fejer, ExB_drifts)
     info['fmtout'] = _generate_format_info(fmtout)
+    info['outn'] = _generate_neutral_info(outn)
     _generate_namelist(info)
     archive_path = generate_path(tag, lon, year, day, test)
     if not test:
         check_model_run = subprocess.check_call('./sami2py.x')
 
-    _archive_model(archive_path, clean, fejer, fmtout)
+    _archive_model(archive_path, clean, fejer, fmtout, outn)
 
     os.chdir(current_dir)
 
@@ -284,6 +288,15 @@ def _generate_format_info(fmtout):
         format_info = '.false.'
     return format_info
 
+def _generate_neutral_info(outn):
+    """Generates the namelist information needed to tell the SAMI2 model to
+    output the model results of neutral species and wind
+    """
+    if outn:
+        neutral_info = '.true.'
+    else:
+        neutral_info = '.false.'
+    return neutral_info
 
 def _generate_namelist(info):
     """Generates namelist file for sami2
@@ -344,13 +357,14 @@ def _generate_namelist(info):
     file.write(('  cqe      =  {:e},\n').format(info['cqe']))  # 32
     file.write(('  Tinf_scl =  {:f},\n').format(info['Tinf_scale']))  # 33
     file.write(('  euv_scl  =  {:f},\n').format(info['euv_scale']))  # 34
-    file.write(('  hwm_mod  =  {:d}\n').format(info['hwm_model']))  # 35
+    file.write(('  hwm_mod  =  {:d},\n').format(info['hwm_model']))  # 35
+    file.write(('  outn     = {:s}\n').format(info['outn']))  # 36
     file.write('&end\n')
 
     file.close()
 
 
-def _archive_model(path, clean, fejer, fmtout):
+def _archive_model(path, clean, fejer, fmtout, outn):
     """Moves the model output files to a common archive
 
     Parameters
@@ -369,6 +383,9 @@ def _archive_model(path, clean, fejer, fmtout):
         filelist = ['glonf.dat', 'glatf.dat', 'zaltf.dat',
                     'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
                     'time.dat', 'sami2py-1.00.namelist']
+        if outn:
+            filelist.append('dennf.dat')
+            filelist.append('u4f.dat')
     else:
         filelist = ['glonu.dat', 'glatu.dat', 'zaltu.dat',
                     'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',

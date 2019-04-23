@@ -7,16 +7,16 @@
   hrpr     =  24.000000,
   grad_in  =  300.000000,
   glat_in  =  0.000000,
-  glon_in  =  0.000000,
-  fejer    =  .true.,
+  glon_in  =  22.000000,
+  fejer    =  .false.,
   rmin     =  100.000000,
   rmax     =  2000.000000,
   altmin   =  85.000000,
   fbar     =  120.000000,
   f10p7    =  120.000000,
   ap       =  0,
-  year     =  2012,
-  day      =  211,
+  year     =  2008,
+  day      =  355,
   mmass    =  48,
   nion1    =  1,
   nion2    =  7,
@@ -34,5 +34,5 @@
   Tinf_scl =  1.000000,
   euv_scl  =  1.000000,
   hwm_mod  =  14,
-  outn     = .false.
+  outn     = .true.
 &end

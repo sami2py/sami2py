@@ -12,7 +12,6 @@ addons:
     - gfortran
 
 before_install:
-  - pip install netCDF4
   - pip install matplotlib
 install:
   - source activate test-environment

@@ -1,5 +1,7 @@
+# sami2py: sami2py is another model of the ionosphere python style
 [![Build Status](https://travis-ci.com/jklenzing/sami2py.svg?branch=develop)](https://travis-ci.com/jklenzing/sami2py)
 [![Coverage Status](https://coveralls.io/repos/github/jklenzing/sami2py/badge.svg?branch=develop)](https://coveralls.io/github/jklenzing/sami2py?branch=develop)
+
 
 # Overview
 
@@ -15,7 +17,7 @@ The implementation used here includes several added options to the original rele
 First, checkout the repository:
 
 ```
-  git clone git@gitlab.com:jklenzing/sami2py.git;
+  git clone git@gitlab.com:jklenzing/sami2py.git
 ```
 
 Change directories into the repository folder and run the setup.py file.  For

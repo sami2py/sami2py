@@ -14,7 +14,7 @@ The implementation used here includes several added options to the original rele
 First, checkout the repository:
 
 ```
-  git clone git@gitlab.com:jklenzing/sami2py.git;
+  git clone git@gitlab.com:jklenzing/sami2py.git
 ```
 
 Change directories into the repository folder and run the setup.py file.  For

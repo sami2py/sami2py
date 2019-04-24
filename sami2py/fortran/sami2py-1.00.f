@@ -200,8 +200,9 @@
      .                year,day,mmass,
      .                nion1,nion2,hrinit,tvn0,tvexb0,ve01,
      .                gams,gamp,snn,stn,denmin,alt_crit,cqe,
-     .                Tinf_scl,euv_scl,hwm_mod
-
+     .                Tinf_scl,euv_scl,hwm_mod,
+     .                outn
+!     outn added to include the neutral parameters (JMS)
 
 !     read in parameters and initial ion density data
 
@@ -972,6 +973,15 @@
                enddo
             enddo
 
+            ang    = acos ( coschi )
+            itheta = nint ( ang / po180 ) - 90
+            itheta = int ( amax1 ( float(itheta), 1. ) )
+            do l = 1,linesnt
+               do j=nion1,nion2
+                  phprodr(iz,j) =   phprodr(iz,j)
+     .                 + sigint(l,j) * fluxnt(iz,nfl,itheta,l)
+               enddo
+            enddo
 !     nighttime deposition
 
          else                   ! sun is dowm
@@ -2941,6 +2951,8 @@
 
       subroutine open_f
 
+      include 'param-1.00.inc'
+      include 'com-1.00.inc'
 !     open output files (formatted)
 
       open ( unit=70, file='time.dat'      ,form='formatted' )
@@ -2951,7 +2963,9 @@
 !      open ( unit=78, file='vnf.dat'       ,form='formatted' )
 !      open ( unit=90, file='vtf.dat'       ,form='formatted' )
 !      open ( unit=91, file='vrf.dat'       ,form='formatted' )
-!      open ( unit=92, file='dennf.dat'     ,form='formatted' )
+      if ( outn ) then
+        open ( unit=92, file='dennf.dat'     ,form='formatted' )
+      endif
 !      open ( unit=93, file='vexbf.dat'     ,form='formatted' )
 
 !     diagnostic files (formatted)
@@ -2962,7 +2976,9 @@
 !      open ( unit=84, file='u1f.dat'  ,form='formatted' )
 !      open ( unit=85, file='u2f.dat'  ,form='formatted' )
 !      open ( unit=86, file='u3f.dat'  ,form='formatted' )
-!      open ( unit=87, file='u4f.dat'  ,form='formatted' )
+      if ( outn ) then
+        open ( unit=87, file='u4f.dat'  ,form='formatted' )
+      endif
 !      open ( unit=88, file='u5f.dat'  ,form='formatted' )
 
       return
@@ -3013,6 +3029,10 @@
 !         write(90,101) vot
 !         write(91,101) vor
 !         write(92,101) denn
+       endif
+       if ( fmtout .and. outn ) then !added for RTGR (JMS)
+          write(87,101) u4
+          write(92,101) denn
        endif
 
        if ( .not. fmtout ) then

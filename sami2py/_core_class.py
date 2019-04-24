@@ -25,7 +25,7 @@ from .utils import generate_path, get_unformatted_data
 class Model(object):
     """Python object to handle SAMI2 model output data
     """
-    def __init__(self, tag, year, day, lon, test=False):
+    def __init__(self, tag, year, day, lon, outn=False, test=False):
         """ Loads a previously run sami2 model and sorts into
             appropriate array shapes
 
@@ -39,6 +39,12 @@ class Model(object):
             year
         day : (int)
             day of year from Jan 1
+        outn : (boolean)
+            if true : look for neutral density and wind files
+            if false :  only look for default sami2 output
+        test : (boolean)
+            if true : use test model output
+            if false : look for user made model output
 
         Returns
         ---------
@@ -72,6 +78,7 @@ class Model(object):
         self.lon0 = lon
         self.year = year
         self.day = day
+        self.outn = outn
         self.test = test
 
         self._load_model()
@@ -177,6 +184,11 @@ class Model(object):
             vsi = np.loadtxt(path.join(model_path, 'vsif.dat'))
             ti = np.loadtxt(path.join(model_path, 'tif.dat'))
             te = np.loadtxt(path.join(model_path, 'tef.dat'))
+
+            #get neutral values
+            if self.outn:
+                denn = np.loadtxt(model_path+'dennf.dat')
+                u = np.loadtxt(model_path+'u4f.dat')
         else:
             # Get Location
             glat = get_unformatted_data(model_path, 'glat')
@@ -202,6 +214,10 @@ class Model(object):
         self.vsi = np.reshape(vsi, (nz, nf, ni, nt), order="F")
         self.ti = np.reshape(ti, (nz, nf, ni, nt), order="F")
         self.te = np.reshape(te, (nz, nf, nt), order="F")
+        if self.outn:
+            self.denn = np.reshape(denn, (nz, nf, 7, nt), order="F")
+            self.u = np.reshape(u, (nz, nf, nt), order="F")
+            del denn, u
         del glat, glon, zalt, deni, vsi, ti, te
 
     def _generate_metadata(self, namelist):

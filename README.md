@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.com/jklenzing/sami2py.svg?branch=develop)](https://travis-ci.com/jklenzing/sami2py)
-[![Coverage Status](https://coveralls.io/repos/github/jklenzing/sami2py/badge.svg?branch=develop)](https://coveralls.io/github/jklenzing/sami2py?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/jklenzing/sami2py/badge.svg?branch=develop)](https://coveralls.io/github/jklenzing/sami2py?branch=develop)
 
 # Overview
 

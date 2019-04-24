@@ -1,0 +1,21 @@
+language: python
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+sudo: false
+
+addons:
+  apt:
+    packages:
+    - gfortran
+
+before_install:
+  - pip install matplotlib
+install:
+  - source activate test-environment
+  - python setup.py install
+  - make -C sami2py/fortran compile
+script:
+  - nosetests -vs --with-coverage --cover-package=sami2py

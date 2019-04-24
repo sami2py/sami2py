@@ -3,16 +3,11 @@
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
-""" Wrapper for running sami2 model
-
-Functions
--------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------
+"""Wrapper for running sami2 model
 
 Classes
 -------------------------------------------------------------------------------
-model
+Model
     Loads, reshapes, and holds SAMI2 output for a given model run
     specified by the user.
 -------------------------------------------------------------------------------
@@ -22,28 +17,15 @@ Moduleauthor
 -------------------------------------------------------------------------------
 Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 -------------------------------------------------------------------------------
-
-References
--------------------------------------------------------------------------------
-
-
 """
-from .utils import generate_path
+from os import path
 import numpy as np
+from .utils import generate_path, get_unformatted_data
 
-
-def get_unformatted_data(var_name, reshape=False):
-    f = open(path+var_name+'u.dat', 'rb')
-    ret = np.fromfile(f, dtype='float32')[1:-1]
-    f.close
-    if reshape:
-        ret = ret.reshape((nz*nf*ni+2), nt, order='F')[1:-1, :]
-    return ret
-
-
-class model(object):
-
-    def __init__(self, tag, lon, year, day, test=False):
+class Model(object):
+    """Python object to handle SAMI2 model output data
+    """
+    def __init__(self, tag, year, day, lon, outn=False, test=False):
         """ Loads a previously run sami2 model and sorts into
             appropriate array shapes
 
@@ -57,6 +39,12 @@ class model(object):
             year
         day : (int)
             day of year from Jan 1
+        outn : (boolean)
+            if true : look for neutral density and wind files
+            if false :  only look for default sami2 output
+        test : (boolean)
+            if true : use test model output
+            if false : look for user made model output
 
         Returns
         ---------
@@ -90,51 +78,61 @@ class model(object):
         self.lon0 = lon
         self.year = year
         self.day = day
+        self.outn = outn
         self.test = test
 
         self._load_model()
 
     def __repr__(self):
+        """Make a printable representation of a Model object
+
+        Returns
+        ---------
+        out : (string)
+            string containing a printable representation of a Model object
+        """
 
         out = ['']
-        out.append('Model Run Name = %s' % self.tag)
-        out.append('Day %03d, %4d' % (self.day, self.year))
-        out.append('Longitude = %d deg' % self.lon0)
-        out.append('%d time steps from %4.1f to %4.1f UT' %
-                   (len(self.ut), min(self.ut), max(self.ut)))
-        out.append('Ions Used: %s' % self.MetaData['Ions Used'])
+        out.append('Model Run Name = ' + self.tag)
+        out.append(('Day {day:03d}, {year:4d}').format(day=self.day,
+                                                       year=self.year))
+        out.append(('Longitude = {lon:d} deg').format(lon=self.lon0))
+        temp_str = '{N:d} time steps from {t0:4.1f} to {tf:4.1f} UT'
+        out.append(temp_str.format(N=len(self.ut),
+                                   t0=min(self.ut),
+                                   tf=max(self.ut)))
+        out.append('Ions Used: ' + self.MetaData['Ions Used'])
 
         out.append('\nSolar Activity')
         out.append('--------------')
-        out.append('F10.7: %5.1f sfu' % self.MetaData['F10.7'])
-        out.append('F10.7A: %5.1f sfu' % self.MetaData['F10.7A'])
-        out.append('ap: %d' % self.MetaData['ap'])
+        temp_str = 'F10.7: {f107:5.1f} sfu'
+        out.append(temp_str.format(f107=self.MetaData['F10.7']))
+        temp_str = 'F10.7A: {f107a:5.1f} sfu'
+        out.append(temp_str.format(f107a=self.MetaData['F10.7A']))
+        out.append(('ap: {ap:d}').format(ap=self.MetaData['ap']))
 
         out.append('\nComponent Models Used')
         out.append('---------------------')
-        out.append('Neutral Atmosphere: %s' %
+        out.append('Neutral Atmosphere: ' +
                    self.MetaData['Neutral Atmosphere Model'])
-        out.append('Winds: %s' % self.MetaData['Wind Model'])
-        out.append('Photoproduction: %s' % self.MetaData['EUV Model'])
-        out.append('ExB Drifts: %s' % self.MetaData['ExB model'])
+        out.append('Winds: ' + self.MetaData['Wind Model'])
+        out.append('Photoproduction: ' + self.MetaData['EUV Model'])
+        out.append('ExB Drifts: ' + self.MetaData['ExB model'])
 
         mod_keys = self.check_standard_model()
-        if len(mod_keys) == 0:
+        if mod_keys:
             out.append('\nNo modifications to empirical models')
         else:
             out.append('\nMultipliers used')
             out.append('----------------')
             for mkey in mod_keys:
-                out.append('%s: %f' % (mkey, self.MetaData[mkey]))
+                out.append(('{s}: {f}').format(s=mkey,
+                                               f=self.MetaData[mkey]))
 
         return '\n'.join(out)
 
     def _calculate_slt(self):
-        """ Calculates Solar Local Time for reference point of model
-
-        Parameters
-        ----------
-        None
+        """Calculates Solar Local Time for reference point of model
 
         Returns
         -------
@@ -143,66 +141,71 @@ class model(object):
 
         """
 
-        slt = np.mod((self.ut*60 + self.lon0*4), 1440)/60.0
-        m = 2*np.pi*self.day/365.242
-        dt = -7.657*np.sin(m) + 9.862*np.sin(2*m + 3.599)
-        self.slt = slt - dt/60.0
+        local_time = np.mod((self.ut * 60 + self.lon0 * 4), 1440) / 60.0
+        mean_anomaly = 2 * np.pi * self.day / 365.242
+        delta_t = (-7.657 * np.sin(mean_anomaly) +
+                   9.862 * np.sin(2 * mean_anomaly + 3.599))
+        self.slt = local_time - delta_t / 60.0
 
     def _load_model(self):
-        """ Loads model results
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-
+        """Loads model results
         """
 
         nf = 98
         nz = 101
         ni = 7
 
-        path = generate_path(self.tag, self.lon0, self.year, self.day,
+        model_path = generate_path(self.tag, self.lon0, self.year, self.day,
                              self.test)
 
         # Get NameList
-        file = open(path + 'sami2low-1.00.namelist')
-        self.namelist = file.readlines()
-        file.close()
+        namelist_file = open(model_path + 'sami2py-1.00.namelist')
+        self.namelist = namelist_file.readlines()
+        namelist_file.close()
 
         self.MetaData = dict()
         self._generate_metadata(self.namelist)
 
         # Get times
-        time = np.loadtxt(path+'time.dat')
-        self.ut = time[:, 1] + time[:, 2]/60 + time[:, 3]/3600
+        time = np.loadtxt(model_path + 'time.dat')
+        self.ut = time[:, 1] + time[:, 2] / 60 + time[:, 3] / 3600
+
         self._calculate_slt()
         nt = len(self.ut)
 
         if self.MetaData['fmtout']:
             # Get Location
-            glat = np.loadtxt(path+'glatf.dat')
-            glon = np.loadtxt(path+'glonf.dat')
-            zalt = np.loadtxt(path+'zaltf.dat')
+            glat = np.loadtxt(path.join(model_path, 'glatf.dat'))
+            glon = np.loadtxt(path.join(model_path, 'glonf.dat'))
+            zalt = np.loadtxt(path.join(model_path, 'zaltf.dat'))
 
             # Get plasma values
-            deni = np.loadtxt(path+'denif.dat')
-            vsi = np.loadtxt(path+'vsif.dat')
-            ti = np.loadtxt(path+'tif.dat')
-            te = np.loadtxt(path+'tef.dat')
+            deni = np.loadtxt(path.join(model_path, 'denif.dat'))
+            vsi = np.loadtxt(path.join(model_path, 'vsif.dat'))
+            ti = np.loadtxt(path.join(model_path, 'tif.dat'))
+            te = np.loadtxt(path.join(model_path, 'tef.dat'))
+
+            #get neutral values
+            if self.outn:
+                denn = np.loadtxt(model_path+'dennf.dat')
+                u = np.loadtxt(model_path+'u4f.dat')
         else:
             # Get Location
-            glat = get_unformatted_data('glat')
-            glon = get_unformatted_data('glon')
-            zalt = get_unformatted_data('zalt')
+            glat = get_unformatted_data(model_path, 'glat')
+            glon = get_unformatted_data(model_path, 'glon')
+            zalt = get_unformatted_data(model_path, 'zalt')
 
             # Get plasma values
-            deni = get_unformatted_data('deni', reshape=True)
-            vsi = get_unformatted_data('vsi', reshape=True)
-            ti = get_unformatted_data('ti', reshape=True)
-            te = get_unformatted_data('te', reshape=True)
+            dim0 = nz*nf*ni + 2
+            dim1 = nt
+            deni = get_unformatted_data(model_path, 'deni',
+                                        dim0=dim0, dim1=dim1, reshape=True)
+            vsi = get_unformatted_data(model_path, 'vsi',
+                                       dim0=dim0, dim1=dim1, reshape=True)
+            ti = get_unformatted_data(model_path, 'ti',
+                                      dim0=dim0, dim1=dim1, reshape=True)
+            te = get_unformatted_data(model_path, 'te',
+                                      dim0=dim0, dim1=dim1, reshape=True)
 
         self.glat = np.reshape(glat, (nz, nf), order="F")
         self.glon = np.reshape(glon, (nz, nf), order="F")
@@ -211,10 +214,19 @@ class model(object):
         self.vsi = np.reshape(vsi, (nz, nf, ni, nt), order="F")
         self.ti = np.reshape(ti, (nz, nf, ni, nt), order="F")
         self.te = np.reshape(te, (nz, nf, nt), order="F")
+        if self.outn:
+            self.denn = np.reshape(denn, (nz, nf, 7, nt), order="F")
+            self.u = np.reshape(u, (nz, nf, nt), order="F")
+            del denn, u
         del glat, glon, zalt, deni, vsi, ti, te
 
     def _generate_metadata(self, namelist):
-        """ Reads the namelist and generates MetaData based on Parameters
+        """Reads the namelist and generates MetaData based on Parameters
+
+        Parameters
+        -----------
+        namelist : (list)
+            variable namelist from SAMI2 model
         """
 
         import re
@@ -259,11 +271,14 @@ class model(object):
         if '.true.' in namelist[10]:
             self.MetaData['ExB model'] = 'Fejer-Scherliess'
         else:
+            model_path = generate_path(self.tag, self.lon0, self.year,
+                                       self.day, self.test)
             self.MetaData['ExB model'] = 'Fourier Series'
-            self.MetaData['Fourier Coeffs'] = np.loadtxt(path+'exb.inp')
+            self.MetaData['Fourier Coeffs'] = np.loadtxt(model_path +
+                                                         'exb.inp')
 
         wind_model = int(re.findall(r"\d+", namelist[35])[0])
-        self.MetaData['Wind Model'] = ('HWM-%02d' % wind_model)
+        self.MetaData['Wind Model'] = ('HWM-{:02d}').format(wind_model)
 
         # Model Geometry
         self.MetaData['rmin'] = float(
@@ -291,9 +306,9 @@ class model(object):
             re.findall(r"\d*\.\d+|\d+", namelist[30])[0])
 
     def check_standard_model(self, model_type="all"):
-        """ Checks for standard atmospheric inputs
+        """Checks for standard atmospheric inputs
 
-        parameters
+        Parameters
         -----------
         model_type : (str)
             Limit check to certain models (default='all')
@@ -314,9 +329,16 @@ class model(object):
 
         return mod_keys
 
-    def plot_lat_alt(self, time_step=0, species=1, *args, **kwargs):
-        """ Plots input parameter as a function of latitude and altitude
+    def plot_lat_alt(self, time_step=0, species=1):
+        """Plots input parameter as a function of latitude and altitude
 
+        Parameters
+        -----------
+        time_step : (int)
+            time index for SAMI2 model results
+        species : (int)
+            ion species index :
+            1: H+, 2: O+, 3: NO+, 4: O2+, 5: He+, 6: N2+, 7: N+
         """
         import matplotlib.pyplot as plt
 

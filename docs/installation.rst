@@ -1,7 +1,7 @@
 Installation
 ============
 
-First, checkout the repository::
+First, checkout the repository:
 
   git clone git@gitlab.com:jklenzing/sami2py.git
 

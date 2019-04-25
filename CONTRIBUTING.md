@@ -67,7 +67,9 @@ To set up `sami2py` for local development:
 
 5. Update/add documentation (in ``docs``), if relevant
 
-5. Commit your changes and push your branch to GitHub::
+5. Commit your changes and push your branch to GitHub
+
+::
 
     git add .
     git commit -m "Brief description of your changes"
@@ -86,7 +88,7 @@ For merging, you should:
 
 1. Include an example for use
 2. Add a note to ``CHANGELOG.md`` about the changes
-3. Ensure that all checks passed (current checks include Travis-CI,
+3. Ensure that all checks passed (current checks include Travis-CI
    and Coveralls) [1]_
 
 .. [1] If you don't have all the necessary Python versions available locally or

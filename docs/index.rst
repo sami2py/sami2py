@@ -11,6 +11,8 @@ Welcome to sami2py's documentation!
    :caption: Contents:
 
    introduction.rst
+   installation.rst
+
 
 
 Indices and tables

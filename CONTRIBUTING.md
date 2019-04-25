@@ -8,13 +8,13 @@ contributions.
 Short version
 =============
 
-* Submit bug reports and feature requests at `GitHub <https://github.com/jklenzing/sami2py/issues>`_
+* Submit bug reports and feature requests through [GitHub](https://github.com/jklenzing/sami2py/issues)
 * Make pull requests to the ``develop`` branch
 
 Bug reports
 ===========
 
-When `reporting a bug <https://github.com/jklenzing/sami2py/issues>`_ please
+When [reporting a bug](https://github.com/jklenzing/sami2py/issues>) please
 include:
 
 * Your operating system name and version

@@ -39,6 +39,12 @@ release = ''
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.doctest',
+    'sphinx.ext.todo',
+    'sphinx.ext.imgmath',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.napoleon',
     'recommonmark',
     'numpydoc',
     'IPython.sphinxext.ipython_console_highlighting'

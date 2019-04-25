@@ -39,7 +39,7 @@ release = ''
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'recommonmark'
+    'recommonmark',
     'numpydoc',
     'IPython.sphinxext.ipython_console_highlighting'
 ]

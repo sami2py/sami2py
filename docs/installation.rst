@@ -3,7 +3,6 @@ Installation
 
 First, checkout the repository::
 
-.. code:: python
   git clone git@gitlab.com:jklenzing/sami2py.git
 
 Change directories into the repository folder and run the setup.py file.  For

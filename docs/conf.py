@@ -21,10 +21,10 @@
 
 project = 'sami2py'
 copyright = '2019, Jeff Klenzing'
-author = 'Jeff Klenzing'
+author = 'Jeff Klenzing \\and Jonathon Smith'
 
 # The short X.Y version
-version = ''
+version = '0.1a2'
 # The full version, including alpha/beta/rc tags
 release = ''
 
@@ -43,6 +43,8 @@ extensions = [
     'numpydoc',
     'IPython.sphinxext.ipython_console_highlighting'
 ]
+
+numpydoc_show_class_members = False
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

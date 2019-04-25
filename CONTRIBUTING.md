@@ -39,12 +39,16 @@ Development
 
 To set up `sami2py` for local development:
 
-1. `Fork sami2py on GitHub <https://github.com/jklenzing/sami2py/fork>`_.
-2. Clone your fork locally::
+1. [Fork sami2py on GitHub](https://github.com/jklenzing/sami2py/fork).
+2. Clone your fork locally
+
+::
 
     git clone git@github.com:your_name_here/sami2py.git
 
-3. Create a branch for local development::
+3. Create a branch for local development
+
+::
 
     git checkout -b name-of-your-bugfix-or-feature
 
@@ -55,7 +59,9 @@ To set up `sami2py` for local development:
    python file in the test directory that starts with ``test_``.
     
 4. When you're done making changes, run all the checks to ensure that nothing
-   is broken on your local system::
+   is broken on your local system
+   
+::
    
     nosetests -vs sami2py
 

@@ -1,6 +1,6 @@
 # sami2py: sami2py is another model of the ionosphere python style
-
-[![Build Status](https://travis-ci.com/jklenzing/sami2py.svg?branch=master)](https://travis-ci.org/jklenzing/sami2py)
+[![Build Status](https://travis-ci.com/jklenzing/sami2py.svg?branch=develop)](https://travis-ci.com/jklenzing/sami2py)
+[![Coverage Status](https://coveralls.io/repos/github/jklenzing/sami2py/badge.svg?branch=develop)](https://coveralls.io/github/jklenzing/sami2py?branch=develop)
 [![Documentation Status](https://readthedocs.org/projects/sami2py/badge/?version=latest)](http://sami2py.readthedocs.io/en/latest/?badge=latest)
 
 # Overview
@@ -11,8 +11,6 @@ The implementation used here includes several added options to the original rele
  - The ability to scale the neutral atmosphere in which the ions form through direct modification of the exospheric neutral temperature for extreme solar minimum conditions, as discussed by Emmert et al [2010].  
  - The ability to switch between HWM93, HWM07, and HWM14 as a user option.
  This implementation is based on the version used in Klenzing et al [2013].
-
- The open-source fortran version of SAMI2 is found at https://www.nrl.navy.mil/ppd/branches/6790/sami2
 
 # Installation
 

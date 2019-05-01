@@ -1,4 +1,5 @@
 language: python
+dist: xenial
 matrix:
   include:
     - python: 2.7
@@ -6,8 +7,6 @@ matrix:
     - python: 3.5
     - python: 3.6
     - python: 3.7
-      dist: xenial
-      sudo: true
 
 addons:
   apt:
@@ -15,8 +14,6 @@ addons:
     - gfortran
 
 before_install:
-  - pip install coveralls
-  - pip install future
   - pip install matplotlib
 install:
   - source activate test-environment
@@ -24,6 +21,3 @@ install:
   - make -C sami2py/fortran compile
 script:
   - nosetests -vs --with-coverage --cover-package=sami2py
-
-after_success:
-  - coveralls

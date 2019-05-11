@@ -7,3 +7,4 @@ Welcome to sami2py's documentation!
    introduction.rst
    installation.rst
    sample_workflow.rst
+   modifications.rst

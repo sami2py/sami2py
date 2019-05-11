@@ -8,7 +8,7 @@ Introduction
 
 Sami2py is a python module that runs the SAMI2 model, as well as archives, loads and plots the resulting modeled values. SAMI2 is a model developed by the Naval Research Laboratory to simulate the motions of plasma in a 2D ionospheric environment along a dipole magnetic field [Huba et al, 2000].  SAMI2 solves for the chemical and dynamical evolution of seven ion species in this environment (H\ :sup:`+`\, He\ :sup:`+`\, N\ :sup:`+`\, O\ :sup:`+`\, N\ :sub:`2` :sup:`+`\, NO\ :sup:`+`\, and O\ :sub:`2` :sup:`+`\).
 
-The implementation used here includes several added options to the original release of SAMI2.  A full list is included in modifications.rst, but several of these include:
+The implementation used here includes several added options to the original release of SAMI2.  A full list is included in :ref:`modifications`, but several of these include:
  - The ability to scale the neutral atmosphere in which the ions form through direct modification of the exospheric neutral temperature for extreme solar minimum conditions, as discussed by Emmert et al [2010].
  - The ability to switch between HWM93, HWM07, and HWM14 as a user option.
  This implementation is based on the version used in Klenzing et al [2013].

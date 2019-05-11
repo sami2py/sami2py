@@ -1,3 +1,5 @@
+.. _modifications:
+
 Modifications to Sami2py from SAMI2-1.00
 ========================================
 

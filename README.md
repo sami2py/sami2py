@@ -1,7 +1,7 @@
 # sami2py: sami2py is another model of the ionosphere python style
 [![Build Status](https://travis-ci.com/jklenzing/sami2py.svg?branch=develop)](https://travis-ci.com/jklenzing/sami2py)
 [![Coverage Status](https://coveralls.io/repos/github/jklenzing/sami2py/badge.svg?branch=develop)](https://coveralls.io/github/jklenzing/sami2py?branch=develop)
-
+[![Documentation Status](https://readthedocs.org/projects/sami2py/badge/?version=latest)](http://sami2py.readthedocs.io/en/latest/?badge=latest)
 
 # Overview
 
@@ -63,4 +63,4 @@ work uses the SAMI2 ionosphere model written and developed by the Naval Research
 # References
 - Huba, J.D., G. Joyce, and J.A. Fedder, Sami2 is Another Model of the Ionosphere (SAMI2): A new low‐latitude ionosphere model, *J. Geophys. Res.*, 105, Pages 23035-23053, https://doi.org/10.1029/2000JA000035, 2000.
 - Emmert, J.T., J.L. Lean, and J.M. Picone, Record‐low thermospheric density during the 2008 solar minimum, *Geophys. Res. Lett.*, 37, https://doi.org/10.1029/2010GL043671, 2010.
-- Klenzing, J., Burrell, A. G., Heelis, R. A., Huba, J. D., Pfaff, R., and Simões, F.: Exploring the role of ionospheric drivers during the extreme solar minimum of 2008, *Ann. Geophys.*, 31, 2147-2156, https://doi.org/10.5194/angeo-31-2147-2013, 2013.
+- Klenzing, J., A. G. Burrell, R. A. Heelis, J. D. Huba, R. Pfaff, and F. Simões, Exploring the role of ionospheric drivers during the extreme solar minimum of 2008, *Ann. Geophys.*, 31, 2147-2156, https://doi.org/10.5194/angeo-31-2147-2013, 2013.

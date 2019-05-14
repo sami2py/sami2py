@@ -1,15 +1,15 @@
 # sami2py: sami2py is another model of the ionosphere python style
-[![Build Status](https://travis-ci.com/jklenzing/sami2py.svg?branch=develop)](https://travis-ci.com/jklenzing/sami2py)
-[![Coverage Status](https://coveralls.io/repos/github/jklenzing/sami2py/badge.svg?branch=develop)](https://coveralls.io/github/jklenzing/sami2py?branch=develop)
+[![Build Status](https://travis-ci.com/jklenzing/sami2py.svg?branch=master)](https://travis-ci.com/jklenzing/sami2py)
+[![Coverage Status](https://coveralls.io/repos/github/jklenzing/sami2py/badge.svg?branch=master)](https://coveralls.io/github/jklenzing/sami2py?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/sami2py/badge/?version=latest)](http://sami2py.readthedocs.io/en/latest/?badge=latest)
 
 # Overview
 
 Sami2py is a python module that runs the SAMI2 model, as well as archives, loads and plots the resulting modeled values. SAMI2 is a model developed by the Naval Research Laboratory to simulate the motions of plasma in a 2D ionospheric environment along a dipole magnetic field [Huba et al, 2000].  SAMI2 solves for the chemical and dynamical evolution of seven ion species in this environment (H<sup>+</sup>, He<sup>+</sup>, N<sup>+</sup>, O<sup>+</sup>, N<sub>2</sub><sup>+</sup>, NO<sup>+</sup>, and O<sub>2</sub><sup>+</sup>).
 
-The implementation used here includes several added options to the original release of SAMI2.  A full list is included in ***add link to changes page***, but several of these include:
+The implementation used here includes several added options to the original release of SAMI2.  A full list is included in https://sami2py.readthedocs.io/en/develop/modifications.html, but several of these include:
  - The ability to scale the neutral atmosphere in which the ions form through direct modification of the exospheric neutral temperature for extreme solar minimum conditions, as discussed by Emmert et al [2010].  
- - The ability to switch between HWM93, HWM07, and HWM14 as a user option.
+ - The ability to switch input custom ExB drifts as a Fourier series.
  This implementation is based on the matlab version used in Klenzing et al [2013].
 
 # Installation

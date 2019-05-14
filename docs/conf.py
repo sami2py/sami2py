@@ -24,7 +24,7 @@ copyright = '2019, Jeff Klenzing'
 author = 'Jeff Klenzing \\and Jonathon Smith'
 
 # The short X.Y version
-version = '0.1a2'
+version = '0.1a3'
 # The full version, including alpha/beta/rc tags
 release = ''
 

@@ -10,7 +10,7 @@ Sami2py is a python module that runs the SAMI2 model, as well as archives, loads
 The implementation used here includes several added options to the original release of SAMI2.  A full list is included in ***add link to changes page***, but several of these include:
  - The ability to scale the neutral atmosphere in which the ions form through direct modification of the exospheric neutral temperature for extreme solar minimum conditions, as discussed by Emmert et al [2010].  
  - The ability to switch between HWM93, HWM07, and HWM14 as a user option.
- This implementation is based on the version used in Klenzing et al [2013].
+ This implementation is based on the matlab version used in Klenzing et al [2013].
 
 # Installation
 
@@ -55,7 +55,7 @@ Now load the resultant data:
 Plotting features coming soon...
 
 # How to Cite
-When referring to this software package, please cite the original paper by Huba et al [2000] https://doi.org/10.1029/2000JA000035 as well as the package by Klenzing et al [2018]. ***add doi here***.
+When referring to this software package, please cite the original paper by Huba et al [2000] https://doi.org/10.1029/2000JA000035 as well as the package by Klenzing et al [2019]. ***add doi here***.
 
 Additionally, please include the following text in the acknowledgements: "This
 work uses the SAMI2 ionosphere model written and developed by the Naval Research Laboratory."

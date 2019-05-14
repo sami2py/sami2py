@@ -8,3 +8,4 @@ Welcome to sami2py's documentation!
    installation.rst
    sample_workflow.rst
    modifications.rst
+   contributing.rst

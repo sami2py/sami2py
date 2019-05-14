@@ -3,8 +3,20 @@
 Modifications from SAMI2-1.00
 ========================================
 
-- Update to the official release of NRLMSISe-00. https://map.nrl.navy.mil/map/pub/nrl/NRLMSIS/NRLMSISE-00/
-- New namelist variable: Tinf_scl: Scales the neutral atmosphere in which the ions form through direct modification of the exospheric neutral temperature for extreme solar minimum conditions, as discussed by Emmert et al [2010].
-- New namelist variable: euv_scl: Scales the resultant EUV spectra to change photoionization rates.
-- New input file: exb.inp: Inputs a series of Fourier coefficients to describe the ExB drifts as a function of local time rather than use the Fejer-Scherliess model. Fejer-Scherliess remains the default model for drifts.
-- New namelist variable: hwm_mod: Selects version of horizontal wind model, including HWM93, HWM07, and HWM14.  HWM14 is set as the default option.
+NRLMSISe-00
+-----------
+This version uses the official release of NRLMSISe-00 (with one modification, discussed below). The unmodified version can be found at https://map.nrl.navy.mil/map/pub/nrl/NRLMSIS/NRLMSISE-00/
+
+The exospheric neutral temperature can be directly scaled by the user for extreme solar minimum conditions, as discussed by Emmert et al [2010].  This is modified by the `Tinf_scale` keyword, and is passed through the namelist as Tinf_scl.
+
+Photoionization
+---------------
+New namelist variable: euv_scl: Scales the resultant EUV spectra to change photoionization rates.
+
+ExB Drifts
+----------
+Fejer-Scherliess remains the default model for drifts, but the user may now input a series of Fourier coefficients to describe the ExB drifts as a function of local time rather than use the Fejer-Scherliess model.
+
+Horizontal Wind Model
+---------------------
+Sami2py uses the HWM-14 model by default.

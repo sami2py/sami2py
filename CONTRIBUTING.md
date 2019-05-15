@@ -6,13 +6,13 @@ appreciated!  Sami2py is a community-driven project and welcomes both feedback a
 contributions.
 
 Short version
-=============
+-------------
 
 * Submit bug reports and feature requests through [GitHub](https://github.com/jklenzing/sami2py/issues)
 * Make pull requests to the ``develop`` branch
 
 Bug reports
-===========
+-----------
 
 When [reporting a bug](https://github.com/jklenzing/sami2py/issues>) please
 include:
@@ -22,7 +22,7 @@ include:
 * Detailed steps to reproduce the bug
 
 Feature requests and feedback
-=============================
+-----------------------------
 
 The best way to send feedback is to file an issue at
 `GitHub <https://github.com/jklenzing/sami2py/issues>`_.
@@ -35,7 +35,7 @@ If you are proposing a feature:
   are welcome :)
 
 Development
-===========
+-----------
 
 To set up `sami2py` for local development:
 
@@ -54,15 +54,15 @@ To set up `sami2py` for local development:
 
    Now you can make your changes locally. Tests for new instruments are
    performed automatically.  Tests for custom functions should be added to the
-   appropriately named file in ``sami2py/tests``.   If no test file exists, then 
-   you should create one.  This testing uses nose, which will run tests on any 
+   appropriately named file in ``sami2py/tests``.   If no test file exists, then
+   you should create one.  This testing uses nose, which will run tests on any
    python file in the test directory that starts with ``test_``.
-    
+
 4. When you're done making changes, run all the checks to ensure that nothing
    is broken on your local system
-   
+
 ::
-   
+
     nosetests -vs sami2py
 
 5. Update/add documentation (in ``docs``), if relevant

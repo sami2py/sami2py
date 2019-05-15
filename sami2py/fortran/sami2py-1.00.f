@@ -2406,7 +2406,7 @@
 
       include 'param-1.00.inc'
 
-!     arrays a,b,c, and d may be used for stoage of alfa, beta and x
+!     arrays a,b,c, and d may be used for storage of alfa, beta and x
 !     in the actual call of this routine, but remember, whatever you
 !     use will be lost by the definition of of alfa and beta here.
 !     form,  a(k)*x(k-1) + b(k)*x(k) + c(k)*x(k+1) = d(k)
@@ -2414,7 +2414,7 @@
 !     i have modified the input sequence to the routine, but have left it
 !     otherwise intact.  we may  want to eventually change this (gj)
 
-      dimension a(1),b(1),c(1),d(1),x(1)
+      dimension a(nz),b(nz),c(nz),d(nz),x(nz)
       dimension alfa(nz),beta(nz)
 
       nm1=n-1

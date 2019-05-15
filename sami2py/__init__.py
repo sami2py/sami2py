@@ -33,19 +33,20 @@ model
 ---------------------------------------------------------------------------
 """
 import logging
+import sys
 import os
 
 __version__ = str('0.1a1')
 
 # get home directory
-home_dir = os.path.expanduser('~')
+env_dir = sys.prefix
 # set sami2py directory path in home directory
-sami2py_dir = os.path.join(home_dir, '.sami2py')
+sami2py_dir = os.path.join(env_dir, '.sami2py')
 # make sure a sami2py directory for model output exists
 if not os.path.isdir(sami2py_dir):
     # create directory
     os.mkdir(sami2py_dir)
-    print(''.join(('Created .sami2py directory in user home directory to',
+    print(''.join(('Created .sami2py directory in ' + env_dir + ' to',
                    'store settings.')))
 
 

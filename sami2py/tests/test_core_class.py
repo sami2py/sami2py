@@ -1,6 +1,7 @@
 """Unit tests for model.py
 """
 import os
+import sys
 import sami2py
 from sami2py.utils import generate_path
 import numpy as np
@@ -23,8 +24,8 @@ class TestModelObject():
         if os.path.isdir(self.tmp_archive_dir):
             sami2py.utils.set_archive_dir(path=self.tmp_archive_dir)
         else:
-            home_dir = os.path.expanduser('~')
-            sami2py_dir = os.path.join(home_dir, '.sami2py')
+            env_dir = sys.prefix
+            sami2py_dir = os.path.join(env_dir, '.sami2py')
             archive_path = os.path.join(sami2py_dir, 'archive_path.txt')
             with open(archive_path, 'w') as archive_file:
                 archive_file.write('')

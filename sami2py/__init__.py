@@ -7,7 +7,6 @@
 sami2py
 -----------
 
-
 Functions
 ---------------------------------------------------------------------------
 run_model(year, day, lat=0, lon=0, alt=300,
@@ -32,26 +31,22 @@ model
     Loads, reshapes, and holds SAMI2 output for a given model run
     specified by the user.
 ---------------------------------------------------------------------------
-
-Modules
----------------------------------------------------------------------------
-
----------------------------------------------------------------------------
 """
 import logging
+import sys
 import os
 
 __version__ = str('0.1a1')
 
 # get home directory
-home_dir = os.path.expanduser('~')
+env_dir = sys.prefix
 # set sami2py directory path in home directory
-sami2py_dir = os.path.join(home_dir, '.sami2py')
+sami2py_dir = os.path.join(env_dir, '.sami2py')
 # make sure a sami2py directory for model output exists
 if not os.path.isdir(sami2py_dir):
     # create directory
     os.mkdir(sami2py_dir)
-    print(''.join(('Created .sami2py directory in user home directory to',
+    print(''.join(('Created .sami2py directory in ' + env_dir + ' to',
                    'store settings.')))
 
 
@@ -78,8 +73,8 @@ with open(os.path.join(sami2py_dir, 'test_data_path.txt'), 'r') as f:
 
 # import main functions
 try:
-    from sami2py import (run_model, utils, model)
-    from sami2py.run_model import (run_model)
-    from sami2py.model import (model)
+    from sami2py import _core, _core_class, utils
+    from sami2py._core import run_model
+    from sami2py._core_class import Model
 except ImportError as errstr:
     logging.exception('problem importing sami2py: ' + str(errstr))

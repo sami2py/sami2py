@@ -33,5 +33,6 @@
   cqe      =  7.000000e-14,
   Tinf_scl =  1.000000,
   euv_scl  =  1.000000,
-  hwm_mod  =  14
+  hwm_mod  =  14,
+  outn     = .false.
 &end

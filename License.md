@@ -1,4 +1,4 @@
-Copyright (c) 2017, Jeff Klenzing (JK) and Joe Huba (JH)
+Copyright (c) 2019, Jeff Klenzing (JK) and Joe Huba (JH)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

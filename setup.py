@@ -4,6 +4,7 @@
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
 
+import sys
 from os import path, mkdir
 from setuptools import setup, find_packages
 
@@ -17,7 +18,7 @@ def read(fname):
 here = path.abspath(path.dirname(__file__))
 fortran_path = path.join(here, 'sami2py', 'fortran')
 test_data_path = path.join(here, 'sami2py', 'tests', 'test_data')
-file_path = path.join(path.expanduser('~'), '.sami2py')
+file_path = path.join(sys.prefix, '.sami2py')
 
 if not path.isfile(fortran_path + '/sami2py.x'):
     print('\n'.join(['\nYou will need to compile the fortran files.  Try',
@@ -26,6 +27,8 @@ if not path.isfile(fortran_path + '/sami2py.x'):
 
 if not path.isdir(file_path):
     mkdir(file_path)
+    print(''.join(('Created .sami2py directory in ' + sys.prefix + ' to',
+                   'store settings.')))
 
 with open(path.join(file_path, 'fortran_path.txt'), 'w+') as f:
     f.write(fortran_path)
@@ -45,7 +48,7 @@ with open(path.join(file_path, 'test_data_path.txt'), 'w+') as f:
 # Run setup
 
 setup(name='sami2py',
-      version='0.1a2',
+      version='0.1.0',
       url='gitlab.com/jklenzing/sami2py',
       author='Jeff Klenzing',
       author_email='jeffrey.klenzing@nasa.gov',
@@ -59,10 +62,10 @@ setup(name='sami2py',
           "License :: BSD",
           "Natural Language :: English",
           "Programming Language :: Python :: 2.7",
-          "Programming Language :: Python :: 3.3",
           "Programming Language :: Python :: 3.4",
           "Programming Language :: Python :: 3.5",
           "Programming Language :: Python :: 3.6",
+          "Programming Language :: Python :: 3.7",
           "Operating System :: MacOS :: MacOS X",
       ],
       include_package_data=True,

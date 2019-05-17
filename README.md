@@ -9,7 +9,8 @@ Sami2py is a python module that runs the SAMI2 model, as well as archives, loads
 
 The implementation used here includes several added options to the original release of SAMI2.  A full list is included in https://sami2py.readthedocs.io/en/latest/modifications.html, but several of these include:
  - The ability to scale the neutral atmosphere in which the ions form through direct modification of the exospheric neutral temperature for extreme solar minimum conditions, as discussed by Emmert et al [2010].  
- - The ability to switch input custom ExB drifts as a Fourier series.
+ - The ability to input custom ExB drifts as a Fourier series.
+ 
  This implementation is based on the matlab version used in Klenzing et al [2013].
 
 # Installation

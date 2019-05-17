@@ -3,13 +3,16 @@
 [![Coverage Status](https://coveralls.io/repos/github/jklenzing/sami2py/badge.svg?branch=master)](https://coveralls.io/github/jklenzing/sami2py?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/sami2py/badge/?version=latest)](http://sami2py.readthedocs.io/en/latest/?badge=latest)
 
+Full [Documentation](http://sami2py.readthedocs.io/en/latest/index.html)
+
 # Overview
 
 Sami2py is a python module that runs the SAMI2 model, as well as archives, loads and plots the resulting modeled values. SAMI2 is a model developed by the Naval Research Laboratory to simulate the motions of plasma in a 2D ionospheric environment along a dipole magnetic field [Huba et al, 2000].  SAMI2 solves for the chemical and dynamical evolution of seven ion species in this environment (H<sup>+</sup>, He<sup>+</sup>, N<sup>+</sup>, O<sup>+</sup>, N<sub>2</sub><sup>+</sup>, NO<sup>+</sup>, and O<sub>2</sub><sup>+</sup>).
 
 The implementation used here includes several added options to the original release of SAMI2.  A full list is included in https://sami2py.readthedocs.io/en/latest/modifications.html, but several of these include:
  - The ability to scale the neutral atmosphere in which the ions form through direct modification of the exospheric neutral temperature for extreme solar minimum conditions, as discussed by Emmert et al [2010].  
- - The ability to switch input custom ExB drifts as a Fourier series.
+ - The ability to input custom ExB drifts as a Fourier series.
+ 
  This implementation is based on the matlab version used in Klenzing et al [2013].
 
 # Installation
@@ -17,7 +20,7 @@ The implementation used here includes several added options to the original rele
 First, checkout the repository:
 
 ```
-  git clone git@gitlab.com:jklenzing/sami2py.git
+  git clone https://github.com/jklenzing/sami2py.git
 ```
 
 Change directories into the repository folder and run the setup.py file.  For
@@ -36,14 +39,27 @@ Additionally, you must make and install the fortran executables.
 
 Now you can run the sami2 executable (sami2py.x) from anywhere.
 
+
 # Example
 
 In iPython, run:
 
 ```
   import sami2py
+```
+
+sami2py will remind you to set the top level directory that will hold the model output.
+
+```
+  sami2py.utils.set_archive_dir(path=path)
+```
+
+sami2py will raise an error if this is not done before trying to run the model.
+
+```
   sami2py.run_model(year=2012, day=210, lon=0, tag='test')
 ```
+
 Note that the sami2 model runs for 24 hours to clear transients, then begins to output data.
 
 Now load the resultant data:

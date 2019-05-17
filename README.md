@@ -2,6 +2,8 @@
 [![Build Status](https://travis-ci.com/jklenzing/sami2py.svg?branch=master)](https://travis-ci.com/jklenzing/sami2py)
 [![Coverage Status](https://coveralls.io/repos/github/jklenzing/sami2py/badge.svg?branch=master)](https://coveralls.io/github/jklenzing/sami2py?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/sami2py/badge/?version=latest)](http://sami2py.readthedocs.io/en/latest/?badge=latest)
+[![DOI](https://zenodo.org/badge/167871330.svg)](https://zenodo.org/badge/latestdoi/167871330)
+
 
 Full [Documentation](http://sami2py.readthedocs.io/en/latest/index.html)
 
@@ -71,7 +73,7 @@ Now load the resultant data:
 Plotting features coming soon...
 
 # How to Cite
-When referring to this software package, please cite the original paper by Huba et al [2000] https://doi.org/10.1029/2000JA000035 as well as the package by Klenzing et al [2019]. ***add doi here***.
+When referring to this software package, please cite the original paper by Huba et al [2000] https://doi.org/10.1029/2000JA000035 as well as the package by Klenzing et al [2019] https://doi.org/10.5281/zenodo.2875800.
 
 Additionally, please include the following text in the acknowledgements: "This
 work uses the SAMI2 ionosphere model written and developed by the Naval Research Laboratory."

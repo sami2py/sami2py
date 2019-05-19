@@ -4,7 +4,7 @@
 *.mod
 
 .DS_STORE
-sami2low-1.00.namelist
+sami2py/fortran/sami2py-1.00.namelist
 *f.dat
 *u.dat
 time.dat

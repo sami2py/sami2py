@@ -9,17 +9,17 @@ Functions
 -------------------------------------------------------------------------------
 
 run_model(year, day, lat=0, lon=0, alt=300,
-              f107=120, f107a=120, ap=0,
-              rmin=100, rmax=2000, gams=3, gamp=3, altmin=85.,
-              dthr=0.25, hrinit=0., hrpr=24., hrmax=48.,
-              dt0=30., maxstep=100000000, denmin=1.e-6,
-              nion1=1, nion2=7, mmass=48, h_scale=1, o_scale=1,
-              no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
-              Tinf_scale=1, Tn_scale=1., euv_scale=1,
-              wind_scale=1, hwm_model=14,
-              fejer=True, ExB_drifts=np.zeros((10,2)), ve01=0., exb_scale=1,
-              alt_crit=150., cqe=7.e-14,
-              tag='test', clean=False, test=False, outn=False)
+          f107=120, f107a=120, ap=0,
+          rmin=100, rmax=2000, gams=3, gamp=3, altmin=85.,
+          dthr=0.25, hrinit=0., hrpr=24., hrmax=48.,
+          dt0=30., maxstep=100000000, denmin=1.e-6,
+          nion1=1, nion2=7, mmass=48, h_scale=1, o_scale=1,
+          no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
+          Tinf_scale=1, Tn_scale=1., euv_scale=1,
+          wind_scale=1, hwm_model=14,
+          fejer=True, ExB_drifts=np.zeros((10,2)), ve01=0., exb_scale=1,
+          alt_crit=150., cqe=7.e-14,
+          tag='test', clean=False, test=False, outn=False)
 
     Initializes a run of the SAMI2 model and archives the data.
 -------------------------------------------------------------------------------
@@ -257,7 +257,7 @@ def run_model(year, day, lat=0, lon=0, alt=300,
     _generate_namelist(info)
     archive_path = generate_path(tag, lon, year, day, test)
     if not test:
-        check_model_run = subprocess.check_call('./sami2py.x')
+        _ = subprocess.check_call('./sami2py.x')
 
     _archive_model(archive_path, clean, fejer, fmtout, outn)
 
@@ -288,6 +288,7 @@ def _generate_format_info(fmtout):
         format_info = '.false.'
     return format_info
 
+
 def _generate_neutral_info(outn):
     """Generates the namelist information needed to tell the SAMI2 model to
     output the model results of neutral species and wind
@@ -297,6 +298,7 @@ def _generate_neutral_info(outn):
     else:
         neutral_info = '.false.'
     return neutral_info
+
 
 def _generate_namelist(info):
     """Generates namelist file for sami2

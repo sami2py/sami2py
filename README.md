@@ -67,7 +67,7 @@ Note that the sami2 model runs for 24 hours to clear transients, then begins to 
 Now load the resultant data:
 
 ```
-  ModelRun = sami2py.Model(tag='test', lon=0, year=2012, day=210)
+  ModelRun = sami2py.Model(year=2012, day=210, lon=0, tag='test')
 ```
 
 Plotting features coming soon...

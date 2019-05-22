@@ -8,7 +8,7 @@
 Functions
 -------------------------------------------------------------------------------
 
-run_model(year, day, lat=0, lon=0, alt=300,
+run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
           f107=120, f107a=120, ap=0,
           rmin=100, rmax=2000, gams=3, gamp=3, altmin=85.,
           dthr=0.25, hrinit=0., hrpr=24., hrmax=48.,
@@ -17,9 +17,9 @@ run_model(year, day, lat=0, lon=0, alt=300,
           no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
           Tinf_scale=1, Tn_scale=1., euv_scale=1,
           wind_scale=1, hwm_model=14,
-          fejer=True, ExB_drifts=np.zeros((10,2)), ve01=0., exb_scale=1,
+          fejer=True, ExB_drifts=np.zeros((10, 2)), ve01=0., exb_scale=1,
           alt_crit=150., cqe=7.e-14,
-          tag='test', clean=False, test=False, outn=False)
+          clean=False, test=False, fmtout=True, outn=False)
 
     Initializes a run of the SAMI2 model and archives the data.
 -------------------------------------------------------------------------------

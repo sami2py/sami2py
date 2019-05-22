@@ -22,24 +22,23 @@ from os import path
 import numpy as np
 from .utils import generate_path, get_unformatted_data
 
-
 class Model(object):
     """Python object to handle SAMI2 model output data
     """
-    def __init__(self, year, day, lon, tag, outn=False, test=False):
+    def __init__(self, tag, lon, year, day, outn=False, test=False):
         """ Loads a previously run sami2 model and sorts into
             appropriate array shapes
 
         Parameters
         ----------
+        tag : (string)
+            name of run (top-level directory)
+        lon : (int)
+            longitude reference
         year : (int)
             year
         day : (int)
             day of year from Jan 1
-        lon : (int)
-            longitude reference
-        tag : (string)
-            name of run (top-level directory)
         outn : (boolean)
             if true : look for neutral density and wind files
             if false :  only look for default sami2 output
@@ -157,7 +156,7 @@ class Model(object):
         ni = 7
 
         model_path = generate_path(self.tag, self.lon0, self.year, self.day,
-                                   self.test)
+                             self.test)
 
         # Get NameList
         namelist_file = open(model_path + 'sami2py-1.00.namelist')
@@ -186,7 +185,7 @@ class Model(object):
             ti = np.loadtxt(path.join(model_path, 'tif.dat'))
             te = np.loadtxt(path.join(model_path, 'tef.dat'))
 
-            # get neutral values
+            #get neutral values
             if self.outn:
                 denn = np.loadtxt(model_path+'dennf.dat')
                 u = np.loadtxt(model_path+'u4f.dat')

@@ -69,3 +69,10 @@ class TestModelObject():
                               test=True)
         keys = model.check_standard_model()
         assert keys == list()
+
+    def test_model_repr(self):
+        """Test that __repr__ returns a string of information."""
+        model = sami2py.Model(tag='test', lon=256, year=1999, day=256,
+                              test=True)
+        repr_str = model.__repr__()
+        assert type(repr_str) is str

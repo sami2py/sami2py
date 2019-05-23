@@ -59,7 +59,7 @@ sami2py will remind you to set the top level directory that will hold the model 
 sami2py will raise an error if this is not done before trying to run the model.
 
 ```
-  sami2py.run_model(year=2012, day=210, lon=0, tag='test')
+  sami2py.run_model(tag='run_name', lon=0, year=2012, day=210)
 ```
 
 Note that the sami2 model runs for 24 hours to clear transients, then begins to output data.
@@ -67,7 +67,7 @@ Note that the sami2 model runs for 24 hours to clear transients, then begins to 
 Now load the resultant data:
 
 ```
-  ModelRun = sami2py.Model(year=2012, day=210, lon=0, tag='test')
+  ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
 ```
 
 Plotting features coming soon...

@@ -41,7 +41,7 @@ class TestBasicModelRun():
     def test_run_model_namelist(self):
         """The test to ensure that the namelist file is generated properly
         """
-        sami2py.run_model(year=2012, day=211, test=True)
+        sami2py.run_model(tag='test', year=2012, day=211, test=True)
         namelist_file = self.model_path + 'sami2py-1.00.namelist'
         ref_namelist = test_data_dir + '/reference_sami2py-1.00.namelist'
         assert filecmp.cmp(namelist_file, ref_namelist)
@@ -49,7 +49,7 @@ class TestBasicModelRun():
     def test_run_model_dat_files(self):
         """Test to ensure that the dat files are copied properly
         """
-        sami2py.run_model(year=2012, day=211, test=True)
+        sami2py.run_model(tag='test', year=2012, day=211, test=True)
         assert os.stat(self.model_path + 'glonf.dat')
 
     @raises(ValueError)
@@ -59,7 +59,7 @@ class TestBasicModelRun():
            create the file name. Will happen for any variable in the namelist
            set with the wrong type
         """
-        sami2py.run_model(year='2012', day='211', test=True)
+        sami2py.run_model(tag='test', year='2012', day='211', test=True)
 
     def test_fortran_executable(self):
         """Short run of fortran executable to ensure the code compiles
@@ -67,7 +67,7 @@ class TestBasicModelRun():
         """
         tmp_archive_dir = sami2py.archive_dir
         sami2py.utils.set_archive_dir(path=test_data_dir)
-        sami2py.run_model(year=2012, day=211,
+        sami2py.run_model(tag='test', year=2012, day=211,
                           dthr=0.05, hrinit=0.0, hrpr=0.0, hrmax=.11)
         if os.path.isdir(tmp_archive_dir):
             sami2py.utils.set_archive_dir(path=tmp_archive_dir)

@@ -214,7 +214,6 @@ class Model(object):
         self.vsi = np.reshape(vsi, (nz, nf, ni, nt), order="F")
         self.ti = np.reshape(ti, (nz, nf, ni, nt), order="F")
         self.te = np.reshape(te, (nz, nf, nt), order="F")
-        self.exb = np.loadtxt(path.join(model_path, 'exb.inp'))
         if self.outn:
             self.denn = np.reshape(denn, (nz, nf, 7, nt), order="F")
             self.u = np.reshape(u, (nz, nf, nt), order="F")

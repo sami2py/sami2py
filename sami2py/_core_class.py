@@ -22,6 +22,7 @@ from os import path
 import numpy as np
 from .utils import generate_path, get_unformatted_data
 
+
 class Model(object):
     """Python object to handle SAMI2 model output data
     """
@@ -156,7 +157,7 @@ class Model(object):
         ni = 7
 
         model_path = generate_path(self.tag, self.lon0, self.year, self.day,
-                             self.test)
+                                   self.test)
 
         # Get NameList
         namelist_file = open(model_path + 'sami2py-1.00.namelist')
@@ -185,7 +186,7 @@ class Model(object):
             ti = np.loadtxt(path.join(model_path, 'tif.dat'))
             te = np.loadtxt(path.join(model_path, 'tef.dat'))
 
-            #get neutral values
+            # get neutral values
             if self.outn:
                 denn = np.loadtxt(model_path+'dennf.dat')
                 u = np.loadtxt(model_path+'u4f.dat')

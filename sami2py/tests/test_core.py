@@ -1,7 +1,8 @@
 """Unit tests for run_model.py
 """
-import os
 import filecmp
+import numpy as np
+import os
 import shutil
 from nose.tools import raises
 import sami2py
@@ -51,6 +52,20 @@ class TestBasicModelRun():
         """
         sami2py.run_model(year=2012, day=211, test=True)
         assert os.stat(self.model_path + 'glonf.dat')
+
+    def test_run_model_ExB_files(self):
+        """Test to ensure that the ExB files are copied properly
+        """
+        sami2py.run_model(year=2012, day=211, test=True, fejer=False,
+                          ExB_drifts=np.zeros((10, 2)))
+        assert os.stat(self.model_path + 'ExB.inp')
+
+    @raises(Exception)
+    def test_run_model_ExB_wrong_size(self):
+        """Test to ensure that the ExB has proper shape
+        """
+        sami2py.run_model(year=2012, day=211, test=True, fejer=False,
+                          ExB_drifts=np.zeros((1, 2)))
 
     @raises(ValueError)
     def test_input_format(self):

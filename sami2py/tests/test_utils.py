@@ -88,6 +88,7 @@ class TestArchiveDir():
         """
         sami2py.utils.set_archive_dir('dummy_invalid_path')
 
+
 class testGetUnformattedData():
     """Test basic functionality of the get_unformatted_data function"""
     def setup(self):
@@ -105,8 +106,8 @@ class testGetUnformattedData():
         """Test a successful get of unformatted data with the reshape flag
         set to True
         """
-        dim0 = 98*101*7 + 2 # nf*nz*ni + 2
-        dim1 = 3            # nt
+        dim0 = 98*101*7 + 2  # nf*nz*ni + 2
+        dim1 = 3             # nt
         ret_data = sami2py.utils.get_unformatted_data(self.model_path, 'deni',
                                                       dim0=dim0, dim1=dim1,
                                                       reshape=True)

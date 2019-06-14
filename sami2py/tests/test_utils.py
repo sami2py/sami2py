@@ -93,7 +93,7 @@ class testGetUnformattedData():
     """Test basic functionality of the get_unformatted_data function"""
     def setup(self):
         """setup the model_path variable for accessing unformatted data"""
-        self.model_path = sami2py.utils.generate_path('test', 256, 1999, 256,
+        self.model_path = sami2py.utils.generate_path('test', 256, 1999, 257,
                                                       test=True)
 
     def test_successful_get(self):

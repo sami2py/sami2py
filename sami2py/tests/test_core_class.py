@@ -3,8 +3,6 @@
 import os
 import sys
 import sami2py
-from sami2py.utils import generate_path
-import numpy as np
 from nose.tools import raises
 
 

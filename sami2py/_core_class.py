@@ -120,7 +120,7 @@ class Model(object):
         out.append('ExB Drifts: ' + self.MetaData['ExB model'])
 
         mod_keys = self.check_standard_model()
-        if mod_keys:
+        if not mod_keys:
             out.append('\nNo modifications to empirical models')
         else:
             out.append('\nMultipliers used')

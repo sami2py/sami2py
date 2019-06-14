@@ -90,33 +90,3 @@ class TestBasicModelRun():
             with open(sami2py.archive_path, 'w') as archive_file:
                 archive_file.write('')
                 sami2py.archive_dir = ''
-
-
-class TestBasicModelRunUnformatted(TestBasicModelRun):
-    """Basic tests of the run_model script"""
-    def setup(self):
-        """Setup function run before each test method to setup files needed
-           to run the test effectively
-        """
-        self.model_path = generate_path('test', 0, 2012, 211, True)
-        if not os.path.exists(self.model_path):
-            os.makedirs(self.model_path)
-        filelist_fmt = ['glonu.dat', 'glatu.dat', 'zaltu.dat',
-                        'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
-                        'time.dat']
-        for filename in filelist_fmt:
-            open(fortran_dir + '/' + filename, 'w').close()
-
-    def teardown(self):
-        """Teardown function run before each test method to remove files needed
-           to run the test effectively
-        """
-        filelist_fmt = ['glonu.dat', 'glatu.dat', 'zaltu.dat',
-                        'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
-                        'time.dat']
-        for filename in filelist_fmt:
-            os.remove(fortran_dir + '/' + filename)
-        if os.path.exists(self.model_path):
-            path_to_remove = os.path.split(self.model_path)[0]
-            path_to_remove = os.path.split(path_to_remove)[0]
-            shutil.rmtree(path_to_remove)

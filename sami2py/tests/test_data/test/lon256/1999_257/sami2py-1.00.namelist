@@ -8,7 +8,7 @@
   grad_in  =  300.000000,
   glat_in  =  0.000000,
   glon_in  =  256.000000,
-  fejer    =  .true.,
+  fejer    =  .false.,
   rmin     =  100.000000,
   rmax     =  2000.000000,
   altmin   =  85.000000,
@@ -32,7 +32,7 @@
   alt_crit =  150.000000,
   cqe      =  7.000000e-14,
   Tinf_scl =  1.000000,
-  euv_scl  =  1.000000,
+  euv_scl  =  0.500000,
   hwm_mod  =  14,
   outn     = .false.
 &end

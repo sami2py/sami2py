@@ -45,8 +45,8 @@ class TestModelObject():
     def test_model_instantiation_with_unformatted_files(self):
         """Test that model object is instantiated as a sami2py_model
         """
-        model = sami2py.Model(tag='test', lon=256, year=1999, day=256,
-                              test=True, format=False)
+        model = sami2py.Model(tag='test', lon=256, year=1999, day=257,
+                              test=True)
         assert isinstance(model, sami2py.Model)
 
     def test_model_plot(self):

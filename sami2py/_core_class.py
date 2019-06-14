@@ -205,6 +205,8 @@ class Model(object):
                                        dim0=dim0, dim1=dim1, reshape=True)
             ti = get_unformatted_data(model_path, 'ti',
                                       dim0=dim0, dim1=dim1, reshape=True)
+            # Temperatures have only one species
+            dim0 = nz*nf + 2
             te = get_unformatted_data(model_path, 'te',
                                       dim0=dim0, dim1=dim1, reshape=True)
 

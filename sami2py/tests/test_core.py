@@ -47,6 +47,14 @@ class TestBasicModelRun():
         ref_namelist = test_data_dir + '/reference_sami2py-1.00.namelist'
         assert filecmp.cmp(namelist_file, ref_namelist)
 
+    def test_run_model_namelist_w_invalid_hwm(self):
+        """The test to ensure that the invalid hwm reverts to 14
+        """
+        sami2py.run_model(year=2012, day=211, test=True, hwm_model=15)
+        namelist_file = self.model_path + 'sami2py-1.00.namelist'
+        ref_namelist = test_data_dir + '/reference_sami2py-1.00.namelist'
+        assert filecmp.cmp(namelist_file, ref_namelist)
+
     def test_run_model_dat_files(self):
         """Test to ensure that the dat files are copied properly
         """

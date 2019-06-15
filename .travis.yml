@@ -22,7 +22,7 @@ install:
   - python setup.py install
   - make -C sami2py/fortran compile
 script:
-  - nosetests -vs --with-coverage --cover-package=sami2py
+  - pytest -vs --with-coverage --cover-package=sami2py
 
 after_success:
   - coveralls

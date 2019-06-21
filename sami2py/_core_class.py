@@ -121,14 +121,14 @@ class Model(object):
         out.append('ExB Drifts: ' + self.MetaData['ExB model'])
 
         mod_keys = self.check_standard_model()
-        if not mod_keys:
-            out.append('\nNo modifications to empirical models')
-        else:
+        if mod_keys:
             out.append('\nMultipliers used')
             out.append('----------------')
             for mkey in mod_keys:
                 out.append(('{s}: {f}').format(s=mkey,
                                                f=self.MetaData[mkey]))
+        else:
+            out.append('\nNo modifications to empirical models')
 
         return '\n'.join(out)
 

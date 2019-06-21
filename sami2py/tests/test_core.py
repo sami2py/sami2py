@@ -24,14 +24,14 @@ class TestBasicModelRun():
         self.filelist = ['glonf.dat', 'glatf.dat', 'zaltf.dat', 'denif.dat',
                          'vsif.dat', 'tif.dat', 'tef.dat', 'time.dat']
         for filename in self.filelist:
-            open(fortran_dir + '/' + filename, 'w').close()
+            open(os.path.join(fortran_dir, filename), 'w').close()
 
     def teardown(self):
         """Teardown function run before each test method to remove files needed
            to run the test effectively
         """
         for filename in self.filelist:
-            os.remove(fortran_dir + '/' + filename)
+            os.remove(os.path.join(fortran_dir, filename))
         if os.path.exists(self.model_path):
             path_to_remove = os.path.split(self.model_path)[0]
             path_to_remove = os.path.split(path_to_remove)[0]
@@ -106,7 +106,8 @@ class TestBasicModelRun():
 
 
 class TestBasicModelRunUnformatted(TestBasicModelRun):
-    """Basic tests of the run_model script"""
+    """Basic tests of the run_model script w/ unformatted output"""
+
     def setup(self):
         """Setup function run before each test method to setup files needed
            to run the test effectively
@@ -119,14 +120,14 @@ class TestBasicModelRunUnformatted(TestBasicModelRun):
         self.filelist = ['glonu.dat', 'glatu.dat', 'zaltu.dat', 'deniu.dat',
                          'vsiu.dat', 'tiu.dat', 'teu.dat', 'time.dat']
         for filename in self.filelist:
-            open(fortran_dir + '/' + filename, 'w').close()
+            open(os.path.join(fortran_dir, filename), 'w').close()
 
     def teardown(self):
         """Teardown function run before each test method to remove files needed
            to run the test effectively
         """
         for filename in self.filelist:
-            os.remove(fortran_dir + '/' + filename)
+            os.remove(os.path.join(fortran_dir, filename))
         if os.path.exists(self.model_path):
             path_to_remove = os.path.split(self.model_path)[0]
             path_to_remove = os.path.split(path_to_remove)[0]

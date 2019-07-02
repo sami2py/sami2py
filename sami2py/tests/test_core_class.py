@@ -3,8 +3,6 @@
 import os
 import sys
 import sami2py
-from sami2py.utils import generate_path
-import numpy as np
 from nose.tools import raises
 
 
@@ -44,6 +42,13 @@ class TestModelObject():
                               test=True)
         assert isinstance(model, sami2py.Model)
 
+    def test_model_instantiation_with_unformatted_files_and_mods(self):
+        """Test that model object is instantiated as a sami2py_model
+        """
+        model = sami2py.Model(tag='test', lon=256, year=1999, day=257,
+                              test=True)
+        assert isinstance(model, sami2py.Model)
+
     def test_model_plot(self):
         """Basic test that a reasonable plot has been created by testing the
            resulting axis limits
@@ -69,3 +74,10 @@ class TestModelObject():
                               test=True)
         keys = model.check_standard_model()
         assert keys == list()
+
+    def test_model_repr(self):
+        """Test that __repr__ returns a string of information."""
+        model = sami2py.Model(tag='test', lon=256, year=1999, day=256,
+                              test=True)
+        repr_str = model.__repr__()
+        assert type(repr_str) is str

@@ -51,8 +51,8 @@ class TestBasicModelRun():
     def test_run_model_namelist_w_invalid_hwm(self):
         """The test to ensure that the invalid hwm reverts to 14
         """
-        sami2py.run_model(year=2012, day=211, test=True, fmtout=self.format,
-                          hwm_model=15)
+        sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
+                          fmtout=self.format, hwm_model=15)
         namelist_file = self.model_path + 'sami2py-1.00.namelist'
         ref_namelist = os.path.join(test_data_dir, self.ref_file)
         assert filecmp.cmp(namelist_file, ref_namelist)

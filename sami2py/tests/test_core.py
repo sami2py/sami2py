@@ -42,7 +42,8 @@ class TestBasicModelRun():
     def test_run_model_namelist(self):
         """The test to ensure that the namelist file is generated properly
         """
-        sami2py.run_model(tag='test', year=2012, day=211, test=True)
+        sami2py.run_model(tag='test', year=2012, day=211, test=True,
+                          fmtout=self.format)
         namelist_file = self.model_path + 'sami2py-1.00.namelist'
         ref_namelist = os.path.join(test_data_dir, self.ref_file)
         assert filecmp.cmp(namelist_file, ref_namelist)
@@ -59,7 +60,8 @@ class TestBasicModelRun():
     def test_run_model_dat_files(self):
         """Test to ensure that the dat files are copied properly
         """
-        sami2py.run_model(tag='test', year=2012, day=211, test=True)
+        sami2py.run_model(tag='test', year=2012, day=211, test=True,
+                          fmtout=self.format)
         if self.format:
             fname = 'glonf.dat'
         else:

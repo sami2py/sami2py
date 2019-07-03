@@ -60,7 +60,7 @@ class TestBasicModelRun():
     def test_run_model_dat_files(self):
         """Test to ensure that the dat files are copied properly
         """
-        sami2py.run_model(tag='test', year=2012, day=211, test=True,
+        sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
                           fmtout=self.format)
         if self.format:
             fname = 'glonf.dat'
@@ -71,7 +71,8 @@ class TestBasicModelRun():
     def test_run_model_ExB_files(self):
         """Test to ensure that the ExB files are copied properly
         """
-        sami2py.run_model(year=2012, day=211, test=True, fmtout=self.format,
+        sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
+                          fmtout=self.format,
                           fejer=False, ExB_drifts=np.zeros((10, 2)))
         assert os.stat(self.model_path + 'exb.inp')
 

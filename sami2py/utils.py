@@ -84,13 +84,11 @@ def set_archive_dir(path=None, store=True):
         if True, store data directory for future runs
     """
     import os
-    import sys
     import sami2py
 
     if os.path.isdir(path):
         if store:
-            with open(os.path.join(sys.prefix,
-                                   '.sami2py', 'archive_path.txt'),
+            with open(os.path.join(sami2py.sami2py_dir, 'archive_path.txt'),
                       'w') as archive_file:
                 archive_file.write(path)
         sami2py.archive_dir = path

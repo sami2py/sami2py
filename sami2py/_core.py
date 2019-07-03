@@ -288,6 +288,7 @@ def _generate_format_info(fmtout):
         format_info = '.false.'
     return format_info
 
+
 def _generate_neutral_info(outn):
     """Generates the namelist information needed to tell the SAMI2 model to
     output the model results of neutral species and wind
@@ -297,6 +298,7 @@ def _generate_neutral_info(outn):
     else:
         neutral_info = '.false.'
     return neutral_info
+
 
 def _generate_namelist(info):
     """Generates namelist file for sami2

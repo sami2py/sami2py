@@ -4,34 +4,34 @@
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
 
-import sys
-from os import path, mkdir
+import os
 from setuptools import setup, find_packages
+
+HOME = os.path.expanduser('~')
 
 
 # Define a read function for using README for long_description
 def read(fname):
-    return open(path.join(path.dirname(__file__), fname)).read()
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
 # generate path for fortran model files
-here = path.abspath(path.dirname(__file__))
-fortran_path = path.join(here, 'sami2py', 'fortran')
-test_data_path = path.join(here, 'sami2py', 'tests', 'test_data')
-file_path = path.join(sys.prefix, '.sami2py')
+here = os.path.abspath(os.path.dirname(__file__))
+fortran_path = os.path.join(here, 'sami2py', 'fortran')
+test_data_path = os.path.join(here, 'sami2py', 'tests', 'test_data')
+file_path = os.path.join(HOME, '.sami2py')
 
-if not path.isfile(fortran_path + '/sami2py.x'):
+if not os.path.isfile(fortran_path + '/sami2py.x'):
     print('\n'.join(['\nYou will need to compile the fortran files.  Try',
                      '$  make -C sami2py/fortran compile\n']))
 
-if not path.isdir(file_path):
-    mkdir(file_path)
-    print(''.join(('Created .sami2py directory in ' + sys.prefix + ' to',
-                   'store settings.')))
+if not os.path.isdir(file_path):
+    os.mkdir(file_path)
+    print('Created {} directory to store settings.'.format(file_path))
 
-with open(path.join(file_path, 'fortran_path.txt'), 'w+') as f:
+with open(os.path.join(file_path, 'fortran_path.txt'), 'w+') as f:
     f.write(fortran_path)
-with open(path.join(file_path, 'test_data_path.txt'), 'w+') as f:
+with open(os.path.join(file_path, 'test_data_path.txt'), 'w+') as f:
     f.write(test_data_path)
 
 # Define a test suite

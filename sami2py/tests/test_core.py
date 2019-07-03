@@ -87,7 +87,7 @@ class TestBasicModelRun():
            set with the wrong type
         """
         sami2py.run_model(tag='test', year='2012', day='211', test=True,
-                          fmtout=self.format))
+                          fmtout=self.format)
 
     def test_fortran_executable(self):
         """Short run of fortran executable to ensure the code compiles

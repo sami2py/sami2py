@@ -22,6 +22,7 @@ from os import path
 import numpy as np
 from .utils import generate_path, get_unformatted_data
 
+
 class Model(object):
     """Python object to handle SAMI2 model output data
     """
@@ -121,13 +122,13 @@ class Model(object):
 
         mod_keys = self.check_standard_model()
         if mod_keys:
-            out.append('\nNo modifications to empirical models')
-        else:
             out.append('\nMultipliers used')
             out.append('----------------')
             for mkey in mod_keys:
                 out.append(('{s}: {f}').format(s=mkey,
                                                f=self.MetaData[mkey]))
+        else:
+            out.append('\nNo modifications to empirical models')
 
         return '\n'.join(out)
 
@@ -156,7 +157,7 @@ class Model(object):
         ni = 7
 
         model_path = generate_path(self.tag, self.lon0, self.year, self.day,
-                             self.test)
+                                   self.test)
 
         # Get NameList
         namelist_file = open(model_path + 'sami2py-1.00.namelist')
@@ -185,7 +186,7 @@ class Model(object):
             ti = np.loadtxt(path.join(model_path, 'tif.dat'))
             te = np.loadtxt(path.join(model_path, 'tef.dat'))
 
-            #get neutral values
+            # get neutral values
             if self.outn:
                 denn = np.loadtxt(model_path+'dennf.dat')
                 u = np.loadtxt(model_path+'u4f.dat')
@@ -204,6 +205,8 @@ class Model(object):
                                        dim0=dim0, dim1=dim1, reshape=True)
             ti = get_unformatted_data(model_path, 'ti',
                                       dim0=dim0, dim1=dim1, reshape=True)
+            # Temperatures have only one species
+            dim0 = nz*nf + 2
             te = get_unformatted_data(model_path, 'te',
                                       dim0=dim0, dim1=dim1, reshape=True)
 

@@ -31,3 +31,4 @@ docs/.templates
 
 # dont ignore dat files in the testing folder
 !sami2py/tests/test_data/test/lon256/1999_256/*.dat
+!sami2py/tests/test_data/test/lon256/1999_257/*.dat

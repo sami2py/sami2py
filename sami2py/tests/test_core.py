@@ -18,7 +18,8 @@ class TestBasicModelRun():
         """
         self.format = True
         self.ref_file = 'ref_f_sami2py-1.00.namelist'
-        self.model_path = generate_path('test', 0, 2012, 211, True)
+        self.model_path = generate_path(tag='test', lon=0, year=2012, day=211,
+                                        test=True)
         if not os.path.exists(self.model_path):
             os.makedirs(self.model_path)
         self.filelist = ['glonf.dat', 'glatf.dat', 'zaltf.dat', 'denif.dat',
@@ -114,7 +115,8 @@ class TestBasicModelRunUnformatted(TestBasicModelRun):
         """
         self.format = False
         self.ref_file = 'ref_u_sami2py-1.00.namelist'
-        self.model_path = generate_path('test', 0, 2012, 211, True)
+        self.model_path = generate_path(tag='test', lon=0, year=2012, day=211,
+                                        test=True)
         if not os.path.exists(self.model_path):
             os.makedirs(self.model_path)
         self.filelist = ['glonu.dat', 'glatu.dat', 'zaltu.dat', 'deniu.dat',

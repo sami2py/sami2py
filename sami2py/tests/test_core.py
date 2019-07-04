@@ -61,7 +61,7 @@ class TestBasicModelRun():
         """Test to ensure that the dat files are copied properly
         """
         sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
-                          fmtout=self.format)
+                          fmtout=self.format, outn=True)
         if self.format:
             fname = 'glonf.dat'
         else:

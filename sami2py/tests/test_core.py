@@ -42,7 +42,7 @@ class TestBasicModelRun():
     def test_run_model_namelist(self):
         """The test to ensure that the namelist file is generated properly
         """
-        sami2py.run_model(tag='test', year=2012, day=211, test=True,
+        sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
                           fmtout=self.format)
         namelist_file = self.model_path + 'sami2py-1.00.namelist'
         ref_namelist = os.path.join(test_data_dir, self.ref_file)

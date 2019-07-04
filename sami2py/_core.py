@@ -32,7 +32,7 @@ Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 import os
 import subprocess
 import numpy as np
-from sami2py import fortran_dir
+from sami2py import fortran_dir, __version__
 from .utils import generate_path
 
 
@@ -380,6 +380,7 @@ def _archive_model(path, clean, fejer, fmtout, outn):
         If False, then 'exb.inp' is also archived
     """
     import shutil
+    import subprocess
 
     if fmtout:
         filelist = ['glonf.dat', 'glatf.dat', 'zaltf.dat',
@@ -399,12 +400,17 @@ def _archive_model(path, clean, fejer, fmtout, outn):
         except FileNotFoundError:
             os.makedirs(path)
 
+        hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'])
+        with open(os.path.join(path, 'version.txt'), 'w+') as f:
+            f.write('sami2py v' + __version__ + '\n')
+            f.write('short hash ' + hash.decode("utf-8"))
+
         for list_file in filelist:
-            shutil.copyfile(list_file, path + list_file)
+            shutil.copyfile(list_file, os.path.join(path, list_file))
         if clean:
             for list_file in filelist[:-1]:
                 os.remove(list_file)
         if not fejer:
-            shutil.copyfile('exb.inp', path + 'exb.inp')
+            shutil.copyfile('exb.inp', os.path.join(path, 'exb.inp'))
     else:
         print('No files to move!')

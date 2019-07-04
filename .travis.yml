@@ -17,6 +17,7 @@ before_install:
   - pip install coveralls
   - pip install future
   - pip install matplotlib
+  - pip install pandas<0.25
 install:
   - source activate test-environment
   - python setup.py install

@@ -252,8 +252,8 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
             'wind_scale': wind_scale, 'hwm_model': hwm_model}
 
     info['fejer'] = _generate_drift_info(fejer, ExB_drifts)
-    info['fmtout'] = _generate_format_info(fmtout)
-    info['outn'] = _generate_neutral_info(outn)
+    info['fmtout'] = _generate_fortran_bool(fmtout)
+    info['outn'] = _generate_fortran_bool(outn)
     _generate_namelist(info)
     archive_path = generate_path(tag, lon, year, day, test)
     if not test:
@@ -268,36 +268,22 @@ def _generate_drift_info(fejer, ExB_drifts=None):
     """Generates the information regarding the ExB drifts used by the model.
     This information is later stored in the namelist file for SAMI2
     """
-    if fejer:
-        drift_info = '.true.'
-    else:
+    drift_info = _generate_fortran_bool(fejer)
+    if not fejer:
         if ExB_drifts.shape != (10, 2):
             raise Exception('Invalid ExB drift shape!  Must be 10x2 ndarray.')
-        drift_info = '.false.'
         np.savetxt('exb.inp', ExB_drifts)
     return drift_info
 
 
-def _generate_format_info(fmtout):
-    """Generates the namelist information needed to tell the SAMI2 model to
-    output the model results in formatted or unformatted data files
+def _generate_fortran_bool(pybool):
+    """Generates a fortran bool as a string for the namelist generator
     """
-    if fmtout:
-        format_info = '.true.'
+    if pybool:
+        fbool = '.true.'
     else:
-        format_info = '.false.'
-    return format_info
-
-
-def _generate_neutral_info(outn):
-    """Generates the namelist information needed to tell the SAMI2 model to
-    output the model results of neutral species and wind
-    """
-    if outn:
-        neutral_info = '.true.'
-    else:
-        neutral_info = '.false.'
-    return neutral_info
+        fbool = '.false.'
+    return fbool
 
 
 def _generate_namelist(info):

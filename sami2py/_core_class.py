@@ -355,7 +355,8 @@ class Model(object):
         """
         import matplotlib.pyplot as plt
 
-        plt.pcolor(self.glat, self.zalt, self.deni[:, :, species, time_step])
+        plt.pcolor(self.data['glat'], self.data['zalt'],
+                   self.data['deni'][:, :, species, time_step])
         plt.xlabel('Geo Lat (deg)')
         plt.ylabel('Altitude (km)')
         plt.show()

@@ -23,7 +23,8 @@ class TestBasicModelRun():
         if not os.path.exists(self.model_path):
             os.makedirs(self.model_path)
         self.filelist = ['glonf.dat', 'glatf.dat', 'zaltf.dat', 'denif.dat',
-                         'vsif.dat', 'tif.dat', 'tef.dat', 'time.dat']
+                         'dennf.dat', 'u3f.dat', 'vsif.dat', 'tif.dat',
+                         'tef.dat', 'time.dat']
         for filename in self.filelist:
             open(os.path.join(fortran_dir, filename), 'w').close()
 
@@ -123,7 +124,8 @@ class TestBasicModelRunUnformatted(TestBasicModelRun):
         if not os.path.exists(self.model_path):
             os.makedirs(self.model_path)
         self.filelist = ['glonu.dat', 'glatu.dat', 'zaltu.dat', 'deniu.dat',
-                         'vsiu.dat', 'tiu.dat', 'teu.dat', 'time.dat']
+                         'dennu.dat', 'u4u.dat', 'vsiu.dat', 'tiu.dat',
+                         'teu.dat', 'time.dat']
         for filename in self.filelist:
             open(os.path.join(fortran_dir, filename), 'w').close()
 

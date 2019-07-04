@@ -393,6 +393,9 @@ def _archive_model(path, clean, fejer, fmtout, outn):
         filelist = ['glonu.dat', 'glatu.dat', 'zaltu.dat',
                     'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
                     'time.dat', 'sami2py-1.00.namelist']
+        if outn:
+            filelist.append('dennu.dat')
+            filelist.append('u4u.dat')
 
     if os.path.isfile(filelist[0]):
         try:

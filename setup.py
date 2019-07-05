@@ -7,15 +7,10 @@
 from __future__ import print_function
 import os
 import sys
-from setuptools import setup, find_packages
+from setuptools import setup
 import subprocess
 
 HOME = os.path.expanduser('~')
-
-
-# Define a read function for using README for long_description
-def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 # generate path for fortran model files
 here = os.path.abspath(os.path.dirname(__file__))

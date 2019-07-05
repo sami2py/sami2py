@@ -24,7 +24,6 @@ Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 """
 
 import os
-import sys
 
 
 def generate_path(tag, lon, year, day, test=False):
@@ -86,7 +85,6 @@ def set_archive_dir(path=None, store=True):
     store : bool
         if True, store data directory for future runs
     """
-    import os
     import sami2py
 
     path = os.path.expanduser(path)

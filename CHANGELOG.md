@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - API changes
   - Store loaded data in xarray object
   - Use consistent keyword order in run_model and Model
+  - xarray (<0.12) and pandas (<0.25) are now required packages.  Upper limits enforced for Travis CI testing.  Will remove in future.
 - Non-breaking changes
   - Output version / short hash for each model run
   - Move package metadata to setup.cfg

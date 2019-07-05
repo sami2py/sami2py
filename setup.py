@@ -5,8 +5,7 @@
 # -----------------------------------------------------------------------------
 
 from __future__ import print_function
-import sys
-from os import path, mkdir
+import os
 from setuptools import setup, find_packages
 import subprocess
 

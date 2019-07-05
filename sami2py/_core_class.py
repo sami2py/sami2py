@@ -26,7 +26,7 @@ from .utils import generate_path, get_unformatted_data
 class Model(object):
     """Python object to handle SAMI2 model output data
     """
-    def __init__(self, tag, year, day, lon, outn=False, test=False):
+    def __init__(self, tag, lon, year, day, outn=False, test=False):
         """ Loads a previously run sami2 model and sorts into
             appropriate array shapes
 

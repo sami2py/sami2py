@@ -1,3 +1,5 @@
+.mypy_cache/
+
 # Fortran modules and executables
 *.o
 *.x

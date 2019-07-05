@@ -59,7 +59,7 @@ sami2py will remind you to set the top level directory that will hold the model 
 sami2py will raise an error if this is not done before trying to run the model.
 
 ```
-  sami2py.run_model(year=2012, day=210, lon=0, tag='test')
+  sami2py.run_model(tag='run_name', lon=0, year=2012, day=210)
 ```
 
 Note that the sami2 model runs for 24 hours to clear transients, then begins to output data.
@@ -67,13 +67,13 @@ Note that the sami2 model runs for 24 hours to clear transients, then begins to 
 Now load the resultant data:
 
 ```
-  ModelRun = sami2py.Model(tag='test', lon=0, year=2012, day=210)
+  ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
 ```
 
 Plotting features coming soon...
 
 # How to Cite
-When referring to this software package, please cite the original paper by Huba et al [2000] https://doi.org/10.1029/2000JA000035 as well as the package by Klenzing and Smith [2019] https://doi.org/10.5281/zenodo.2875800.
+When referring to this software package, please cite the original paper by Huba et al [2000] https://doi.org/10.1029/2000JA000035 as well as the package by Klenzing and Smith [2019] https://doi.org/10.5281/zenodo.2875799. Note that this doi will always point to the latest version of the code.
 
 Additionally, please include the following text in the acknowledgements: "This
 work uses the SAMI2 ionosphere model written and developed by the Naval Research Laboratory."

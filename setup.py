@@ -6,6 +6,7 @@
 
 from __future__ import print_function
 import os
+import sys
 from setuptools import setup, find_packages
 import subprocess
 
@@ -25,7 +26,7 @@ file_path = os.path.join(HOME, '.sami2py')
 # %% build
 
 
-if not path.isfile(path.join(fortran_path, 'sami2py.x')):
+if not os.path.isfile(os.path.join(fortran_path, 'sami2py.x')):
     try:  # py27 does not have shutil.which()
         cmd = ['gfortran', '-fno-range-check', '-fno-automatic', '-ffixed-line-length-none',
                '-o', 'sami2py.x']
@@ -35,7 +36,7 @@ if not path.isfile(path.join(fortran_path, 'sami2py.x')):
     except OSError:
         pass
 
-if not path.isfile(path.join(fortran_path, 'sami2py.x')):
+if not os.path.isfile(os.path.join(fortran_path, 'sami2py.x')):
     print('\nYou will need to compile the fortran files.  Try\n'
           '$  make -C sami2py/fortran compile\n', file=sys.stderr)
 

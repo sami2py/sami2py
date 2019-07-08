@@ -5,21 +5,23 @@
 # -----------------------------------------------------------------------------
 
 from __future__ import print_function
+import os
 import sys
-from os import path, mkdir
 from setuptools import setup
 import subprocess
 
+HOME = os.path.expanduser('~')
+
 # generate path for fortran model files
-here = path.abspath(path.dirname(__file__))
-fortran_path = path.join(here, 'sami2py', 'fortran')
-test_data_path = path.join(here, 'sami2py', 'tests', 'test_data')
-file_path = path.join(sys.prefix, '.sami2py')
+here = os.path.abspath(os.path.dirname(__file__))
+fortran_path = os.path.join(here, 'sami2py', 'fortran')
+test_data_path = os.path.join(here, 'sami2py', 'tests', 'test_data')
+file_path = os.path.join(HOME, '.sami2py')
 
 # %% build
 
 
-if not path.isfile(path.join(fortran_path, 'sami2py.x')):
+if not os.path.isfile(os.path.join(fortran_path, 'sami2py.x')):
     try:  # py27 does not have shutil.which()
         cmd = ['gfortran', '-fno-range-check', '-fno-automatic',
                '-ffixed-line-length-none', '-o', 'sami2py.x']
@@ -29,18 +31,17 @@ if not path.isfile(path.join(fortran_path, 'sami2py.x')):
     except OSError:
         pass
 
-if not path.isfile(path.join(fortran_path, 'sami2py.x')):
+if not os.path.isfile(os.path.join(fortran_path, 'sami2py.x')):
     print('\nYou will need to compile the fortran files.  Try\n'
           '$  make -C sami2py/fortran compile\n', file=sys.stderr)
 
-if not path.isdir(file_path):
-    mkdir(file_path)
-    print(''.join(('Created .sami2py directory in ' + sys.prefix + ' to',
-                   'store settings.')))
+if not os.path.isdir(file_path):
+    os.mkdir(file_path)
+    print('Created {} directory to store settings.'.format(file_path))
 
-with open(path.join(file_path, 'fortran_path.txt'), 'w+') as f:
+with open(os.path.join(file_path, 'fortran_path.txt'), 'w+') as f:
     f.write(fortran_path)
-with open(path.join(file_path, 'test_data_path.txt'), 'w+') as f:
+with open(os.path.join(file_path, 'test_data_path.txt'), 'w+') as f:
     f.write(test_data_path)
 
 setup()

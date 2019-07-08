@@ -15,22 +15,21 @@ SAMI2 solves for the chemical and dynamical evolution of seven ion species
 in this environment (H+, He+, N+, O+, N2+, NO+, and O2+).
 
 """
+from __future__ import print_function
 import logging
-import sys
 import os
 
 __version__ = str('0.1.2')
 
 # get home directory
-env_dir = sys.prefix
+env_dir = os.path.expanduser('~')
 # set sami2py directory path in home directory
 sami2py_dir = os.path.join(env_dir, '.sami2py')
 # make sure a sami2py directory for model output exists
 if not os.path.isdir(sami2py_dir):
     # create directory
     os.mkdir(sami2py_dir)
-    print(''.join(('Created .sami2py directory in ' + env_dir + ' to',
-                   'store settings.')))
+    print('Created {} directory to store settings.'.format(sami2py_dir))
 
 
 archive_path = os.path.join(sami2py_dir, 'archive_path.txt')
@@ -43,8 +42,8 @@ else:
     with open(archive_path, 'w+') as f:
         f.write('')
     archive_dir = ''
-    print(''.join(('Run sami2py.utils.set_archive_dir to set the path to',
-                   ' top-level directory for model outputs.')))
+    print('Run sami2py.utils.set_archive_dir to set the path to'
+          ' top-level directory for model outputs.')
 
 # load fortran directory
 with open(os.path.join(sami2py_dir, 'fortran_path.txt'), 'r') as f:
@@ -56,8 +55,8 @@ with open(os.path.join(sami2py_dir, 'test_data_path.txt'), 'r') as f:
 
 # import main functions
 try:
-    from sami2py import _core, _core_class, utils
-    from sami2py._core import run_model
-    from sami2py._core_class import Model
+    from sami2py import _core, _core_class, utils  # noqa: F401
+    from sami2py._core import run_model  # noqa: F401
+    from sami2py._core_class import Model  # noqa: F401
 except ImportError as errstr:
     logging.exception('problem importing sami2py: ' + str(errstr))

@@ -109,7 +109,7 @@ class testGetUnformattedData():
         set to True
         """
         dim0 = 98*101*7 + 2  # nf*nz*ni + 2
-        dim1 = 3             # nt
+        dim1 = 2             # nt
         ret_data = sami2py.utils.get_unformatted_data(self.model_pathU, 'deni',
                                                       dim0=dim0, dim1=dim1,
                                                       reshape=True)

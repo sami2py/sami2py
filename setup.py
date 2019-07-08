@@ -21,10 +21,10 @@ file_path = path.join(sys.prefix, '.sami2py')
 
 if not path.isfile(path.join(fortran_path, 'sami2py.x')):
     try:  # py27 does not have shutil.which()
-        cmd = ['gfortran', '-fno-range-check', '-fno-automatic', '-ffixed-line-length-none',
-               '-o', 'sami2py.x']
-        src = ['nrlmsise00_modified.f', 'grid-1.00.f', 'sami2py-1.00.f', 'hwm93.f', 'hwm07e_modified.f90',
-               'apexcord.f90', 'hwm14.f90']
+        cmd = ['gfortran', '-fno-range-check', '-fno-automatic',
+               '-ffixed-line-length-none', '-o', 'sami2py.x']
+        src = ['nrlmsise00_modified.f', 'grid-1.00.f', 'sami2py-1.00.f',
+               'hwm93.f', 'hwm07e_modified.f90', 'apexcord.f90', 'hwm14.f90']
         subprocess.call(cmd + src, cwd=fortran_path)
     except OSError:
         pass
@@ -43,16 +43,4 @@ with open(path.join(file_path, 'fortran_path.txt'), 'w+') as f:
 with open(path.join(file_path, 'test_data_path.txt'), 'w+') as f:
     f.write(test_data_path)
 
-# Define a test suite
-
-# def sami2_test_suite():
-#     import unittest
-#
-#     test_loader = unittest.TestLoader()
-#     test_path = path.join(path.dirname(__file__), 'sami2py/tests')
-#     test_suite = test_loader.discover(test_path, pattern='test_*.py')
-#     return test_suite
-
-# Run setup
-
-setup(test_suite='setup.sami2py_test_suite')
+setup()

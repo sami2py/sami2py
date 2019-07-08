@@ -20,7 +20,6 @@ before_install:
 install:
   - source activate test-environment
   - python setup.py install
-  - make -C sami2py/fortran compile
 script:
   - nosetests -vs --with-coverage --cover-package=sami2py
 

@@ -23,7 +23,8 @@ class TestBasicModelRun():
         if not os.path.exists(self.model_path):
             os.makedirs(self.model_path)
         self.filelist = ['glonf.dat', 'glatf.dat', 'zaltf.dat', 'denif.dat',
-                         'vsif.dat', 'tif.dat', 'tef.dat', 'time.dat']
+                         'dennf.dat', 'u4f.dat', 'vsif.dat', 'tif.dat',
+                         'tef.dat', 'time.dat']
         for filename in self.filelist:
             open(os.path.join(fortran_dir, filename), 'w').close()
 
@@ -42,7 +43,7 @@ class TestBasicModelRun():
     def test_run_model_namelist(self):
         """The test to ensure that the namelist file is generated properly
         """
-        sami2py.run_model(tag='test', year=2012, day=211, test=True,
+        sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
                           fmtout=self.format)
         namelist_file = self.model_path + 'sami2py-1.00.namelist'
         ref_namelist = os.path.join(test_data_dir, self.ref_file)
@@ -61,7 +62,7 @@ class TestBasicModelRun():
         """Test to ensure that the dat files are copied properly
         """
         sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
-                          fmtout=self.format)
+                          fmtout=self.format, outn=True)
         if self.format:
             fname = 'glonf.dat'
         else:
@@ -123,7 +124,8 @@ class TestBasicModelRunUnformatted(TestBasicModelRun):
         if not os.path.exists(self.model_path):
             os.makedirs(self.model_path)
         self.filelist = ['glonu.dat', 'glatu.dat', 'zaltu.dat', 'deniu.dat',
-                         'vsiu.dat', 'tiu.dat', 'teu.dat', 'time.dat']
+                         'dennu.dat', 'u4u.dat', 'vsiu.dat', 'tiu.dat',
+                         'teu.dat', 'time.dat']
         for filename in self.filelist:
             open(os.path.join(fortran_dir, filename), 'w').close()
 

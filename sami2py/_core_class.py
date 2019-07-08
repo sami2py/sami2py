@@ -341,7 +341,7 @@ class Model(object):
             time index for SAMI2 model results
         species : (int)
             ion species index :
-            1: H+, 2: O+, 3: NO+, 4: O2+, 5: He+, 6: N2+, 7: N+
+            0: H+, 1: O+, 2: NO+, 3: O2+, 4: He+, 5: N2+, 6: N+
         """
         import matplotlib.pyplot as plt
 

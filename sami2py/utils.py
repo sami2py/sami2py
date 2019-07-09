@@ -97,6 +97,7 @@ def set_archive_dir(path=None, store=True):
     else:
         raise ValueError('Path does not lead to a valid directory.')
 
+
 def get_unformatted_data(dat_dir, var_name, reshape=False, dim0=0, dim1=0):
     """Routine to interpret unformatted binary files created by the SAMI2 model
 

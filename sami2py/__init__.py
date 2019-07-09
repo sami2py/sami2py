@@ -36,7 +36,7 @@ import logging
 import sys
 import os
 
-__version__ = str('0.1.1')
+__version__ = str('0.1.2')
 
 # get home directory
 env_dir = sys.prefix

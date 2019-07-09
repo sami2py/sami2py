@@ -4,50 +4,32 @@
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
 """
-sami2py
------------
+sami2py - sami2py is another model of the ionosphere python style
+=================================================================
 
-Functions
----------------------------------------------------------------------------
-run_model(year, day, lat=0, lon=0, alt=300,
-              f107=120, f107a=120, ap=0,
-              rmin=100, rmax=2000, gams=3, gamp=3, altmin=85.,
-              dthr=0.25, hrinit=0., hrpr=24., hrmax=48.,
-              dt0=30., maxstep=100000000, denmin=1.e-6,
-              nion1=1, nion2=7, mmass=48, h_scale=1, o_scale=1,
-              no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
-              Tinf_scale=1, Tn_scale=1., euv_scale=1,
-              wind_scale=1, hwm_model=14,
-              fejer=True, ExB_drifts=np.zeros((10,2)), ve01=0., exb_scale=1,
-              alt_crit=150., cqe=7.e-14,
-              tag='test', clean=False, test=False)
+Sami2py is a python module that runs the SAMI2 model, as well as archives,
+loads and plots the resulting modeled values. SAMI2 is a model developed
+by the Naval Research Laboratory to simulate the motions of plasma in a
+2D ionospheric environment along a dipole magnetic field [Huba et al, 2000].
+SAMI2 solves for the chemical and dynamical evolution of seven ion species
+in this environment (H+, He+, N+, O+, N2+, NO+, and O2+).
 
-    Initializes a run of the SAMI2 model and archives the data.
----------------------------------------------------------------------------
-
-Classes
----------------------------------------------------------------------------
-model
-    Loads, reshapes, and holds SAMI2 output for a given model run
-    specified by the user.
----------------------------------------------------------------------------
 """
+from __future__ import print_function
 import logging
-import sys
 import os
 
 __version__ = str('0.1.2')
 
 # get home directory
-env_dir = sys.prefix
+env_dir = os.path.expanduser('~')
 # set sami2py directory path in home directory
 sami2py_dir = os.path.join(env_dir, '.sami2py')
 # make sure a sami2py directory for model output exists
 if not os.path.isdir(sami2py_dir):
     # create directory
     os.mkdir(sami2py_dir)
-    print(''.join(('Created .sami2py directory in ' + env_dir + ' to',
-                   'store settings.')))
+    print('Created {} directory to store settings.'.format(sami2py_dir))
 
 
 archive_path = os.path.join(sami2py_dir, 'archive_path.txt')
@@ -60,8 +42,8 @@ else:
     with open(archive_path, 'w+') as f:
         f.write('')
     archive_dir = ''
-    print(''.join(('Run sami2py.utils.set_archive_dir to set the path to',
-                   ' top-level directory for model outputs.')))
+    print('Run sami2py.utils.set_archive_dir to set the path to'
+          ' top-level directory for model outputs.')
 
 # load fortran directory
 with open(os.path.join(sami2py_dir, 'fortran_path.txt'), 'r') as f:
@@ -73,8 +55,8 @@ with open(os.path.join(sami2py_dir, 'test_data_path.txt'), 'r') as f:
 
 # import main functions
 try:
-    from sami2py import _core, _core_class, utils
-    from sami2py._core import run_model
-    from sami2py._core_class import Model
+    from sami2py import _core, _core_class, utils  # noqa: F401
+    from sami2py._core import run_model  # noqa: F401
+    from sami2py._core_class import Model  # noqa: F401
 except ImportError as errstr:
     logging.exception('problem importing sami2py: ' + str(errstr))

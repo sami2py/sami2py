@@ -20,13 +20,14 @@ Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 """
 from os import path
 import numpy as np
+import xarray as xr
 from .utils import generate_path, get_unformatted_data
 
 
 class Model(object):
     """Python object to handle SAMI2 model output data
     """
-    def __init__(self, tag, year, day, lon, outn=False, test=False):
+    def __init__(self, tag, lon, year, day, outn=False, test=False):
         """ Loads a previously run sami2 model and sorts into
             appropriate array shapes
 
@@ -210,18 +211,27 @@ class Model(object):
             te = get_unformatted_data(model_path, 'te',
                                       dim0=dim0, dim1=dim1, reshape=True)
 
-        self.glat = np.reshape(glat, (nz, nf), order="F")
-        self.glon = np.reshape(glon, (nz, nf), order="F")
-        self.zalt = np.reshape(zalt, (nz, nf), order="F")
-        self.deni = np.reshape(deni, (nz, nf, ni, nt), order="F")
-        self.vsi = np.reshape(vsi, (nz, nf, ni, nt), order="F")
-        self.ti = np.reshape(ti, (nz, nf, ni, nt), order="F")
-        self.te = np.reshape(te, (nz, nf, nt), order="F")
+        glat = np.reshape(glat, (nz, nf), order="F")
+        glon = np.reshape(glon, (nz, nf), order="F")
+        zalt = np.reshape(zalt, (nz, nf), order="F")
+        deni = np.reshape(deni, (nz, nf, ni, nt), order="F")
+        vsi = np.reshape(vsi, (nz, nf, ni, nt), order="F")
+        ti = np.reshape(ti, (nz, nf, ni, nt), order="F")
+        te = np.reshape(te, (nz, nf, nt), order="F")
+        self.data = xr.Dataset({'deni': (['z', 'f', 'ion', 'ut'], deni),
+                                'vsi': (['z', 'f', 'ion', 'ut'], vsi),
+                                'ti': (['z', 'f', 'ion', 'ut'], ti),
+                                'te': (['z', 'f', 'ut'], te),
+                                'slt': (['ut'], self.slt)},
+                               coords={'glat': (['z', 'f'], glat),
+                                       'glon': (['z', 'f'], glon),
+                                       'zalt': (['z', 'f'], zalt),
+                                       'ut': self.ut})
         if self.outn:
-            self.denn = np.reshape(denn, (nz, nf, 7, nt), order="F")
-            self.u = np.reshape(u, (nz, nf, nt), order="F")
-            del denn, u
-        del glat, glon, zalt, deni, vsi, ti, te
+            denn = np.reshape(denn, (nz, nf, 7, nt), order="F")
+            self.data['denn'] = denn
+            u = np.reshape(u, (nz, nf, nt), order="F")
+            self.data['u'] = u
 
     def _generate_metadata(self, namelist):
         """Reads the namelist and generates MetaData based on Parameters
@@ -341,11 +351,12 @@ class Model(object):
             time index for SAMI2 model results
         species : (int)
             ion species index :
-            1: H+, 2: O+, 3: NO+, 4: O2+, 5: He+, 6: N2+, 7: N+
+            0: H+, 1: O+, 2: NO+, 3: O2+, 4: He+, 5: N2+, 6: N+
         """
         import matplotlib.pyplot as plt
 
-        plt.pcolor(self.glat, self.zalt, self.deni[:, :, species, time_step])
+        plt.pcolor(self.data['glat'], self.data['zalt'],
+                   self.data['deni'][:, :, species, time_step])
         plt.xlabel('Geo Lat (deg)')
         plt.ylabel('Altitude (km)')
         plt.show()

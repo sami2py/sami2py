@@ -18,11 +18,13 @@ class TestBasicModelRun():
         """
         self.format = True
         self.ref_file = 'ref_f_sami2py-1.00.namelist'
-        self.model_path = generate_path('test', 0, 2012, 211, True)
+        self.model_path = generate_path(tag='test', lon=0, year=2012, day=211,
+                                        test=True)
         if not os.path.exists(self.model_path):
             os.makedirs(self.model_path)
         self.filelist = ['glonf.dat', 'glatf.dat', 'zaltf.dat', 'denif.dat',
-                         'vsif.dat', 'tif.dat', 'tef.dat', 'time.dat']
+                         'dennf.dat', 'u4f.dat', 'vsif.dat', 'tif.dat',
+                         'tef.dat', 'time.dat']
         for filename in self.filelist:
             open(os.path.join(fortran_dir, filename), 'w').close()
 
@@ -41,7 +43,8 @@ class TestBasicModelRun():
     def test_run_model_namelist(self):
         """The test to ensure that the namelist file is generated properly
         """
-        sami2py.run_model(year=2012, day=211, test=True, fmtout=self.format)
+        sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
+                          fmtout=self.format)
         namelist_file = self.model_path + 'sami2py-1.00.namelist'
         ref_namelist = os.path.join(test_data_dir, self.ref_file)
         assert filecmp.cmp(namelist_file, ref_namelist)
@@ -49,8 +52,8 @@ class TestBasicModelRun():
     def test_run_model_namelist_w_invalid_hwm(self):
         """The test to ensure that the invalid hwm reverts to 14
         """
-        sami2py.run_model(year=2012, day=211, test=True, fmtout=self.format,
-                          hwm_model=15)
+        sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
+                          fmtout=self.format, hwm_model=15)
         namelist_file = self.model_path + 'sami2py-1.00.namelist'
         ref_namelist = os.path.join(test_data_dir, self.ref_file)
         assert filecmp.cmp(namelist_file, ref_namelist)
@@ -58,7 +61,8 @@ class TestBasicModelRun():
     def test_run_model_dat_files(self):
         """Test to ensure that the dat files are copied properly
         """
-        sami2py.run_model(year=2012, day=211, test=True, fmtout=self.format)
+        sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
+                          fmtout=self.format, outn=True)
         if self.format:
             fname = 'glonf.dat'
         else:
@@ -68,7 +72,8 @@ class TestBasicModelRun():
     def test_run_model_ExB_files(self):
         """Test to ensure that the ExB files are copied properly
         """
-        sami2py.run_model(year=2012, day=211, test=True, fmtout=self.format,
+        sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
+                          fmtout=self.format,
                           fejer=False, ExB_drifts=np.zeros((10, 2)))
         assert os.stat(self.model_path + 'exb.inp')
 
@@ -86,7 +91,7 @@ class TestBasicModelRun():
            create the file name. Will happen for any variable in the namelist
            set with the wrong type
         """
-        sami2py.run_model(year='2012', day='211', test=True,
+        sami2py.run_model(tag='test', year='2012', day='211', test=True,
                           fmtout=self.format)
 
     def test_fortran_executable(self):
@@ -95,7 +100,7 @@ class TestBasicModelRun():
         """
         tmp_archive_dir = sami2py.archive_dir
         sami2py.utils.set_archive_dir(path=test_data_dir)
-        sami2py.run_model(year=2012, day=211, fmtout=self.format,
+        sami2py.run_model(tag='test', year=2012, day=211, fmtout=self.format,
                           dthr=0.05, hrinit=0.0, hrpr=0.0, hrmax=.11)
         if os.path.isdir(tmp_archive_dir):
             sami2py.utils.set_archive_dir(path=tmp_archive_dir)
@@ -114,11 +119,13 @@ class TestBasicModelRunUnformatted(TestBasicModelRun):
         """
         self.format = False
         self.ref_file = 'ref_u_sami2py-1.00.namelist'
-        self.model_path = generate_path('test', 0, 2012, 211, True)
+        self.model_path = generate_path(tag='test', lon=0, year=2012, day=211,
+                                        test=True)
         if not os.path.exists(self.model_path):
             os.makedirs(self.model_path)
         self.filelist = ['glonu.dat', 'glatu.dat', 'zaltu.dat', 'deniu.dat',
-                         'vsiu.dat', 'tiu.dat', 'teu.dat', 'time.dat']
+                         'dennu.dat', 'u4u.dat', 'vsiu.dat', 'tiu.dat',
+                         'teu.dat', 'time.dat']
         for filename in self.filelist:
             open(os.path.join(fortran_dir, filename), 'w').close()
 

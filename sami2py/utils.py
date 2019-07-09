@@ -76,12 +76,12 @@ def generate_path(tag, lon, year, day, test=False):
 
 def set_archive_dir(path=None, store=True):
     # type: (str, bool) -> None
-    """Set the top level directory pysat uses to look for data and reload.
+    """Set the top level directory sami2py uses to look for data and reload.
 
     Parameters
     ----------
     path : string
-        valid path to directory pysat uses to look for data
+        valid path to directory sami2py uses to look for data
     store : bool
         if True, store data directory for future runs
     """

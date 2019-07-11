@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Move package metadata to setup.cfg
   - Auto-build fortran executables as part of setup.py
   - Added CHANGELOG.md
+  - Switched to pytest for unit testing
 
 ## [0.1.2] - 2019-07-02
 - Patch to fix loading of unformatted output files.

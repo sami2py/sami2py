@@ -15,13 +15,14 @@ addons:
 
 before_install:
   - pip install coveralls
+  - pip install pytest-cov
   - pip install future
   - pip install matplotlib
 install:
   - source activate test-environment
   - python setup.py install
 script:
-  - nosetests -vs --with-coverage --cover-package=sami2py
+  - pytest --cov=sami2py
 
 after_success:
   - coveralls

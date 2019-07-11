@@ -26,6 +26,10 @@ time.dat
 /*.egg-info
 /*.egg
 
+# Unit test / coverage reports
+.coverage
+.coverage.*
+
 # Sphinx rendered directories
 docs/.build
 docs/.static

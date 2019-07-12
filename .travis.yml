@@ -20,10 +20,9 @@ before_install:
   - pip install future
   - pip install matplotlib
 install:
-  - source activate test-environment
   - python setup.py install
 script:
-  - pytest --cov=sami2py/
+  - pytest -vs --cov=sami2py/
 
 after_success:
   - coveralls

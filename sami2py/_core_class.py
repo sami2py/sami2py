@@ -209,13 +209,14 @@ class Model(object):
             if self.outn:
                 deni = get_unformatted_data(model_path, 'denn',
                                             dim0=dim0, dim1=dim1, reshape=True)
-                vsi = get_unformatted_data(model_path, 'u4',
-                                           dim0=dim0, dim1=dim1, reshape=True)
 
-            # Electron Temperatures have only one species
+            # Electron Temperatures and neutral wind have only one species
             dim0 = nz*nf + 2
             te = get_unformatted_data(model_path, 'te',
                                       dim0=dim0, dim1=dim1, reshape=True)
+            if self.outn:
+                vsi = get_unformatted_data(model_path, 'u4',
+                                           dim0=dim0, dim1=dim1, reshape=True)
 
         glat = np.reshape(glat, (nz, nf), order="F")
         glon = np.reshape(glon, (nz, nf), order="F")

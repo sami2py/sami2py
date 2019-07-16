@@ -190,7 +190,7 @@ class Model(object):
             # get neutral values
             if self.outn:
                 denn = np.loadtxt(path.join(model_path, 'dennf.dat'))
-                u = np.loadtxt(path.join(model_path, 'u4f.dat'))
+                u4 = np.loadtxt(path.join(model_path, 'u4f.dat'))
         else:
             # Get Location
             glat = get_unformatted_data(model_path, 'glat')
@@ -207,7 +207,7 @@ class Model(object):
             ti = get_unformatted_data(model_path, 'ti',
                                       dim0=dim0, dim1=dim1, reshape=True)
             if self.outn:
-                deni = get_unformatted_data(model_path, 'denn',
+                denn = get_unformatted_data(model_path, 'denn',
                                             dim0=dim0, dim1=dim1, reshape=True)
 
             # Electron Temperatures and neutral wind have only one species
@@ -215,7 +215,7 @@ class Model(object):
             te = get_unformatted_data(model_path, 'te',
                                       dim0=dim0, dim1=dim1, reshape=True)
             if self.outn:
-                vsi = get_unformatted_data(model_path, 'u4',
+                u4 = get_unformatted_data(model_path, 'u4',
                                            dim0=dim0, dim1=dim1, reshape=True)
 
         glat = np.reshape(glat, (nz, nf), order="F")
@@ -237,8 +237,8 @@ class Model(object):
         if self.outn:
             denn = np.reshape(denn, (nz, nf, ni, nt), order="F")
             self.data['denn'] = (('z', 'f', 'ion', 'ut'), denn)
-            u = np.reshape(u, (nz, nf, nt), order="F")
-            self.data['u'] = (('z', 'f', 'ut'), u)
+            u4 = np.reshape(u4, (nz, nf, nt), order="F")
+            self.data['u4'] = (('z', 'f', 'ut'), u4)
 
     def _generate_metadata(self, namelist):
         """Reads the namelist and generates MetaData based on Parameters

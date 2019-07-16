@@ -19,10 +19,13 @@ before_install:
   - pip install coveralls
   - pip install future
   - pip install matplotlib
+
 install:
   - python setup.py install
+
 script:
-  - pytest -vs --cov=sami2py/
+  - pytest -vs
 
 after_success:
+  - coverage run
   - coveralls

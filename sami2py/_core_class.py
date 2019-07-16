@@ -189,8 +189,8 @@ class Model(object):
 
             # get neutral values
             if self.outn:
-                denn = np.loadtxt(model_path+'dennf.dat')
-                u = np.loadtxt(model_path+'u4f.dat')
+                denn = np.loadtxt(path.join(model_path, 'dennf.dat'))
+                u = np.loadtxt(path.join(model_path, 'u4f.dat'))
         else:
             # Get Location
             glat = get_unformatted_data(model_path, 'glat')
@@ -206,7 +206,13 @@ class Model(object):
                                        dim0=dim0, dim1=dim1, reshape=True)
             ti = get_unformatted_data(model_path, 'ti',
                                       dim0=dim0, dim1=dim1, reshape=True)
-            # Temperatures have only one species
+            if self.outn:
+                deni = get_unformatted_data(model_path, 'denn',
+                                            dim0=dim0, dim1=dim1, reshape=True)
+                vsi = get_unformatted_data(model_path, 'u4',
+                                           dim0=dim0, dim1=dim1, reshape=True)
+
+            # Electron Temperatures have only one species
             dim0 = nz*nf + 2
             te = get_unformatted_data(model_path, 'te',
                                       dim0=dim0, dim1=dim1, reshape=True)
@@ -228,7 +234,7 @@ class Model(object):
                                        'zalt': (['z', 'f'], zalt),
                                        'ut': self.ut})
         if self.outn:
-            denn = np.reshape(denn, (nz, nf, 7, nt), order="F")
+            denn = np.reshape(denn, (nz, nf, ni, nt), order="F")
             self.data['denn'] = denn
             u = np.reshape(u, (nz, nf, nt), order="F")
             self.data['u'] = u

@@ -4,7 +4,8 @@ import filecmp
 import numpy as np
 import os
 import shutil
-from nose.tools import raises
+import pytest
+
 import sami2py
 from sami2py import fortran_dir, test_data_dir
 from sami2py.utils import generate_path
@@ -77,22 +78,23 @@ class TestBasicModelRun():
                           fejer=False, ExB_drifts=np.zeros((10, 2)))
         assert os.stat(self.model_path + 'exb.inp')
 
-    @raises(Exception)
     def test_run_model_ExB_wrong_size(self):
         """Test to ensure that the ExB has proper shape
         """
-        sami2py.run_model(year=2012, day=211, test=True, fmtout=self.format,
-                          fejer=False, ExB_drifts=np.zeros((1, 2)))
+        with pytest.raises(Exception):
+            sami2py.run_model(year=2012, day=211, test=True,
+                              fmtout=self.format, fejer=False,
+                              ExB_drifts=np.zeros((1, 2)))
 
-    @raises(ValueError)
     def test_input_format(self):
         """Test for error output upon incorrect input format
            file.write should throw the error when using string formatting to
            create the file name. Will happen for any variable in the namelist
            set with the wrong type
         """
-        sami2py.run_model(tag='test', year='2012', day='211', test=True,
-                          fmtout=self.format)
+        with pytest.raises(ValueError):
+            sami2py.run_model(tag='test', year='2012', day='211', test=True,
+                              fmtout=self.format)
 
     def test_fortran_executable(self):
         """Short run of fortran executable to ensure the code compiles

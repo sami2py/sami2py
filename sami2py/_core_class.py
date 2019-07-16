@@ -357,9 +357,13 @@ class Model(object):
         """
         import matplotlib.pyplot as plt
 
+        fig = plt.gcf()
+
         plt.pcolor(self.data['glat'], self.data['zalt'],
                    self.data['deni'][:, :, species, time_step])
         plt.xlabel('Geo Lat (deg)')
         plt.ylabel('Altitude (km)')
         if not test:
             plt.show()
+
+        return fig

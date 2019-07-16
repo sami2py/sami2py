@@ -5,13 +5,6 @@ import sami2py
 import pytest
 
 
-def test_model_input_exception():
-    """File not found error should be produced if the file does not exist
-    """
-    with pytest.raises(IOError):
-        sami2py.Model(tag='none', lon=428, day=428, year=1969)
-
-
 class TestModelObject():
     """Test basic model object functionality
     """
@@ -36,6 +29,12 @@ class TestModelObject():
                 archive_file.write('')
                 sami2py.archive_dir = ''
 
+    def test_model_input_exception(self):
+        """File not found error should be produced if the file does not exist
+        """
+        with pytest.raises(IOError):
+            sami2py.Model(tag='none', lon=428, day=428, year=1969)
+
     def test_model_instantiation(self):
         """Test that model object is instantiated as a sami2py_model
         """
@@ -47,16 +46,21 @@ class TestModelObject():
         """Basic test that a reasonable plot has been created by testing the
            resulting axis limits
         """
-        import matplotlib.pyplot as plt
+        import matplotlib
+
         model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
                               day=self.day, test=True)
-        model.plot_lat_alt(test=True)
-        fig = plt.gcf()
+        fig = model.plot_lat_alt(test=True)
+        assert isinstance(fig, matplotlib.figure.Figure)
+
+        tol = 1.e-4
         xlims = fig.axes[0].get_xlim()
         ylims = fig.axes[0].get_ylim()
-        assert xlims == (-36.3329, 19.37387)
-        assert ylims == (84.98926, 1999.998)
-        plt.close()
+        assert abs(xlims[0] + 36.3329) < tol
+        assert abs(xlims[1] - 19.37387) < tol
+        assert abs(ylims[0] - 84.98926) < tol
+        assert abs(ylims[1] - 1999.998) < tol
+        matplotlib.pyplot.close()
 
     def test_check_standard_model(self):
         """Test that standard model outputs nothing if there are no changes to
@@ -66,10 +70,10 @@ class TestModelObject():
                               day=self.day, test=True)
         keys = model.check_standard_model()
 
-        if self.year == 256:
+        if self.day == 256:
             assert keys == list()
         else:
-            assert keys == ['EUV Multiplier']
+            assert 'EUV Multiplier' in keys
 
     def test_model_repr(self):
         """Test that __repr__ returns a string of information."""

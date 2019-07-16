@@ -342,7 +342,7 @@ class Model(object):
 
         return mod_keys
 
-    def plot_lat_alt(self, time_step=0, species=1, test=False):
+    def plot_lat_alt(self, time_step=0, species=1):
         """Plots input parameter as a function of latitude and altitude
 
         Parameters
@@ -363,7 +363,5 @@ class Model(object):
                    self.data['deni'][:, :, species, time_step])
         plt.xlabel('Geo Lat (deg)')
         plt.ylabel('Altitude (km)')
-        if not test:
-            plt.show()
 
         return fig

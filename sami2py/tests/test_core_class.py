@@ -50,7 +50,7 @@ class TestModelObject():
 
         model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
                               day=self.day, test=True)
-        fig = model.plot_lat_alt(test=True)
+        fig = model.plot_lat_alt()
         assert isinstance(fig, matplotlib.figure.Figure)
 
         tol = 1.e-4
@@ -60,7 +60,7 @@ class TestModelObject():
         assert abs(xlims[1] - 19.37387) < tol
         assert abs(ylims[0] - 84.98926) < tol
         assert abs(ylims[1] - 1999.998) < tol
-        matplotlib.pyplot.close()
+        matplotlib.pyplot.close(fig)
 
     def test_check_standard_model(self):
         """Test that standard model outputs nothing if there are no changes to

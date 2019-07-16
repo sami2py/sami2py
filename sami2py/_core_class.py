@@ -359,8 +359,6 @@ class Model(object):
         species : (int)
             ion species index :
             0: H+, 1: O+, 2: NO+, 3: O2+, 4: He+, 5: N2+, 6: N+
-        test : (bool)
-            Suppresses plt.show() for testing
         """
         import matplotlib.pyplot as plt
 

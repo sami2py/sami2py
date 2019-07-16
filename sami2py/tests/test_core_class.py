@@ -39,7 +39,7 @@ class TestModelObject():
         """Test that model object is instantiated as a sami2py_model
         """
         model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
-                              day=self.day, test=True)
+                              day=self.day, test=True, outn=True)
         assert isinstance(model, sami2py.Model)
 
     def test_model_plot(self):

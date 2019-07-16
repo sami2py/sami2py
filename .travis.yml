@@ -3,6 +3,7 @@ dist: xenial
 matrix:
   include:
     - python: 2.7
+      services: xvfb
     - python: 3.5
     - python: 3.6
     - python: 3.7
@@ -20,6 +21,14 @@ before_install:
 
 install:
   - python setup.py install
+
+before_script:
+  # set up display screen
+  - export DISPLAY=:99.0
+  - if [[ $TRAVIS_PYTHON_VERSION < "3.7" ]]; then
+      sh -e /etc/init.d/xvfb start;
+      sleep 3;
+    fi
 
 script:
   - pytest -v --cov=sami2py/

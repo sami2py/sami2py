@@ -5,6 +5,13 @@ import sami2py
 import pytest
 
 
+def test_model_input_exception(self):
+    """File not found error should be produced if the file does not exist
+    """
+    with pytest.raises(IOError):
+        sami2py.Model(tag='none', lon=428, day=428, year=1969)
+
+
 class TestModelObject():
     """Test basic model object functionality
     """
@@ -28,12 +35,6 @@ class TestModelObject():
             with open(archive_path, 'w') as archive_file:
                 archive_file.write('')
                 sami2py.archive_dir = ''
-
-    def test_model_input_exception(self):
-        """File not found error should be produced if the file does not exist
-        """
-        with pytest.raises(IOError):
-            sami2py.Model(tag='none', lon=428, day=428, year=1969)
 
     def test_model_instantiation(self):
         """Test that model object is instantiated as a sami2py_model

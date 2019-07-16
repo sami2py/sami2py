@@ -13,10 +13,8 @@ addons:
     - gfortran
 
 before_install:
-  - pip install pytest
   - pip install pytest-cov
   - pip install coveralls
-  - pip install coverage
   - pip install future
   - pip install matplotlib
 
@@ -27,5 +25,4 @@ script:
   - pytest -v --cov=sami2py/
 
 after_success:
-  - coverage run
   - coveralls

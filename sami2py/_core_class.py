@@ -236,9 +236,9 @@ class Model(object):
                                        'ut': self.ut})
         if self.outn:
             denn = np.reshape(denn, (nz, nf, ni, nt), order="F")
-            self.data['denn'] = denn
+            self.data['denn'] = (('z', 'f', 'ion', 'ut'), denn)
             u = np.reshape(u, (nz, nf, nt), order="F")
-            self.data['u'] = u
+            self.data['u'] = (('z', 'f', 'ut'), u)
 
     def _generate_metadata(self, namelist):
         """Reads the namelist and generates MetaData based on Parameters

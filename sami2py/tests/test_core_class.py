@@ -2,7 +2,7 @@
 """
 import os
 import sami2py
-from nose.tools import raises
+import pytest
 
 
 class TestModelObject():
@@ -14,6 +14,9 @@ class TestModelObject():
         """
         self.tmp_archive_dir = sami2py.archive_dir
         sami2py.utils.set_archive_dir(path=sami2py.test_data_dir)
+        self.lon = 256
+        self.year = 1999
+        self.day = 256
 
     def teardown(self):
         """Undo any changes made to the archive directory
@@ -26,24 +29,17 @@ class TestModelObject():
                 archive_file.write('')
                 sami2py.archive_dir = ''
 
-    @raises(IOError)
     def test_model_input_exception(self):
         """File not found error should be produced if the file does not exist
         """
-        sami2py.Model(tag='none', lon=428, day=428, year=1969)
+        with pytest.raises(IOError):
+            sami2py.Model(tag='none', lon=428, day=428, year=1969)
 
     def test_model_instantiation(self):
         """Test that model object is instantiated as a sami2py_model
         """
-        model = sami2py.Model(tag='test', lon=256, year=1999, day=256,
-                              test=True)
-        assert isinstance(model, sami2py.Model)
-
-    def test_model_instantiation_with_unformatted_files_and_mods(self):
-        """Test that model object is instantiated as a sami2py_model
-        """
-        model = sami2py.Model(tag='test', lon=256, year=1999, day=257,
-                              test=True)
+        model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
+                              day=self.day, test=True)
         assert isinstance(model, sami2py.Model)
 
     def test_model_plot(self):
@@ -51,8 +47,8 @@ class TestModelObject():
            resulting axis limits
         """
         import matplotlib.pyplot as plt
-        model = sami2py.Model(tag='test', lon=256, year=1999, day=256,
-                              test=True)
+        model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
+                              day=self.day, test=True)
         model.plot_lat_alt(test=True)
         fig = plt.gcf()
         xlims = fig.axes[0].get_xlim()
@@ -65,14 +61,39 @@ class TestModelObject():
         """Test that standard model outputs nothing if there are no changes to
            the standard model
         """
-        model = sami2py.Model(tag='test', lon=256, year=1999, day=256,
-                              test=True)
+        model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
+                              day=self.day, test=True)
         keys = model.check_standard_model()
         assert keys == list()
 
     def test_model_repr(self):
         """Test that __repr__ returns a string of information."""
-        model = sami2py.Model(tag='test', lon=256, year=1999, day=256,
-                              test=True)
+        model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
+                              day=self.day, test=True)
         repr_str = model.__repr__()
         assert type(repr_str) is str
+
+
+class TestModelObjectUnformatted(TestModelObject):
+    """Test basic model object functionality
+    """
+    def setup(self):
+        """Set up .dat files in properly named director
+           for model object to load model
+        """
+        self.tmp_archive_dir = sami2py.archive_dir
+        sami2py.utils.set_archive_dir(path=sami2py.test_data_dir)
+        self.lon = 256
+        self.year = 1999
+        self.day = 257
+
+    def teardown(self):
+        """Undo any changes made to the archive directory
+        """
+        if os.path.isdir(self.tmp_archive_dir):
+            sami2py.utils.set_archive_dir(path=self.tmp_archive_dir)
+        else:
+            archive_path = os.path.join(sami2py.sami2py_dir, 'archive_path.txt')
+            with open(archive_path, 'w') as archive_file:
+                archive_file.write('')
+                sami2py.archive_dir = ''

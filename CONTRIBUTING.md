@@ -63,7 +63,7 @@ To set up `sami2py` for local development:
 
 ::
 
-    pytest -vs sami2py
+    pytest -vs
 
 5. Update/add documentation (in ``docs``), if relevant
 

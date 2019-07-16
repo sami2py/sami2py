@@ -50,12 +50,10 @@ class TestModelObject():
         """Basic test that a reasonable plot has been created by testing the
            resulting axis limits
         """
-        import matplotlib
-        matplotlib.use('Agg')
         import matplotlib.pyplot as plt
         model = sami2py.Model(tag='test', lon=256, year=1999, day=256,
                               test=True)
-        model.plot_lat_alt()
+        model.plot_lat_alt(test=True)
         fig = plt.gcf()
         xlims = fig.axes[0].get_xlim()
         ylims = fig.axes[0].get_ylim()

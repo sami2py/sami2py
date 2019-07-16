@@ -342,7 +342,7 @@ class Model(object):
 
         return mod_keys
 
-    def plot_lat_alt(self, time_step=0, species=1):
+    def plot_lat_alt(self, time_step=0, species=1, test=False):
         """Plots input parameter as a function of latitude and altitude
 
         Parameters
@@ -352,6 +352,8 @@ class Model(object):
         species : (int)
             ion species index :
             0: H+, 1: O+, 2: NO+, 3: O2+, 4: He+, 5: N2+, 6: N+
+        test : (bool)
+            Suppresses plt.show() for testing
         """
         import matplotlib.pyplot as plt
 
@@ -359,4 +361,5 @@ class Model(object):
                    self.data['deni'][:, :, species, time_step])
         plt.xlabel('Geo Lat (deg)')
         plt.ylabel('Altitude (km)')
-        plt.show()
+        if not test:
+            plt.show()

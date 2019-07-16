@@ -240,7 +240,7 @@
 
 !     read in alternate ExB data
 
-      do i = 1,10
+      do i = 1,40
         read(11,*) fourierA(i),fourierB(i)
       enddo
 
@@ -3609,7 +3609,7 @@ C       ************************************************************
 
         if ( .not. fejer ) then
           y = ve01
-          do i = 1,10
+          do i = 1,40
                 y = y + fourierA(i)*cos(i*xt*pie/12) + fourierB(i)*sin(i*xt*pie/12)
             enddo
 !          y = ve01 * sin ( 2 * pie * ( xt - 7. ) / 24. )

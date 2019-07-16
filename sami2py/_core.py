@@ -17,7 +17,7 @@ run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
           no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
           Tinf_scale=1, Tn_scale=1., euv_scale=1,
           wind_scale=1, hwm_model=14,
-          fejer=True, ExB_drifts=np.zeros((10, 2)), ve01=0., exb_scale=1,
+          fejer=True, ExB_drifts=np.zeros((40, 2)), ve01=0., exb_scale=1,
           alt_crit=150., cqe=7.e-14,
           clean=False, test=False, fmtout=True, outn=False)
 
@@ -45,7 +45,7 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
               no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
               Tinf_scale=1, Tn_scale=1., euv_scale=1,
               wind_scale=1, hwm_model=14,
-              fejer=True, ExB_drifts=np.zeros((10, 2)), ve01=0., exb_scale=1,
+              fejer=True, ExB_drifts=np.zeros((40, 2)), ve01=0., exb_scale=1,
               alt_crit=150., cqe=7.e-14,
               clean=False, test=False, fmtout=True, outn=False):
     """Runs SAMI2 and archives the data in path
@@ -184,12 +184,12 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
         A True value will use the Fejer-Scherliess model of ExB drifts
         A False value will use a user-specified Fourier series for ExB drifts
         (default = True)
-    ExB_drifts : (10x2 ndarray of floats)
+    ExB_drifts : (40x2 ndarray of floats)
         Matrix of Fourier series coefficients dependent on solar local time
         (SLT) in hours where
         ExB_total = ExB_drifts[i,0]*cos((i+1)*pi*SLT/12)
                   + ExB_drifts[i,1]*sin((i+1)*pi*SLT/12)
-        (default = np.zeros((10,2)))
+        (default = np.zeros((40,2)))
     ve01 : (float)
         Constant offset for Fourier ExB drifts (m/s)
         (default=0)
@@ -270,8 +270,8 @@ def _generate_drift_info(fejer, ExB_drifts=None):
     """
     drift_info = _generate_fortran_bool(fejer)
     if not fejer:
-        if ExB_drifts.shape != (10, 2):
-            raise Exception('Invalid ExB drift shape!  Must be 10x2 ndarray.')
+        if ExB_drifts.shape != (40, 2):
+            raise Exception('Invalid ExB drift shape!  Must be 40x2 ndarray.')
         np.savetxt('exb.inp', ExB_drifts)
     return drift_info
 

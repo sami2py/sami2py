@@ -75,7 +75,7 @@ class TestBasicModelRun():
         """
         sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
                           fmtout=self.format,
-                          fejer=False, ExB_drifts=np.zeros((10, 2)))
+                          fejer=False, ExB_drifts=np.zeros((40, 2)))
         assert os.stat(self.model_path + 'exb.inp')
 
     def test_run_model_ExB_wrong_size(self):

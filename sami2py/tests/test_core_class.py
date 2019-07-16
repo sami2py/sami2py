@@ -5,7 +5,7 @@ import sami2py
 import pytest
 
 
-def test_model_input_exception(self):
+def test_model_input_exception():
     """File not found error should be produced if the file does not exist
     """
     with pytest.raises(IOError):
@@ -60,12 +60,16 @@ class TestModelObject():
 
     def test_check_standard_model(self):
         """Test that standard model outputs nothing if there are no changes to
-           the standard model
+           the standard model / changes to EUV in unformatted version
         """
         model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
                               day=self.day, test=True)
         keys = model.check_standard_model()
-        assert keys == list()
+
+        if self.year == 256:
+            assert keys == list()
+        else:
+            assert keys == ['EUV Multiplier']
 
     def test_model_repr(self):
         """Test that __repr__ returns a string of information."""

@@ -32,7 +32,7 @@ before_script:
     fi
 
 script:
-  - pytest -v --cov=sami2py/
+  - pytest -vs --cov=sami2py/
 
 after_success:
   - coveralls

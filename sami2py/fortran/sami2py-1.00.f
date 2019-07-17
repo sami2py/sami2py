@@ -3478,14 +3478,14 @@ C       ************************************************************
 
         real param(2),coeff(624),funct(6)
         real coeff1(312),coeff2(312)
-	real xt,xl,y
-	real bspl4,bspl4_time,bspl4_long
+	      real xt,xl,y
+	      real bspl4,bspl4_time,bspl4_long
 
-	integer i,j,ind,il,kk
-	integer index_t/13/,dim_t/78/
-	integer index_l/8/,dim_l/48/
-	integer index/104/,dim/624/
-	integer nfunc/6/
+	      integer i,j,ind,il,kk
+	      integer index_t/13/,dim_t/78/
+	      integer index_l/8/,dim_l/48/
+        integer index/104/,dim/624/
+	      integer nfunc/6/
 
         data coeff1/
      *  -10.80592, -9.63722,-11.52666,  -0.05716,-0.06288,  0.03564,

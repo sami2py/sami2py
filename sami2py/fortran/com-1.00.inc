@@ -73,7 +73,7 @@
 
 !     alternate ExB data - JK
 
-      real fourierA(10), fourierB(10)
+      real fourierA(40), fourierB(40)
 
       common  / altexb / fourierA, fourierB
 

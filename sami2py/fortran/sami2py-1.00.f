@@ -141,7 +141,7 @@
           call output ( hrut,ntm,istep )
           tprnt   = 0.
         elseif ( tprnt .ge. dthr ) then
-          print *,'no ouput yet - hour = ',hrut
+          print *,'no output yet -- hour = ',hrut
           tprnt   = 0.
         endif
 

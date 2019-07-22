@@ -3608,10 +3608,17 @@ C       ************************************************************
 !        dpre = 0.25
 
         if ( .not. fejer ) then
+          vmax = 10.0
+          tid0 = 22.0
+          dpulse = 0.1
+          dtid = 0.05
+          tidmax = 15.0
           y = ve01
-          do i = 1,10
-                y = y + fourierA(i)*cos(i*xt*pie/12) + fourierB(i)*sin(i*xt*pie/12)
-            enddo
+          y = y + vmax * cos(pie * (xt-12) / 12)
+          y = y + tidmax * exp(-(xt-tid0)**2.0 / dpulse)*sin(xt/dtid)
+C          do i = 1,10
+C                y = y + fourierA(i)*cos(i*xt*pie/12) + fourierB(i)*sin(i*xt*pie/12)
+C            enddo
 !          y = ve01 * sin ( 2 * pie * ( xt - 7. ) / 24. )
 !          y = y + vpre*exp(-((xt-22)/dpre)**2.)
           return

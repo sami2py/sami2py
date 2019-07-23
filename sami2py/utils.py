@@ -131,6 +131,7 @@ def get_unformatted_data(dat_dir, var_name, reshape=False, dim0=0, dim1=0):
     binary_file.close()
 
     if reshape:
-        float_data.shape = (dim0, dim1)
+        float_data = np.reshape(float_data, (dim0, dim1), order='F')
         return float_data[1:-1, :]
-    return float_data[1:-1]
+    else:
+        return float_data[1:-1]

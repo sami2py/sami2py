@@ -10,7 +10,7 @@ from __future__ import (print_function)
 import os
 import numpy as np
 import sami2py
-from nose.tools import raises
+import pytest
 
 
 class TestGeneratePath():
@@ -26,40 +26,38 @@ class TestGeneratePath():
                                                day=277, test=True)
         assert out_path == sami2py.test_data_dir + '/test/lon000/2012_277/'
 
-    @raises(NameError)
     def test_generate_path_w_blank_archive_dir(self):
         """Tests generation of a path without archive_dir set"""
-        sami2py.archive_dir = ''
-        sami2py.utils.generate_path(tag='test', lon=0, year=2012, day=277)
+        with pytest.raises(NameError):
+            sami2py.archive_dir = ''
+            sami2py.utils.generate_path(tag='test', lon=0, year=2012, day=277)
 
-    @raises(TypeError)
     def test_generate_path_w_numeric_tag(self):
         """Tests generation of a path with a numeric tag"""
+        with pytest.raises(TypeError):
+            sami2py.utils.generate_path(tag=7, lon=0, year=2012, day=277)
 
-        sami2py.utils.generate_path(tag=7, lon=0, year=2012, day=277)
-
-    @raises(ValueError)
     def test_generate_path_w_nonnumeric_lon(self):
         """Tests generation of a path with a nonnumeric longitude"""
+        with pytest.raises(ValueError):
+            sami2py.utils.generate_path(tag='test', lon='0', year=2012,
+                                        day=277)
 
-        sami2py.utils.generate_path(tag='test', lon='0', year=2012, day=277)
-
-    @raises(ValueError)
     def test_generate_path_w_nonnumeric_year(self):
         """Tests generation of a path with a nonnumeric year"""
+        with pytest.raises(ValueError):
+            sami2py.utils.generate_path(tag='test', lon=0, year='2012',
+                                        day=277)
 
-        sami2py.utils.generate_path(tag='test', lon=0, year='2012', day=277)
-
-    @raises(ValueError)
     def test_generate_path_w_nonnumeric_day(self):
         """Tests generation of a path with a nonnumeric day"""
-
-        sami2py.utils.generate_path(tag='test', lon=0, year=2012, day='277')
+        with pytest.raises(ValueError):
+            sami2py.utils.generate_path(tag='test', lon=0, year=2012,
+                                        day='277')
 
 
 class TestArchiveDir():
-    """Test basic functionality of the set_archive_dir function
-    """
+    """Test basic functionality of the set_archive_dir function"""
     def test_set_archive_dir(self):
         """Test that set_archive_dir has set and stored the archive directory
 
@@ -82,11 +80,10 @@ class TestArchiveDir():
                 archive_file.write('')
                 sami2py.archive_dir = ''
 
-    @raises(ValueError)
     def test_set_archive_dir_exception(self):
-        """if the provided path is invalid a value error should be produced
-        """
-        sami2py.utils.set_archive_dir('dummy_invalid_path')
+        """if the provided path is invalid a value error should be produced"""
+        with pytest.raises(ValueError):
+            sami2py.utils.set_archive_dir('dummy_invalid_path')
 
 
 class testGetUnformattedData():
@@ -116,15 +113,16 @@ class testGetUnformattedData():
         glat = np.loadtxt(self.model_pathF + 'denif.dat')
         assert ret_data.size == glat.size
 
-    @raises(ValueError)
     def test_reshape_exception(self):
         """Reshape should raise an error if invalid dimensions are provided"""
-        dim0 = 2
-        dim1 = 2
-        sami2py.utils.get_unformatted_data(self.model_pathU, 'deni',
-                                           dim0=dim0, dim1=dim1, reshape=True)
+        with pytest.raises(ValueError):
+            dim0 = 2
+            dim1 = 2
+            sami2py.utils.get_unformatted_data(self.model_pathU, 'deni',
+                                               dim0=dim0, dim1=dim1,
+                                               reshape=True)
 
-    @raises(IOError)
     def file_open_error(self):
         """File open should raise an error if invalid file path provided"""
-        sami2py.utils.get_unformatted_data(self.model_pathU, 'glat')
+        with pytest.raises(IOError):
+            sami2py.utils.get_unformatted_data(self.model_pathU, 'glat')

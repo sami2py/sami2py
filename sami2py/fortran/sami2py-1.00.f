@@ -141,7 +141,7 @@
           call output ( hrut,ntm,istep )
           tprnt   = 0.
         elseif ( tprnt .ge. dthr ) then
-          print *,'no ouput yet - hour = ',hrut
+          print *,'no output yet -- hour = ',hrut
           tprnt   = 0.
         endif
 
@@ -3053,11 +3053,13 @@
 !         write(84) u1
 !         write(85) u2
 !         write(86) u3
-!         write(87) u4
+         if (outn) then
+           write(87) u4
 !         write(88) u5
 !         write(90) vot
 !         write(91) vor
-!         write(92) denn
+           write(92) denn
+         endif
 !         write(93) vexbp
        endif
 

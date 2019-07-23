@@ -216,7 +216,7 @@ class Model(object):
                                       dim0=dim0, dim1=dim1, reshape=True)
             if self.outn:
                 u4 = get_unformatted_data(model_path, 'u4',
-                                           dim0=dim0, dim1=dim1, reshape=True)
+                                          dim0=dim0, dim1=dim1, reshape=True)
 
         glat = np.reshape(glat, (nz, nf), order="F")
         glon = np.reshape(glon, (nz, nf), order="F")

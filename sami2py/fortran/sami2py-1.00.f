@@ -3465,6 +3465,9 @@ C
 C       OUTPUT:   Y: EQUATORIAL VERTICAL DRIFT
 C
 C       JK => modified to include common data => 21 Mar 2012
+C       JK => modifcations for simpletid => 29 July 2019
+C           fejer = .true. generates a tid pulse w/ sinusoidal background drift
+C           fejer = .false. generates only the background drift
 
 C       ************************************************************
 
@@ -3607,7 +3610,6 @@ C       ************************************************************
 !        vpre = 100.0
 !        dpre = 0.25
 
-        if ( .not. fejer ) then
           vmax = 10.0
           tid0 = 22.0
           dpulse = 0.1
@@ -3615,14 +3617,10 @@ C       ************************************************************
           tidmax = 15.0
           y = ve01
           y = y + vmax * cos(pie * (xt-12) / 12)
+        if (fejer) then
           y = y + tidmax * exp(-(xt-tid0)**2.0 / dpulse)*sin(xt/dtid)
-C          do i = 1,10
-C                y = y + fourierA(i)*cos(i*xt*pie/12) + fourierB(i)*sin(i*xt*pie/12)
-C            enddo
-!          y = ve01 * sin ( 2 * pie * ( xt - 7. ) / 24. )
-!          y = y + vpre*exp(-((xt-22)/dpre)**2.)
-          return
         endif
+        return
 
 
 !       fejer-scherliess e x b model

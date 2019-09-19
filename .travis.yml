@@ -17,15 +17,14 @@ before_install:
   - pip install pytest-cov
   - pip install coveralls
   - pip install future
-  - pip install matplotlib
-
+  
 install:
   - python setup.py install
 
 before_script:
   # set up display screen
   - export DISPLAY=:99.0
-  
+
 script:
   - pytest -vs --cov=sami2py/
 

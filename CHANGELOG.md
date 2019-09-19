@@ -4,7 +4,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.2.0] - TBD
 - API changes
-  - Remove support for python 2.7
   - Store loaded data in xarray object
   - Use consistent keyword order in run_model and Model
   - xarray (<0.12) and pandas (<0.25) are now required packages.  Upper limits enforced for Travis CI testing.  Will remove in future once python 2.7 is deprecated and things settle out.
@@ -16,6 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Added CHANGELOG.md
   - Switched to pytest for unit testing
   - Removes python 3.4 testing from Travis
+  - Adds manual install of pandas / xarray to Travis workflow to fix setup
 
 ## [0.1.2] - 2019-07-02
 - Patch to fix loading of unformatted output files.

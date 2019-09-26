@@ -366,7 +366,7 @@ class Model(object):
         warnings.warn(' '.join(["Model.plot_lat_alt is deprecated and will be",
                                 "removed in a future version. ",
                                 "Use sami2py_vis instead"]),
-                  DeprecationWarning)
+                      DeprecationWarning)
 
         fig = plt.gcf()
         plt.pcolor(self.data['glat'], self.data['zalt'],

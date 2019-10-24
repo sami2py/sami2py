@@ -36,9 +36,7 @@ class TestBasicModelRun():
         for filename in self.filelist:
             os.remove(os.path.join(fortran_dir, filename))
         if os.path.exists(self.model_path):
-            path_to_remove = os.path.split(self.model_path)[0]
-            path_to_remove = os.path.split(path_to_remove)[0]
-            shutil.rmtree(path_to_remove)
+            shutil.rmtree(self.model_path)
         del self.format, self.ref_file, self.model_path, self.filelist
 
     def test_run_model_namelist(self):
@@ -138,7 +136,5 @@ class TestBasicModelRunUnformatted(TestBasicModelRun):
         for filename in self.filelist:
             os.remove(os.path.join(fortran_dir, filename))
         if os.path.exists(self.model_path):
-            path_to_remove = os.path.split(self.model_path)[0]
-            path_to_remove = os.path.split(path_to_remove)[0]
-            shutil.rmtree(path_to_remove)
+            shutil.rmtree(self.model_path)
         del self.format, self.ref_file, self.model_path, self.filelist

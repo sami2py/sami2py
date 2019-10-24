@@ -87,7 +87,7 @@ class TestArchiveDir():
             sami2py.utils.set_archive_dir('dummy_invalid_path')
 
 
-class testGetUnformattedData():
+class TestGetUnformattedData():
     """Test basic functionality of the get_unformatted_data function"""
     def setup(self):
         """setup the model_path variable for accessing unformatted data"""
@@ -99,7 +99,7 @@ class testGetUnformattedData():
     def test_successful_get(self):
         """Test a successful get of unformatted data"""
         ret_data = sami2py.utils.get_unformatted_data(self.model_pathU, 'glat')
-        glat = np.loadtxt(self.model_pathF + 'glatf.dat')
+        glat = np.loadtxt(os.path.join(self.model_pathF, 'glatf.dat'))
         assert ret_data.size == glat.size
 
     def test_get_with_reshape_true(self):

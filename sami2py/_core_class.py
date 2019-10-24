@@ -161,7 +161,7 @@ class Model(object):
                                    self.test)
 
         # Get NameList
-        namelist_file = open(model_path + 'sami2py-1.00.namelist')
+        namelist_file = open(path.join(model_path, 'sami2py-1.00.namelist'))
         self.namelist = namelist_file.readlines()
         namelist_file.close()
 
@@ -169,7 +169,7 @@ class Model(object):
         self._generate_metadata(self.namelist)
 
         # Get times
-        time = np.loadtxt(model_path + 'time.dat')
+        time = np.loadtxt(path.join(model_path, 'time.dat'))
         self.ut = time[:, 1] + time[:, 2] / 60 + time[:, 3] / 3600
 
         self._calculate_slt()

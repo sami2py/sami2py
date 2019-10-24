@@ -216,7 +216,7 @@ class Model(object):
                                       dim0=dim0, dim1=dim1, reshape=True)
             if self.outn:
                 u4 = get_unformatted_data(model_path, 'u4',
-                                           dim0=dim0, dim1=dim1, reshape=True)
+                                          dim0=dim0, dim1=dim1, reshape=True)
 
         glat = np.reshape(glat, (nz, nf), order="F")
         glon = np.reshape(glon, (nz, nf), order="F")
@@ -294,8 +294,8 @@ class Model(object):
             model_path = generate_path(self.tag, self.lon0, self.year,
                                        self.day, self.test)
             self.MetaData['ExB model'] = 'Fourier Series'
-            self.MetaData['Fourier Coeffs'] = np.loadtxt(model_path +
-                                                         'exb.inp')
+            self.MetaData['Fourier Coeffs'] = np.loadtxt(path.join(model_path,
+                                                                   'exb.inp'))
 
         wind_model = int(re.findall(r"\d+", namelist[35])[0])
         self.MetaData['Wind Model'] = ('HWM-{:02d}').format(wind_model)

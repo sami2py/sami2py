@@ -251,20 +251,26 @@ class Model(object):
 
         import re
 
+        def find_float(name, ind):
+            """regular expression search for float vals"""
+            return float(re.findall(r"\d*\.\d+|\d+", name)[ind])
+
+        def find_int(name, ind):
+            """regular expression search for float vals"""
+            return int(re.findall(r"\d+", name)[ind])
+
         self.MetaData['fmtout'] = ('.true.' in namelist[1])
 
-        self.MetaData['F10.7A'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[14])[0])
-        self.MetaData['F10.7'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[15])[2])
-        self.MetaData['ap'] = int(re.findall(r"\d+", namelist[16])[0])
+        self.MetaData['F10.7A'] = find_float(namelist[14], 0)
+        self.MetaData['F10.7'] = find_float(namelist[15], 2)
+        self.MetaData['ap'] = find_int(namelist[16], 0)
 
         self.MetaData['Neutral Atmosphere Model'] = 'NRLMSISe-2000'
         self.MetaData['EUV Model'] = 'EUVAC'
 
         # Ions Used
-        nion1 = wind_model = int(re.findall(r"\d+", namelist[20])[1]) - 1
-        nion2 = wind_model = int(re.findall(r"\d+", namelist[21])[1]) - 1
+        nion1 = wind_model = find_int(namelist[20], 1) - 1
+        nion2 = wind_model = find_int(namelist[21], 1) - 1
         ions = ['H+', 'O+', 'NO+', 'O2+', 'He+', 'N2+', 'N+']
         self.MetaData['Ions Used'] = ', '.join(ions[nion1:nion2])
 
@@ -277,16 +283,11 @@ class Model(object):
         self.MetaData['He Multiplier'] = float(neutral_scalars[4])
         self.MetaData['N2 Multiplier'] = float(neutral_scalars[5])
         self.MetaData['N Multiplier'] = float(neutral_scalars[6])
-        self.MetaData['T_exo Multiplier'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[33])[0])
-        self.MetaData['T_n Multiplier'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[29])[0])
-        self.MetaData['EUV Multiplier'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[34])[0])
-        self.MetaData['ExB Drift Multiplier'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[24])[1])
-        self.MetaData['Wind Multiplier'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[23])[1])
+        self.MetaData['T_exo Multiplier'] = find_float(namelist[33], 0)
+        self.MetaData['T_n Multiplier'] = find_float(namelist[29], 0)
+        self.MetaData['EUV Multiplier'] = find_float(namelist[34], 0)
+        self.MetaData['ExB Drift Multiplier'] = find_float(namelist[24], 1)
+        self.MetaData['Wind Multiplier'] = find_float(namelist[23], 1)
 
         if '.true.' in namelist[10]:
             self.MetaData['ExB model'] = 'Fejer-Scherliess'
@@ -297,33 +298,24 @@ class Model(object):
             self.MetaData['Fourier Coeffs'] = np.loadtxt(model_path +
                                                          'exb.inp')
 
-        wind_model = int(re.findall(r"\d+", namelist[35])[0])
+        wind_model = find_int(namelist[35], 0)
         self.MetaData['Wind Model'] = ('HWM-{:02d}').format(wind_model)
 
         # Model Geometry
-        self.MetaData['rmin'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[11])[0])
-        self.MetaData['rmax'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[12])[0])
-        self.MetaData['gams'] = int(re.findall(r"\d+", namelist[26])[0])
-        self.MetaData['gamp'] = int(re.findall(r"\d+", namelist[27])[0])
-        self.MetaData['altmin'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[13])[0])
+        self.MetaData['rmin'] = find_float(namelist[11], 0)
+        self.MetaData['rmax'] = find_float(namelist[12], 0)
+        self.MetaData['gams'] = find_int(namelist[26], 0)
+        self.MetaData['gamp'] = find_int(namelist[27], 0)
+        self.MetaData['altmin'] = find_float(namelist[13], 0)
 
         # Model runtime
-        self.MetaData['dthr'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[5])[0])
-        self.MetaData['hrinit'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[22])[0])
-        self.MetaData['hrpr'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[6])[0])
-        self.MetaData['hrmax'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[3])[0])
-        self.MetaData['dt0'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[4])[0])
-        self.MetaData['maxstep'] = int(re.findall(r"\d+", namelist[2])[0])
-        self.MetaData['denmin'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[30])[0])
+        self.MetaData['dthr'] = find_float(namelist[5], 0)
+        self.MetaData['hrinit'] = find_float(namelist[22], 0)
+        self.MetaData['hrpr'] = find_float(namelist[6], 0)
+        self.MetaData['hrmax'] = find_float(namelist[3], 0)
+        self.MetaData['dt0'] = find_float(namelist[4], 0)
+        self.MetaData['maxstep'] = find_int(namelist[2], 0)
+        self.MetaData['denmin'] = find_float(namelist[30], 0)
 
     def check_standard_model(self, model_type="all"):
         """Checks for standard atmospheric inputs

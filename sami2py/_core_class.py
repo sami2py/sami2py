@@ -21,7 +21,7 @@ Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 from os import path
 import numpy as np
 import xarray as xr
-from .utils import generate_path, get_unformatted_data
+from sami2py.utils import generate_path, get_unformatted_data
 
 
 class Model(object):

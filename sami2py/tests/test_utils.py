@@ -111,7 +111,7 @@ class testGetUnformattedData():
         ret_data = sami2py.utils.get_unformatted_data(self.model_pathU, 'deni',
                                                       dim0=dim0, dim1=dim1,
                                                       reshape=True)
-        glat = np.loadtxt(self.model_pathF + 'denif.dat')
+        glat = np.loadtxt(os.path.join(self.model_pathF, 'denif.dat'))
         assert ret_data.size == glat.size
 
     def test_reshape_exception(self):

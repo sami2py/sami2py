@@ -68,7 +68,7 @@ class TestBasicModelRun():
             fname = 'glonf.dat'
         else:
             fname = 'glonu.dat'
-        assert os.stat(self.model_path + fname)
+        assert os.stat(os.path.join(self.model_path, fname))
 
     def test_run_model_ExB_files(self):
         """Test to ensure that the ExB files are copied properly
@@ -76,7 +76,7 @@ class TestBasicModelRun():
         sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
                           fmtout=self.format,
                           fejer=False, ExB_drifts=np.zeros((10, 2)))
-        assert os.stat(self.model_path + 'exb.inp')
+        assert os.stat(os.path.join(self.model_path, 'exb.inp'))
 
     def test_run_model_ExB_wrong_size(self):
         """Test to ensure that the ExB has proper shape

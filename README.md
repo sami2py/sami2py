@@ -1,6 +1,6 @@
 # sami2py: sami2py is another model of the ionosphere python style
-[![Build Status](https://travis-ci.org/jklenzing/sami2py.svg?branch=master)](https://travis-ci.org/jklenzing/sami2py)
-[![Coverage Status](https://coveralls.io/repos/github/jklenzing/sami2py/badge.svg?branch=master)](https://coveralls.io/github/jklenzing/sami2py?branch=master)
+[![Build Status](https://travis-ci.org/sami2py/sami2py.svg?branch=master)](https://travis-ci.org/sami2py/sami2py)
+[![Coverage Status](https://coveralls.io/repos/github/sami2py/sami2py/badge.svg?branch=master)](https://coveralls.io/github/sami2py/sami2py?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/sami2py/badge/?version=latest)](http://sami2py.readthedocs.io/en/latest/?badge=latest)
 [![DOI](https://zenodo.org/badge/167871330.svg)](https://zenodo.org/badge/latestdoi/167871330)
 
@@ -22,7 +22,7 @@ The implementation used here includes several added options to the original rele
 First, checkout the repository:
 
 ```
-  git clone https://github.com/jklenzing/sami2py.git
+  git clone https://github.com/sami2py/sami2py.git
 ```
 
 Change directories into the repository folder and run the setup.py file.  For

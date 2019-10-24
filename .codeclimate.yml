@@ -1,0 +1,11 @@
+# Save as .codeclimate.yml (note leading .) in project root directory
+engines:
+  radon:
+    enabled: true
+ratings:
+  paths:
+  - "**.py"
+exclude_paths:
+  - "sami2py/tests/**/*"
+  - "docs/**/*"
+  - "setup.py"

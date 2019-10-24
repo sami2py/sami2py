@@ -24,7 +24,8 @@ class TestGeneratePath():
         """Tests generation of a path that is successful"""
         out_path = sami2py.utils.generate_path(tag='test', lon=0, year=2012,
                                                day=277, test=True)
-        assert out_path == sami2py.test_data_dir + '/test/lon000/2012_277/'
+        assert out_path == os.path.join(sami2py.test_data_dir,
+                                        'test', 'lon000', '2012_277')
 
     def test_generate_path_w_blank_archive_dir(self):
         """Tests generation of a path without archive_dir set"""

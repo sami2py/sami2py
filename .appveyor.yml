@@ -7,7 +7,7 @@ environment:
       INSTALL_LIBPYTHON: libpython
       PYTHON_VERSION: '3.7'
       MINICONDA_HOME: C:\Miniconda-x64
-      TESTSCRIPT: 'pytest -vs'
+      TESTSCRIPT: 'pytest -vs --cov=sami2py/'
 init:
   - ps: echo $env:TESTENV
 install:

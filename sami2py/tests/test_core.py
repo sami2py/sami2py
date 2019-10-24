@@ -1,6 +1,5 @@
 """Unit tests for run_model.py
 """
-import filecmp
 import numpy as np
 import os
 import shutil
@@ -9,6 +8,18 @@ import pytest
 import sami2py
 from sami2py import fortran_dir, test_data_dir
 from sami2py.utils import generate_path
+
+
+def cmp_lines(path_1, path_2):
+    """Compare content of two files"""
+    l1 = l2 = True
+    with open(path_1, 'r') as f1, open(path_2, 'r') as f2:
+        while l1 and l2:
+            l1 = f1.readline()
+            l2 = f2.readline()
+            if l1 != l2:
+                return False
+    return True
 
 
 class TestBasicModelRun():
@@ -46,7 +57,7 @@ class TestBasicModelRun():
                           fmtout=self.format)
         namelist_file = os.path.join(self.model_path, 'sami2py-1.00.namelist')
         ref_namelist = os.path.join(test_data_dir, self.ref_file)
-        assert filecmp.cmp(namelist_file, ref_namelist)
+        assert cmp_lines(namelist_file, ref_namelist)
 
     def test_run_model_namelist_w_invalid_hwm(self):
         """The test to ensure that the invalid hwm reverts to 14
@@ -55,7 +66,7 @@ class TestBasicModelRun():
                           fmtout=self.format, hwm_model=15)
         namelist_file = os.path.join(self.model_path, 'sami2py-1.00.namelist')
         ref_namelist = os.path.join(test_data_dir, self.ref_file)
-        assert filecmp.cmp(namelist_file, ref_namelist)
+        assert cmp_lines(namelist_file, ref_namelist)
 
     def test_run_model_dat_files(self):
         """Test to ensure that the dat files are copied properly

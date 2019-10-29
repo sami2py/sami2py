@@ -1,5 +1,5 @@
 # sami2py: sami2py is another model of the ionosphere python style
-[![Build Status](https://travis-ci.org/sami2py/sami2py.svg?branch=master)](https://travis-ci.org/sami2py/sami2py)
+[![Build Status](https://travis-ci.com/sami2py/sami2py.svg?branch=master)](https://travis-ci.org/sami2py/sami2py)
 [![Build status](https://ci.appveyor.com/api/projects/status/j36b7x15e2nu1884?svg=true)](https://ci.appveyor.com/project/jklenzing/sami2py)
 [![Coverage Status](https://coveralls.io/repos/github/sami2py/sami2py/badge.svg?branch=master)](https://coveralls.io/github/sami2py/sami2py?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/sami2py/badge/?version=latest)](http://sami2py.readthedocs.io/en/latest/?badge=latest)

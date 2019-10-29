@@ -40,6 +40,8 @@ If something has gone wrong, you may be prompted to manually install the fortran
   make -C sami2py/fortran compile
 ```
 
+Note that you will need a fortran compiler (gfortran is the default setup) and make installed on your system.
+
 
 # Example
 

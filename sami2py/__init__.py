@@ -19,7 +19,7 @@ from __future__ import print_function
 import logging
 import os
 
-__version__ = str('0.1.2')
+__version__ = str('0.2.0-dev')
 
 # get home directory
 env_dir = os.path.expanduser('~')

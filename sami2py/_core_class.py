@@ -189,8 +189,8 @@ class Model(object):
 
             # get neutral values
             if self.outn:
-                denn = np.loadtxt(model_path+'dennf.dat')
-                u = np.loadtxt(model_path+'u4f.dat')
+                denn = np.loadtxt(path.join(model_path, 'dennf.dat'))
+                u4 = np.loadtxt(path.join(model_path, 'u4f.dat'))
         else:
             # Get Location
             glat = get_unformatted_data(model_path, 'glat')
@@ -206,10 +206,17 @@ class Model(object):
                                        dim0=dim0, dim1=dim1, reshape=True)
             ti = get_unformatted_data(model_path, 'ti',
                                       dim0=dim0, dim1=dim1, reshape=True)
-            # Temperatures have only one species
+            if self.outn:
+                denn = get_unformatted_data(model_path, 'denn',
+                                            dim0=dim0, dim1=dim1, reshape=True)
+
+            # Electron Temperatures and neutral wind have only one species
             dim0 = nz*nf + 2
             te = get_unformatted_data(model_path, 'te',
                                       dim0=dim0, dim1=dim1, reshape=True)
+            if self.outn:
+                u4 = get_unformatted_data(model_path, 'u4',
+                                           dim0=dim0, dim1=dim1, reshape=True)
 
         glat = np.reshape(glat, (nz, nf), order="F")
         glon = np.reshape(glon, (nz, nf), order="F")
@@ -228,10 +235,10 @@ class Model(object):
                                        'zalt': (['z', 'f'], zalt),
                                        'ut': self.ut})
         if self.outn:
-            denn = np.reshape(denn, (nz, nf, 7, nt), order="F")
-            self.data['denn'] = denn
-            u = np.reshape(u, (nz, nf, nt), order="F")
-            self.data['u'] = u
+            denn = np.reshape(denn, (nz, nf, ni, nt), order="F")
+            self.data['denn'] = (('z', 'f', 'ion', 'ut'), denn)
+            u4 = np.reshape(u4, (nz, nf, nt), order="F")
+            self.data['u4'] = (('z', 'f', 'ut'), u4)
 
     def _generate_metadata(self, namelist):
         """Reads the namelist and generates MetaData based on Parameters
@@ -354,9 +361,17 @@ class Model(object):
             0: H+, 1: O+, 2: NO+, 3: O2+, 4: He+, 5: N2+, 6: N+
         """
         import matplotlib.pyplot as plt
+        import warnings
 
+        warnings.warn(' '.join(["Model.plot_lat_alt is deprecated and will be",
+                                "removed in a future version. ",
+                                "Use sami2py_vis instead"]),
+                      DeprecationWarning)
+
+        fig = plt.gcf()
         plt.pcolor(self.data['glat'], self.data['zalt'],
                    self.data['deni'][:, :, species, time_step])
         plt.xlabel('Geo Lat (deg)')
         plt.ylabel('Altitude (km)')
-        plt.show()
+
+        return fig

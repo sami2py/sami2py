@@ -361,9 +361,14 @@ class Model(object):
             0: H+, 1: O+, 2: NO+, 3: O2+, 4: He+, 5: N2+, 6: N+
         """
         import matplotlib.pyplot as plt
+        import warnings
+
+        warnings.warn(' '.join(["Model.plot_lat_alt is deprecated and will be",
+                                "removed in a future version. ",
+                                "Use sami2py_vis instead"]),
+                      DeprecationWarning)
 
         fig = plt.gcf()
-
         plt.pcolor(self.data['glat'], self.data['zalt'],
                    self.data['deni'][:, :, species, time_step])
         plt.xlabel('Geo Lat (deg)')

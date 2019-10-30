@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Switched to pytest for unit testing
   - Removes python 3.4 testing from Travis
   - Adds manual install of pandas / xarray to Travis workflow to fix setup
+  - Add deprecation warning to plot_alt_lat
 
 ## [0.1.2] - 2019-07-02
 - Patch to fix loading of unformatted output files.

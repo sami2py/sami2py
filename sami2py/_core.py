@@ -400,5 +400,5 @@ def _archive_model(path, clean, fejer, fmtout, outn):
         if clean:
             for list_file in filelist[1:]:
                 os.remove(list_file)
-model    else:
-        print('No files to move!')
+        else:
+            print('No files to move!')

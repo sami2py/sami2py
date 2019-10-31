@@ -41,7 +41,7 @@ if not os.path.isfile(os.path.join(fortran_path, 'sami2py.x')):
           '$  make -C sami2py/fortran compile\n', file=sys.stderr)
 
 if not os.path.isdir(file_path):
-    os.mkdir(file_path)
+    os.makedirs(file_path)
     print('Created {} directory to store settings.'.format(file_path))
 
 with open(os.path.join(file_path, 'fortran_path.txt'), 'w+') as f:

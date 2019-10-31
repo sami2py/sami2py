@@ -20,6 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Streamline `_archive_model` to generate filelist and move/copy files
   - Reduce duplication in `_generate_metadata` with `find_int` and `find_float` functions
   - Streamline `Model.check_standard_model` and add check for Fourier Coefficients
+  - Add deprecation warning to plot_alt_lat
 
 ## [0.1.2] - 2019-07-02
 - Patch to fix loading of unformatted output files.

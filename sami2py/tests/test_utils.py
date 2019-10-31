@@ -1,4 +1,3 @@
-dim=(dim0, dim1)#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright (C) 2017, JK & AGB
 # Full license can be found in License.md

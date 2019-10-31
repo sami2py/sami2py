@@ -332,8 +332,16 @@ class Model(object):
             if no modifications were made
         """
         mod_keys = list()
-        meta_keys = self.MetaData.keys()
+        meta_keys = list(self.MetaData.keys())
 
+        # See if Fourier Coefficients are used
+        mkey = 'Fourier Coeffs'
+        if mkey in meta_keys:
+            mod_keys.append(mkey)
+            # Since this item is an array, remove for multiplier check
+            meta_keys.remove(mkey)
+
+        # Check for scalar multipliers
         for mkey in meta_keys:
             if ((mkey.find('Multiplier') > 0) & (self.MetaData[mkey] != 1)):
                 mod_keys.append(mkey)

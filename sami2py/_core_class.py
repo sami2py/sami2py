@@ -201,22 +201,22 @@ class Model(object):
             dim0 = nz*nf*ni + 2
             dim1 = nt
             deni = get_unformatted_data(model_path, 'deni',
-                                        dim0=dim0, dim1=dim1, reshape=True)
+                                        dim=(dim0, dim1), reshape=True)
             vsi = get_unformatted_data(model_path, 'vsi',
-                                       dim0=dim0, dim1=dim1, reshape=True)
+                                       dim=(dim0, dim1), reshape=True)
             ti = get_unformatted_data(model_path, 'ti',
-                                      dim0=dim0, dim1=dim1, reshape=True)
+                                      dim=(dim0, dim1), reshape=True)
             if self.outn:
                 denn = get_unformatted_data(model_path, 'denn',
-                                            dim0=dim0, dim1=dim1, reshape=True)
+                                            dim=(dim0, dim1), reshape=True)
 
             # Electron Temperatures and neutral wind have only one species
             dim0 = nz*nf + 2
             te = get_unformatted_data(model_path, 'te',
-                                      dim0=dim0, dim1=dim1, reshape=True)
+                                      dim=(dim0, dim1), reshape=True)
             if self.outn:
                 u4 = get_unformatted_data(model_path, 'u4',
-                                          dim0=dim0, dim1=dim1, reshape=True)
+                                          dim=(dim0, dim1), reshape=True)
 
         glat = np.reshape(glat, (nz, nf), order="F")
         glon = np.reshape(glon, (nz, nf), order="F")

@@ -1,10 +1,12 @@
-# sami2py: sami2py is another model of the ionosphere python style
+===
+sami2py: sami2py is another model of the ionosphere python style
+===
 
 .. list-table::
     :stub-columns: 1
 
     * - docs
-      - | |docs|
+      - | |docs| |doi|
     * - tests
       - | |travis| |appveyor|
         | |coveralls| |codeclimate|

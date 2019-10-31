@@ -256,7 +256,7 @@ class Model(object):
             return float(re.findall(r"\d*\.\d+|\d+", name)[ind])
 
         def find_int(name, ind):
-            """regular expression search for float vals"""
+            """regular expression search for int vals"""
             return int(re.findall(r"\d+", name)[ind])
 
         self.MetaData['fmtout'] = ('.true.' in namelist[1])

@@ -380,7 +380,7 @@ def _archive_model(path, clean, fejer, fmtout, outn):
         # Remove neutral density files from list
         filelist = filelist[:-2]
 
-    if fejer:
+    if not fejer:
         # Add ExB file to list
         filelist.append('exb.inp')
 
@@ -400,5 +400,5 @@ def _archive_model(path, clean, fejer, fmtout, outn):
         if clean:
             for list_file in filelist[1:]:
                 os.remove(list_file)
-    else:
+model    else:
         print('No files to move!')

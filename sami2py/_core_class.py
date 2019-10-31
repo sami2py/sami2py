@@ -335,7 +335,7 @@ class Model(object):
         meta_keys = self.MetaData.keys()
 
         for mkey in meta_keys:
-            if (mkey.find('Multiplier') > 0) & (self.MetaData[mkey] != 1):
+            if ((mkey.find('Multiplier') > 0) & (self.MetaData[mkey] != 1)):
                 mod_keys.append(mkey)
 
         return mod_keys

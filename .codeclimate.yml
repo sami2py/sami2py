@@ -6,6 +6,6 @@ ratings:
   paths:
   - "**.py"
 exclude_paths:
-  - "sami2py/tests/**/*"
+  - ".github/**/*"
   - "docs/**/*"
   - "setup.py"

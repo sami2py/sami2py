@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Removes python 3.4 testing from Travis
   - Adds manual install of pandas / xarray to Travis workflow to fix setup
   - Add deprecation warning to plot_alt_lat
+  - New directory structure in .sami2py adds virtual environment flexibility
 
 ## [0.1.2] - 2019-07-02
 - Patch to fix loading of unformatted output files.

@@ -17,18 +17,21 @@ in this environment (H+, He+, N+, O+, N2+, NO+, and O2+).
 """
 from __future__ import print_function
 import logging
+import sys
 import os
 
 __version__ = str('0.2.0-dev')
 
 # get home directory
-env_dir = os.path.expanduser('~')
-# set sami2py directory path in home directory
-sami2py_dir = os.path.join(env_dir, '.sami2py')
+home_dir = os.path.expanduser('~')
+# get virtual environment directory
+env_name = os.path.split(sys.prefix)[-1]
+# set sami2py directory path in home directory with environment subdirectory
+sami2py_dir = os.path.join(home_dir, '.sami2py', env_name)
 # make sure a sami2py directory for model output exists
 if not os.path.isdir(sami2py_dir):
     # create directory
-    os.mkdir(sami2py_dir)
+    os.makedirs(sami2py_dir)
     print('Created {} directory to store settings.'.format(sami2py_dir))
 
 

@@ -10,13 +10,18 @@ import sys
 from setuptools import setup
 import subprocess
 
-HOME = os.path.expanduser('~')
+# get home directory
+home_dir = os.path.expanduser('~')
+# get name of virtual environment
+env_name = os.path.split(sys.prefix)[-1]
 
 # generate path for fortran model files
 here = os.path.abspath(os.path.dirname(__file__))
 fortran_path = os.path.join(here, 'sami2py', 'fortran')
+# generate path for test files
 test_data_path = os.path.join(here, 'sami2py', 'tests', 'test_data')
-file_path = os.path.join(HOME, '.sami2py')
+# generate path to store test and fortran file paths
+file_path = os.path.join(home_dir, '.sami2py', env_name)
 
 # %% build
 
@@ -36,7 +41,7 @@ if not os.path.isfile(os.path.join(fortran_path, 'sami2py.x')):
           '$  make -C sami2py/fortran compile\n', file=sys.stderr)
 
 if not os.path.isdir(file_path):
-    os.mkdir(file_path)
+    os.makedirs(file_path)
     print('Created {} directory to store settings.'.format(file_path))
 
 with open(os.path.join(file_path, 'fortran_path.txt'), 'w+') as f:

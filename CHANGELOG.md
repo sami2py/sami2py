@@ -20,6 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Adds Appveyor support
 - Bugs fixed
   - Fix for windows directories
+  - New directory structure in .sami2py adds virtual environment flexibility
 
 ## [0.1.2] - 2019-07-02
 - Patch to fix loading of unformatted output files.

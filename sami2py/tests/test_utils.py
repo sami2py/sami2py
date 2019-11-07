@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright (C) 2017, JK & AGB
 # Full license can be found in License.md
@@ -109,7 +108,7 @@ class TestGetUnformattedData():
         dim0 = 98*101*7 + 2  # nf*nz*ni + 2
         dim1 = 2             # nt
         ret_data = sami2py.utils.get_unformatted_data(self.model_pathU, 'deni',
-                                                      dim0=dim0, dim1=dim1,
+                                                      dim=(dim0, dim1),
                                                       reshape=True)
         glat = np.loadtxt(os.path.join(self.model_pathF, 'denif.dat'))
         assert ret_data.size == glat.size
@@ -120,7 +119,7 @@ class TestGetUnformattedData():
             dim0 = 2
             dim1 = 2
             sami2py.utils.get_unformatted_data(self.model_pathU, 'deni',
-                                               dim0=dim0, dim1=dim1,
+                                               dim=(dim0, dim1),
                                                reshape=True)
 
     def file_open_error(self):

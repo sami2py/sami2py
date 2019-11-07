@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Use consistent keyword order in run_model and Model
   - xarray and pandas are now required packages.  
   - Model.plot_lat_alt() now returns the figure object
+  - Pass dimensions into `get_unformatted_data` as tuple
 - Non-breaking changes
   - Output version / short hash for each model run
   - Move package metadata to setup.cfg
@@ -16,6 +17,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Switched to pytest for unit testing
   - Removes python 3.4 testing from Travis
   - Adds manual install of pandas / xarray to Travis workflow to fix setup
+  - Streamline `_archive_model` to generate filelist and move/copy files
+  - Reduce duplication in `_generate_metadata` with `find_int` and `find_float` functions
+  - Streamline `Model.check_standard_model` and add check for Fourier Coefficients
   - Add deprecation warning to plot_alt_lat
   - Adds Appveyor support
 - Bugs fixed

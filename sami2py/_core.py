@@ -369,19 +369,20 @@ def _archive_model(path, clean, fejer, fmtout, outn):
     import subprocess
 
     if fmtout:
-        filelist = ['glonf.dat', 'glatf.dat', 'zaltf.dat',
-                    'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
-                    'time.dat', 'sami2py-1.00.namelist']
-        if outn:
-            filelist.append('dennf.dat')
-            filelist.append('u4f.dat')
+        filelist = ['sami2py-1.00.namelist', 'glonf.dat', 'glatf.dat',
+                    'zaltf.dat', 'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
+                    'time.dat', 'dennf.dat', 'u4f.dat']
     else:
-        filelist = ['glonu.dat', 'glatu.dat', 'zaltu.dat',
-                    'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
-                    'time.dat', 'sami2py-1.00.namelist']
-        if outn:
-            filelist.append('dennu.dat')
-            filelist.append('u4u.dat')
+        filelist = ['sami2py-1.00.namelist', 'glonu.dat', 'glatu.dat',
+                    'zaltu.dat', 'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
+                    'time.dat', 'dennu.dat', 'u4u.dat']
+    if not outn:
+        # Remove neutral density files from list
+        filelist = filelist[:-2]
+
+    if not fejer:
+        # Add ExB file to list
+        filelist.append('exb.inp')
 
     if os.path.isfile(filelist[0]):
         try:
@@ -394,12 +395,11 @@ def _archive_model(path, clean, fejer, fmtout, outn):
             f.write('sami2py v' + __version__ + '\n')
             f.write('short hash ' + hash.decode("utf-8"))
 
-        for list_file in filelist:
-            shutil.copyfile(list_file, os.path.join(path, list_file))
-        if clean:
-            for list_file in filelist[:-1]:
-                os.remove(list_file)
-        if not fejer:
-            shutil.copyfile('exb.inp', os.path.join(path, 'exb.inp'))
-    else:
-        print('No files to move!')
+        shutil.copyfile(filelist[0], os.path.join(path, filelist[0]))
+        for list_file in filelist[1:]:
+            if clean:
+                shutil.move(list_file, os.path.join(path, list_file))
+            else:
+                shutil.copyfile(list_file, os.path.join(path, list_file))
+        else:
+            print('No files to move!')

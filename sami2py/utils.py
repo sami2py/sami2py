@@ -99,7 +99,7 @@ def set_archive_dir(path=None, store=True):
         raise ValueError('Path does not lead to a valid directory.')
 
 
-def get_unformatted_data(dat_dir, var_name, reshape=False, dim0=0, dim1=0):
+def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
     """Routine to interpret unformatted binary files created by the SAMI2 model
 
     Parameters
@@ -132,7 +132,7 @@ def get_unformatted_data(dat_dir, var_name, reshape=False, dim0=0, dim1=0):
     binary_file.close()
 
     if reshape:
-        float_data = np.reshape(float_data, (dim0, dim1), order='F')
+        float_data = np.reshape(float_data, dim, order='F')
         return float_data[1:-1, :]
     else:
         return float_data[1:-1]

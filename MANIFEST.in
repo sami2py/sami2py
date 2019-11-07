@@ -1,0 +1,9 @@
+include *.py
+recursive-include sami2py *.py
+include *.md
+include License.md
+prune sami2py/tests
+prune docs
+prune demo
+exclude *.pdf
+exclude *.png

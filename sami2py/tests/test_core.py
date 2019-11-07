@@ -1,6 +1,5 @@
 """Unit tests for run_model.py
 """
-import filecmp
 import numpy as np
 import os
 import shutil
@@ -9,6 +8,18 @@ import pytest
 import sami2py
 from sami2py import fortran_dir, test_data_dir
 from sami2py.utils import generate_path
+
+
+def cmp_lines(path_1, path_2):
+    """Compare content of two files"""
+    l1 = l2 = True
+    with open(path_1, 'r') as f1, open(path_2, 'r') as f2:
+        while l1 and l2:
+            l1 = f1.readline()
+            l2 = f2.readline()
+            if l1 != l2:
+                return False
+    return True
 
 
 class TestBasicModelRun():
@@ -36,9 +47,7 @@ class TestBasicModelRun():
         for filename in self.filelist:
             os.remove(os.path.join(fortran_dir, filename))
         if os.path.exists(self.model_path):
-            path_to_remove = os.path.split(self.model_path)[0]
-            path_to_remove = os.path.split(path_to_remove)[0]
-            shutil.rmtree(path_to_remove)
+            shutil.rmtree(self.model_path)
         del self.format, self.ref_file, self.model_path, self.filelist
 
     def test_run_model_namelist(self):
@@ -46,18 +55,18 @@ class TestBasicModelRun():
         """
         sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
                           fmtout=self.format)
-        namelist_file = self.model_path + 'sami2py-1.00.namelist'
+        namelist_file = os.path.join(self.model_path, 'sami2py-1.00.namelist')
         ref_namelist = os.path.join(test_data_dir, self.ref_file)
-        assert filecmp.cmp(namelist_file, ref_namelist)
+        assert cmp_lines(namelist_file, ref_namelist)
 
     def test_run_model_namelist_w_invalid_hwm(self):
         """The test to ensure that the invalid hwm reverts to 14
         """
         sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
                           fmtout=self.format, hwm_model=15)
-        namelist_file = self.model_path + 'sami2py-1.00.namelist'
+        namelist_file = os.path.join(self.model_path, 'sami2py-1.00.namelist')
         ref_namelist = os.path.join(test_data_dir, self.ref_file)
-        assert filecmp.cmp(namelist_file, ref_namelist)
+        assert cmp_lines(namelist_file, ref_namelist)
 
     def test_run_model_dat_files(self):
         """Test to ensure that the dat files are copied properly
@@ -68,7 +77,7 @@ class TestBasicModelRun():
             fname = 'glonf.dat'
         else:
             fname = 'glonu.dat'
-        assert os.stat(self.model_path + fname)
+        assert os.stat(os.path.join(self.model_path, fname))
 
     def test_run_model_ExB_files(self):
         """Test to ensure that the ExB files are copied properly
@@ -76,7 +85,7 @@ class TestBasicModelRun():
         sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
                           fmtout=self.format,
                           fejer=False, ExB_drifts=np.zeros((10, 2)))
-        assert os.stat(self.model_path + 'exb.inp')
+        assert os.stat(os.path.join(self.model_path, 'exb.inp'))
 
     def test_run_model_ExB_wrong_size(self):
         """Test to ensure that the ExB has proper shape
@@ -138,7 +147,5 @@ class TestBasicModelRunUnformatted(TestBasicModelRun):
         for filename in self.filelist:
             os.remove(os.path.join(fortran_dir, filename))
         if os.path.exists(self.model_path):
-            path_to_remove = os.path.split(self.model_path)[0]
-            path_to_remove = os.path.split(path_to_remove)[0]
-            shutil.rmtree(path_to_remove)
+            shutil.rmtree(self.model_path)
         del self.format, self.ref_file, self.model_path, self.filelist

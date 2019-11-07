@@ -23,7 +23,8 @@ class TestGeneratePath():
         """Tests generation of a path that is successful"""
         out_path = sami2py.utils.generate_path(tag='test', lon=0, year=2012,
                                                day=277, test=True)
-        assert out_path == sami2py.test_data_dir + '/test/lon000/2012_277/'
+        assert out_path == os.path.join(sami2py.test_data_dir,
+                                        'test', 'lon000', '2012_277')
 
     def test_generate_path_w_blank_archive_dir(self):
         """Tests generation of a path without archive_dir set"""
@@ -85,7 +86,7 @@ class TestArchiveDir():
             sami2py.utils.set_archive_dir('dummy_invalid_path')
 
 
-class testGetUnformattedData():
+class TestGetUnformattedData():
     """Test basic functionality of the get_unformatted_data function"""
     def setup(self):
         """setup the model_path variable for accessing unformatted data"""
@@ -97,7 +98,7 @@ class testGetUnformattedData():
     def test_successful_get(self):
         """Test a successful get of unformatted data"""
         ret_data = sami2py.utils.get_unformatted_data(self.model_pathU, 'glat')
-        glat = np.loadtxt(self.model_pathF + 'glatf.dat')
+        glat = np.loadtxt(os.path.join(self.model_pathF, 'glatf.dat'))
         assert ret_data.size == glat.size
 
     def test_get_with_reshape_true(self):
@@ -109,7 +110,7 @@ class testGetUnformattedData():
         ret_data = sami2py.utils.get_unformatted_data(self.model_pathU, 'deni',
                                                       dim=(dim0, dim1),
                                                       reshape=True)
-        glat = np.loadtxt(self.model_pathF + 'denif.dat')
+        glat = np.loadtxt(os.path.join(self.model_pathF, 'denif.dat'))
         assert ret_data.size == glat.size
 
     def test_reshape_exception(self):

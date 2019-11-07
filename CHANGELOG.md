@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - API changes
   - Store loaded data in xarray object
   - Use consistent keyword order in run_model and Model
-  - xarray (<0.12) and pandas (<0.25) are now required packages.  Upper limits enforced for Travis CI testing.  Will remove in future once python 2.7 is deprecated and things settle out.
+  - xarray and pandas are now required packages.  
   - Model.plot_lat_alt() now returns the figure object
   - Pass dimensions into `get_unformatted_data` as tuple
 - Non-breaking changes
@@ -21,6 +21,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Reduce duplication in `_generate_metadata` with `find_int` and `find_float` functions
   - Streamline `Model.check_standard_model` and add check for Fourier Coefficients
   - Add deprecation warning to plot_alt_lat
+  - Adds Appveyor support
+- Bugs fixed
+  - Fix for windows directories
+  - New directory structure in .sami2py adds virtual environment flexibility
 
 ## [0.1.2] - 2019-07-02
 - Patch to fix loading of unformatted output files.

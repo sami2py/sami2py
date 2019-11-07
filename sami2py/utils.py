@@ -62,11 +62,12 @@ def generate_path(tag, lon, year, day, test=False):
     # Check if top_directory is empty string, ie, user has not specified
     # a directory through set_archive_dir
     if top_directory:
-        str_fmt = 'lon{lon:03d}/{year:4d}_{day:03d}/'
+        str_fmt1 = 'lon{lon:03d}'
+        str_fmt2 = '{year:4d}_{day:03d}'
         archive_path = os.path.join(top_directory, tag,
-                                    (str_fmt.format(lon=lon,
-                                                    year=year,
-                                                    day=day)))
+                                    str_fmt1.format(lon=lon),
+                                    str_fmt2.format(year=year,
+                                                    day=day))
     else:
         raise NameError(''.join(('Archive Directory Not Specified: ',
                                  'Run sami2py.utils.set_archive_dir')))

@@ -119,7 +119,7 @@ class TestGetUnformattedData():
             dim0 = 2
             dim1 = 2
             sami2py.utils.get_unformatted_data(self.model_pathU, 'deni',
-                                               dim0=dim0, dim1=dim1,
+                                               dim=(dim0, dim1),
                                                reshape=True)
 
     def file_open_error(self):

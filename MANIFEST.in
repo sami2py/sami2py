@@ -1,5 +1,12 @@
 include *.py
 recursive-include sami2py *.py
+recursive-include sami2py/fortran *.f90
+recursive-include sami2py/fortran *.f
+recursive-include sami2py/fortran *.inc
+recursive-include sami2py/fortran *.inp
+recursive-include sami2py/fortran *.dat
+recursive-include sami2py/fortran *.bin
+recursive-include sami2py/fortran Makefile
 include *.md
 include License.md
 prune sami2py/tests

@@ -20,7 +20,7 @@ import logging
 import sys
 import os
 
-__version__ = str('0.2.0-dev')
+__version__ = str('0.2.0')
 
 # get home directory
 home_dir = os.path.expanduser('~')

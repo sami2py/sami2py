@@ -25,6 +25,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Bugs fixed
   - Fix for windows directories
   - New directory structure in .sami2py adds virtual environment flexibility
+  - Fixed a bug in feedback when there are no files to move
 
 ## [0.1.2] - 2019-07-02
 - Patch to fix loading of unformatted output files.

@@ -401,5 +401,5 @@ def _archive_model(path, clean, fejer, fmtout, outn):
                 shutil.move(list_file, os.path.join(path, list_file))
             else:
                 shutil.copyfile(list_file, os.path.join(path, list_file))
-        else:
-            print('No files to move!')
+    else:
+        print('No files to move!')

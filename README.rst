@@ -15,7 +15,7 @@ sami2py: sami2py is another model of the ionosphere python style
     :alt: Documentation Status
 
 .. |travis| image:: https://travis-ci.com/sami2py/sami2py.svg?branch=master
-    :target: https://travis-ci.org/sami2py/sami2py
+    :target: https://travis-ci.com/sami2py/sami2py
     :alt: Documentation Status
 
 .. |appveyor| image:: https://ci.appveyor.com/api/projects/status/j36b7x15e2nu1884?svg=true

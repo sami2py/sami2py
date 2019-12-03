@@ -384,22 +384,19 @@ def _archive_model(path, clean, fejer, fmtout, outn):
         # Add ExB file to list
         filelist.append('exb.inp')
 
-    if os.path.isfile(filelist[0]):
-        try:
-            os.stat(path)
-        except FileNotFoundError:
-            os.makedirs(path)
+    try:
+        os.stat(path)
+    except FileNotFoundError:
+        os.makedirs(path)
 
-        hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'])
-        with open(os.path.join(path, 'version.txt'), 'w+') as f:
-            f.write('sami2py v' + __version__ + '\n')
-            f.write('short hash ' + hash.decode("utf-8"))
+    hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'])
+    with open(os.path.join(path, 'version.txt'), 'w+') as f:
+        f.write('sami2py v' + __version__ + '\n')
+        f.write('short hash ' + hash.decode("utf-8"))
 
-        shutil.copyfile(filelist[0], os.path.join(path, filelist[0]))
-        for list_file in filelist[1:]:
-            if clean:
-                shutil.move(list_file, os.path.join(path, list_file))
-            else:
-                shutil.copyfile(list_file, os.path.join(path, list_file))
+    shutil.copyfile(filelist[0], os.path.join(path, filelist[0]))
+    for list_file in filelist[1:]:
+        if clean:
+            shutil.move(list_file, os.path.join(path, list_file))
         else:
-            print('No files to move!')
+            shutil.copyfile(list_file, os.path.join(path, list_file))

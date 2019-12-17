@@ -15,7 +15,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
-import sami2py
+from sami2py import __version__
 
 # -- Project information -----------------------------------------------------
 
@@ -24,9 +24,9 @@ copyright = '2019, Jeff Klenzing'
 author = 'Jeff Klenzing \\and Jonathon Smith'
 
 # The short X.Y version
-version = sami2py.__version__[::-1].partition('.')[2][::-1]
+version = __version__[::-1].partition('.')[2][::-1]
 # The full version, including alpha/beta/rc tags
-release = sami2py.__version__
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------

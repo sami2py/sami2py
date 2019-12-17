@@ -3,10 +3,11 @@ dist: xenial
 matrix:
   include:
     - python: 2.7
-    - python: 3.4
     - python: 3.5
     - python: 3.6
     - python: 3.7
+
+services: xvfb
 
 addons:
   apt:
@@ -14,15 +15,22 @@ addons:
     - gfortran
 
 before_install:
+  - pip install pytest-cov
   - pip install coveralls
   - pip install future
+  - pip install pandas
+  - pip install xarray
   - pip install matplotlib
+
 install:
-  - source activate test-environment
   - python setup.py install
-  - make -C sami2py/fortran compile
+
+before_script:
+  # set up display screen
+  - export DISPLAY=:99.0
+
 script:
-  - nosetests -vs --with-coverage --cover-package=sami2py
+  - pytest -vs --cov=sami2py/
 
 after_success:
   - coveralls

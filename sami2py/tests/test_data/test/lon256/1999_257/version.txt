@@ -1,0 +1,2 @@
+sami2py v0.1.2
+short hash 11ea37d

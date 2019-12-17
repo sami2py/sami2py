@@ -1,9 +1,9 @@
 &go
   fmtout   = .true.,
   maxstep  =  100000000,
-  hrmax    =  1.000000,
+  hrmax    =  0.110000,
   dt0      =  30.000000,
-  dthr     =  0.250000,
+  dthr     =  0.050000,
   hrpr     =  0.000000,
   grad_in  =  300.000000,
   glat_in  =  0.000000,
@@ -34,5 +34,5 @@
   Tinf_scl =  1.000000,
   euv_scl  =  1.000000,
   hwm_mod  =  14,
-  outn     = .false.
+  outn     = .true.
 &end

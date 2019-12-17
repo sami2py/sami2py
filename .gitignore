@@ -1,3 +1,5 @@
+.mypy_cache/
+
 # Fortran modules and executables
 *.o
 *.x
@@ -23,6 +25,10 @@ time.dat
 # Python egg metadata, regenerated from source files by setuptools.
 /*.egg-info
 /*.egg
+
+# Unit test / coverage reports
+.coverage
+.coverage.*
 
 # Sphinx rendered directories
 docs/.build

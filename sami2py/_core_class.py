@@ -20,13 +20,14 @@ Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 """
 from os import path
 import numpy as np
-from .utils import generate_path, get_unformatted_data
+import xarray as xr
+from sami2py.utils import generate_path, get_unformatted_data
 
 
 class Model(object):
     """Python object to handle SAMI2 model output data
     """
-    def __init__(self, tag, year, day, lon, outn=False, test=False):
+    def __init__(self, tag, lon, year, day, outn=False, test=False):
         """ Loads a previously run sami2 model and sorts into
             appropriate array shapes
 
@@ -160,7 +161,7 @@ class Model(object):
                                    self.test)
 
         # Get NameList
-        namelist_file = open(model_path + 'sami2py-1.00.namelist')
+        namelist_file = open(path.join(model_path, 'sami2py-1.00.namelist'))
         self.namelist = namelist_file.readlines()
         namelist_file.close()
 
@@ -168,7 +169,7 @@ class Model(object):
         self._generate_metadata(self.namelist)
 
         # Get times
-        time = np.loadtxt(model_path + 'time.dat')
+        time = np.loadtxt(path.join(model_path, 'time.dat'))
         self.ut = time[:, 1] + time[:, 2] / 60 + time[:, 3] / 3600
 
         self._calculate_slt()
@@ -188,8 +189,8 @@ class Model(object):
 
             # get neutral values
             if self.outn:
-                denn = np.loadtxt(model_path+'dennf.dat')
-                u = np.loadtxt(model_path+'u4f.dat')
+                denn = np.loadtxt(path.join(model_path, 'dennf.dat'))
+                u4 = np.loadtxt(path.join(model_path, 'u4f.dat'))
         else:
             # Get Location
             glat = get_unformatted_data(model_path, 'glat')
@@ -200,28 +201,47 @@ class Model(object):
             dim0 = nz*nf*ni + 2
             dim1 = nt
             deni = get_unformatted_data(model_path, 'deni',
-                                        dim0=dim0, dim1=dim1, reshape=True)
+                                        dim=(dim0, dim1), reshape=True)
             vsi = get_unformatted_data(model_path, 'vsi',
-                                       dim0=dim0, dim1=dim1, reshape=True)
+                                       dim=(dim0, dim1), reshape=True)
             ti = get_unformatted_data(model_path, 'ti',
-                                      dim0=dim0, dim1=dim1, reshape=True)
-            # Temperatures have only one species
+                                      dim=(dim0, dim1), reshape=True)
+
+            # Electron Temperatures have only one species
             dim0 = nz*nf + 2
             te = get_unformatted_data(model_path, 'te',
-                                      dim0=dim0, dim1=dim1, reshape=True)
+                                      dim=(dim0, dim1), reshape=True)
+            if self.outn:
+                # Multiple neutral species
+                dim0 = nz*nf*ni + 2
+                denn = get_unformatted_data(model_path, 'denn',
+                                            dim=(dim0, dim1), reshape=True)
+                # Only one wind
+                dim0 = nz*nf + 2
+                u4 = get_unformatted_data(model_path, 'u4',
+                                          dim=(dim0, dim1), reshape=True)
 
-        self.glat = np.reshape(glat, (nz, nf), order="F")
-        self.glon = np.reshape(glon, (nz, nf), order="F")
-        self.zalt = np.reshape(zalt, (nz, nf), order="F")
-        self.deni = np.reshape(deni, (nz, nf, ni, nt), order="F")
-        self.vsi = np.reshape(vsi, (nz, nf, ni, nt), order="F")
-        self.ti = np.reshape(ti, (nz, nf, ni, nt), order="F")
-        self.te = np.reshape(te, (nz, nf, nt), order="F")
+        glat = np.reshape(glat, (nz, nf), order="F")
+        glon = np.reshape(glon, (nz, nf), order="F")
+        zalt = np.reshape(zalt, (nz, nf), order="F")
+        deni = np.reshape(deni, (nz, nf, ni, nt), order="F")
+        vsi = np.reshape(vsi, (nz, nf, ni, nt), order="F")
+        ti = np.reshape(ti, (nz, nf, ni, nt), order="F")
+        te = np.reshape(te, (nz, nf, nt), order="F")
+        self.data = xr.Dataset({'deni': (['z', 'f', 'ion', 'ut'], deni),
+                                'vsi': (['z', 'f', 'ion', 'ut'], vsi),
+                                'ti': (['z', 'f', 'ion', 'ut'], ti),
+                                'te': (['z', 'f', 'ut'], te),
+                                'slt': (['ut'], self.slt)},
+                               coords={'glat': (['z', 'f'], glat),
+                                       'glon': (['z', 'f'], glon),
+                                       'zalt': (['z', 'f'], zalt),
+                                       'ut': self.ut})
         if self.outn:
-            self.denn = np.reshape(denn, (nz, nf, 7, nt), order="F")
-            self.u = np.reshape(u, (nz, nf, nt), order="F")
-            del denn, u
-        del glat, glon, zalt, deni, vsi, ti, te
+            denn = np.reshape(denn, (nz, nf, ni, nt), order="F")
+            self.data['denn'] = (('z', 'f', 'ion', 'ut'), denn)
+            u4 = np.reshape(u4, (nz, nf, nt), order="F")
+            self.data['u4'] = (('z', 'f', 'ut'), u4)
 
     def _generate_metadata(self, namelist):
         """Reads the namelist and generates MetaData based on Parameters
@@ -234,20 +254,26 @@ class Model(object):
 
         import re
 
+        def find_float(name, ind):
+            """regular expression search for float vals"""
+            return float(re.findall(r"\d*\.\d+|\d+", name)[ind])
+
+        def find_int(name, ind):
+            """regular expression search for int vals"""
+            return int(re.findall(r"\d+", name)[ind])
+
         self.MetaData['fmtout'] = ('.true.' in namelist[1])
 
-        self.MetaData['F10.7A'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[14])[0])
-        self.MetaData['F10.7'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[15])[2])
-        self.MetaData['ap'] = int(re.findall(r"\d+", namelist[16])[0])
+        self.MetaData['F10.7A'] = find_float(namelist[14], 0)
+        self.MetaData['F10.7'] = find_float(namelist[15], 2)
+        self.MetaData['ap'] = find_int(namelist[16], 0)
 
         self.MetaData['Neutral Atmosphere Model'] = 'NRLMSISe-2000'
         self.MetaData['EUV Model'] = 'EUVAC'
 
         # Ions Used
-        nion1 = wind_model = int(re.findall(r"\d+", namelist[20])[1]) - 1
-        nion2 = wind_model = int(re.findall(r"\d+", namelist[21])[1]) - 1
+        nion1 = wind_model = find_int(namelist[20], 1) - 1
+        nion2 = wind_model = find_int(namelist[21], 1) - 1
         ions = ['H+', 'O+', 'NO+', 'O2+', 'He+', 'N2+', 'N+']
         self.MetaData['Ions Used'] = ', '.join(ions[nion1:nion2])
 
@@ -260,16 +286,11 @@ class Model(object):
         self.MetaData['He Multiplier'] = float(neutral_scalars[4])
         self.MetaData['N2 Multiplier'] = float(neutral_scalars[5])
         self.MetaData['N Multiplier'] = float(neutral_scalars[6])
-        self.MetaData['T_exo Multiplier'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[33])[0])
-        self.MetaData['T_n Multiplier'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[29])[0])
-        self.MetaData['EUV Multiplier'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[34])[0])
-        self.MetaData['ExB Drift Multiplier'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[24])[1])
-        self.MetaData['Wind Multiplier'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[23])[1])
+        self.MetaData['T_exo Multiplier'] = find_float(namelist[33], 0)
+        self.MetaData['T_n Multiplier'] = find_float(namelist[29], 0)
+        self.MetaData['EUV Multiplier'] = find_float(namelist[34], 0)
+        self.MetaData['ExB Drift Multiplier'] = find_float(namelist[24], 1)
+        self.MetaData['Wind Multiplier'] = find_float(namelist[23], 1)
 
         if '.true.' in namelist[10]:
             self.MetaData['ExB model'] = 'Fejer-Scherliess'
@@ -277,36 +298,27 @@ class Model(object):
             model_path = generate_path(self.tag, self.lon0, self.year,
                                        self.day, self.test)
             self.MetaData['ExB model'] = 'Fourier Series'
-            self.MetaData['Fourier Coeffs'] = np.loadtxt(model_path +
-                                                         'exb.inp')
+            self.MetaData['Fourier Coeffs'] = np.loadtxt(path.join(model_path,
+                                                                   'exb.inp'))
 
-        wind_model = int(re.findall(r"\d+", namelist[35])[0])
+        wind_model = find_int(namelist[35], 0)
         self.MetaData['Wind Model'] = ('HWM-{:02d}').format(wind_model)
 
         # Model Geometry
-        self.MetaData['rmin'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[11])[0])
-        self.MetaData['rmax'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[12])[0])
-        self.MetaData['gams'] = int(re.findall(r"\d+", namelist[26])[0])
-        self.MetaData['gamp'] = int(re.findall(r"\d+", namelist[27])[0])
-        self.MetaData['altmin'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[13])[0])
+        self.MetaData['rmin'] = find_float(namelist[11], 0)
+        self.MetaData['rmax'] = find_float(namelist[12], 0)
+        self.MetaData['gams'] = find_int(namelist[26], 0)
+        self.MetaData['gamp'] = find_int(namelist[27], 0)
+        self.MetaData['altmin'] = find_float(namelist[13], 0)
 
         # Model runtime
-        self.MetaData['dthr'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[5])[0])
-        self.MetaData['hrinit'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[22])[0])
-        self.MetaData['hrpr'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[6])[0])
-        self.MetaData['hrmax'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[3])[0])
-        self.MetaData['dt0'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[4])[0])
-        self.MetaData['maxstep'] = int(re.findall(r"\d+", namelist[2])[0])
-        self.MetaData['denmin'] = float(
-            re.findall(r"\d*\.\d+|\d+", namelist[30])[0])
+        self.MetaData['dthr'] = find_float(namelist[5], 0)
+        self.MetaData['hrinit'] = find_float(namelist[22], 0)
+        self.MetaData['hrpr'] = find_float(namelist[6], 0)
+        self.MetaData['hrmax'] = find_float(namelist[3], 0)
+        self.MetaData['dt0'] = find_float(namelist[4], 0)
+        self.MetaData['maxstep'] = find_int(namelist[2], 0)
+        self.MetaData['denmin'] = find_float(namelist[30], 0)
 
     def check_standard_model(self, model_type="all"):
         """Checks for standard atmospheric inputs
@@ -323,12 +335,19 @@ class Model(object):
             if no modifications were made
         """
         mod_keys = list()
-        meta_keys = self.MetaData.keys()
+        meta_keys = list(self.MetaData.keys())
 
+        # See if Fourier Coefficients are used
+        mkey = 'Fourier Coeffs'
+        if mkey in meta_keys:
+            mod_keys.append(mkey)
+            # Since this item is an array, remove for multiplier check
+            meta_keys.remove(mkey)
+
+        # Check for scalar multipliers
         for mkey in meta_keys:
-            if mkey.find('Multiplier') > 0:
-                if self.MetaData[mkey] != 1:
-                    mod_keys.append(mkey)
+            if ((mkey.find('Multiplier') > 0) & (self.MetaData[mkey] != 1)):
+                mod_keys.append(mkey)
 
         return mod_keys
 
@@ -341,11 +360,20 @@ class Model(object):
             time index for SAMI2 model results
         species : (int)
             ion species index :
-            1: H+, 2: O+, 3: NO+, 4: O2+, 5: He+, 6: N2+, 7: N+
+            0: H+, 1: O+, 2: NO+, 3: O2+, 4: He+, 5: N2+, 6: N+
         """
         import matplotlib.pyplot as plt
+        import warnings
 
-        plt.pcolor(self.glat, self.zalt, self.deni[:, :, species, time_step])
+        warnings.warn(' '.join(["Model.plot_lat_alt is deprecated and will be",
+                                "removed in a future version. ",
+                                "Use sami2py_vis instead"]),
+                      DeprecationWarning)
+
+        fig = plt.gcf()
+        plt.pcolor(self.data['glat'], self.data['zalt'],
+                   self.data['deni'][:, :, species, time_step])
         plt.xlabel('Geo Lat (deg)')
         plt.ylabel('Altitude (km)')
-        plt.show()
+
+        return fig

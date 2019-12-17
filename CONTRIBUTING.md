@@ -55,7 +55,7 @@ To set up `sami2py` for local development:
    Now you can make your changes locally. Tests for new instruments are
    performed automatically.  Tests for custom functions should be added to the
    appropriately named file in ``sami2py/tests``.   If no test file exists, then
-   you should create one.  This testing uses nose, which will run tests on any
+   you should create one.  This testing uses pytest, which will run tests on any
    python file in the test directory that starts with ``test_``.
 
 4. When you're done making changes, run all the checks to ensure that nothing
@@ -63,7 +63,7 @@ To set up `sami2py` for local development:
 
 ::
 
-    nosetests -vs sami2py
+    pytest -vs
 
 5. Update/add documentation (in ``docs``), if relevant
 

@@ -8,7 +8,7 @@
 Functions
 -------------------------------------------------------------------------------
 
-run_model(year, day, lat=0, lon=0, alt=300,
+run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
           f107=120, f107a=120, ap=0,
           rmin=100, rmax=2000, gams=3, gamp=3, altmin=85.,
           dthr=0.25, hrinit=0., hrpr=24., hrmax=48.,
@@ -19,7 +19,7 @@ run_model(year, day, lat=0, lon=0, alt=300,
           wind_scale=1, hwm_model=14,
           fejer=True, ExB_drifts=np.zeros((10, 2)), ve01=0., exb_scale=1,
           alt_crit=150., cqe=7.e-14,
-          tag='test', clean=False, test=False, fmtout=True, outn=False)
+          clean=False, test=False, fmtout=True, outn=False)
 
     Initializes a run of the SAMI2 model and archives the data.
 -------------------------------------------------------------------------------
@@ -32,11 +32,11 @@ Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 import os
 import subprocess
 import numpy as np
-from sami2py import fortran_dir
+from sami2py import fortran_dir, __version__
 from .utils import generate_path
 
 
-def run_model(year, day, lat=0, lon=0, alt=300,
+def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
               f107=120, f107a=120, ap=0,
               rmin=100, rmax=2000, gams=3, gamp=3, altmin=85.,
               dthr=0.25, hrinit=0., hrpr=24., hrmax=48.,
@@ -47,15 +47,16 @@ def run_model(year, day, lat=0, lon=0, alt=300,
               wind_scale=1, hwm_model=14,
               fejer=True, ExB_drifts=np.zeros((10, 2)), ve01=0., exb_scale=1,
               alt_crit=150., cqe=7.e-14,
-              tag='test', clean=False, test=False, fmtout=True, outn=False):
+              clean=False, test=False, fmtout=True, outn=False):
     """Runs SAMI2 and archives the data in path
 
     Parameters
     ----------
-    year : (int)
-        year of desired run, integer
-    day : (int)
-        day of year from Jan 1, acceptable range is [1,366]
+    tag : (string)
+        Name of run for data archive.  First-level directory under save
+        directory
+        Note that this is not passed through to sami2 executable
+        (default = 'model_run')
     lat : (float)
         latitude intercept of sami2 plane
         (default = 0)
@@ -65,6 +66,10 @@ def run_model(year, day, lat=0, lon=0, alt=300,
     alt : (float)
         The input altitude in km.
         (default = 300)
+    year : (int)
+        year of desired run, integer
+    day : (int)
+        day of year from Jan 1, acceptable range is [1,366]
 
     f107 : (float)
         Daily F10.7 solar flux value in SFU
@@ -204,11 +209,6 @@ def run_model(year, day, lat=0, lon=0, alt=300,
         the electron temperature above 300 km.
         (default=7e-14)
 
-    tag : (string)
-        Name of run for data archive.  First-level directory under save
-        directory
-        Note that this is not passed through to sami2 executable
-        (default = 'test')
     clean : (boolean)
         A True value will delete the local files after archiving
         A False value will not delete local save files
@@ -252,12 +252,12 @@ def run_model(year, day, lat=0, lon=0, alt=300,
             'wind_scale': wind_scale, 'hwm_model': hwm_model}
 
     info['fejer'] = _generate_drift_info(fejer, ExB_drifts)
-    info['fmtout'] = _generate_format_info(fmtout)
-    info['outn'] = _generate_neutral_info(outn)
+    info['fmtout'] = _generate_fortran_bool(fmtout)
+    info['outn'] = _generate_fortran_bool(outn)
     _generate_namelist(info)
     archive_path = generate_path(tag, lon, year, day, test)
     if not test:
-        check_model_run = subprocess.check_call('./sami2py.x')
+        _ = subprocess.check_call('./sami2py.x')
 
     _archive_model(archive_path, clean, fejer, fmtout, outn)
 
@@ -268,35 +268,23 @@ def _generate_drift_info(fejer, ExB_drifts=None):
     """Generates the information regarding the ExB drifts used by the model.
     This information is later stored in the namelist file for SAMI2
     """
-    if fejer:
-        drift_info = '.true.'
-    else:
+    drift_info = _generate_fortran_bool(fejer)
+    if not fejer:
         if ExB_drifts.shape != (10, 2):
             raise Exception('Invalid ExB drift shape!  Must be 10x2 ndarray.')
-        drift_info = '.false.'
         np.savetxt('exb.inp', ExB_drifts)
     return drift_info
 
 
-def _generate_format_info(fmtout):
-    """Generates the namelist information needed to tell the SAMI2 model to
-    output the model results in formatted or unformatted data files
+def _generate_fortran_bool(pybool):
+    """Generates a fortran bool as a string for the namelist generator
     """
-    if fmtout:
-        format_info = '.true.'
+    if pybool:
+        fbool = '.true.'
     else:
-        format_info = '.false.'
-    return format_info
+        fbool = '.false.'
+    return fbool
 
-def _generate_neutral_info(outn):
-    """Generates the namelist information needed to tell the SAMI2 model to
-    output the model results of neutral species and wind
-    """
-    if outn:
-        neutral_info = '.true.'
-    else:
-        neutral_info = '.false.'
-    return neutral_info
 
 def _generate_namelist(info):
     """Generates namelist file for sami2
@@ -378,31 +366,37 @@ def _archive_model(path, clean, fejer, fmtout, outn):
         If False, then 'exb.inp' is also archived
     """
     import shutil
+    import subprocess
 
     if fmtout:
-        filelist = ['glonf.dat', 'glatf.dat', 'zaltf.dat',
-                    'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
-                    'time.dat', 'sami2py-1.00.namelist']
-        if outn:
-            filelist.append('dennf.dat')
-            filelist.append('u4f.dat')
+        filelist = ['sami2py-1.00.namelist', 'glonf.dat', 'glatf.dat',
+                    'zaltf.dat', 'denif.dat', 'vsif.dat', 'tif.dat', 'tef.dat',
+                    'time.dat', 'dennf.dat', 'u4f.dat']
     else:
-        filelist = ['glonu.dat', 'glatu.dat', 'zaltu.dat',
-                    'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
-                    'time.dat', 'sami2py-1.00.namelist']
+        filelist = ['sami2py-1.00.namelist', 'glonu.dat', 'glatu.dat',
+                    'zaltu.dat', 'deniu.dat', 'vsiu.dat', 'tiu.dat', 'teu.dat',
+                    'time.dat', 'dennu.dat', 'u4u.dat']
+    if not outn:
+        # Remove neutral density files from list
+        filelist = filelist[:-2]
 
-    if os.path.isfile(filelist[0]):
-        try:
-            os.stat(path)
-        except FileNotFoundError:
-            os.makedirs(path)
+    if not fejer:
+        # Add ExB file to list
+        filelist.append('exb.inp')
 
-        for list_file in filelist:
-            shutil.copyfile(list_file, path + list_file)
+    try:
+        os.stat(path)
+    except FileNotFoundError:
+        os.makedirs(path)
+
+    hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'])
+    with open(os.path.join(path, 'version.txt'), 'w+') as f:
+        f.write('sami2py v' + __version__ + '\n')
+        f.write('short hash ' + hash.decode("utf-8"))
+
+    shutil.copyfile(filelist[0], os.path.join(path, filelist[0]))
+    for list_file in filelist[1:]:
         if clean:
-            for list_file in filelist[:-1]:
-                os.remove(list_file)
-        if not fejer:
-            shutil.copyfile('exb.inp', path + 'exb.inp')
-    else:
-        print('No files to move!')
+            shutil.move(list_file, os.path.join(path, list_file))
+        else:
+            shutil.copyfile(list_file, os.path.join(path, list_file))

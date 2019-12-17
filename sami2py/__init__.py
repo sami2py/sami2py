@@ -48,12 +48,16 @@ else:
     print('Run sami2py.utils.set_archive_dir to set the path to'
           ' top-level directory for model outputs.')
 
-# load fortran directory
-with open(os.path.join(sami2py_dir, 'fortran_path.txt'), 'r') as f:
-    fortran_dir = f.readline()
-# load test_data directory
-with open(os.path.join(sami2py_dir, 'test_data_path.txt'), 'r') as f:
-    test_data_dir = f.readline()
+# flag, True if on readthedocs
+on_rtd = os.environ.get('READTHEDOCS') == 'True'
+
+if not on_rtd:
+    # load fortran directory
+    with open(os.path.join(sami2py_dir, 'fortran_path.txt'), 'r') as f:
+        fortran_dir = f.readline()
+    # load test_data directory
+    with open(os.path.join(sami2py_dir, 'test_data_path.txt'), 'r') as f:
+        test_data_dir = f.readline()
 
 
 # import main functions

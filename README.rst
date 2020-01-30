@@ -8,7 +8,8 @@ sami2py: sami2py is another model of the ionosphere python style
       - | |docs| |doi|
     * - tests
       - | |travis| |appveyor|
-        | |coveralls| |codeclimate| |codacy|
+        | |coveralls| |codecov|
+        | |codeclimate| |codacy|
 
 .. |docs| image:: https://readthedocs.org/projects/sami2py/badge/?version=latest
     :target: http://sami2py.readthedocs.io/en/latest/?badge=latest
@@ -24,6 +25,10 @@ sami2py: sami2py is another model of the ionosphere python style
 
 .. |coveralls| image:: https://coveralls.io/repos/github/sami2py/sami2py/badge.svg?branch=master
     :target: https://coveralls.io/github/sami2py/sami2py?branch=master
+    :alt: Coverage Status
+
+.. |codecov| image:: https://codecov.io/gh/sami2py/sami2py/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/sami2py/sami2py
     :alt: Coverage Status
 
 .. |codeclimate| image:: https://api.codeclimate.com/v1/badges/866e862c03267dfbe8e4/maintainability

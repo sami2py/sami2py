@@ -25,7 +25,20 @@ Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 
 import os
 
+def fake_bad_function(tag, lon, year, day, test=True):
+    
+    if not isinstance(tag, str):
+      raise TypeError
 
+    if test:
+        from sami2py import test_data_dir
+        top_directory = test_data_dir
+    else:
+        from sami2py import test_data_dir
+        top_directory = test_data_dir
+        
+    return top_directory
+    
 def generate_path(tag, lon, year, day, test=False):
     """Creates a path based on run tag, date, and longitude
 

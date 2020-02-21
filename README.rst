@@ -27,7 +27,7 @@ sami2py: sami2py is another model of the ionosphere python style
     :alt: Coverage Status
 
 .. |codeclimate| image:: https://api.codeclimate.com/v1/badges/866e862c03267dfbe8e4/maintainability
-   :target: https://codeclimate.com/github/jklenzing/sami2py/maintainability
+   :target: https://codeclimate.com/github/sami2py/sami2py/maintainability
    :alt: CodeClimate Quality Status
 
 

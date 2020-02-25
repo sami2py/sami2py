@@ -58,6 +58,7 @@ Change directories into the repository folder and run the setup.py file.  For
 a local install use the "--user" flag after "install".
 
 .. code-block:: python
+
   cd sami2py/
   python setup.py install
 

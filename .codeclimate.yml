@@ -1,5 +1,9 @@
 # Save as .codeclimate.yml (note leading .) in project root directory
-engines:
+plugins:
+  markdownlint:
+    enabled: true
+  pep8:
+    enabled: true
   radon:
     enabled: true
 ratings:

@@ -47,6 +47,14 @@ def generate_path(tag, lon, year, day, test=False):
     -------
     archive_path : (string)
         Complete path pointing to model archive for a given run
+
+    Examples
+    --------
+        import sami2py
+        sami2py.utils.set_archive_dir(path='path_name_here')
+        path = sami2py.utils.generate_path(tag='run_name', lon=0, year=2012,
+                                           day=210)
+    Will return 'path_name_here/run_name/lon000/2012_210'
     """
 
     if not isinstance(tag, str):
@@ -85,6 +93,12 @@ def set_archive_dir(path=None, store=True):
         valid path to directory sami2py uses to look for data
     store : bool
         if True, store data directory for future runs
+
+    Examples
+    --------
+    Should be run upon first installation.  Will prompt users if not run.
+        import sami2py
+        sami2py.utils.set_archive_dir(path='path_name_here')
     """
     import sami2py
 

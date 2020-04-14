@@ -228,10 +228,16 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
         if false, sami2 will not include neutral density and wind
 
     Methods
-    ----------
+    -------
     _generate_namelist(info)
 
     archive_model(path,clean,fejer)
+
+    Examples
+    --------
+    import sami2py
+    sami2py.run_model(tag='run_name', lon=0, year=2012, day=210)
+
     """
 
     current_dir = os.getcwd()
@@ -293,6 +299,11 @@ def _generate_namelist(info):
     ----------
     info : (dict)
         Contains variables for each line of the namelist file
+
+    Returns
+    -------
+    void
+        namelist file written for fortran executable
     """
 
     # Check HWM model parameters
@@ -364,6 +375,11 @@ def _archive_model(path, clean, fejer, fmtout, outn):
     fejer : (boolean)
         Specifies whether Fejer-Scherliess model is used
         If False, then 'exb.inp' is also archived
+
+    Returns
+    -------
+    void
+        Moves files to the archive directory
     """
     import shutil
     import subprocess

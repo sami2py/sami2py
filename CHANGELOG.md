@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Stylistic updates to conform to flake8
 - Testing changes
   - Update Travis CI to use flake8 tests as part of CI
+  - Update Travis CI to test for numpy versions as in NEP 029
 
 ## [0.2.0] - 2019-12-17
 - API changes

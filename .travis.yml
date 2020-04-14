@@ -1,7 +1,12 @@
+os: linux
 language: python
 dist: xenial
-matrix:
+jobs:
   include:
+    - name: Minimum NEP 029 versions
+      python: 3.6
+      env: NUMPY_VER=1.15
+    # Versions with latest numpy
     - python: 3.6
     - python: 3.7
     - python: 3.8
@@ -14,13 +19,15 @@ addons:
     - gfortran
 
 before_install:
+  - if [ -z ${NUMPY_VER} ]; then
+      echo 'Using latest numpy';
+    else
+      pip install -q numpy==$NUMPY_VER;
+    fi
   - pip install pytest-cov
   - pip install pytest-flake8
   - pip install coveralls
   - pip install future
-  - pip install pandas
-  - pip install xarray
-  - pip install matplotlib
 
 install:
   - python setup.py install

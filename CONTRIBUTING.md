@@ -54,20 +54,22 @@ To set up `sami2py` for local development:
 
    Now you can make your changes locally. Tests for new instruments are
    performed automatically.  Tests for custom functions should be added to the
-   appropriately named file in ``sami2py/tests``.   If no test file exists, then
-   you should create one.  This testing uses pytest, which will run tests on any
-   python file in the test directory that starts with ``test_``.
+   appropriately named file in ``sami2py/tests``.   If no test file exists,
+   then you should create one.  This testing uses pytest, which will run tests
+   on any python file in the test directory that starts with ``test_``.
 
 4. When you're done making changes, run all the checks to ensure that nothing
-   is broken on your local system
+   is broken on your local system.  You may need to install pytest and
+   pytest-flake8 first.
 
 ::
 
-    pytest -vs
+    pytest -vs --flake8
+
 
 5. Update/add documentation (in ``docs``), if relevant
 
-5. Commit your changes and push your branch to GitHub
+6. Commit your changes and push your branch to GitHub
 
 ::
 
@@ -75,7 +77,7 @@ To set up `sami2py` for local development:
     git commit -m "Brief description of your changes"
     git push origin name-of-your-bugfix-or-feature
 
-6. Submit a pull request through the GitHub website. Pull requests should be
+7. Submit a pull request through the GitHub website. Pull requests should be
    made to the ``develop`` branch.
 
 Pull Request Guidelines

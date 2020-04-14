@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.2.1] - 2020-04-13
 - Documentation Changes
   - Updates to docstrings
+- Non-breaking changes
+  - Stylistic updates to conform to flake8
+- Testing changes
+  - Update Travis CI to use flake8 tests as part of CI
 
 ## [0.2.0] - 2019-12-17
 - API changes

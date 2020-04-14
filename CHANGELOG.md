@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.1] - 2020-04-13
+- Documentation Changes
+  - Updates to docstrings
+
 ## [0.2.0] - 2019-12-17
 - API changes
   - Store loaded data in xarray object

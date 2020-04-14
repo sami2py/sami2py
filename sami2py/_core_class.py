@@ -198,7 +198,7 @@ class Model(object):
             zalt = get_unformatted_data(model_path, 'zalt')
 
             # Get plasma values
-            dim0 = nz*nf*ni + 2
+            dim0 = nz * nf * ni + 2
             dim1 = nt
             deni = get_unformatted_data(model_path, 'deni',
                                         dim=(dim0, dim1), reshape=True)
@@ -208,16 +208,16 @@ class Model(object):
                                       dim=(dim0, dim1), reshape=True)
 
             # Electron Temperatures have only one species
-            dim0 = nz*nf + 2
+            dim0 = nz * nf + 2
             te = get_unformatted_data(model_path, 'te',
                                       dim=(dim0, dim1), reshape=True)
             if self.outn:
                 # Multiple neutral species
-                dim0 = nz*nf*ni + 2
+                dim0 = nz * nf * ni + 2
                 denn = get_unformatted_data(model_path, 'denn',
                                             dim=(dim0, dim1), reshape=True)
                 # Only one wind
-                dim0 = nz*nf + 2
+                dim0 = nz * nf + 2
                 u4 = get_unformatted_data(model_path, 'u4',
                                           dim=(dim0, dim1), reshape=True)
 

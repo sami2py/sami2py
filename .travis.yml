@@ -27,9 +27,6 @@ before_install:
   - pip install pytest-cov
   - pip install coveralls
   - pip install future
-  - pip install pandas
-  - pip install xarray
-  - pip install matplotlib
 
 install:
   - python setup.py install

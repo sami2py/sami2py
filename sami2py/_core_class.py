@@ -115,8 +115,8 @@ class Model(object):
 
         out.append('\nComponent Models Used')
         out.append('---------------------')
-        out.append('Neutral Atmosphere: ' +
-                   self.MetaData['Neutral Atmosphere Model'])
+        out.append(' '.join(('Neutral Atmosphere:',
+                             self.MetaData['Neutral Atmosphere Model'])))
         out.append('Winds: ' + self.MetaData['Wind Model'])
         out.append('Photoproduction: ' + self.MetaData['EUV Model'])
         out.append('ExB Drifts: ' + self.MetaData['ExB model'])
@@ -145,8 +145,8 @@ class Model(object):
 
         local_time = np.mod((self.ut * 60 + self.lon0 * 4), 1440) / 60.0
         mean_anomaly = 2 * np.pi * self.day / 365.242
-        delta_t = (-7.657 * np.sin(mean_anomaly) +
-                   9.862 * np.sin(2 * mean_anomaly + 3.599))
+        delta_t = (-7.657 * np.sin(mean_anomaly)
+                   + 9.862 * np.sin(2 * mean_anomaly + 3.599))
         self.slt = local_time - delta_t / 60.0
 
     def _load_model(self):

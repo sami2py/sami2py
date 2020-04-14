@@ -25,6 +25,7 @@ before_install:
       pip install -q numpy==$NUMPY_VER;
     fi
   - pip install pytest-cov
+  - pip install pytest-flake8
   - pip install coveralls
   - pip install future
 
@@ -36,7 +37,7 @@ before_script:
   - export DISPLAY=:99.0
 
 script:
-  - pytest -vs --cov=sami2py/
+  - pytest -vs --flake8 --cov=sami2py/
 
 after_success:
   - coveralls

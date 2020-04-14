@@ -105,7 +105,7 @@ class TestGetUnformattedData():
         """Test a successful get of unformatted data with the reshape flag
         set to True
         """
-        dim0 = 98*101*7 + 2  # nf*nz*ni + 2
+        dim0 = 98 * 101 * 7 + 2  # nf*nz*ni + 2
         dim1 = 2             # nt
         ret_data = sami2py.utils.get_unformatted_data(self.model_pathU, 'deni',
                                                       dim=(dim0, dim1),

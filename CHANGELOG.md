@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.1] - 2020-04-13
+- Documentation Changes
+  - Updates to docstrings
+- Non-breaking changes
+  - Stylistic updates to conform to flake8
+- Testing changes
+  - Update Travis CI to use flake8 tests as part of CI
+  - Update Travis CI to test for numpy versions as in NEP 029
+
 ## [0.2.0] - 2019-12-17
 - API changes
   - Store loaded data in xarray object

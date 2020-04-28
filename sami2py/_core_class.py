@@ -49,7 +49,7 @@ class Model(object):
             if false : look for user made model output
 
         Returns
-        ---------
+        -------
         self : model class object containing OCB file data
 
         Attributes
@@ -74,6 +74,12 @@ class Model(object):
             Ion Temperature by species (K)
         te : (3D ndarray)
             Electron Temperature (K)
+
+        Examples
+        --------
+        To load a previous model run:
+            ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
+
         """
 
         self.tag = tag
@@ -89,9 +95,17 @@ class Model(object):
         """Make a printable representation of a Model object
 
         Returns
-        ---------
+        -------
         out : (string)
             string containing a printable representation of a Model object
+
+        Examples
+        --------
+        Load the model
+            ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
+        Check the model information
+            ModelRun
+
         """
 
         out = ['']
@@ -115,8 +129,8 @@ class Model(object):
 
         out.append('\nComponent Models Used')
         out.append('---------------------')
-        out.append('Neutral Atmosphere: ' +
-                   self.MetaData['Neutral Atmosphere Model'])
+        out.append(' '.join(('Neutral Atmosphere:',
+                             self.MetaData['Neutral Atmosphere Model'])))
         out.append('Winds: ' + self.MetaData['Wind Model'])
         out.append('Photoproduction: ' + self.MetaData['EUV Model'])
         out.append('ExB Drifts: ' + self.MetaData['ExB model'])
@@ -140,17 +154,21 @@ class Model(object):
         -------
         self.slt : (float)
             Solar Local Time in hours
-
         """
 
         local_time = np.mod((self.ut * 60 + self.lon0 * 4), 1440) / 60.0
         mean_anomaly = 2 * np.pi * self.day / 365.242
-        delta_t = (-7.657 * np.sin(mean_anomaly) +
-                   9.862 * np.sin(2 * mean_anomaly + 3.599))
+        delta_t = (-7.657 * np.sin(mean_anomaly)
+                   + 9.862 * np.sin(2 * mean_anomaly + 3.599))
         self.slt = local_time - delta_t / 60.0
 
     def _load_model(self):
         """Loads model results
+
+        Returns
+        -------
+        void
+            Model object modified in place
         """
 
         nf = 98
@@ -198,7 +216,7 @@ class Model(object):
             zalt = get_unformatted_data(model_path, 'zalt')
 
             # Get plasma values
-            dim0 = nz*nf*ni + 2
+            dim0 = nz * nf * ni + 2
             dim1 = nt
             deni = get_unformatted_data(model_path, 'deni',
                                         dim=(dim0, dim1), reshape=True)
@@ -208,16 +226,16 @@ class Model(object):
                                       dim=(dim0, dim1), reshape=True)
 
             # Electron Temperatures have only one species
-            dim0 = nz*nf + 2
+            dim0 = nz * nf + 2
             te = get_unformatted_data(model_path, 'te',
                                       dim=(dim0, dim1), reshape=True)
             if self.outn:
                 # Multiple neutral species
-                dim0 = nz*nf*ni + 2
+                dim0 = nz * nf * ni + 2
                 denn = get_unformatted_data(model_path, 'denn',
                                             dim=(dim0, dim1), reshape=True)
                 # Only one wind
-                dim0 = nz*nf + 2
+                dim0 = nz * nf + 2
                 u4 = get_unformatted_data(model_path, 'u4',
                                           dim=(dim0, dim1), reshape=True)
 
@@ -250,6 +268,11 @@ class Model(object):
         -----------
         namelist : (list)
             variable namelist from SAMI2 model
+
+        Returns
+        -------
+        void
+            Model object modified in place
         """
 
         import re
@@ -324,15 +347,24 @@ class Model(object):
         """Checks for standard atmospheric inputs
 
         Parameters
-        -----------
+        ----------
         model_type : (str)
             Limit check to certain models (default='all')
+            Not currently implemented
 
         Returns
-        --------
+        -------
         mod_keys : (list)
             List of modified keyword for self.MetaData, empty
             if no modifications were made
+
+        Examples
+        --------
+        Load the model
+            ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
+        Check the model information for changes to the standard inputs
+            ModelRun.check_standard_model()
+
         """
         mod_keys = list()
         meta_keys = list(self.MetaData.keys())
@@ -355,12 +387,22 @@ class Model(object):
         """Plots input parameter as a function of latitude and altitude
 
         Parameters
-        -----------
+        ----------
         time_step : (int)
             time index for SAMI2 model results
         species : (int)
             ion species index :
             0: H+, 1: O+, 2: NO+, 3: O2+, 4: He+, 5: N2+, 6: N+
+
+        Examples
+        --------
+        Load the model
+            ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
+        Plot the O+ density at the beginning of the model
+            ModelRun.plot_lat_alt()
+        Plot the H+ density at the 100th time step (initial step is 0)
+            ModelRun.plot_lat_alt(time_step=99, species=0)
+
         """
         import matplotlib.pyplot as plt
         import warnings

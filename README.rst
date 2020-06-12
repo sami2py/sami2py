@@ -86,7 +86,7 @@ In iPython, run:
 
   import sami2py
 
-sami2py will remind you to set the top level directory that will hold the model output.
+sami2py will remind you to set the top level directory that will hold the model output.  This should be a string containing the path to the directory you want to store the data in, such as `path='/Users/me/data/sami2py' or `path='C:\home\data'.
 
 .. code-block:: python
 

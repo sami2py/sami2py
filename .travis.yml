@@ -21,7 +21,7 @@ addons:
 before_install:
   - if [ -z ${NUMPY_VER} ]; then
       # Make sure travis uses latest numpy, not pre-installed version
-      pip upgrade numpy
+      pip install -q numpy upgrade
     else
       pip install -q numpy==$NUMPY_VER;
     fi

@@ -26,7 +26,7 @@ before_install:
       pip install -q numpy==$NUMPY_VER;
     fi
   # FIXME: matplotlib 3.3. pre-release not compatible with numpy 1.15
-  - pip install "matplotlib<3.3"  
+  - pip install "matplotlib<3.3"
   - pip install pytest-cov
   - pip install pytest-flake8
   - pip install coveralls

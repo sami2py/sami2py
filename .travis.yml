@@ -20,10 +20,12 @@ addons:
 
 before_install:
   - if [ -z ${NUMPY_VER} ]; then
-      echo 'Using latest numpy';
+      # Make sure travis uses latest numpy, not pre-installed version
+      pip upgrade numpy
     else
       pip install -q numpy==$NUMPY_VER;
     fi
+  - pip install "matplotlib<3.3"  # FIXME: matplotlib 3.3. pre-release not compatible with numpy 1.15
   - pip install pytest-cov
   - pip install pytest-flake8
   - pip install coveralls

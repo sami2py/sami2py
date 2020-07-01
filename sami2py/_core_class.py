@@ -4,15 +4,12 @@
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
 """Wrapper for running sami2 model
-
 Classes
 -------------------------------------------------------------------------------
 Model
     Loads, reshapes, and holds SAMI2 output for a given model run
     specified by the user.
 -------------------------------------------------------------------------------
-
-
 Moduleauthor
 -------------------------------------------------------------------------------
 Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
@@ -30,7 +27,6 @@ class Model(object):
     def __init__(self, tag, lon, year, day, outn=False, test=False):
         """ Loads a previously run sami2 model and sorts into
             appropriate array shapes
-
         Parameters
         ----------
         tag : (string)
@@ -47,25 +43,21 @@ class Model(object):
         test : (boolean)
             if true : use test model output
             if false : look for user made model output
-
         Returns
         -------
         self : model class object containing OCB file data
-
         Attributes
         ----------
         ut : (1D ndarray)
             Universal Time (hrs)
         slt : (1D ndarray)
             Solar Local Time (hr)
-
         glat : (2D ndarray)
             Geographic Latitude (deg)
         glon : (2D ndarray)
             Geographic Longitude (deg)
         zalt : (2D ndarray)
             Altitude (km)
-
         deni : (4D ndarray)
             Ion density by species (cm^-3)
         vsi : (4D ndarray)
@@ -74,12 +66,10 @@ class Model(object):
             Ion Temperature by species (K)
         te : (3D ndarray)
             Electron Temperature (K)
-
         Examples
         --------
         To load a previous model run:
             ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
-
         """
 
         self.tag = tag
@@ -93,19 +83,16 @@ class Model(object):
 
     def __repr__(self):
         """Make a printable representation of a Model object
-
         Returns
         -------
         out : (string)
             string containing a printable representation of a Model object
-
         Examples
         --------
         Load the model
             ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
         Check the model information
             ModelRun
-
         """
 
         out = ['']
@@ -149,7 +136,6 @@ class Model(object):
 
     def _calculate_slt(self):
         """Calculates Solar Local Time for reference point of model
-
         Returns
         -------
         self.slt : (float)
@@ -164,7 +150,6 @@ class Model(object):
 
     def _load_model(self):
         """Loads model results
-
         Returns
         -------
         void
@@ -174,7 +159,27 @@ class Model(object):
         nf = 98
         nz = 101
         ni = 7
-
+        
+        def return_fourier(x, coeffs):
+            """
+            Returns a Fourier series up to NumF coefficients
+            """
+            def cos_a(x, n):
+                """simple cosine"""
+                return np.cos(n * np.pi * x / 12.0)
+        
+            def sin_a(x, n):
+                """simple sine"""
+                return np.sin(n * np.pi * x / 12.0)
+        
+            NumF = int((len(coeffs) - 1)/2)
+        
+            y = coeffs[0]
+            for i in range(1, NumF+1):
+                y = y + coeffs[2*i-1]*cos_a(x, i) + coeffs[2*i]*sin_a(x, i)
+        
+            return y
+        
         model_path = generate_path(self.tag, self.lon0, self.year, self.day,
                                    self.test)
 
@@ -260,15 +265,18 @@ class Model(object):
             self.data['denn'] = (('z', 'f', 'ion', 'ut'), denn)
             u4 = np.reshape(u4, (nz, nf, nt), order="F")
             self.data['u4'] = (('z', 'f', 'ut'), u4)
+        
+        # Add drifts
+        if self.MetaData['ExB model'] == 'Fourier Series': 
+            self.data['ExB'] = return_fourier(self.data['slt'],
+                                              self.MetaData['Fourier Coeffs'])
 
     def _generate_metadata(self, namelist):
         """Reads the namelist and generates MetaData based on Parameters
-
         Parameters
         -----------
         namelist : (list)
             variable namelist from SAMI2 model
-
         Returns
         -------
         void
@@ -345,26 +353,22 @@ class Model(object):
 
     def check_standard_model(self, model_type="all"):
         """Checks for standard atmospheric inputs
-
         Parameters
         ----------
         model_type : (str)
             Limit check to certain models (default='all')
             Not currently implemented
-
         Returns
         -------
         mod_keys : (list)
             List of modified keyword for self.MetaData, empty
             if no modifications were made
-
         Examples
         --------
         Load the model
             ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
         Check the model information for changes to the standard inputs
             ModelRun.check_standard_model()
-
         """
         mod_keys = list()
         meta_keys = list(self.MetaData.keys())
@@ -385,7 +389,6 @@ class Model(object):
 
     def plot_lat_alt(self, time_step=0, species=1):
         """Plots input parameter as a function of latitude and altitude
-
         Parameters
         ----------
         time_step : (int)
@@ -393,7 +396,6 @@ class Model(object):
         species : (int)
             ion species index :
             0: H+, 1: O+, 2: NO+, 3: O2+, 4: He+, 5: N2+, 6: N+
-
         Examples
         --------
         Load the model
@@ -402,7 +404,6 @@ class Model(object):
             ModelRun.plot_lat_alt()
         Plot the H+ density at the 100th time step (initial step is 0)
             ModelRun.plot_lat_alt(time_step=99, species=0)
-
         """
         import matplotlib.pyplot as plt
         import warnings

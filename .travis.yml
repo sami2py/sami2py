@@ -25,6 +25,7 @@ before_install:
       pip install -q numpy --upgrade;
     else
       pip install -q numpy==$NUMPY_VER;
+      pip install "cftime<1.1.2";
       pip install "netCDF4<1.5.3";
     fi
   # matplotlib 3.3. pre-release not compatible with numpy 1.15

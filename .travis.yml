@@ -19,11 +19,15 @@ addons:
     - gfortran
 
 before_install:
+  # Unless version is specified, make sure travis uses latest numpy,
+  # not pre-installed version
   - if [ -z ${NUMPY_VER} ]; then
-      echo 'Using latest numpy';
+      pip install -q numpy --upgrade;
     else
       pip install -q numpy==$NUMPY_VER;
     fi
+  # matplotlib 3.3. pre-release not compatible with numpy 1.15
+  - pip install "matplotlib<3.3"
   - pip install pytest-cov
   - pip install pytest-flake8
   - pip install coveralls

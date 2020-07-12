@@ -18,7 +18,7 @@ Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 from os import path
 import numpy as np
 import xarray as xr
-from sami2py.utils import generate_path, get_unformatted_data
+from sami2py.utils import generate_path, get_unformatted_data, return_fourier
 
 
 class Model(object):
@@ -147,7 +147,7 @@ class Model(object):
         delta_t = (-7.657 * np.sin(mean_anomaly)
                    + 9.862 * np.sin(2 * mean_anomaly + 3.599))
         self.slt = local_time - delta_t / 60.0
-
+        
     def _load_model(self):
         """Loads model results
         Returns
@@ -159,26 +159,6 @@ class Model(object):
         nf = 98
         nz = 101
         ni = 7
-        
-        def return_fourier(x, coeffs):
-            """
-            Returns a Fourier series up to NumF coefficients
-            """
-            def cos_a(x, n):
-                """simple cosine"""
-                return np.cos(n * np.pi * x / 12.0)
-        
-            def sin_a(x, n):
-                """simple sine"""
-                return np.sin(n * np.pi * x / 12.0)
-        
-            NumF = int((len(coeffs) - 1)/2)
-        
-            y = coeffs[0]
-            for i in range(1, NumF+1):
-                y = y + coeffs[2*i-1]*cos_a(x, i) + coeffs[2*i]*sin_a(x, i)
-        
-            return y
         
         model_path = generate_path(self.tag, self.lon0, self.year, self.day,
                                    self.test)

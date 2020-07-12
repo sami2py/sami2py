@@ -8,7 +8,7 @@
   grad_in  =  300.000000,
   glat_in  =  0.000000,
   glon_in  =  0.000000,
-  fejer    =  .false.,
+  fejer    =  .true.,
   rmin     =  100.000000,
   rmax     =  2000.000000,
   altmin   =  85.000000,

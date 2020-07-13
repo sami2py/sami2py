@@ -9,13 +9,13 @@ sami2py: sami2py is another model of the ionosphere python style
     * - tests
       - | |travis| |appveyor|
         | |coveralls| |codecov|
-        | |codeclimate| 
+        | |codeclimate|
 
 .. |docs| image:: https://readthedocs.org/projects/sami2py/badge/?version=latest
     :target: http://sami2py.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-.. |travis| image:: https://travis-ci.com/sami2py/sami2py.svg?branch=master
+.. |travis| image:: https://travis-ci.com/sami2py/sami2py.svg?branch=main
     :target: https://travis-ci.com/sami2py/sami2py
     :alt: Documentation Status
 
@@ -23,11 +23,11 @@ sami2py: sami2py is another model of the ionosphere python style
     :target: https://ci.appveyor.com/project/jklenzing/sami2py
     :alt: Documentation Status
 
-.. |coveralls| image:: https://coveralls.io/repos/github/sami2py/sami2py/badge.svg?branch=master
-    :target: https://coveralls.io/github/sami2py/sami2py?branch=master
+.. |coveralls| image:: https://coveralls.io/repos/github/sami2py/sami2py/badge.svg?branch=main
+    :target: https://coveralls.io/github/sami2py/sami2py?branch=main
     :alt: Coverage Status
 
-.. |codecov| image:: https://codecov.io/gh/sami2py/sami2py/branch/master/graph/badge.svg
+.. |codecov| image:: https://codecov.io/gh/sami2py/sami2py/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/sami2py/sami2py
     :alt: Coverage Status
 

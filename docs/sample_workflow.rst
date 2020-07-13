@@ -7,7 +7,7 @@ In iPython, run:
 
   import sami2py
 
-If this is your first import of sami2py, it will remind you to set the top level directory that will hold the model output.  This should be a string containing the path to the directory you want to store the data in, such as `path='/Users/me/data/sami2py' or `path='C:\home\data'.  If you plan to update the code via git, this should be outside the main code directory so that git does not try to store your local code runs within the repository.
+If this is your first import of sami2py, it will remind you to set the top level directory that will hold the model output.  This should be a string containing the path to the directory you want to store the data in, such as ``path='/Users/me/data/sami2py'`` or ``path='C:\home\data'``.  If you plan to update the code via git, this should be outside the main code directory so that git does not try to store your local code runs within the repository.
 
 .. code:: python
 

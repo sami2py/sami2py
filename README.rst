@@ -73,7 +73,7 @@ If something has gone wrong, you may be prompted to manually install the fortran
 .. code-block:: console
 
   make -C sami2py/fortran compile
- 
+
 or, on windows,
 
 .. code-block:: console
@@ -92,7 +92,7 @@ In iPython, run:
 
   import sami2py
 
-sami2py will remind you to set the top level directory that will hold the model output.  This should be a string containing the path to the directory you want to store the data in, such as `path='/Users/me/data/sami2py' or `path='C:\home\data'.
+sami2py will remind you to set the top level directory that will hold the model output.  This should be a string containing the path to the directory you want to store the data in, such as `path='/Users/me/data/sami2py' or `path='C:\home\data'.  If you plan to update the code via git, this should be outside the main code directory so that git does not try to store your local code runs within the repository.
 
 .. code-block:: python
 

@@ -2,7 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.2.2] - 2020-06-30
+## [0.2.2] - 2020-07-02
+- Added simple port of core data to netcdf file
+- Increased unformatted test data to 6 time steps 
 - Documentation Changes
   - Primary branch now `main`
 

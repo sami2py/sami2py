@@ -367,6 +367,12 @@ class Model(object):
 
         return mod_keys
 
+    def to_netcdf(self, path=''):
+        """saves core data as a netcdf file"""
+        if path == '':
+            path = 'sami2py_output.nc'
+        self.data.to_netcdf(path=path, format='NETCDF4')
+
     def plot_lat_alt(self, time_step=0, species=1):
         """Plots input parameter as a function of latitude and altitude
         Parameters

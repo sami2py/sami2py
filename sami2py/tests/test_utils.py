@@ -106,12 +106,13 @@ class TestGetUnformattedData():
         set to True
         """
         dim0 = 98 * 101 * 7 + 2  # nf*nz*ni + 2
-        dim1 = 2             # nt
-        ret_data = sami2py.utils.get_unformatted_data(self.model_pathU, 'deni',
-                                                      dim=(dim0, dim1),
-                                                      reshape=True)
-        glat = np.loadtxt(os.path.join(self.model_pathF, 'denif.dat'))
-        assert ret_data.size == glat.size
+        dim1 = 6             # nt
+        udata = sami2py.utils.get_unformatted_data(self.model_pathU, 'deni',
+                                                   dim=(dim0, dim1),
+                                                   reshape=True)
+        fdata = np.loadtxt(os.path.join(self.model_pathF, 'denif.dat'))
+        # unformatted test data has 6 time steps, formatted has 2
+        assert udata.size == 3 * fdata.size
 
     def test_reshape_exception(self):
         """Reshape should raise an error if invalid dimensions are provided"""

@@ -1,6 +1,7 @@
 """Unit tests for model.py
 """
 import os
+import xarray as xr
 import sami2py
 import pytest
 
@@ -81,6 +82,28 @@ class TestModelObject():
                               day=self.day, test=True)
         repr_str = model.__repr__()
         assert type(repr_str) is str
+
+    def test_to_netcdf(self):
+        """Test that output file is correctly generated"""
+        model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
+                              day=self.day, test=True, outn=True)
+        model.to_netcdf()
+        path = 'sami2py_output.nc'
+        savedat = xr.load_dataset(path)
+        os.remove(path)
+
+        assert model.data == savedat
+
+    def test_to_netcdf_w_path(self):
+        """Test that output file is correctly generated"""
+        model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
+                              day=self.day, test=True, outn=True)
+        path = 'custom_filename.nc'
+        model.to_netcdf(path=path)
+        savedat = xr.load_dataset('custom_filename.nc')
+        os.remove(path)
+
+        assert model.data == savedat
 
 
 class TestModelObjectUnformatted(TestModelObject):

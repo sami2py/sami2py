@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add namelist and exb.inp in fortran dir to gitignore
 - Documentation Changes
   - Primary branch now `main`
+  - Improved discussion of install / usage for first time users
 
 ## [0.2.1] - 2020-04-13
 - Documentation Changes

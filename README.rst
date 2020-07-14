@@ -65,7 +65,7 @@ a local install use the "--user" flag after "install".
 
 .. code-block:: console
 
-  cd sami2py/
+  cd sami2py
   python setup.py install
 
 If something has gone wrong, you may be prompted to manually install the fortran executables.
@@ -74,7 +74,14 @@ If something has gone wrong, you may be prompted to manually install the fortran
 
   make -C sami2py/fortran compile
 
-Note that you will need a fortran compiler (gfortran is the default setup) and make installed on your system.
+or, on windows,
+
+.. code-block:: console
+
+  make -C sami2py\fortran compile
+
+Note that you will need a fortran compiler (gfortran is the default setup) and make installed on your system.  For more information, please refer to the
+`documentation <https://sami2py.readthedocs.io/en/latest/installation.html#fortran-compilers>`_.
 
 
 Example
@@ -86,7 +93,7 @@ In iPython, run:
 
   import sami2py
 
-sami2py will remind you to set the top level directory that will hold the model output.
+If this is your first import of sami2py, it will remind you to set the top level directory that will hold the model output.  This should be a string containing the path to the directory you want to store the data in, such as ``path='/Users/me/data/sami2py'`` or ``path='C:\home\data'``.  This should be outside the main code directory, so model output files are not confused with model inputs or source code.  If you are using Git, it will also ensure that Git does not try to store your local code runs within the repository.
 
 .. code-block:: python
 

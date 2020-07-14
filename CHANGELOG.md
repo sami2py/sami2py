@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.2.2] - 2020-07-02
 - Added simple port of core data to netcdf file
 - Increased unformatted test data to 6 time steps
+- Add namelist and exb.inp in fortran dir to gitignore
 - Documentation Changes
   - Primary branch now `main`
   - Improved discussion of install / usage for first time users

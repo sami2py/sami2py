@@ -12,7 +12,7 @@ The implementation used here includes several added options to the original rele
  - The ability to scale the neutral atmosphere in which the ions form through direct modification of the exospheric neutral temperature for extreme solar minimum conditions, as discussed by Emmert et al [2010].
  - The ability to switch between HWM93, HWM07, and HWM14 as a user option.
 
-This implementation is based on the matlab version used in Klenzing et al [2013].
+This implementation is based on the MatLab version used in Klenzing et al [2013].
 
 The open-source fortran version of SAMI2 is found at https://www.nrl.navy.mil/ppd/branches/6790/sami2
 

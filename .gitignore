@@ -4,6 +4,8 @@
 *.o
 *.x
 *.mod
+sami2py/fortran/ExB.inp
+sami2py/fortran/sami2py-1.00.namelist
 
 .DS_STORE
 *f.dat
@@ -31,9 +33,9 @@ time.dat
 .coverage.*
 
 # Sphinx rendered directories
-docs/.build
-docs/.static
-docs/.templates
+docs/_build
+docs/_static
+docs/_templates
 
 # dont ignore dat files in the testing folder
 !sami2py/tests/test_data/test/lon256/1999_256/*.dat

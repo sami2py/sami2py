@@ -19,10 +19,16 @@ addons:
     - gfortran
 
 before_install:
+  # Unless version is specified, make sure travis uses latest numpy,
+  # not pre-installed version
+  # Latest releases of cftime, etc, not compatible with numpy 1.15
   - if [ -z ${NUMPY_VER} ]; then
-      echo 'Using latest numpy';
+      pip install -q numpy --upgrade;
     else
       pip install -q numpy==$NUMPY_VER;
+      pip install "cftime<1.1";
+      pip install "netCDF4<1.5.3";
+      pip install "matplotlib<3.3";
     fi
   - pip install pytest-cov
   - pip install pytest-flake8

@@ -18,7 +18,7 @@ Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 from os import path
 import numpy as np
 import xarray as xr
-from sami2py.utils import generate_path, get_unformatted_data, return_fourier
+from sami2py.utils import generate_path, get_unformatted_data
 
 
 class Model(object):
@@ -147,7 +147,7 @@ class Model(object):
         delta_t = (-7.657 * np.sin(mean_anomaly)
                    + 9.862 * np.sin(2 * mean_anomaly + 3.599))
         self.slt = local_time - delta_t / 60.0
-        
+
     def _load_model(self):
         """Loads model results
         Returns
@@ -159,7 +159,7 @@ class Model(object):
         nf = 98
         nz = 101
         ni = 7
-        
+
         model_path = generate_path(self.tag, self.lon0, self.year, self.day,
                                    self.test)
 
@@ -245,11 +245,6 @@ class Model(object):
             self.data['denn'] = (('z', 'f', 'ion', 'ut'), denn)
             u4 = np.reshape(u4, (nz, nf, nt), order="F")
             self.data['u4'] = (('z', 'f', 'ut'), u4)
-        
-        # Add drifts
-        if self.MetaData['ExB model'] == 'Fourier Series': 
-            self.data['ExB'] = return_fourier(self.data['slt'],
-                                              self.MetaData['Fourier Coeffs'])
 
     def _generate_metadata(self, namelist):
         """Reads the namelist and generates MetaData based on Parameters

@@ -118,6 +118,18 @@ def set_archive_dir(path=None, store=True):
 def return_fourier(x, coeffs):
     """
     Returns a Fourier series up to NumF coefficients
+    
+    Parameters
+    ----------
+    x : (1d ndarray)
+        solar local time in hours (slt)
+    coeffs : (array)
+        10x2 array of fourier coefficients
+        
+    Returns
+    --------
+    y : (array)
+        result of the fourier series 
     """
     def cos_a(x, n):
         """simple cosine"""
@@ -126,12 +138,12 @@ def return_fourier(x, coeffs):
     def sin_a(x, n):
         """simple sine"""
         return np.sin(n * np.pi * x / 12.0)
-        
-    NumF = int((len(coeffs) - 1)/2)
+    
+    NumF = coeffs.shape
     
     y = coeffs[0]
-    for i in range(1, NumF+1):
-        y = y + coeffs[i, 0]*cos_a(x, i) + coeffs[i, 1]*sin_a(x, i)
+    for i in range(0, NumF[0]):
+        y += coeffs[i, 0]*cos_a(x, i) + coeffs[i, 1]*sin_a(x, i)
     
     return y
 

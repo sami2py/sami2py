@@ -5,7 +5,7 @@ jobs:
   include:
     - name: Minimum NEP 029 versions
       python: 3.6
-      env: NUMPY_VER=1.15
+      env: NUMPY_VER=1.16
     # Versions with latest numpy
     - python: 3.6
     - python: 3.7

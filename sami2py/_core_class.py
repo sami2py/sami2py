@@ -18,7 +18,7 @@ Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 from os import path
 import numpy as np
 import xarray as xr
-from sami2py.utils import generate_path, get_unformatted_data
+from sami2py.utils import generate_path, get_unformatted_data, return_fourier
 
 
 class Model(object):
@@ -401,3 +401,33 @@ class Model(object):
         plt.ylabel('Altitude (km)')
 
         return fig
+
+    def plot_exb(self, amplitude=30):
+        """Plots ExB drifts from the return_fourier function
+        Parameters
+        ----------
+        amplitude : (int)
+            default amplitude value : 30
+
+        Examples
+        --------
+        Load the model
+            ModelRun = sami2py.Model(tag='exb', lon=0, year=2012, day=210)
+        Plot ExB drifts
+            ModelRun.plot_exb()
+        """
+        import matplotlib.pyplot as plt
+        import warnings
+
+        warnings.warn(' '.join(["Model.plot_exb is deprecated and will be",
+                                "removed in a future version. ",
+                                "Use sami2py_vis instead"]),
+                      DeprecationWarning)
+
+        fig = plt.gcf()
+        fig = amplitude * return_fourier(self.slt, self.MetaData['Fourier Coeffs'])
+
+        plt.xlabel('Time (hrs)')
+        plt.ylabel('ExB Drifts')
+        plt.plot(fig)
+        plt.show()

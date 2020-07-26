@@ -1,2 +1,0 @@
-sami2py v0.2.0
-short hash f3c6711

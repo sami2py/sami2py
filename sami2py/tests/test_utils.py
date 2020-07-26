@@ -105,12 +105,13 @@ class TestGetUnformattedData():
         set to True
         """
         dim0 = 98 * 101 * 7 + 2  # nf*nz*ni + 2
-        dim1 = 2             # nt
-        ret_data = sami2py.utils.get_unformatted_data(self.model_pathU, 'deni',
-                                                      dim=(dim0, dim1),
-                                                      reshape=True)
-        glat = np.loadtxt(os.path.join(self.model_pathF, 'denif.dat'))
-        assert ret_data.size == glat.size
+        dim1 = 6             # nt
+        udata = sami2py.utils.get_unformatted_data(self.model_pathU, 'deni',
+                                                   dim=(dim0, dim1),
+                                                   reshape=True)
+        fdata = np.loadtxt(os.path.join(self.model_pathF, 'denif.dat'))
+        # unformatted test data has 6 time steps, formatted has 2
+        assert udata.size == 3 * fdata.size
 
     def test_reshape_exception(self):
         """Reshape should raise an error if invalid dimensions are provided"""
@@ -125,3 +126,60 @@ class TestGetUnformattedData():
         """File open should raise an error if invalid file path provided"""
         with pytest.raises(IOError):
             sami2py.utils.get_unformatted_data(self.model_pathU, 'glat')
+
+
+class TestFourierFunction():
+    """Test basic functionality of the return_fourier function"""
+    def setup(self):
+        """setup the x variable with general x values"""
+        self.x = np.array([0.11, 0.36, 0.61, 0.86, 1.12, 1.37, 1.62, 1.88,
+                           2.13, 2.38, 2.64, 2.89, 3.14, 3.4, 3.65, 3.9,
+                           4.16, 4.41,  4.66, 4.92, 5.17, 5.42, 5.68, 5.93,
+                           6.18, 6.44, 6.69, 6.94, 7.2, 7.45, 7.7, 7.95,
+                           8.2, 8.46, 8.71, 8.96, 9.21, 9.46, 9.72, 9.97,
+                          10.23, 10.49, 10.74, 10.99, 11.24, 11.49, 11.74,
+                          11.99, 12.24, 12.49, 12.74, 13., 13.26, 13.51, 13.76,
+                          14.02, 14.27, 14.53, 14.79, 15.04, 15.29, 15.54,
+                          15.79, 16.04, 16.29, 16.54, 16.79, 17.04, 17.29,
+                          17.54, 17.8, 18.05, 18.31, 18.56, 18.81, 19.07,
+                          19.32, 19.57, 19.83, 20.08, 20.33, 20.59, 20.84,
+                          21.09, 21.35, 21.6, 21.85, 22.11, 22.36, 22.61,
+                          22.86, 23.12, 23.37, 23.624, 23.87])
+
+    def test_cos(self):
+        """Test the cos function when coeffs are all 0s except for one with 1
+        value
+        """
+        coeffs = np.array([[0.0, 0.0],
+                           [0.0, 0.0],
+                           [0.0, 0.0],
+                           [0.0, 0.0],
+                           [0.0, 0.0],
+                           [0.0, 0.0],
+                           [0.0, 0.0],
+                           [0.0, 0.0],
+                           [0.0, 0.0],
+                           [1.0, 0.0]])
+
+        y = sami2py.utils.return_fourier(self.x, coeffs)
+        target = np.cos(np.pi * self.x / 180.)
+        assert (y == target).all()
+
+    def test_sin(self):
+        """Test the sine function when coeffs are all 0s except for one with 1
+        value
+        """
+        coeffs = np.array([[0.0, 0.0],
+                           [0.0, 0.0],
+                           [0.0, 0.0],
+                           [0.0, 0.0],
+                           [0.0, 0.0],
+                           [0.0, 0.0],
+                           [0.0, 0.0],
+                           [0.0, 0.0],
+                           [0.0, 0.0],
+                           [0.0, 1.0]])
+
+        y = sami2py.utils.return_fourier(self.x, coeffs)
+        target = np.cos(np.pi * self.x / 180.)
+        assert (y == target).all()

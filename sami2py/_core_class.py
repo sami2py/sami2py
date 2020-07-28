@@ -402,12 +402,8 @@ class Model(object):
 
         return fig
 
-    def plot_exb(self, amplitude=30):
+    def plot_exb(self):
         """Plots ExB drifts from the return_fourier function
-        Parameters
-        ----------
-        amplitude : (int)
-            default amplitude value : 30
 
         Examples
         --------
@@ -424,10 +420,8 @@ class Model(object):
                                 "Use sami2py_vis instead"]),
                       DeprecationWarning)
 
-        fig = plt.gcf()
-        fig = amplitude * return_fourier(self.slt, self.MetaData['Fourier Coeffs'])
-
         plt.xlabel('Time (hrs)')
         plt.ylabel('ExB Drifts')
-        plt.plot(fig)
-        plt.show()
+        plt.plot(return_fourier(self.slt, self.MetaData['Fourier Coeffs']))
+
+        return plt

@@ -131,7 +131,8 @@ class TestGetUnformattedData():
 class TestFourierFunction():
     """Test basic functionality of the return_fourier function"""
     def setup(self):
-        """setup the x variable with general x values"""
+        """setup the x and coefficient variables with general x values and
+        coefficients"""
         self.x = np.array([0.11, 0.36, 0.61, 0.86, 1.12, 1.37, 1.62, 1.88,
                            2.13, 2.38, 2.64, 2.89, 3.14, 3.4, 3.65, 3.9,
                            4.16, 4.41,  4.66, 4.92, 5.17, 5.42, 5.68, 5.93,
@@ -146,22 +147,23 @@ class TestFourierFunction():
                           21.09, 21.35, 21.6, 21.85, 22.11, 22.36, 22.61,
                           22.86, 23.12, 23.37, 23.624, 23.87])
 
+        self.coeffs = np.array([[0.0, 0.0],
+                                [0.0, 0.0],
+                                [0.0, 0.0],
+                                [0.0, 0.0],
+                                [0.0, 0.0],
+                                [0.0, 0.0],
+                                [0.0, 0.0],
+                                [0.0, 0.0],
+                                [0.0, 0.0],
+                                [1.0, 0.0]])
+
     def test_cos(self):
         """Test the cos function when coeffs are all 0s except for one with 1
         value
         """
-        coeffs = np.array([[0.0, 0.0],
-                           [0.0, 0.0],
-                           [0.0, 0.0],
-                           [0.0, 0.0],
-                           [0.0, 0.0],
-                           [0.0, 0.0],
-                           [0.0, 0.0],
-                           [0.0, 0.0],
-                           [0.0, 0.0],
-                           [1.0, 0.0]])
 
-        y = sami2py.utils.return_fourier(self.x, coeffs)
+        y = sami2py.utils.return_fourier(self.x, self.coeffs)
         target = np.cos(np.pi * self.x / 180.)
         assert (y == target).all()
 
@@ -169,17 +171,7 @@ class TestFourierFunction():
         """Test the sine function when coeffs are all 0s except for one with 1
         value
         """
-        coeffs = np.array([[0.0, 0.0],
-                           [0.0, 0.0],
-                           [0.0, 0.0],
-                           [0.0, 0.0],
-                           [0.0, 0.0],
-                           [0.0, 0.0],
-                           [0.0, 0.0],
-                           [0.0, 0.0],
-                           [0.0, 0.0],
-                           [0.0, 1.0]])
 
-        y = sami2py.utils.return_fourier(self.x, coeffs)
+        y = sami2py.utils.return_fourier(self.x, self.coeffs)
         target = np.cos(np.pi * self.x / 180.)
         assert (y == target).all()

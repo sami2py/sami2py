@@ -1,5 +1,5 @@
 Welcome to sami2py's documentation!
-=================================
+===================================
 
 .. toctree::
    :maxdepth: 2

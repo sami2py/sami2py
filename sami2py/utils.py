@@ -145,7 +145,7 @@ def return_fourier(x, coeffs):
 
     y = 0.0 * x
     for i in range(0, NumF[0]):
-        y += coeffs[i, 0] * cos_a(x, i + 1) + coeffs[i, 1] * sin_a(x, i)
+        y += coeffs[i, 0] * cos_a(x, i + 1) + coeffs[i, 1] * sin_a(x, i + 1)
 
     return y
 

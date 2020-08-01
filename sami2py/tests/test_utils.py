@@ -160,7 +160,7 @@ class TestFourierFunction():
         self.coeffs[0, 0] = 1.0
 
         y = sami2py.utils.return_fourier(self.x, self.coeffs)
-        target = np.cos(np.pi * self.x / 180.)
+        target = np.cos(np.pi * self.x / 12.)
         assert (y == target).all()
 
     def test_sin(self):
@@ -170,5 +170,5 @@ class TestFourierFunction():
         self.coeffs[0, 1] = 1.0
 
         y = sami2py.utils.return_fourier(self.x, self.coeffs)
-        target = np.cos(np.pi * self.x / 180.)
+        target = np.cos(np.pi * self.x / 12.)
         assert (y == target).all()

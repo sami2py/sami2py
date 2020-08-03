@@ -114,7 +114,7 @@ class TestModelObjectUnformatted(TestModelObject):
                 sami2py.archive_dir = ''
 
 
-class TestModelPlot(:
+class TestModelPlot():
     """Test plotting functions.  To be moved to sami2py_vis
     """
     def setup(self):

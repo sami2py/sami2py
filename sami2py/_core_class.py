@@ -254,8 +254,8 @@ class Model(object):
             self.data['u4'] = (('z', 'f', 'ut'), u4)
 
         if self.MetaData['ExB model'] == 'Fourier Series':
-            exb = sami2py.utils.return(self.data['slt'],
-                                       self.MetaData['Fourier Coeffs'])
+            exb = return_fourier(self.data['slt'],
+                                 self.MetaData['Fourier Coeffs'])
             self.data['exb'] = (('ut'), exb)
 
     def _generate_metadata(self, namelist):

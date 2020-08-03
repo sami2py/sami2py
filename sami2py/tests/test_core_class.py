@@ -1,9 +1,12 @@
 """Unit tests for model.py
 """
 import os
+
 import xarray as xr
-import sami2py
+import matplotlib
 import pytest
+
+import sami2py
 
 
 class TestModelObject():
@@ -42,26 +45,6 @@ class TestModelObject():
         model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
                               day=self.day, test=True, outn=True)
         assert isinstance(model, sami2py.Model)
-
-    def test_model_plot(self):
-        """Basic test that a reasonable plot has been created by testing the
-           resulting axis limits
-        """
-        import matplotlib
-
-        model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
-                              day=self.day, test=True)
-        fig = model.plot_lat_alt()
-        assert isinstance(fig, matplotlib.figure.Figure)
-
-        tol = 1.e-4
-        xlims = fig.axes[0].get_xlim()
-        ylims = fig.axes[0].get_ylim()
-        assert abs(xlims[0] + 36.3329) < tol
-        assert abs(xlims[1] - 19.37387) < tol
-        assert abs(ylims[0] - 84.98926) < tol
-        assert abs(ylims[1] - 1999.998) < tol
-        matplotlib.pyplot.close(fig)
 
     def test_check_standard_model(self):
         """Test that standard model outputs nothing if there are no changes to
@@ -129,3 +112,43 @@ class TestModelObjectUnformatted(TestModelObject):
             with open(archive_path, 'w') as archive_file:
                 archive_file.write('')
                 sami2py.archive_dir = ''
+
+
+class TestModelPlot(:
+    """Test plotting functions.  To be moved to sami2py_vis
+    """
+    def setup(self):
+        """Set up .dat files in properly named director
+           for model object to load model
+        """
+        self.tmp_archive_dir = sami2py.archive_dir
+        sami2py.utils.set_archive_dir(path=sami2py.test_data_dir)
+        self.lon = 256
+        self.year = 1999
+        self.day = 257
+        self.model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
+                                   day=self.day, test=True)
+
+    def teardown(self):
+        """Undo any changes made to the archive directory
+        """
+        if os.path.isdir(self.tmp_archive_dir):
+            sami2py.utils.set_archive_dir(path=self.tmp_archive_dir)
+        else:
+            archive_path = os.path.join(sami2py.sami2py_dir, 'archive_path.txt')
+            with open(archive_path, 'w') as archive_file:
+                archive_file.write('')
+                sami2py.archive_dir = ''
+
+
+    def test_plot_lat_alt(self):
+        """Basic test that a plot has been created
+        """
+        fig = model.plot_lat_alt()
+        assert isinstance(fig, matplotlib.figure.Figure)
+
+    def test_plot_exb(self):
+        """Basic test that a plot has been created
+        """
+        fig = model.plot_exb()
+        assert isinstance(fig, matplotlib.figure.Figure)

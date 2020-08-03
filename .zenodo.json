@@ -1,0 +1,28 @@
+{
+  "creators": [
+    {
+    "affiliation": "@NASA-GSFC",
+    "name": "Klenzing, Jeff"
+    "orcid": "0000-0001-8321-6074"
+    },
+    {
+    "affiliation": "@NASA-GSFC",
+    "name": "Smith, Jonathon M."
+    "orcid": "0000-0002-8191-4765"
+    },
+    {
+    "affiliation": "@American University",
+    "name": "Kitano, Reika"
+    },
+    {
+    "affiliation": "@BU",
+    "name": "Hirsch, Michael"
+    "orcid": "0000-0002-1637-6526"
+    },
+    {
+    "affiliation": "@NRL",
+    "name": "Burrell, Angeline G."
+    "orcid": "0000-0001-8875-9326"
+    },
+  ]
+}

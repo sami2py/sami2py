@@ -427,4 +427,4 @@ class Model(object):
         plt.ylabel('ExB Drifts')
         plt.plot(return_fourier(self.slt, self.MetaData['Fourier Coeffs']))
 
-        return plt
+        return fig

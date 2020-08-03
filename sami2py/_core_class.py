@@ -253,6 +253,11 @@ class Model(object):
             u4 = np.reshape(u4, (nz, nf, nt), order="F")
             self.data['u4'] = (('z', 'f', 'ut'), u4)
 
+        if self.MetaData['ExB model'] == 'Fourier Series':
+            exb = sami2py.utils.return(self.data['slt'],
+                                       self.MetaData['Fourier Coeffs'])
+            self.data['exb'] = (('ut'), exb)
+
     def _generate_metadata(self, namelist):
         """Reads the namelist and generates MetaData based on Parameters
         Parameters
@@ -423,6 +428,8 @@ class Model(object):
                                 "Use sami2py_vis instead"]),
                       DeprecationWarning)
 
+        fig = plt.gcf()
+        plt.plot(self.data['slt'], self.data['exb'], '.')
         plt.xlabel('Time (hrs)')
         plt.ylabel('ExB Drifts')
         plt.plot(return_fourier(self.slt, self.MetaData['Fourier Coeffs']))

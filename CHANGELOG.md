@@ -2,11 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [next version] - 2020-07-27
+## [next version] - 2020-08-03
 - Using numpy 1.16 as minimum test version in accordance with NEP 29
 - Removed the sami2py-1.00.namelist and version.txt files from run_name
+- Bug Fix
+  - fixed a bug in compiling readthedocs
 - Added ability to input custom ExB Drifts as a Fourier Series
-  - return_fourier function in utils.py 
+  - return_fourier function in utils.py
   - plot_exb function in _core_class.py
   - Testing return_fourier function in test_utils.py
 

@@ -140,15 +140,14 @@ class TestModelPlot():
                 archive_file.write('')
                 sami2py.archive_dir = ''
 
-
     def test_plot_lat_alt(self):
         """Basic test that a plot has been created
         """
-        fig = model.plot_lat_alt()
+        fig = self.model.plot_lat_alt()
         assert isinstance(fig, matplotlib.figure.Figure)
 
     def test_plot_exb(self):
         """Basic test that a plot has been created
         """
-        fig = model.plot_exb()
+        fig = self.model.plot_exb()
         assert isinstance(fig, matplotlib.figure.Figure)

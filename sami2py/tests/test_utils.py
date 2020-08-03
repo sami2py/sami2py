@@ -60,7 +60,6 @@ class TestArchiveDir():
     """Test basic functionality of the set_archive_dir function"""
     def test_set_archive_dir(self):
         """Test that set_archive_dir has set and stored the archive directory
-
            To leave the archive directory unchanged it must be gathered and
            reset after the test is complete
         """
@@ -127,3 +126,49 @@ class TestGetUnformattedData():
         """File open should raise an error if invalid file path provided"""
         with pytest.raises(IOError):
             sami2py.utils.get_unformatted_data(self.model_pathU, 'glat')
+
+
+class TestFourierFunction():
+    """Test basic functionality of the return_fourier function"""
+    def setup(self):
+        """Setup the x and coefficient variables with general x values and
+        coefficients"""
+        self.x = np.array([0.11, 0.36, 0.61, 0.86, 1.12, 1.37, 1.62, 1.88,
+                           2.13, 2.38, 2.64, 2.89, 3.14, 3.4, 3.65, 3.9,
+                           4.16, 4.41, 4.66, 4.92, 5.17, 5.42, 5.68, 5.93,
+                           6.18, 6.44, 6.69, 6.94, 7.2, 7.45, 7.7, 7.95,
+                           8.2, 8.46, 8.71, 8.96, 9.21, 9.46, 9.72, 9.97,
+                          10.23, 10.49, 10.74, 10.99, 11.24, 11.49, 11.74,
+                          11.99, 12.24, 12.49, 12.74, 13., 13.26, 13.51, 13.76,
+                          14.02, 14.27, 14.53, 14.79, 15.04, 15.29, 15.54,
+                          15.79, 16.04, 16.29, 16.54, 16.79, 17.04, 17.29,
+                          17.54, 17.8, 18.05, 18.31, 18.56, 18.81, 19.07,
+                          19.32, 19.57, 19.83, 20.08, 20.33, 20.59, 20.84,
+                          21.09, 21.35, 21.6, 21.85, 22.11, 22.36, 22.61,
+                          22.86, 23.12, 23.37, 23.624, 23.87])
+
+        self.coeffs = np.zeros((10, 2))
+
+    def teardown(self):
+        """Resets both parameters"""
+        del self.x, self.coeffs
+
+    def test_cos(self):
+        """Test the cos function when coeffs are all 0s except for one with 1
+        value
+        """
+        self.coeffs[0, 0] = 1.0
+
+        y = sami2py.utils.return_fourier(self.x, self.coeffs)
+        target = np.cos(np.pi * self.x / 12.)
+        assert (y == target).all()
+
+    def test_sin(self):
+        """Test the sine function when coeffs are all 0s except for one with 1
+        value
+        """
+        self.coeffs[0, 1] = 1.0
+
+        y = sami2py.utils.return_fourier(self.x, self.coeffs)
+        target = np.sin(np.pi * self.x / 12.)
+        assert (y == target).all()

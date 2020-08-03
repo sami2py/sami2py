@@ -13,6 +13,9 @@ generate_path(tag, lon, year, day)
 set_archive_dir(path=None, store=None)
     Allows user to specify the location where the model outputs will be stored
 
+return_fourier(x, coeffs)
+    Returns Fourier Series up to NumF Coefficients
+
 get_unformatted_data(dat_dir, var_name, nz, nf, ni, nt, reshape=False)
     routine to interpret unformatted binary files created by the SAMI2 model
 -------------------------------------------------------------------------------
@@ -24,6 +27,7 @@ Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 """
 
 import os
+import numpy as np
 
 
 def generate_path(tag, lon, year, day, test=False):
@@ -113,6 +117,39 @@ def set_archive_dir(path=None, store=True):
         raise ValueError('Path does not lead to a valid directory.')
 
 
+def return_fourier(x, coeffs):
+    """
+    Returns a Fourier series up to NumF coefficients
+
+    Parameters
+    ----------
+    x : (1d ndarray)
+        solar local time in hours (slt)
+    coeffs : (array)
+        10x2 array of fourier coefficients
+
+    Returns
+    --------
+    y : (array)
+        result of the fourier series
+    """
+    def cos_a(x, n):
+        """simple cosine"""
+        return np.cos(n * np.pi * x / 12.0)
+
+    def sin_a(x, n):
+        """simple sine"""
+        return np.sin(n * np.pi * x / 12.0)
+
+    NumF = coeffs.shape
+
+    y = 0.0 * x
+    for i in range(0, NumF[0]):
+        y += coeffs[i, 0] * cos_a(x, i + 1) + coeffs[i, 1] * sin_a(x, i + 1)
+
+    return y
+
+
 def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
     """Routine to interpret unformatted binary files created by the SAMI2 model
 
@@ -139,7 +176,6 @@ def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
     float_data : (numpy.ndarray)
         unformatted data organized into a numpy array for handling in python
     """
-    import numpy as np
 
     binary_file = open(os.path.join(dat_dir, var_name + 'u.dat'), 'rb')
     float_data = np.fromfile(binary_file, dtype='float32')

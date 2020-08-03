@@ -4,15 +4,12 @@
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
 """Wrapper for running sami2 model
-
 Classes
 -------------------------------------------------------------------------------
 Model
     Loads, reshapes, and holds SAMI2 output for a given model run
     specified by the user.
 -------------------------------------------------------------------------------
-
-
 Moduleauthor
 -------------------------------------------------------------------------------
 Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
@@ -21,7 +18,7 @@ Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 from os import path
 import numpy as np
 import xarray as xr
-from sami2py.utils import generate_path, get_unformatted_data
+from sami2py.utils import generate_path, get_unformatted_data, return_fourier
 
 
 class Model(object):
@@ -30,7 +27,6 @@ class Model(object):
     def __init__(self, tag, lon, year, day, outn=False, test=False):
         """ Loads a previously run sami2 model and sorts into
             appropriate array shapes
-
         Parameters
         ----------
         tag : (string)
@@ -47,25 +43,21 @@ class Model(object):
         test : (boolean)
             if true : use test model output
             if false : look for user made model output
-
         Returns
         -------
         self : model class object containing OCB file data
-
         Attributes
         ----------
         ut : (1D ndarray)
             Universal Time (hrs)
         slt : (1D ndarray)
             Solar Local Time (hr)
-
         glat : (2D ndarray)
             Geographic Latitude (deg)
         glon : (2D ndarray)
             Geographic Longitude (deg)
         zalt : (2D ndarray)
             Altitude (km)
-
         deni : (4D ndarray)
             Ion density by species (cm^-3)
         vsi : (4D ndarray)
@@ -74,12 +66,10 @@ class Model(object):
             Ion Temperature by species (K)
         te : (3D ndarray)
             Electron Temperature (K)
-
         Examples
         --------
         To load a previous model run:
             ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
-
         """
 
         self.tag = tag
@@ -93,19 +83,16 @@ class Model(object):
 
     def __repr__(self):
         """Make a printable representation of a Model object
-
         Returns
         -------
         out : (string)
             string containing a printable representation of a Model object
-
         Examples
         --------
         Load the model
             ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
         Check the model information
             ModelRun
-
         """
 
         out = ['']
@@ -149,7 +136,6 @@ class Model(object):
 
     def _calculate_slt(self):
         """Calculates Solar Local Time for reference point of model
-
         Returns
         -------
         self.slt : (float)
@@ -164,7 +150,6 @@ class Model(object):
 
     def _load_model(self):
         """Loads model results
-
         Returns
         -------
         void
@@ -263,12 +248,10 @@ class Model(object):
 
     def _generate_metadata(self, namelist):
         """Reads the namelist and generates MetaData based on Parameters
-
         Parameters
         -----------
         namelist : (list)
             variable namelist from SAMI2 model
-
         Returns
         -------
         void
@@ -345,26 +328,22 @@ class Model(object):
 
     def check_standard_model(self, model_type="all"):
         """Checks for standard atmospheric inputs
-
         Parameters
         ----------
         model_type : (str)
             Limit check to certain models (default='all')
             Not currently implemented
-
         Returns
         -------
         mod_keys : (list)
             List of modified keyword for self.MetaData, empty
             if no modifications were made
-
         Examples
         --------
         Load the model
             ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
         Check the model information for changes to the standard inputs
             ModelRun.check_standard_model()
-
         """
         mod_keys = list()
         meta_keys = list(self.MetaData.keys())
@@ -391,7 +370,6 @@ class Model(object):
 
     def plot_lat_alt(self, time_step=0, species=1):
         """Plots input parameter as a function of latitude and altitude
-
         Parameters
         ----------
         time_step : (int)
@@ -399,7 +377,6 @@ class Model(object):
         species : (int)
             ion species index :
             0: H+, 1: O+, 2: NO+, 3: O2+, 4: He+, 5: N2+, 6: N+
-
         Examples
         --------
         Load the model
@@ -408,7 +385,6 @@ class Model(object):
             ModelRun.plot_lat_alt()
         Plot the H+ density at the 100th time step (initial step is 0)
             ModelRun.plot_lat_alt(time_step=99, species=0)
-
         """
         import matplotlib.pyplot as plt
         import warnings
@@ -425,3 +401,27 @@ class Model(object):
         plt.ylabel('Altitude (km)')
 
         return fig
+
+    def plot_exb(self):
+        """Plots ExB drifts from the return_fourier function
+
+        Examples
+        --------
+        Load the model
+            ModelRun = sami2py.Model(tag='exb', lon=0, year=2012, day=210)
+        Plot ExB drifts
+            ModelRun.plot_exb()
+        """
+        import matplotlib.pyplot as plt
+        import warnings
+
+        warnings.warn(' '.join(["Model.plot_exb is deprecated and will be",
+                                "removed in a future version. ",
+                                "Use sami2py_vis instead"]),
+                      DeprecationWarning)
+
+        plt.xlabel('Time (hrs)')
+        plt.ylabel('ExB Drifts')
+        plt.plot(return_fourier(self.slt, self.MetaData['Fourier Coeffs']))
+
+        return plt

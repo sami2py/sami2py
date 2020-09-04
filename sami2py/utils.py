@@ -189,6 +189,7 @@ def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
     else:
         return float_data[1:-1]
 
+
 def __make_fourier(na, nb):
     """ The function for the curve fit
     Parameters
@@ -202,7 +203,7 @@ def __make_fourier(na, nb):
         ret = a[0]
         for deg in range(0, na):
             ret += a[deg + 1] * np.cos((deg + 1) * np.pi * x / 12)
-        for deg in range(na, na+nb):
+        for deg in range(na, na + nb):
             ret += a[deg + 1] * np.sin((deg - na + 1) * np.pi * x / 12)
         return ret
     return fourier
@@ -231,17 +232,17 @@ def fourier_fit(local_times, drifts, num_co):
     coefficients = np.zeros((num_co, 2))
     covariance = np.zeros((num_co, 2))
     ind, = np.where(~np.isnan(drifts))
-    if ind.size < num_co*2+1:
+    if ind.size < num_co * 2 + 1:
         warnings.warn('not enough viable drift data, '
                       'returning zero value \"flat fit\"', Warning)
         return 0, coefficients
     # popt contains the coeficients. First ten are cosines, second ten are sins
     popt, pcov = curve_fit(__make_fourier(num_co, num_co), local_times[ind],
-                           drifts[ind], [0.0]*(num_co*2+1))
+                           drifts[ind], [0.0] * (num_co * 2 + 1))
     # format the coefficients for input ito the SAMI2 model
     # the shape is np.zeroes((10,2))
     ve01 = popt[0]
-    for n in range(1, num_co*2):
+    for n in range(1, num_co * 2):
         i = (n - 1) % num_co
         j = int((n - 1) / num_co)
         coefficients[i, j] = popt[n]

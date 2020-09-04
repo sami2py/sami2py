@@ -180,7 +180,7 @@ class TestFourierFit():
         """Setup the sin wave to be fit by the fitting routine"""
         self.lt = np.linspace(0, 24, 49)
         self.coeffs = np.zeros((10, 2))
-        self.coeffs[0,0] = 1
+        self.coeffs[0, 0] = 1
         self.v = sami2py.utils.return_fourier(self.lt, self.coeffs)
 
     def teardown(self):

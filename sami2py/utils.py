@@ -235,7 +235,7 @@ def fourier_fit(local_times, drifts, num_co):
     if ind.size < num_co * 2 + 1:
         warnings.warn('not enough viable drift data, '
                       'returning zero value \"flat fit\"', Warning)
-        return 0, coefficients
+        return 0, coefficients, covariance
     # popt contains the coeficients. First ten are cosines, second ten are sins
     popt, pcov = curve_fit(__make_fourier(num_co, num_co), local_times[ind],
                            drifts[ind], [0.0] * (num_co * 2 + 1))

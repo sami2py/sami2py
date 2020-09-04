@@ -9,6 +9,7 @@ from __future__ import (print_function)
 import os
 import numpy as np
 import sami2py
+import warnings
 import pytest
 
 
@@ -193,3 +194,12 @@ class TestFourierFit():
         max_diff = np.max(np.abs(self.coeffs.flatten() - fit_coefs.flatten()))
         assert max_diff < .0000001
         assert v0 < .00000001
+
+    def test_warning(self):
+        """Test that the warning is generated properly"""
+        nan_drifts = np.array([np.nan])
+        with pytest.warns(Warning):
+            v0, fit_coefs, cov = sami2py.utils.fourier_fit(self.lt, nan_drifts, 10)
+            assert v0 == 0
+            assert (fit_coefs == np.zeros((10, 2))).all()
+            assert (cov == np.zeros((10, 2))).all()

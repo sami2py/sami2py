@@ -4,7 +4,7 @@
 *.o
 *.x
 *.mod
-sami2py/fortran/ExB.inp
+sami2py/fortran/exb.inp
 sami2py/fortran/sami2py-1.00.namelist
 
 .DS_STORE

@@ -28,12 +28,16 @@ Moduleauthor
 -------------------------------------------------------------------------------
 Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 -------------------------------------------------------------------------------
+
 """
-import os
-import subprocess
+
 import numpy as np
+import os
+import shutil
+import subprocess
+
 from sami2py import fortran_dir, __version__
-from .utils import generate_path
+from sami2py.utils import generate_path
 
 
 def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
@@ -235,8 +239,10 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
 
     Examples
     --------
-    import sami2py
-    sami2py.run_model(tag='run_name', lon=0, year=2012, day=210)
+    ::
+
+        import sami2py
+        sami2py.run_model(tag='run_name', lon=0, year=2012, day=210)
 
     """
 
@@ -381,8 +387,6 @@ def _archive_model(path, clean, fejer, fmtout, outn):
     void
         Moves files to the archive directory
     """
-    import shutil
-    import subprocess
 
     if fmtout:
         filelist = ['sami2py-1.00.namelist', 'glonf.dat', 'glatf.dat',

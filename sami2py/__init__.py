@@ -20,7 +20,10 @@ import logging
 import sys
 import os
 
-__version__ = str('0.2.0')
+# set the version
+here = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(here, 'version.txt')) as version_file:
+    __version__ = version_file.read().strip()
 
 # get home directory
 home_dir = os.path.expanduser('~')

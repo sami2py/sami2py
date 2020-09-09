@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Using numpy 1.16 as minimum test version in accordance with NEP 29
 - Removed the sami2py-1.00.namelist and version.txt files from run_name
 - Bug Fix
+  - Pull version info from a single location
   - fixed a bug in compiling readthedocs
 - Added ability to input custom ExB Drifts as a Fourier Series
   - return_fourier function in utils.py

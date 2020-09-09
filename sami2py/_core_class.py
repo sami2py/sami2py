@@ -14,10 +14,17 @@ Moduleauthor
 -------------------------------------------------------------------------------
 Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 -------------------------------------------------------------------------------
+
 """
-from os import path
+
 import numpy as np
+from os import path
+import re
+import warnings
+
 import xarray as xr
+import matplotlib.pyplot as plt
+
 from sami2py.utils import generate_path, get_unformatted_data, return_fourier
 
 
@@ -246,6 +253,11 @@ class Model(object):
             u4 = np.reshape(u4, (nz, nf, nt), order="F")
             self.data['u4'] = (('z', 'f', 'ut'), u4)
 
+        if self.MetaData['ExB model'] == 'Fourier Series':
+            exb = return_fourier(self.data['slt'],
+                                 self.MetaData['Fourier Coeffs'])
+            self.data['exb'] = (('ut'), exb)
+
     def _generate_metadata(self, namelist):
         """Reads the namelist and generates MetaData based on Parameters
         Parameters
@@ -257,8 +269,6 @@ class Model(object):
         void
             Model object modified in place
         """
-
-        import re
 
         def find_float(name, ind):
             """regular expression search for float vals"""
@@ -385,9 +395,8 @@ class Model(object):
             ModelRun.plot_lat_alt()
         Plot the H+ density at the 100th time step (initial step is 0)
             ModelRun.plot_lat_alt(time_step=99, species=0)
+
         """
-        import matplotlib.pyplot as plt
-        import warnings
 
         warnings.warn(' '.join(["Model.plot_lat_alt is deprecated and will be",
                                 "removed in a future version. ",
@@ -411,17 +420,18 @@ class Model(object):
             ModelRun = sami2py.Model(tag='exb', lon=0, year=2012, day=210)
         Plot ExB drifts
             ModelRun.plot_exb()
+
         """
-        import matplotlib.pyplot as plt
-        import warnings
 
         warnings.warn(' '.join(["Model.plot_exb is deprecated and will be",
                                 "removed in a future version. ",
                                 "Use sami2py_vis instead"]),
                       DeprecationWarning)
 
+        fig = plt.gcf()
+        plt.plot(self.data['slt'], self.data['exb'], '.')
         plt.xlabel('Time (hrs)')
         plt.ylabel('ExB Drifts')
         plt.plot(return_fourier(self.slt, self.MetaData['Fourier Coeffs']))
 
-        return plt
+        return fig

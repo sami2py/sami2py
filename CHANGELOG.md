@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - return_fourier function in utils.py 
   - plot_exb function in _core_class.py
   - Testing return_fourier function in test_utils.py
+- added default exb file: setup.py generates a exb.inp file
 
 ## [0.2.2] - 2020-07-17
 - Added simple port of core data to netcdf file

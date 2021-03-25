@@ -18,6 +18,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - private __make_fourier function in utils.py
   - Testing fourier_fit function in test_utils.py
   - scipy dependency added
+- added default exb file: setup.py generates a exb.inp file
+- Documentation
+  - Added zenodo integration
 
 ## [0.2.2] - 2020-07-17
 - Added simple port of core data to netcdf file

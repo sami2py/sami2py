@@ -19,6 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Testing fourier_fit function in test_utils.py
   - scipy dependency added
 - added default exb file: setup.py generates a exb.inp file
+- Added deprecation warnings to plotting functions
 - Documentation
   - Added zenodo integration
 

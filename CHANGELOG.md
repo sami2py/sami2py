@@ -8,10 +8,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Bug Fix
   - Pull version info from a single location
   - fixed a bug in compiling readthedocs
+  - added default exb file: setup.py generates a exb.inp file
 - Added ability to input custom ExB Drifts as a Fourier Series
   - return_fourier function in utils.py
   - plot_exb function in _core_class.py
   - Testing return_fourier function in test_utils.py
+- Added ability to generate Fourier Coefficients from time series ExB drifts
+  - fourier_fit function in utils.py
+  - private __make_fourier function in utils.py
+  - Testing fourier_fit function in test_utils.py
+  - scipy dependency added
 - added default exb file: setup.py generates a exb.inp file
 - Documentation
   - Added zenodo integration

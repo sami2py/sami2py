@@ -27,7 +27,9 @@ Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 """
 
 import os
+import warnings
 import numpy as np
+from scipy.optimize import curve_fit
 
 
 def generate_path(tag, lon, year, day, test=False):
@@ -186,3 +188,64 @@ def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
         return float_data[1:-1, :]
     else:
         return float_data[1:-1]
+
+
+def __make_fourier(na, nb):
+    """ The function for the curve fit
+    Parameters
+    ----------
+    na: (int)
+        number of cosine terms/coefficients
+    nb: (int)
+        number of sin terms/coefficients
+    """
+    def fourier(x, *a):
+        ret = a[0]
+        for deg in range(0, na):
+            ret += a[deg + 1] * np.cos((deg + 1) * np.pi * x / 12)
+        for deg in range(na, na + nb):
+            ret += a[deg + 1] * np.sin((deg - na + 1) * np.pi * x / 12)
+        return ret
+    return fourier
+
+
+def fourier_fit(local_times, drifts, num_co):
+    """ Here the terms in the fourier fit are actually determined
+    Parameters
+    ----------
+    local_times : (array-like)
+        xdim for fit; local time values
+    drifts : (array-like)
+        ydim for fit; median drift values from data
+    num_co : (int)
+        'number of coefficients) how many sin/cosine pairs for the fit
+
+    Returns
+    -------
+    ve01 : float
+        linear offset of the fourier fit
+    coefficients : num_co by 2 array like
+        coefficients to describe the fourier function that fits the drifts
+    covariance : num_co by 2 array like
+        covariance of the coefficients
+    """
+    coefficients = np.zeros((num_co, 2))
+    covariance = np.zeros((num_co, 2))
+    ind, = np.where(~np.isnan(drifts))
+    if ind.size < num_co * 2 + 1:
+        warnings.warn('not enough viable drift data, '
+                      'returning zero value \"flat fit\"', Warning)
+        return 0, coefficients, covariance
+    # popt contains the coeficients. First ten are cosines, second ten are sins
+    popt, pcov = curve_fit(__make_fourier(num_co, num_co), local_times[ind],
+                           drifts[ind], [0.0] * (num_co * 2 + 1))
+    # format the coefficients for input ito the SAMI2 model
+    # the shape is np.zeroes((10,2))
+    ve01 = popt[0]
+    for n in range(1, num_co * 2):
+        i = (n - 1) % num_co
+        j = int((n - 1) / num_co)
+        coefficients[i, j] = popt[n]
+        covariance[i, j] = pcov[n, n]
+
+    return ve01, coefficients, covariance

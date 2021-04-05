@@ -380,6 +380,11 @@ class Model(object):
 
     def plot_lat_alt(self, time_step=0, species=1):
         """Plots input parameter as a function of latitude and altitude
+
+        .. deprecated:: 0.3.0
+          All plotting routines will be removed in 0.4.0 and moved to
+          sami2py_vis
+
         Parameters
         ----------
         time_step : (int)
@@ -387,6 +392,7 @@ class Model(object):
         species : (int)
             ion species index :
             0: H+, 1: O+, 2: NO+, 3: O2+, 4: He+, 5: N2+, 6: N+
+
         Examples
         --------
         Load the model
@@ -413,6 +419,10 @@ class Model(object):
 
     def plot_exb(self):
         """Plots ExB drifts from the return_fourier function
+
+        .. deprecated:: 0.3.0
+          All plotting routines will be removed in 0.4.0 and moved to
+          sami2py_vis
 
         Examples
         --------

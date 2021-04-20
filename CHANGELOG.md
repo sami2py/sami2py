@@ -2,8 +2,8 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [next version] - 2020-08-03
-- Using numpy 1.16 as minimum test version in accordance with NEP 29
+## [next version] - 2021-04-05
+- Using minimum test version of numpy in accordance with NEP 29
 - Removed the sami2py-1.00.namelist and version.txt files from run_name
 - Bug Fix
   - Pull version info from a single location
@@ -19,6 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Testing fourier_fit function in test_utils.py
   - scipy dependency added
 - added default exb file: setup.py generates a exb.inp file
+- Added deprecation warnings to plotting functions
 - Documentation
   - Added zenodo integration
 

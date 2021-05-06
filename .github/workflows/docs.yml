@@ -27,6 +27,9 @@ jobs:
         pip install -r test_requirements.txt
         pip install -r requirements.txt
 
+    - name: Manually install sami2py
+      run: python setup.py install --user
+
     - name: Check documentation build
       run: sphinx-build -E -b html docs dist/docs
 

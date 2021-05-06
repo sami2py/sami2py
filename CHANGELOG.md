@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Pull version info from a single location
   - fixed a bug in compiling readthedocs
   - added default exb file: setup.py generates a exb.inp file
+  - Use integer for longitude in directory structure
 - Added ability to input custom ExB Drifts as a Fourier Series
   - return_fourier function in utils.py
   - plot_exb function in _core_class.py

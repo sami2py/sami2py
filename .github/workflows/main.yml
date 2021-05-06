@@ -60,6 +60,7 @@ jobs:
       run: pytest --cov=sami2py/
 
     - name: Publish results to coveralls
+      if: ${{ matrix.os == 'ubuntu-latest'}}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: coveralls --rcfile=setup.cfg --service=github

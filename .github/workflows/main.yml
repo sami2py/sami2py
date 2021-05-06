@@ -63,3 +63,5 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: coveralls --rcfile=setup.cfg --service=github
+
+    - uses: codecov/codecov-action@v1

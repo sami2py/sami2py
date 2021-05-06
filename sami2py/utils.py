@@ -79,7 +79,7 @@ def generate_path(tag, lon, year, day, test=False):
         str_fmt1 = 'lon{lon:03d}'
         str_fmt2 = '{year:4d}_{day:03d}'
         archive_path = os.path.join(top_directory, tag,
-                                    str_fmt1.format(lon=lon),
+                                    str_fmt1.format(lon=int(lon)),
                                     str_fmt2.format(year=year,
                                                     day=day))
     else:

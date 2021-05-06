@@ -39,6 +39,9 @@ jobs:
           pip install --no-binary :numpy: numpy==$NUMPY_VER;
         fi
 
+    - name: Manually install sami2py
+      run: python setup.py install --user
+
     - name: Test PEP8 compliance
       run: flake8 . --count --select=E,F,W --show-source --statistics
 

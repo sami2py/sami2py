@@ -37,12 +37,6 @@ class TestGeneratePath():
         with pytest.raises(TypeError):
             sami2py.utils.generate_path(tag=7, lon=0, year=2012, day=277)
 
-    def test_generate_path_w_nonnumeric_lon(self):
-        """Tests generation of a path with a nonnumeric longitude"""
-        with pytest.raises(ValueError):
-            sami2py.utils.generate_path(tag='test', lon='0', year=2012,
-                                        day=277)
-
     def test_generate_path_w_nonnumeric_year(self):
         """Tests generation of a path with a nonnumeric year"""
         with pytest.raises(ValueError):

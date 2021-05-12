@@ -45,7 +45,6 @@ extensions = [
     'sphinx.ext.imgmath',
     'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
-    'recommonmark',
     'numpydoc',
     'IPython.sphinxext.ipython_console_highlighting'
 ]

@@ -2,12 +2,12 @@
   "creators": [
     {
     "affiliation": "Goddard Space Flight Center",
-    "name": "Klenzing, Jeff"
+    "name": "Klenzing, Jeff",
     "orcid": "0000-0001-8321-6074"
     },
     {
     "affiliation": "Catholic University of America, Goddard Space Flight Center",
-    "name": "Smith, Jonathon M."
+    "name": "Smith, Jonathon M.",
     "orcid": "0000-0002-8191-4765"
     },
     {
@@ -16,18 +16,20 @@
     },
     {
     "affiliation": "Boston University",
-    "name": "Hirsch, Michael"
+    "name": "Hirsch, Michael",
     "orcid": "0000-0002-1637-6526"
     },
     {
     "affiliation": "U.S. Naval Research Laboratory",
-    "name": "Burrell, Angeline G."
+    "name": "Burrell, Angeline G.",
     "orcid": "0000-0001-8875-9326"
-    },
-  ]
-  "access_right": "open", 
-  "resource_type": {
-    "type": "software", 
+    }
+  ],
+  "access_right": "open",
+  "resource_type": [
+    {
+    "type": "software",
     "title": "Software"
-}
+    }
+  ]
 }

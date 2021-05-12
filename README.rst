@@ -7,21 +7,17 @@ sami2py: sami2py is another model of the ionosphere python style
     * - docs
       - | |docs| |doi|
     * - tests
-      - | |travis| |appveyor|
+      - | |pytest|
         | |coveralls| |codecov|
         | |codeclimate|
 
-.. |docs| image:: https://readthedocs.org/projects/sami2py/badge/?version=latest
+.. |rtd| image:: https://readthedocs.org/projects/sami2py/badge/?version=latest
     :target: http://sami2py.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-.. |travis| image:: https://travis-ci.com/sami2py/sami2py.svg?branch=main
-    :target: https://travis-ci.com/sami2py/sami2py
-    :alt: Documentation Status
-
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/j36b7x15e2nu1884?svg=true
-    :target: https://ci.appveyor.com/project/jklenzing/sami2py
-    :alt: Documentation Status
+.. |pytest| image:: https://github.com/sami2py/sami2py/actions/workflows/main.yml/badge.svg
+    :target: https://github.com/sami2py/sami2py/actions/workflows/main.yml
+    :alt: Pytest with Flake8
 
 .. |coveralls| image:: https://coveralls.io/repos/github/sami2py/sami2py/badge.svg?branch=main
     :target: https://coveralls.io/github/sami2py/sami2py?branch=main

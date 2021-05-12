@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - scipy dependency added
 - added default exb file: setup.py generates a exb.inp file
 - Added deprecation warnings to plotting functions
+- Migrated CI testing to Github Actions
 - Documentation
   - Added zenodo integration
 

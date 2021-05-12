@@ -39,7 +39,7 @@ def generate_path(tag, lon, year, day, test=False):
     ----------
     tag : (string)
         specifies name of model run
-    lon : (int)
+    lon : (int or float)
         longitude of model run
     year : (int)
         year of model run
@@ -54,6 +54,12 @@ def generate_path(tag, lon, year, day, test=False):
     archive_path : (string)
         Complete path pointing to model archive for a given run
 
+    Note
+    ----
+    The longitude value will be rounded to an integer for creating the path,
+    but the simulation will store and use this as a float so that intersections
+    with specific ground-based stations can be performed.
+
     Examples
     --------
         import sami2py
@@ -61,6 +67,7 @@ def generate_path(tag, lon, year, day, test=False):
         path = sami2py.utils.generate_path(tag='run_name', lon=0, year=2012,
                                            day=210)
     Will return 'path_name_here/run_name/lon000/2012_210'
+
     """
 
     if not isinstance(tag, str):
@@ -79,7 +86,7 @@ def generate_path(tag, lon, year, day, test=False):
         str_fmt1 = 'lon{lon:03d}'
         str_fmt2 = '{year:4d}_{day:03d}'
         archive_path = os.path.join(top_directory, tag,
-                                    str_fmt1.format(lon=lon),
+                                    str_fmt1.format(lon=int(lon)),
                                     str_fmt2.format(year=year,
                                                     day=day))
     else:

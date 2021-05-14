@@ -188,7 +188,7 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
         A True value will use the Fejer-Scherliess model of ExB drifts
         A False value will use a user-specified Fourier series for ExB drifts
         (default = True)
-    ExB_drifts : (10x2 ndarray of floats or string)
+    ExB_drifts : (10x2 ndarray of floats, string, or NoneType)
         Matrix of Fourier series coefficients dependent on solar local time
         (SLT) in hours where
         ExB_total = ExB_drifts[i,0] * cos((i + 1) * pi * SLT / 12)

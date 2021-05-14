@@ -197,7 +197,7 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
         of 0 m/s drifts or 'default' which will produce a cosine wave with a
         maximum magnitude of 30 m/s at local noon and a minimum of -30 m/s
         at midnight.
-        (default = 'none')
+        (default = None)
     ve01 : (float)
         Constant offset for Fourier ExB drifts (m/s)
         (default=0)

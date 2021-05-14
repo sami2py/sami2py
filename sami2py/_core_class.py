@@ -38,7 +38,7 @@ class Model(object):
         ----------
         tag : (string)
             name of run (top-level directory)
-        lon : (int)
+        lon : (float)
             longitude reference
         year : (int)
             year

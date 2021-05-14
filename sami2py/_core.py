@@ -49,7 +49,7 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
               no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
               Tinf_scale=1, Tn_scale=1., euv_scale=1,
               wind_scale=1, hwm_model=14,
-              fejer=True, ExB_drifts='none', ve01=0., exb_scale=1,
+              fejer=True, ExB_drifts=None, ve01=0., exb_scale=1,
               alt_crit=150., cqe=7.e-14,
               clean=False, test=False, fmtout=True, outn=False):
     """Runs SAMI2 and archives the data in path
@@ -188,13 +188,13 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
         A True value will use the Fejer-Scherliess model of ExB drifts
         A False value will use a user-specified Fourier series for ExB drifts
         (default = True)
-    ExB_drifts : (10x2 ndarray of floats)
+    ExB_drifts : (10x2 ndarray of floats or string)
         Matrix of Fourier series coefficients dependent on solar local time
         (SLT) in hours where
-        ExB_total = ExB_drifts[i,0]*cos((i+1)*pi*SLT/12)
-                  + ExB_drifts[i,1]*sin((i+1)*pi*SLT/12)
+        ExB_total = ExB_drifts[i,0] * cos((i + 1) * pi * SLT / 12)
+                  + ExB_drifts[i,1] * sin((i + 1) * pi * SLT / 12)
         or string specifying 'none' or 'default' which will produce 24 lt hrs
-        of 0 m/s drifts or 'default' which will produce a sin wave with a
+        of 0 m/s drifts or 'default' which will produce a cosine wave with a
         maximum magnitude of 30 m/s at local noon and a minimum of -30 m/s
         at midnight.
         (default = 'none')
@@ -286,15 +286,19 @@ def _generate_drift_info(fejer, ExB_drifts=None):
     """
     drift_info = _generate_fortran_bool(fejer)
     if not fejer:
-        if ExB_drifts == 'none':
+        if ExB_drifts is None:
             ExB_drifts = np.zeros((10, 2))
-        
-        if ExB_drifts == 'default':
-            ExB_drifts = np.array([[-30, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
-        
-        if ExB_drifts.shape != (10, 2):
-            raise Exception('Invalid ExB drift shape!  Must be 10x2 ndarray.')
+
+        if isinstance(ExB_drifts, str) and ExB_drifts == 'default':
+            ExB_drifts = np.array([[-30, 0], [0, 0], [0, 0], [0, 0], [0, 0],
+                                  [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]])
+
+        if isinstance(ExB_drifts, np.ndarray) and ExB_drifts.shape != (10, 2):
+            raise ValueError('Invalid ExB drift shape!  Must be 10x2 ndarray.')
+
+        if isinstance(ExB_drifts, str) and ExB_drifts != 'default':
+            raise ValueError('Unrecognized drift name')
+
         np.savetxt('exb.inp', ExB_drifts)
     return drift_info
 

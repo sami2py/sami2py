@@ -290,8 +290,8 @@ def _generate_drift_info(fejer, ExB_drifts=None):
             ExB_drifts = np.zeros((10, 2))
 
         if isinstance(ExB_drifts, str) and ExB_drifts == 'default':
-            ExB_drifts = np.array([[-30, 0], [0, 0], [0, 0], [0, 0], [0, 0],
-                                  [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]])
+            ExB_drifts = np.zeros((10, 2))
+            ExB_drifts[0, 0] = -30
 
         if isinstance(ExB_drifts, np.ndarray) and ExB_drifts.shape != (10, 2):
             raise ValueError('Invalid ExB drift shape!  Must be 10x2 ndarray.')

@@ -193,8 +193,8 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
         (SLT) in hours where
         ExB_total = ExB_drifts[i,0] * cos((i + 1) * pi * SLT / 12)
                   + ExB_drifts[i,1] * sin((i + 1) * pi * SLT / 12)
-        or string specifying 'none' or 'default' which will produce 24 lt hrs
-        of 0 m/s drifts or 'default' which will produce a cosine wave with a
+        Alternatively, None will produce 24 lt hrs of 0 m/s drifts everywhere.
+        Using the string 'default' will produce a cosine wave with a
         maximum magnitude of 30 m/s at local noon and a minimum of -30 m/s
         at midnight.
         (default = None)

@@ -168,8 +168,8 @@ class TestDriftGeneration():
         assert np.array_equal(drifts, empty_drift)
 
     def test_default_drifts(self):
-        default = np.array([[-30, 0], [0, 0], [0, 0], [0, 0], [0, 0],
-                           [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]])
+        default = np.zeros((10, 2))
+        default[0, 0] = -30
         sami2py._core._generate_drift_info(False, 'default')
         drifts = np.loadtxt('exb.inp')
         assert np.array_equal(drifts, default)

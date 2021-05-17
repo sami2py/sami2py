@@ -98,7 +98,7 @@ class TestModelObjectUnformatted(TestModelObject):
         """
         self.tmp_archive_dir = sami2py.archive_dir
         sami2py.utils.set_archive_dir(path=sami2py.test_data_dir)
-        self.lon = 256
+        self.lon = 256.1
         self.year = 1999
         self.day = 257
 

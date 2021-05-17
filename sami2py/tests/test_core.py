@@ -149,3 +149,31 @@ class TestBasicModelRunUnformatted(TestBasicModelRun):
         if os.path.exists(self.model_path):
             shutil.rmtree(self.model_path)
         del self.format, self.ref_file, self.model_path, self.filelist
+
+
+class TestDriftGeneration():
+    """Testing of the _core function _generate_drift_info"""
+
+    def setup(self):
+        f = open('exb.inp', 'w')
+        f.close()
+
+    def teardown(self):
+        os.remove('exb.inp')
+
+    def test_none_drifts(self):
+        empty_drift = np.zeros((10, 2))
+        sami2py._core._generate_drift_info(False, None)
+        drifts = np.loadtxt('exb.inp')
+        assert np.array_equal(drifts, empty_drift)
+
+    def test_default_drifts(self):
+        default = np.zeros((10, 2))
+        default[0, 0] = -30
+        sami2py._core._generate_drift_info(False, 'default')
+        drifts = np.loadtxt('exb.inp')
+        assert np.array_equal(drifts, default)
+
+    def test_bad_string(self):
+        with pytest.raises(Exception):
+            sami2py._core._generate_drift_info(False, 'really_cool_drifts_probably')

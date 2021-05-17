@@ -24,6 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Migrated CI testing to Github Actions
 - Documentation
   - Added zenodo integration
+  - Improved maintainability of conf.py
 
 ## [0.2.2] - 2020-07-17
 - Added simple port of core data to netcdf file

@@ -12,16 +12,20 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import json
 import os
 import sys
+# Need to set path before this can be imported
 sys.path.insert(0, os.path.abspath('..'))
-from sami2py import __version__
+from sami2py import __version__  # noqa: E402
 
 # -- Project information -----------------------------------------------------
 
 project = 'sami2py'
-copyright = '2019, Jeff Klenzing'
-author = 'Jeff Klenzing \\and Jonathon Smith'
+title = '{:s} Documentation'.format(project)
+zenodo = json.loads(open('../.zenodo.json').read())
+author = ', '.join([x['name'] for x in zenodo['creators']])
+copyright = ', '.join(['2021', author])
 
 # The short X.Y version
 version = __version__[::-1].partition('.')[2][::-1]
@@ -46,8 +50,7 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
     'numpydoc',
-    'IPython.sphinxext.ipython_console_highlighting'
-]
+    'IPython.sphinxext.ipython_console_highlighting']
 
 numpydoc_show_class_members = False
 
@@ -84,7 +87,7 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -116,41 +119,35 @@ htmlhelp_basename = 'sami2pydoc'
 
 # -- Options for LaTeX output ------------------------------------------------
 
-latex_elements = {
-    # The paper size ('letterpaper' or 'a4paper').
-    #
-    # 'papersize': 'letterpaper',
+# The paper size ('letterpaper' or 'a4paper').
+#
+# 'papersize': 'letterpaper',
 
-    # The font size ('10pt', '11pt' or '12pt').
-    #
-    # 'pointsize': '10pt',
+# The font size ('10pt', '11pt' or '12pt').
+#
+# 'pointsize': '10pt',
 
-    # Additional stuff for the LaTeX preamble.
-    #
-    # 'preamble': '',
+# Additional stuff for the LaTeX preamble.
+#
+# 'preamble': '',
 
-    # Latex figure (float) alignment
-    #
-    # 'figure_align': 'htbp',
-}
+# Latex figure (float) alignment
+#
+# 'figure_align': 'htbp',
+latex_elements = {}
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-    (master_doc, 'sami2py.tex', 'sami2py Documentation',
-     'Jeff Klenzing', 'manual'),
-]
+latex_documents = [(master_doc, '{:s}.tex'.format(project), title, author,
+                    'manual')]
 
 
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'sami2py', 'sami2py Documentation',
-     [author], 1)
-]
+man_pages = [(master_doc, project, title, [author], 1)]
 
 
 # -- Options for Texinfo output ----------------------------------------------
@@ -158,12 +155,9 @@ man_pages = [
 # Grouping the document tree into Texinfo files. List of tuples
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
-texinfo_documents = [
-    (master_doc, 'sami2py', 'sami2py Documentation',
-     author, 'sami2py', 'One line description of project.',
-     'Miscellaneous'),
-]
-
+texinfo_documents = [(master_doc, project, title, author, project,
+                      'Generate, read, and plot SAMI2 model runs',
+                      'Miscellaneous')]
 
 # -- Options for Epub output -------------------------------------------------
 

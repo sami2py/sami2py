@@ -38,7 +38,7 @@ class Model(object):
         ----------
         tag : (string)
             name of run (top-level directory)
-        lon : (int)
+        lon : (float)
             longitude reference
         year : (int)
             year
@@ -106,7 +106,7 @@ class Model(object):
         out.append('Model Run Name = ' + self.tag)
         out.append(('Day {day:03d}, {year:4d}').format(day=self.day,
                                                        year=self.year))
-        out.append(('Longitude = {lon:d} deg').format(lon=self.lon0))
+        out.append(('Longitude = {lon:5.1f} deg').format(lon=self.lon0))
         temp_str = '{N:d} time steps from {t0:4.1f} to {tf:4.1f} UT'
         out.append(temp_str.format(N=len(self.ut),
                                    t0=min(self.ut),

@@ -66,11 +66,11 @@ class Model(object):
         zalt : (2D ndarray)
             Altitude (km)
         deni : (4D ndarray)
-            Ion density by species (cm^-3)
+            Ion density for each species (cm^-3)
         vsi : (4D ndarray)
-            Ion Velocity by species (cm/s)
+            Ion Velocity for each species (cm/s)
         ti : (4D ndarray)
-            Ion Temperature by species (K)
+            Ion Temperature for each species (K)
         te : (3D ndarray)
             Electron Temperature (K)
         Examples
@@ -239,22 +239,33 @@ class Model(object):
         ti = np.reshape(ti, (nz, nf, ni, nt), order="F")
         te = np.reshape(te, (nz, nf, nt), order="F")
         self.data = xr.Dataset({'deni': (['z', 'f', 'ion', 'ut'], deni,
-                                         {'units': 'N/cc'}),
+                                         {'units': 'N/cc',
+                                          'long_name': 'ion density'}),
                                 'vsi': (['z', 'f', 'ion', 'ut'], vsi,
-                                        {'units': 'cm/s'}),
+                                        {'units': 'cm/s',
+                                         'long_name': 'ion velocity'}),
                                 'ti': (['z', 'f', 'ion', 'ut'], ti,
-                                       {'units': 'K'}),
-                                'te': (['z', 'f', 'ut'], te, {'units': 'K'}),
-                                'slt': (['ut'], self.slt, {'units': 'hrs'})},
+                                       {'units': 'K',
+                                        'long_name': 'ion temperature'}),
+                                'te': (['z', 'f', 'ut'], te,
+                                       {'units': 'K',
+                                        'long_name': 'electron temperature'}),
+                                'slt': (['ut'], self.slt,
+                                        {'units': 'hrs',
+                                         'long_name': 'solar local time'})},
                                coords={'glat': (['z', 'f'], glat),
                                        'glon': (['z', 'f'], glon),
                                        'zalt': (['z', 'f'], zalt),
                                        'ut': self.ut})
         if self.outn:
             denn = np.reshape(denn, (nz, nf, ni, nt), order="F")
-            self.data['denn'] = (('z', 'f', 'ion', 'ut'), denn, {'units': 'N/cc'})
+            self.data['denn'] = (('z', 'f', 'ion', 'ut'), denn,
+                                 {'units': 'N/cc',
+                                  'long_name': 'neutral density'})
             u4 = np.reshape(u4, (nz, nf, nt), order="F")
-            self.data['u4'] = (('z', 'f', 'ut'), u4, {'units': 'm/s'})
+            self.data['u4'] = (('z', 'f', 'ut'), u4,
+                               {'units': 'm/s',
+                                'long_name': 'neutral wind velocity'})
 
         if self.MetaData['ExB model'] == 'Fourier Series':
             exb = return_fourier(self.data['slt'],

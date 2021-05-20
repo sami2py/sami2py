@@ -66,11 +66,11 @@ class Model(object):
         zalt : (2D ndarray)
             Altitude (km)
         deni : (4D ndarray)
-            Ion density by species (cm^-3)
+            Ion density for each species (cm^-3)
         vsi : (4D ndarray)
-            Ion Velocity by species (m/s)
+            Ion Velocity for each species (cm/s)
         ti : (4D ndarray)
-            Ion Temperature by species (K)
+            Ion Temperature for each species (K)
         te : (3D ndarray)
             Electron Temperature (K)
         Examples
@@ -238,20 +238,34 @@ class Model(object):
         vsi = np.reshape(vsi, (nz, nf, ni, nt), order="F")
         ti = np.reshape(ti, (nz, nf, ni, nt), order="F")
         te = np.reshape(te, (nz, nf, nt), order="F")
-        self.data = xr.Dataset({'deni': (['z', 'f', 'ion', 'ut'], deni),
-                                'vsi': (['z', 'f', 'ion', 'ut'], vsi),
-                                'ti': (['z', 'f', 'ion', 'ut'], ti),
-                                'te': (['z', 'f', 'ut'], te),
-                                'slt': (['ut'], self.slt)},
+        self.data = xr.Dataset({'deni': (['z', 'f', 'ion', 'ut'], deni,
+                                         {'units': 'N/cc',
+                                          'long_name': 'ion density'}),
+                                'vsi': (['z', 'f', 'ion', 'ut'], vsi,
+                                        {'units': 'cm/s',
+                                         'long_name': 'ion velocity'}),
+                                'ti': (['z', 'f', 'ion', 'ut'], ti,
+                                       {'units': 'K',
+                                        'long_name': 'ion temperature'}),
+                                'te': (['z', 'f', 'ut'], te,
+                                       {'units': 'K',
+                                        'long_name': 'electron temperature'}),
+                                'slt': (['ut'], self.slt,
+                                        {'units': 'hrs',
+                                         'long_name': 'solar local time'})},
                                coords={'glat': (['z', 'f'], glat),
                                        'glon': (['z', 'f'], glon),
                                        'zalt': (['z', 'f'], zalt),
                                        'ut': self.ut})
         if self.outn:
             denn = np.reshape(denn, (nz, nf, ni, nt), order="F")
-            self.data['denn'] = (('z', 'f', 'ion', 'ut'), denn)
+            self.data['denn'] = (('z', 'f', 'ion', 'ut'), denn,
+                                 {'units': 'N/cc',
+                                  'long_name': 'neutral density'})
             u4 = np.reshape(u4, (nz, nf, nt), order="F")
-            self.data['u4'] = (('z', 'f', 'ut'), u4)
+            self.data['u4'] = (('z', 'f', 'ut'), u4,
+                               {'units': 'm/s',
+                                'long_name': 'neutral wind velocity'})
 
         if self.MetaData['ExB model'] == 'Fourier Series':
             exb = return_fourier(self.data['slt'],
@@ -376,6 +390,12 @@ class Model(object):
         """saves core data as a netcdf file"""
         if path == '':
             path = 'sami2py_output.nc'
+        attrs = self.MetaData
+        attrs['fmtout'] = str(attrs['fmtout'])
+        if attrs['ExB model'] == 'Fourier Series':
+            attrs['Fourier Coeffs'] = str(attrs['Fourier Coeffs'])
+
+        self.data.attrs = attrs
         self.data.to_netcdf(path=path, format='NETCDF4')
 
     def plot_lat_alt(self, time_step=0, species=1):

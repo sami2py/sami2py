@@ -454,7 +454,7 @@ class Model(object):
         """
 
         warnings.warn(' '.join(["Model.plot_exb is deprecated and will be",
-                                "removed in a 0.3.0. ",
+                                "removed in version 0.3.0. ",
                                 "Use sami2py_vis instead"]),
                       DeprecationWarning)
 

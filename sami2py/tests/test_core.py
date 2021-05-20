@@ -176,4 +176,4 @@ class TestDriftGeneration():
 
     def test_bad_string(self):
         with pytest.raises(Exception):
-            sami2py._core._generate_drift_info(False, 'really_cool_drifts_probably')
+            sami2py._core._generate_drift_info(False, 'really_cool_drifts')

@@ -192,7 +192,8 @@ class TestFourierFit():
         """Test that the warning is generated properly"""
         nan_drifts = np.array([np.nan])
         with pytest.warns(Warning):
-            v0, fit_coefs, cov = sami2py.utils.fourier_fit(self.lt, nan_drifts, 10)
+            v0, fit_coefs, cov = sami2py.utils.fourier_fit(self.lt, nan_drifts,
+                                                           10)
             assert v0 == 0
             assert (fit_coefs == np.zeros((10, 2))).all()
             assert (cov == np.zeros((10, 2))).all()

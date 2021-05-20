@@ -401,8 +401,8 @@ class Model(object):
     def plot_lat_alt(self, time_step=0, species=1):
         """Plots input parameter as a function of latitude and altitude
 
-        .. deprecated:: 0.3.0
-          All plotting routines will be removed in 0.4.0 and moved to
+        .. deprecated:: 0.2.0
+          All plotting routines will be removed in 0.3.0 and moved to
           sami2py_vis
 
         Parameters
@@ -425,7 +425,7 @@ class Model(object):
         """
 
         warnings.warn(' '.join(["Model.plot_lat_alt is deprecated and will be",
-                                "removed in a future version. ",
+                                "removed in version 0.3.0. ",
                                 "Use sami2py_vis instead"]),
                       DeprecationWarning)
 
@@ -440,7 +440,7 @@ class Model(object):
     def plot_exb(self):
         """Plots ExB drifts from the return_fourier function
 
-        .. deprecated:: 0.3.0
+        .. deprecated:: 0.2.3
           All plotting routines will be removed in 0.4.0 and moved to
           sami2py_vis
 
@@ -454,7 +454,7 @@ class Model(object):
         """
 
         warnings.warn(' '.join(["Model.plot_exb is deprecated and will be",
-                                "removed in a future version. ",
+                                "removed in a 0.3.0. ",
                                 "Use sami2py_vis instead"]),
                       DeprecationWarning)
 

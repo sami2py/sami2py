@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [next version] - 2021-04-05
+## [0.2.3] - 2021-04-05
 - Updated Variable and datasest attributes for netcdf export
 - Added default drift fourier coefficient array accessable from run model
 - Using minimum test version of numpy in accordance with NEP 29

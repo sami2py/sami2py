@@ -40,7 +40,8 @@ if not os.path.isfile(os.path.join(fortran_path, 'sami2py.x')):
 
 if not os.path.isfile(os.path.join(fortran_path, 'sami2py.x')):
     print('\nYou will need to compile the fortran files.  Try\n'
-          '$  make -C sami2py/fortran compile\n', file=sys.stderr)
+          '$  make -C {} compile\n'.format(os.path.join('sami2py', 'fortran')),
+          file=sys.stderr)
 
 if not os.path.isdir(file_path):
     os.makedirs(file_path)

@@ -74,7 +74,7 @@ yields
 
 
 Saving as a netCDF4
-===================
+-------------------
 
 Once loaded, you have the option of saving your output as a netCDF4.  The
 resulting file can then be loaded via xarray or pysatModels.  All metadata

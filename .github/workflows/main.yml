@@ -57,7 +57,7 @@ jobs:
       run: flake8 . --count --exit-zero --max-complexity=10 --statistics
 
     - name: Test with pytest
-      run: pytest --cov=sami2py/
+      run: pytest -vs --cov=sami2py/
 
     - name: Publish results to coveralls
       if: ${{ matrix.os == 'ubuntu-latest'}}

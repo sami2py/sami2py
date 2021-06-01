@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.2.3] - 2021-04-05
+## [0.2.3] - 2021-05-31
 - Updated Variable and datasest attributes for netcdf export
 - Added default drift fourier coefficient array accessable from run model
 - Using minimum test version of numpy in accordance with NEP 29
@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - fixed a bug in compiling readthedocs
   - added default exb file: setup.py generates a exb.inp file
   - Use integer for longitude in directory structure
+  - Improved windows compatibility
 - Added ability to input custom ExB Drifts as a Fourier Series
   - return_fourier function in utils.py
   - plot_exb function in _core_class.py

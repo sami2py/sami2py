@@ -273,7 +273,8 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
     _generate_namelist(info)
     archive_path = generate_path(tag, lon, year, day, test)
     if not test:
-        _ = subprocess.check_call('./sami2py.x')
+        runcmd = os.path.join('.', 'sami2py.x')
+        _ = subprocess.check_call(runcmd)
 
     _archive_model(archive_path, clean, fejer, fmtout, outn)
 

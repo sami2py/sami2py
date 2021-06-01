@@ -50,7 +50,8 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
     'numpydoc',
-    'IPython.sphinxext.ipython_console_highlighting']
+    'IPython.sphinxext.ipython_console_highlighting',
+    'm2r2']
 
 numpydoc_show_class_members = False
 

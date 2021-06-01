@@ -25,8 +25,10 @@ sami2py will raise an error if this is not done before trying to run the model.
 
   sami2py.run_model(tag='run_name', lon=0, year=2012, day=210)
 
-Note that the sami2 model runs for 24 hours to clear transients, then begins to
-output data.
+Note that the sami2 model runs for 24 hours of simulated time to clear
+transients, then begins to output data. For the default options (24 hours of
+prep, 24 hours of output, output every 15 minutes), this may take 10-20 minutes
+to run, depending on the user setup.
 
 Now load the resultant data:
 

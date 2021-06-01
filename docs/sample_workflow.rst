@@ -70,4 +70,17 @@ yields
 
   No modifications to empirical models
 
+
+Saving as a netCDF4
+===================
+
+Once loaded, you have the option of saving your output as a netCDF4.  The
+resulting file can then be loaded via xarray or pysatModels.  All metadata
+about the model run (including the options used to generate the file) are saved
+as attributes within the netCDF4 object.
+
+.. code:: python
+
+  ModelRun.to_netcdf('your_filename.nc')
+
 Full description coming soon

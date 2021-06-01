@@ -73,6 +73,21 @@ yields
   No modifications to empirical models
 
 
+Options
+-------
+
+For applications that require neutral density data (such as the `growin
+<https://github.com/JonathonMSmith/growin>`_` package), you can tell sami2 to
+output neutral parameters alongside the ions.  Note that the coupling between
+ions and neutrals is one way (neutrals drive ions), the neutral values are not
+expected to change from the version initialized by MSIS and scaled within the
+initialization routines in sami2.
+
+.. code:: python
+
+  sami2py.run_model(tag='run_name', lon=0, year=2012, day=210, outn=True)
+
+
 Saving as a netCDF4
 -------------------
 

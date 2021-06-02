@@ -3,8 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.2.3] - 2021-05-31
-- Updated Variable and datasest attributes for netcdf export
-- Added default drift fourier coefficient array accessable from run model
+- Updated Variable and dataset attributes for netcdf export
+  - Updated netcdf file in test_data
+- Added default drift fourier coefficient array accessible from run model
 - Using minimum test version of numpy in accordance with NEP 29
 - Removed the sami2py-1.00.namelist and version.txt files from run_name
 - Bug Fix

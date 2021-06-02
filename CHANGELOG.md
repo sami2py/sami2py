@@ -22,8 +22,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - private __make_fourier function in utils.py
   - Testing fourier_fit function in test_utils.py
   - scipy dependency added
-- added default exb file: setup.py generates a exb.inp file
+- Added default exb file: setup.py generates a exb.inp file
 - Added deprecation warnings to plotting functions
+- Adjusted output step size in model to more closely match desired cadence
 - Migrated CI testing to Github Actions
 - Documentation
   - Added zenodo integration

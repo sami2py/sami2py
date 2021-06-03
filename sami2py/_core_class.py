@@ -253,10 +253,22 @@ class Model(object):
                                 'slt': (['ut'], self.slt,
                                         {'units': 'hrs',
                                          'long_name': 'solar local time'})},
-                               coords={'glat': (['z', 'f'], glat),
-                                       'glon': (['z', 'f'], glon),
-                                       'zalt': (['z', 'f'], zalt),
-                                       'ut': self.ut})
+                               coords={'glat': (['z', 'f'], glat,
+                                                {'units': 'deg',
+                                                 'long_name': 'Geo Latitude',
+                                                 'value_min': -90.0,
+                                                 'value_max': 90.0}),
+                                       'glon': (['z', 'f'], glon,
+                                                {'units': 'deg',
+                                                 'long_name': 'Geo Longitude',
+                                                 'value_min': 0.0,
+                                                 'value_max': 360.0}),
+                                       'zalt': (['z', 'f'], zalt,
+                                                {'units': 'km',
+                                                 'long_name': 'Altitude'}),
+                                       'ut': (['ut'], self.ut,
+                                              {'units': 'hours',
+                                               'long_name': 'Universal Time'})})
         if self.outn:
             denn = np.reshape(denn, (nz, nf, ni, nt), order="F")
             self.data['denn'] = (('z', 'f', 'ion', 'ut'), denn,
@@ -390,10 +402,14 @@ class Model(object):
         """saves core data as a netcdf file"""
         if path == '':
             path = 'sami2py_output.nc'
-        attrs = self.MetaData
+        attrs = {}
+        keys = self.MetaData.keys()
+        for key in keys:
+            new_key = key.replace(' ', '_').replace('.', '_')
+            attrs[new_key] = self.MetaData[key]
         attrs['fmtout'] = str(attrs['fmtout'])
-        if attrs['ExB model'] == 'Fourier Series':
-            attrs['Fourier Coeffs'] = str(attrs['Fourier Coeffs'])
+        if attrs['ExB_model'] == 'Fourier Series':
+            attrs['Fourier_Coeffs'] = str(attrs['Fourier_Coeffs'])
 
         self.data.attrs = attrs
         self.data.to_netcdf(path=path, format='NETCDF4')

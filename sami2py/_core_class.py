@@ -405,11 +405,10 @@ class Model(object):
         attrs = {}
         keys = self.MetaData.keys()
         for key in keys:
-            new_key = key.replace(' ', '_')
-            new_key = new_key.replace('.', '_')
+            new_key = key.replace(' ', '_').replace('.', '_')
             attrs[new_key] = self.MetaData[key]
         attrs['fmtout'] = str(attrs['fmtout'])
-        if attrs['ExB_model'] == 'Fourier_Series':
+        if attrs['ExB_model'] == 'Fourier Series':
             attrs['Fourier_Coeffs'] = str(attrs['Fourier_Coeffs'])
 
         self.data.attrs = attrs

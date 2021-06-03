@@ -5,7 +5,7 @@ sami2py: sami2py is another model of the ionosphere python style
     :stub-columns: 1
 
     * - docs
-      - | |docs| |doi|
+      - | |rtd| |doi|
     * - tests
       - | |pytest|
         | |coveralls| |codecov|

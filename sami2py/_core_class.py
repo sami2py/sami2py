@@ -402,10 +402,15 @@ class Model(object):
         """saves core data as a netcdf file"""
         if path == '':
             path = 'sami2py_output.nc'
-        attrs = self.MetaData
+        attrs = {}
+        keys = self.MetaData.keys()
+        for key in keys:
+            new_key = key.replace(' ', '_')
+            new_key = new_key.replace('.', '_')
+            attrs[new_key] = self.MetaData[key]
         attrs['fmtout'] = str(attrs['fmtout'])
-        if attrs['ExB model'] == 'Fourier Series':
-            attrs['Fourier Coeffs'] = str(attrs['Fourier Coeffs'])
+        if attrs['ExB_model'] == 'Fourier_Series':
+            attrs['Fourier_Coeffs'] = str(attrs['Fourier_Coeffs'])
 
         self.data.attrs = attrs
         self.data.to_netcdf(path=path, format='NETCDF4')

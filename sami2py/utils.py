@@ -6,7 +6,7 @@
 """ Wrapper for running sami2 model
 
 Functions
--------------------------------------------------------------------------------
+---------
 generate_path(tag, lon, year, day)
     Generates path to archived model runs based on input paramters.
 
@@ -18,18 +18,17 @@ return_fourier(x, coeffs)
 
 get_unformatted_data(dat_dir, var_name, nz, nf, ni, nt, reshape=False)
     routine to interpret unformatted binary files created by the SAMI2 model
--------------------------------------------------------------------------------
 
 Moduleauthor
--------------------------------------------------------------------------------
+------------
 Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
--------------------------------------------------------------------------------
+
 """
 
 import os
-import warnings
 import numpy as np
 from scipy.optimize import curve_fit
+import warnings
 
 
 def generate_path(tag, lon, year, day, test=False):
@@ -150,10 +149,10 @@ def return_fourier(x, coeffs):
         """simple sine"""
         return np.sin(n * np.pi * x / 12.0)
 
-    NumF = coeffs.shape
+    shape = coeffs.shape
 
     y = 0.0 * x
-    for i in range(0, NumF[0]):
+    for i in range(0, shape[0]):
         y += coeffs[i, 0] * cos_a(x, i + 1) + coeffs[i, 1] * sin_a(x, i + 1)
 
     return y
@@ -184,6 +183,7 @@ def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
     -----------
     float_data : (numpy.ndarray)
         unformatted data organized into a numpy array for handling in python
+
     """
 
     binary_file = open(os.path.join(dat_dir, var_name + 'u.dat'), 'rb')
@@ -199,13 +199,16 @@ def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
 
 def __make_fourier(na, nb):
     """ The function for the curve fit
+
     Parameters
     ----------
-    na: (int)
+    na : (int)
         number of cosine terms/coefficients
-    nb: (int)
+    nb : (int)
         number of sin terms/coefficients
+
     """
+
     def fourier(x, *a):
         ret = a[0]
         for deg in range(0, na):
@@ -218,6 +221,7 @@ def __make_fourier(na, nb):
 
 def fourier_fit(local_times, drifts, num_co):
     """ Here the terms in the fourier fit are actually determined
+
     Parameters
     ----------
     local_times : (array-like)
@@ -235,6 +239,7 @@ def fourier_fit(local_times, drifts, num_co):
         coefficients to describe the fourier function that fits the drifts
     covariance : num_co by 2 array like
         covariance of the coefficients
+
     """
     coefficients = np.zeros((num_co, 2))
     covariance = np.zeros((num_co, 2))

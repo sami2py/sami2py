@@ -17,13 +17,14 @@ in this environment (H+, He+, N+, O+, N2+, NO+, and O2+).
 """
 from __future__ import print_function
 import logging
-import sys
 import os
+import sys
 
 # set the version
 here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, 'version.txt')) as version_file:
     __version__ = version_file.read().strip()
+del here, version_file
 
 # get home directory
 home_dir = os.path.expanduser('~')
@@ -37,16 +38,17 @@ if not os.path.isdir(sami2py_dir):
     os.makedirs(sami2py_dir)
     print('Created {} directory to store settings.'.format(sami2py_dir))
 
-
 archive_path = os.path.join(sami2py_dir, 'archive_path.txt')
 if os.path.isfile(archive_path):
     # load up stored data path
-    with open(archive_path, 'r') as f:
-        archive_dir = f.readline()
+    with open(archive_path, 'r') as fin:
+        archive_dir = fin.readline()
+        del fin
 else:
     # create file
-    with open(archive_path, 'w+') as f:
-        f.write('')
+    with open(archive_path, 'w+') as fout:
+        fout.write('')
+        del fout
     archive_dir = ''
     print('Run sami2py.utils.set_archive_dir to set the path to'
           ' top-level directory for model outputs.')
@@ -56,12 +58,15 @@ on_rtd = os.environ.get('READTHEDOCS') == 'True'
 
 if not on_rtd:
     # load fortran directory
-    with open(os.path.join(sami2py_dir, 'fortran_path.txt'), 'r') as f:
-        fortran_dir = f.readline()
+    with open(os.path.join(sami2py_dir, 'fortran_path.txt'), 'r') as fin:
+        fortran_dir = fin.readline()
+        del fin
     # load test_data directory
-    with open(os.path.join(sami2py_dir, 'test_data_path.txt'), 'r') as f:
-        test_data_dir = f.readline()
+    with open(os.path.join(sami2py_dir, 'test_data_path.txt'), 'r') as fin:
+        test_data_dir = fin.readline()
+        del fin
 
+del archive_path, home_dir, env_name, sami2py_dir, on_rtd
 
 # import main functions
 try:

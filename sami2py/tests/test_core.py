@@ -2,8 +2,8 @@
 """
 import numpy as np
 import os
-import shutil
 import pytest
+import shutil
 
 import sami2py
 from sami2py import fortran_dir, test_data_dir

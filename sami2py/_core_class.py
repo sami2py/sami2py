@@ -5,15 +5,14 @@
 # -----------------------------------------------------------------------------
 """Wrapper for running sami2 model
 Classes
--------------------------------------------------------------------------------
+-------
 Model
     Loads, reshapes, and holds SAMI2 output for a given model run
     specified by the user.
--------------------------------------------------------------------------------
+
 Moduleauthor
--------------------------------------------------------------------------------
+------------
 Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
--------------------------------------------------------------------------------
 
 """
 
@@ -31,9 +30,11 @@ from sami2py.utils import generate_path, get_unformatted_data, return_fourier
 class Model(object):
     """Python object to handle SAMI2 model output data
     """
+
     def __init__(self, tag, lon, year, day, outn=False, test=False):
         """ Loads a previously run sami2 model and sorts into
             appropriate array shapes
+
         Parameters
         ----------
         tag : (string)
@@ -50,9 +51,11 @@ class Model(object):
         test : (boolean)
             if true : use test model output
             if false : look for user made model output
+
         Returns
         -------
         self : model class object containing OCB file data
+
         Attributes
         ----------
         ut : (1D ndarray)
@@ -73,10 +76,12 @@ class Model(object):
             Ion Temperature for each species (K)
         te : (3D ndarray)
             Electron Temperature (K)
+
         Examples
         --------
         To load a previous model run:
             ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
+
         """
 
         self.tag = tag
@@ -90,16 +95,24 @@ class Model(object):
 
     def __repr__(self):
         """Make a printable representation of a Model object
+
         Returns
         -------
         out : (string)
             string containing a printable representation of a Model object
+
         Examples
         --------
         Load the model
+        ::
+
             ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
+
         Check the model information
+        ::
+
             ModelRun
+
         """
 
         out = ['']
@@ -143,10 +156,12 @@ class Model(object):
 
     def _calculate_slt(self):
         """Calculates Solar Local Time for reference point of model
+
         Returns
         -------
         self.slt : (float)
             Solar Local Time in hours
+
         """
 
         local_time = np.mod((self.ut * 60 + self.lon0 * 4), 1440) / 60.0
@@ -157,10 +172,6 @@ class Model(object):
 
     def _load_model(self):
         """Loads model results
-        Returns
-        -------
-        void
-            Model object modified in place
         """
 
         nf = 98
@@ -286,14 +297,12 @@ class Model(object):
 
     def _generate_metadata(self, namelist):
         """Reads the namelist and generates MetaData based on Parameters
+
         Parameters
         -----------
         namelist : (list)
             variable namelist from SAMI2 model
-        Returns
-        -------
-        void
-            Model object modified in place
+
         """
 
         def find_float(name, ind):
@@ -364,22 +373,31 @@ class Model(object):
 
     def check_standard_model(self, model_type="all"):
         """Checks for standard atmospheric inputs
+
         Parameters
         ----------
         model_type : (str)
             Limit check to certain models (default='all')
             Not currently implemented
+
         Returns
         -------
         mod_keys : (list)
             List of modified keyword for self.MetaData, empty
             if no modifications were made
+
         Examples
         --------
         Load the model
+        ::
+
             ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
+
         Check the model information for changes to the standard inputs
+        ::
+
             ModelRun.check_standard_model()
+
         """
         mod_keys = list()
         meta_keys = list(self.MetaData.keys())
@@ -457,7 +475,7 @@ class Model(object):
         """Plots ExB drifts from the return_fourier function
 
         .. deprecated:: 0.2.3
-          All plotting routines will be removed in 0.4.0 and moved to
+          All plotting routines will be removed in 0.3.0 and moved to
           sami2py_vis
 
         Examples

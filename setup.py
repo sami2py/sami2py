@@ -52,9 +52,9 @@ if not os.path.isfile(exb_path):
     with open(exb_path, 'w') as exb:
         exb.writelines("%s\n" % line for line in zero_list)
 
-with open(os.path.join(file_path, 'fortran_path.txt'), 'w+') as f:
-    f.write(fortran_path)
-with open(os.path.join(file_path, 'test_data_path.txt'), 'w+') as f:
-    f.write(test_data_path)
+with open(os.path.join(file_path, 'fortran_path.txt'), 'w+') as fout:
+    fout.write(fortran_path)
+with open(os.path.join(file_path, 'test_data_path.txt'), 'w+') as fout:
+    fout.write(test_data_path)
 
 setup()

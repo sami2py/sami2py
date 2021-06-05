@@ -8,8 +8,8 @@
 from __future__ import (print_function)
 import os
 import numpy as np
-import sami2py
 import pytest
+import sami2py
 
 
 class TestGeneratePath():
@@ -148,8 +148,7 @@ class TestFourierFunction():
         del self.x, self.coeffs
 
     def test_cos(self):
-        """Test the cos function when coeffs are all 0s except for one with 1
-        value
+        """Test generation of a simple cosine
         """
         self.coeffs[0, 0] = 1.0
 
@@ -158,8 +157,7 @@ class TestFourierFunction():
         assert (y == target).all()
 
     def test_sin(self):
-        """Test the sine function when coeffs are all 0s except for one with 1
-        value
+        """Test generation of a simple sine
         """
         self.coeffs[0, 1] = 1.0
 

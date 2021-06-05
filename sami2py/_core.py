@@ -322,10 +322,6 @@ def _generate_namelist(info):
     info : (dict)
         Contains variables for each line of the namelist file
 
-    Returns
-    -------
-    void
-        namelist file written for fortran executable
     """
 
     # Check HWM model parameters
@@ -398,10 +394,10 @@ def _archive_model(path, clean, fejer, fmtout, outn):
         Specifies whether Fejer-Scherliess model is used
         If False, then 'exb.inp' is also archived
 
-    Returns
-    -------
-    void
-        Moves files to the archive directory
+    Note
+    ----
+    Moves files to archive directory
+
     """
 
     if fmtout:

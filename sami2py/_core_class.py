@@ -119,7 +119,7 @@ class Model(object):
         out.append('Model Run Name = ' + self.tag)
         out.append(('Day {day:03d}, {year:4d}').format(day=self.day,
                                                        year=self.year))
-        out.append(('Longitude = {lon:5.1f} deg').format(lon=self.lon0))
+        out.append(('Longitude = {:5.1f} deg').format(self.lon0))
         temp_str = '{N:d} time steps from {t0:4.1f} to {tf:4.1f} UT'
         out.append(temp_str.format(N=len(self.ut),
                                    t0=min(self.ut),
@@ -459,7 +459,7 @@ class Model(object):
         """
 
         warnings.warn(' '.join(["Model.plot_lat_alt is deprecated and will be",
-                                "removed in version 0.3.0. ",
+                                "removed in version 0.3.0+. ",
                                 "Use sami2py_vis instead"]),
                       DeprecationWarning)
 

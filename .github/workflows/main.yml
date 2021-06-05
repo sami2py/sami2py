@@ -13,7 +13,7 @@ jobs:
       matrix:
         python-version: [3.8, 3.9]
         numpy_ver: [latest]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest]
         include:
           - python-version: 3.7
             numpy_ver: 1.17

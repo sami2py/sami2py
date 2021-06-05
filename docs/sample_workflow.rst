@@ -41,7 +41,7 @@ Information about the run is stored as 'ModelRun.MetaData', which is a
 human-readable dictionary of the namelist.
 
 The MetaData can be accessed directly via the dictionary, or through the
-__repr__.  Typing
+``__repr__``.  Typing
 
 .. code:: python
 

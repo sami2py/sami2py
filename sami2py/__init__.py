@@ -66,7 +66,7 @@ if not on_rtd:
         test_data_dir = fin.readline()
         del fin
 
-del archive_path, home_dir, env_name, sami2py_dir, on_rtd
+del archive_path, home_dir, env_name, on_rtd
 
 # import main functions
 try:

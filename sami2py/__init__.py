@@ -38,15 +38,15 @@ if not os.path.isdir(sami2py_dir):
     os.makedirs(sami2py_dir)
     print('Created {} directory to store settings.'.format(sami2py_dir))
 
-archive_path = os.path.join(sami2py_dir, 'archive_path.txt')
-if os.path.isfile(archive_path):
+_archive_path = os.path.join(sami2py_dir, 'archive_path.txt')
+if os.path.isfile(_archive_path):
     # load up stored data path
-    with open(archive_path, 'r') as fin:
+    with open(_archive_path, 'r') as fin:
         archive_dir = fin.readline()
         del fin
 else:
     # create file
-    with open(archive_path, 'w+') as fout:
+    with open(_archive_path, 'w+') as fout:
         fout.write('')
         del fout
     archive_dir = ''
@@ -66,7 +66,7 @@ if not on_rtd:
         test_data_dir = fin.readline()
         del fin
 
-del archive_path, home_dir, env_name, on_rtd
+del home_dir, env_name, on_rtd
 
 # import main functions
 try:

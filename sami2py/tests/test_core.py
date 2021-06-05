@@ -116,7 +116,7 @@ class TestBasicModelRun():
         if os.path.isdir(tmp_archive_dir):
             sami2py.utils.set_archive_dir(path=tmp_archive_dir)
         else:
-            with open(sami2py.archive_path, 'w') as archive_file:
+            with open(sami2py._archive_path, 'w') as archive_file:
                 archive_file.write('')
                 sami2py.archive_dir = ''
 

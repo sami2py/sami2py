@@ -13,14 +13,11 @@ jobs:
       matrix:
         python-version: [3.8, 3.9]
         numpy_ver: [latest]
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         include:
           - python-version: 3.7
             numpy_ver: 1.17
             os: ubuntu-latest
-          - python-version: 3.7
-            numpy_ver: 1.17
-            os: windows-latest
 
     name: Python ${{ matrix.python-version }} on ${{ matrix.os }} with numpy ${{ matrix.numpy_ver }}
     runs-on: ${{ matrix.os }}
@@ -57,7 +54,7 @@ jobs:
       run: flake8 . --count --exit-zero --max-complexity=10 --statistics
 
     - name: Test with pytest
-      run: pytest -vs --cov=sami2py/
+      run: pytest --cov=sami2py/
 
     - name: Publish results to coveralls
       if: ${{ matrix.os == 'ubuntu-latest'}}

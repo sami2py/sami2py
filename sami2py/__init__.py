@@ -15,7 +15,6 @@ SAMI2 solves for the chemical and dynamical evolution of seven ion species
 in this environment (H+, He+, N+, O+, N2+, NO+, and O2+).
 
 """
-from __future__ import print_function
 import logging
 import os
 import sys

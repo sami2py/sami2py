@@ -4,7 +4,6 @@
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
 
-from __future__ import print_function
 import os
 import sys
 from setuptools import setup

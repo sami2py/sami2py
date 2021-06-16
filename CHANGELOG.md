@@ -2,6 +2,35 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.3] - 2021-06-16
+- Updated Variable and dataset attributes for netcdf export
+  - Updated netcdf file in test_data
+- Added default drift fourier coefficient array accessible from run model
+- Using minimum test version of numpy in accordance with NEP 29
+- Removed the sami2py-1.00.namelist and version.txt files from run_name
+- Bug Fix
+  - Pull version info from a single location
+  - fixed a bug in compiling readthedocs
+  - added default exb file: setup.py generates a exb.inp file
+  - Use integer for longitude in directory structure
+  - Improved windows compatibility
+- Added ability to input custom ExB Drifts as a Fourier Series
+  - return_fourier function in utils.py
+  - plot_exb function in _core_class.py
+  - Testing return_fourier function in test_utils.py
+- Added ability to generate Fourier Coefficients from time series ExB drifts
+  - fourier_fit function in utils.py
+  - private __make_fourier function in utils.py
+  - Testing fourier_fit function in test_utils.py
+  - scipy dependency added
+- Added default exb file: setup.py generates a exb.inp file
+- Added deprecation warnings to plotting functions
+- Adjusted output step size in model to more closely match desired cadence
+- Migrated CI testing to Github Actions
+- Documentation
+  - Added zenodo integration
+  - Improved maintainability of conf.py
+
 ## [0.2.2] - 2020-07-17
 - Added simple port of core data to netcdf file
 - Increased unformatted test data to 6 time steps

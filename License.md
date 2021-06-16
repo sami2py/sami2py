@@ -1,4 +1,4 @@
-Copyright (c) 2019, Jeff Klenzing (JK) and Joe Huba (JH)
+Copyright (c) 2021, sami2py development team
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

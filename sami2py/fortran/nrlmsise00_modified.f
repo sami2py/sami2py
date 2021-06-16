@@ -1183,7 +1183,8 @@ C  PARMS NOT USED: 83, 90,100,140-150
    49 CONTINUE
       TINF=P(31)
       DO 50 I = 1,NSW
-   50 TINF = TINF + ABS(SW(I))*T(I)
+        TINF = TINF + ABS(SW(I))*T(I)
+   50   CONTINUE
       GLOBE7 = TINF
       RETURN
       END
@@ -1307,7 +1308,8 @@ C        LONGITUDINAL
    49 CONTINUE
       TT=0.
       DO 50 I=1,14
-   50 TT=TT+ABS(SW(I))*T(I)
+        TT=TT+ABS(SW(I))*T(I)
+   50   CONTINUE
       GLOB7S=TT
       RETURN
       END

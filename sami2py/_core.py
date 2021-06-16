@@ -28,12 +28,16 @@ Moduleauthor
 -------------------------------------------------------------------------------
 Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 -------------------------------------------------------------------------------
+
 """
-import os
-import subprocess
+
 import numpy as np
+import os
+import shutil
+import subprocess
+
 from sami2py import fortran_dir, __version__
-from .utils import generate_path
+from sami2py.utils import generate_path
 
 
 def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
@@ -45,7 +49,7 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
               no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
               Tinf_scale=1, Tn_scale=1., euv_scale=1,
               wind_scale=1, hwm_model=14,
-              fejer=True, ExB_drifts=np.zeros((10, 2)), ve01=0., exb_scale=1,
+              fejer=True, ExB_drifts=None, ve01=0., exb_scale=1,
               alt_crit=150., cqe=7.e-14,
               clean=False, test=False, fmtout=True, outn=False):
     """Runs SAMI2 and archives the data in path
@@ -184,12 +188,16 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
         A True value will use the Fejer-Scherliess model of ExB drifts
         A False value will use a user-specified Fourier series for ExB drifts
         (default = True)
-    ExB_drifts : (10x2 ndarray of floats)
+    ExB_drifts : (10x2 ndarray of floats, string, or NoneType)
         Matrix of Fourier series coefficients dependent on solar local time
         (SLT) in hours where
-        ExB_total = ExB_drifts[i,0]*cos((i+1)*pi*SLT/12)
-                  + ExB_drifts[i,1]*sin((i+1)*pi*SLT/12)
-        (default = np.zeros((10,2)))
+        ExB_total = ExB_drifts[i,0] * cos((i + 1) * pi * SLT / 12)
+                  + ExB_drifts[i,1] * sin((i + 1) * pi * SLT / 12)
+        Alternatively, None will produce 24 lt hrs of 0 m/s drifts everywhere.
+        Using the string 'default' will produce a cosine wave with a
+        maximum magnitude of 30 m/s at local noon and a minimum of -30 m/s
+        at midnight.
+        (default = None)
     ve01 : (float)
         Constant offset for Fourier ExB drifts (m/s)
         (default=0)
@@ -235,8 +243,10 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
 
     Examples
     --------
-    import sami2py
-    sami2py.run_model(tag='run_name', lon=0, year=2012, day=210)
+    ::
+
+        import sami2py
+        sami2py.run_model(tag='run_name', lon=0, year=2012, day=210)
 
     """
 
@@ -263,7 +273,8 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
     _generate_namelist(info)
     archive_path = generate_path(tag, lon, year, day, test)
     if not test:
-        _ = subprocess.check_call('./sami2py.x')
+        runcmd = os.path.join('.', 'sami2py.x')
+        _ = subprocess.check_call(runcmd)
 
     _archive_model(archive_path, clean, fejer, fmtout, outn)
 
@@ -276,8 +287,19 @@ def _generate_drift_info(fejer, ExB_drifts=None):
     """
     drift_info = _generate_fortran_bool(fejer)
     if not fejer:
-        if ExB_drifts.shape != (10, 2):
-            raise Exception('Invalid ExB drift shape!  Must be 10x2 ndarray.')
+        if ExB_drifts is None:
+            ExB_drifts = np.zeros((10, 2))
+
+        if isinstance(ExB_drifts, str) and ExB_drifts == 'default':
+            ExB_drifts = np.zeros((10, 2))
+            ExB_drifts[0, 0] = -30
+
+        if isinstance(ExB_drifts, np.ndarray) and ExB_drifts.shape != (10, 2):
+            raise ValueError('Invalid ExB drift shape!  Must be 10x2 ndarray.')
+
+        if isinstance(ExB_drifts, str) and ExB_drifts != 'default':
+            raise ValueError('Unrecognized drift name')
+
         np.savetxt('exb.inp', ExB_drifts)
     return drift_info
 
@@ -300,10 +322,6 @@ def _generate_namelist(info):
     info : (dict)
         Contains variables for each line of the namelist file
 
-    Returns
-    -------
-    void
-        namelist file written for fortran executable
     """
 
     # Check HWM model parameters
@@ -376,13 +394,11 @@ def _archive_model(path, clean, fejer, fmtout, outn):
         Specifies whether Fejer-Scherliess model is used
         If False, then 'exb.inp' is also archived
 
-    Returns
-    -------
-    void
-        Moves files to the archive directory
+    Note
+    ----
+    Moves files to archive directory
+
     """
-    import shutil
-    import subprocess
 
     if fmtout:
         filelist = ['sami2py-1.00.namelist', 'glonf.dat', 'glatf.dat',

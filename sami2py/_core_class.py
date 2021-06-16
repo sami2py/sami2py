@@ -4,29 +4,33 @@
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
 """Wrapper for running sami2 model
-
 Classes
--------------------------------------------------------------------------------
+-------
 Model
     Loads, reshapes, and holds SAMI2 output for a given model run
     specified by the user.
--------------------------------------------------------------------------------
-
 
 Moduleauthor
--------------------------------------------------------------------------------
+------------
 Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
--------------------------------------------------------------------------------
+
 """
-from os import path
+
 import numpy as np
+from os import path
+import re
+import warnings
+
 import xarray as xr
-from sami2py.utils import generate_path, get_unformatted_data
+import matplotlib.pyplot as plt
+
+from sami2py.utils import generate_path, get_unformatted_data, return_fourier
 
 
 class Model(object):
     """Python object to handle SAMI2 model output data
     """
+
     def __init__(self, tag, lon, year, day, outn=False, test=False):
         """ Loads a previously run sami2 model and sorts into
             appropriate array shapes
@@ -35,7 +39,7 @@ class Model(object):
         ----------
         tag : (string)
             name of run (top-level directory)
-        lon : (int)
+        lon : (float)
             longitude reference
         year : (int)
             year
@@ -58,20 +62,18 @@ class Model(object):
             Universal Time (hrs)
         slt : (1D ndarray)
             Solar Local Time (hr)
-
         glat : (2D ndarray)
             Geographic Latitude (deg)
         glon : (2D ndarray)
             Geographic Longitude (deg)
         zalt : (2D ndarray)
             Altitude (km)
-
         deni : (4D ndarray)
-            Ion density by species (cm^-3)
+            Ion density for each species (cm^-3)
         vsi : (4D ndarray)
-            Ion Velocity by species (m/s)
+            Ion Velocity for each species (cm/s)
         ti : (4D ndarray)
-            Ion Temperature by species (K)
+            Ion Temperature for each species (K)
         te : (3D ndarray)
             Electron Temperature (K)
 
@@ -102,8 +104,13 @@ class Model(object):
         Examples
         --------
         Load the model
+        ::
+
             ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
+
         Check the model information
+        ::
+
             ModelRun
 
         """
@@ -112,7 +119,7 @@ class Model(object):
         out.append('Model Run Name = ' + self.tag)
         out.append(('Day {day:03d}, {year:4d}').format(day=self.day,
                                                        year=self.year))
-        out.append(('Longitude = {lon:d} deg').format(lon=self.lon0))
+        out.append(('Longitude = {:5.1f} deg').format(self.lon0))
         temp_str = '{N:d} time steps from {t0:4.1f} to {tf:4.1f} UT'
         out.append(temp_str.format(N=len(self.ut),
                                    t0=min(self.ut),
@@ -154,6 +161,7 @@ class Model(object):
         -------
         self.slt : (float)
             Solar Local Time in hours
+
         """
 
         local_time = np.mod((self.ut * 60 + self.lon0 * 4), 1440) / 60.0
@@ -164,11 +172,6 @@ class Model(object):
 
     def _load_model(self):
         """Loads model results
-
-        Returns
-        -------
-        void
-            Model object modified in place
         """
 
         nf = 98
@@ -246,20 +249,51 @@ class Model(object):
         vsi = np.reshape(vsi, (nz, nf, ni, nt), order="F")
         ti = np.reshape(ti, (nz, nf, ni, nt), order="F")
         te = np.reshape(te, (nz, nf, nt), order="F")
-        self.data = xr.Dataset({'deni': (['z', 'f', 'ion', 'ut'], deni),
-                                'vsi': (['z', 'f', 'ion', 'ut'], vsi),
-                                'ti': (['z', 'f', 'ion', 'ut'], ti),
-                                'te': (['z', 'f', 'ut'], te),
-                                'slt': (['ut'], self.slt)},
-                               coords={'glat': (['z', 'f'], glat),
-                                       'glon': (['z', 'f'], glon),
-                                       'zalt': (['z', 'f'], zalt),
-                                       'ut': self.ut})
+        self.data = xr.Dataset({'deni': (['z', 'f', 'ion', 'ut'], deni,
+                                         {'units': 'N/cc',
+                                          'long_name': 'ion density'}),
+                                'vsi': (['z', 'f', 'ion', 'ut'], vsi,
+                                        {'units': 'cm/s',
+                                         'long_name': 'ion velocity'}),
+                                'ti': (['z', 'f', 'ion', 'ut'], ti,
+                                       {'units': 'K',
+                                        'long_name': 'ion temperature'}),
+                                'te': (['z', 'f', 'ut'], te,
+                                       {'units': 'K',
+                                        'long_name': 'electron temperature'}),
+                                'slt': (['ut'], self.slt,
+                                        {'units': 'hrs',
+                                         'long_name': 'solar local time'})},
+                               coords={'glat': (['z', 'f'], glat,
+                                                {'units': 'deg',
+                                                 'long_name': 'Geo Latitude',
+                                                 'value_min': -90.0,
+                                                 'value_max': 90.0}),
+                                       'glon': (['z', 'f'], glon,
+                                                {'units': 'deg',
+                                                 'long_name': 'Geo Longitude',
+                                                 'value_min': 0.0,
+                                                 'value_max': 360.0}),
+                                       'zalt': (['z', 'f'], zalt,
+                                                {'units': 'km',
+                                                 'long_name': 'Altitude'}),
+                                       'ut': (['ut'], self.ut,
+                                              {'units': 'hours',
+                                               'long_name': 'Universal Time'})})
         if self.outn:
             denn = np.reshape(denn, (nz, nf, ni, nt), order="F")
-            self.data['denn'] = (('z', 'f', 'ion', 'ut'), denn)
+            self.data['denn'] = (('z', 'f', 'ion', 'ut'), denn,
+                                 {'units': 'N/cc',
+                                  'long_name': 'neutral density'})
             u4 = np.reshape(u4, (nz, nf, nt), order="F")
-            self.data['u4'] = (('z', 'f', 'ut'), u4)
+            self.data['u4'] = (('z', 'f', 'ut'), u4,
+                               {'units': 'm/s',
+                                'long_name': 'neutral wind velocity'})
+
+        if self.MetaData['ExB model'] == 'Fourier Series':
+            exb = return_fourier(self.data['slt'],
+                                 self.MetaData['Fourier Coeffs'])
+            self.data['exb'] = (('ut'), exb)
 
     def _generate_metadata(self, namelist):
         """Reads the namelist and generates MetaData based on Parameters
@@ -269,13 +303,7 @@ class Model(object):
         namelist : (list)
             variable namelist from SAMI2 model
 
-        Returns
-        -------
-        void
-            Model object modified in place
         """
-
-        import re
 
         def find_float(name, ind):
             """regular expression search for float vals"""
@@ -361,8 +389,13 @@ class Model(object):
         Examples
         --------
         Load the model
+        ::
+
             ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
+
         Check the model information for changes to the standard inputs
+        ::
+
             ModelRun.check_standard_model()
 
         """
@@ -387,10 +420,24 @@ class Model(object):
         """saves core data as a netcdf file"""
         if path == '':
             path = 'sami2py_output.nc'
+        attrs = {}
+        keys = self.MetaData.keys()
+        for key in keys:
+            new_key = key.replace(' ', '_').replace('.', '_')
+            attrs[new_key] = self.MetaData[key]
+        attrs['fmtout'] = str(attrs['fmtout'])
+        if attrs['ExB_model'] == 'Fourier Series':
+            attrs['Fourier_Coeffs'] = str(attrs['Fourier_Coeffs'])
+
+        self.data.attrs = attrs
         self.data.to_netcdf(path=path, format='NETCDF4')
 
     def plot_lat_alt(self, time_step=0, species=1):
         """Plots input parameter as a function of latitude and altitude
+
+        .. deprecated:: 0.2.0
+          All plotting routines will be removed in 0.3.0 and moved to
+          sami2py_vis
 
         Parameters
         ----------
@@ -410,11 +457,9 @@ class Model(object):
             ModelRun.plot_lat_alt(time_step=99, species=0)
 
         """
-        import matplotlib.pyplot as plt
-        import warnings
 
         warnings.warn(' '.join(["Model.plot_lat_alt is deprecated and will be",
-                                "removed in a future version. ",
+                                "removed in version 0.3.0+. ",
                                 "Use sami2py_vis instead"]),
                       DeprecationWarning)
 
@@ -423,5 +468,34 @@ class Model(object):
                    self.data['deni'][:, :, species, time_step])
         plt.xlabel('Geo Lat (deg)')
         plt.ylabel('Altitude (km)')
+
+        return fig
+
+    def plot_exb(self):
+        """Plots ExB drifts from the return_fourier function
+
+        .. deprecated:: 0.2.3
+          All plotting routines will be removed in 0.3.0 and moved to
+          sami2py_vis
+
+        Examples
+        --------
+        Load the model
+            ModelRun = sami2py.Model(tag='exb', lon=0, year=2012, day=210)
+        Plot ExB drifts
+            ModelRun.plot_exb()
+
+        """
+
+        warnings.warn(' '.join(["Model.plot_exb is deprecated and will be",
+                                "removed in version 0.3.0. ",
+                                "Use sami2py_vis instead"]),
+                      DeprecationWarning)
+
+        fig = plt.gcf()
+        plt.plot(self.data['slt'], self.data['exb'], '.')
+        plt.xlabel('Time (hrs)')
+        plt.ylabel('ExB Drifts')
+        plt.plot(return_fourier(self.slt, self.MetaData['Fourier Coeffs']))
 
         return fig

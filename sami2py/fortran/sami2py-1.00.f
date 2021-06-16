@@ -139,10 +139,10 @@
         if ( tprnt .ge. dthr .and. hrut .gt. hrpr+hrinit) then
           ntm      = ntm + 1
           call output ( hrut,ntm,istep )
-          tprnt   = 0.
+	      tprnt  =  tprnt - dthr
         elseif ( tprnt .ge. dthr ) then
           print *,'no output yet -- hour = ',hrut
-          tprnt   = 0.
+	      tprnt = tprnt - dthr
         endif
 
       enddo    ! end time loop

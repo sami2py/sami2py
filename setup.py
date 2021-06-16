@@ -4,7 +4,6 @@
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
 
-from __future__ import print_function
 import os
 import sys
 from setuptools import setup
@@ -22,6 +21,8 @@ fortran_path = os.path.join(here, 'sami2py', 'fortran')
 test_data_path = os.path.join(here, 'sami2py', 'tests', 'test_data')
 # generate path to store test and fortran file paths
 file_path = os.path.join(home_dir, '.sami2py', env_name)
+# generate path to ExB coefficients
+exb_path = os.path.join(fortran_path, 'exb.inp')
 
 # %% build
 
@@ -38,15 +39,21 @@ if not os.path.isfile(os.path.join(fortran_path, 'sami2py.x')):
 
 if not os.path.isfile(os.path.join(fortran_path, 'sami2py.x')):
     print('\nYou will need to compile the fortran files.  Try\n'
-          '$  make -C sami2py/fortran compile\n', file=sys.stderr)
+          '$  make -C {} compile\n'.format(os.path.join('sami2py', 'fortran')),
+          file=sys.stderr)
 
 if not os.path.isdir(file_path):
     os.makedirs(file_path)
     print('Created {} directory to store settings.'.format(file_path))
 
-with open(os.path.join(file_path, 'fortran_path.txt'), 'w+') as f:
-    f.write(fortran_path)
-with open(os.path.join(file_path, 'test_data_path.txt'), 'w+') as f:
-    f.write(test_data_path)
+if not os.path.isfile(exb_path):
+    zero_list = ["0 0"] * 10
+    with open(exb_path, 'w') as exb:
+        exb.writelines("%s\n" % line for line in zero_list)
+
+with open(os.path.join(file_path, 'fortran_path.txt'), 'w+') as fout:
+    fout.write(fortran_path)
+with open(os.path.join(file_path, 'test_data_path.txt'), 'w+') as fout:
+    fout.write(test_data_path)
 
 setup()

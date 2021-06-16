@@ -18,9 +18,6 @@ jobs:
           - python-version: 3.7
             numpy_ver: 1.17
             os: ubuntu-latest
-          - python-version: 3.7
-            numpy_ver: 1.17
-            os: windows-latest
 
     name: Python ${{ matrix.python-version }} on ${{ matrix.os }} with numpy ${{ matrix.numpy_ver }}
     runs-on: ${{ matrix.os }}

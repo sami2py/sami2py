@@ -273,7 +273,8 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
     _generate_namelist(info)
     archive_path = generate_path(tag, lon, year, day, test)
     if not test:
-        _ = subprocess.check_call('./sami2py.x')
+        runcmd = os.path.join('.', 'sami2py.x')
+        _ = subprocess.check_call(runcmd)
 
     _archive_model(archive_path, clean, fejer, fmtout, outn)
 
@@ -321,10 +322,6 @@ def _generate_namelist(info):
     info : (dict)
         Contains variables for each line of the namelist file
 
-    Returns
-    -------
-    void
-        namelist file written for fortran executable
     """
 
     # Check HWM model parameters
@@ -397,10 +394,10 @@ def _archive_model(path, clean, fejer, fmtout, outn):
         Specifies whether Fejer-Scherliess model is used
         If False, then 'exb.inp' is also archived
 
-    Returns
-    -------
-    void
-        Moves files to the archive directory
+    Note
+    ----
+    Moves files to archive directory
+
     """
 
     if fmtout:

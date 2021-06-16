@@ -5,11 +5,10 @@
 """ Tests the utilities functions
 """
 
-from __future__ import (print_function)
 import os
 import numpy as np
-import sami2py
 import pytest
+import sami2py
 
 
 class TestGeneratePath():
@@ -62,14 +61,14 @@ class TestArchiveDir():
         from sami2py import test_data_dir
         sami2py.utils.set_archive_dir(path=test_data_dir)
 
-        with open(sami2py.archive_path, 'r') as archive_file:
+        with open(sami2py._archive_path, 'r') as archive_file:
             archive_dir = archive_file.readline()
         assert archive_dir == test_data_dir
 
         if os.path.isdir(tmp_archive_dir):
             sami2py.utils.set_archive_dir(path=tmp_archive_dir)
         else:
-            with open(sami2py.archive_path, 'w') as archive_file:
+            with open(sami2py._archive_path, 'w') as archive_file:
                 archive_file.write('')
                 sami2py.archive_dir = ''
 
@@ -148,8 +147,7 @@ class TestFourierFunction():
         del self.x, self.coeffs
 
     def test_cos(self):
-        """Test the cos function when coeffs are all 0s except for one with 1
-        value
+        """Test generation of a simple cosine
         """
         self.coeffs[0, 0] = 1.0
 
@@ -158,8 +156,7 @@ class TestFourierFunction():
         assert (y == target).all()
 
     def test_sin(self):
-        """Test the sine function when coeffs are all 0s except for one with 1
-        value
+        """Test generation of a simple sine
         """
         self.coeffs[0, 1] = 1.0
 
@@ -192,7 +189,8 @@ class TestFourierFit():
         """Test that the warning is generated properly"""
         nan_drifts = np.array([np.nan])
         with pytest.warns(Warning):
-            v0, fit_coefs, cov = sami2py.utils.fourier_fit(self.lt, nan_drifts, 10)
+            v0, fit_coefs, cov = sami2py.utils.fourier_fit(self.lt, nan_drifts,
+                                                           10)
             assert v0 == 0
             assert (fit_coefs == np.zeros((10, 2))).all()
             assert (cov == np.zeros((10, 2))).all()

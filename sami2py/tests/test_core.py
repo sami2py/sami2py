@@ -2,8 +2,8 @@
 """
 import numpy as np
 import os
-import shutil
 import pytest
+import shutil
 
 import sami2py
 from sami2py import fortran_dir, test_data_dir
@@ -116,7 +116,7 @@ class TestBasicModelRun():
         if os.path.isdir(tmp_archive_dir):
             sami2py.utils.set_archive_dir(path=tmp_archive_dir)
         else:
-            with open(sami2py.archive_path, 'w') as archive_file:
+            with open(sami2py._archive_path, 'w') as archive_file:
                 archive_file.write('')
                 sami2py.archive_dir = ''
 
@@ -176,4 +176,4 @@ class TestDriftGeneration():
 
     def test_bad_string(self):
         with pytest.raises(Exception):
-            sami2py._core._generate_drift_info(False, 'really_cool_drifts_probably')
+            sami2py._core._generate_drift_info(False, 'really_cool_drifts')

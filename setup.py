@@ -4,7 +4,6 @@
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
 
-from __future__ import print_function
 import os
 import sys
 from setuptools import setup
@@ -40,7 +39,8 @@ if not os.path.isfile(os.path.join(fortran_path, 'sami2py.x')):
 
 if not os.path.isfile(os.path.join(fortran_path, 'sami2py.x')):
     print('\nYou will need to compile the fortran files.  Try\n'
-          '$  make -C sami2py/fortran compile\n', file=sys.stderr)
+          '$  make -C {} compile\n'.format(os.path.join('sami2py', 'fortran')),
+          file=sys.stderr)
 
 if not os.path.isdir(file_path):
     os.makedirs(file_path)
@@ -51,9 +51,9 @@ if not os.path.isfile(exb_path):
     with open(exb_path, 'w') as exb:
         exb.writelines("%s\n" % line for line in zero_list)
 
-with open(os.path.join(file_path, 'fortran_path.txt'), 'w+') as f:
-    f.write(fortran_path)
-with open(os.path.join(file_path, 'test_data_path.txt'), 'w+') as f:
-    f.write(test_data_path)
+with open(os.path.join(file_path, 'fortran_path.txt'), 'w+') as fout:
+    fout.write(fortran_path)
+with open(os.path.join(file_path, 'test_data_path.txt'), 'w+') as fout:
+    fout.write(test_data_path)
 
 setup()

@@ -5,15 +5,14 @@
 # -----------------------------------------------------------------------------
 """Wrapper for running sami2 model
 Classes
--------------------------------------------------------------------------------
+-------
 Model
     Loads, reshapes, and holds SAMI2 output for a given model run
     specified by the user.
--------------------------------------------------------------------------------
+
 Moduleauthor
--------------------------------------------------------------------------------
+------------
 Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
--------------------------------------------------------------------------------
 
 """
 
@@ -31,9 +30,11 @@ from sami2py.utils import generate_path, get_unformatted_data, return_fourier
 class Model(object):
     """Python object to handle SAMI2 model output data
     """
+
     def __init__(self, tag, lon, year, day, outn=False, test=False):
         """ Loads a previously run sami2 model and sorts into
             appropriate array shapes
+
         Parameters
         ----------
         tag : (string)
@@ -50,9 +51,11 @@ class Model(object):
         test : (boolean)
             if true : use test model output
             if false : look for user made model output
+
         Returns
         -------
         self : model class object containing OCB file data
+
         Attributes
         ----------
         ut : (1D ndarray)
@@ -73,10 +76,12 @@ class Model(object):
             Ion Temperature for each species (K)
         te : (3D ndarray)
             Electron Temperature (K)
+
         Examples
         --------
         To load a previous model run:
             ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
+
         """
 
         self.tag = tag
@@ -90,23 +95,31 @@ class Model(object):
 
     def __repr__(self):
         """Make a printable representation of a Model object
+
         Returns
         -------
         out : (string)
             string containing a printable representation of a Model object
+
         Examples
         --------
         Load the model
+        ::
+
             ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
+
         Check the model information
+        ::
+
             ModelRun
+
         """
 
         out = ['']
         out.append('Model Run Name = ' + self.tag)
         out.append(('Day {day:03d}, {year:4d}').format(day=self.day,
                                                        year=self.year))
-        out.append(('Longitude = {lon:5.1f} deg').format(lon=self.lon0))
+        out.append(('Longitude = {:5.1f} deg').format(self.lon0))
         temp_str = '{N:d} time steps from {t0:4.1f} to {tf:4.1f} UT'
         out.append(temp_str.format(N=len(self.ut),
                                    t0=min(self.ut),
@@ -143,10 +156,12 @@ class Model(object):
 
     def _calculate_slt(self):
         """Calculates Solar Local Time for reference point of model
+
         Returns
         -------
         self.slt : (float)
             Solar Local Time in hours
+
         """
 
         local_time = np.mod((self.ut * 60 + self.lon0 * 4), 1440) / 60.0
@@ -157,10 +172,6 @@ class Model(object):
 
     def _load_model(self):
         """Loads model results
-        Returns
-        -------
-        void
-            Model object modified in place
         """
 
         nf = 98
@@ -253,10 +264,22 @@ class Model(object):
                                 'slt': (['ut'], self.slt,
                                         {'units': 'hrs',
                                          'long_name': 'solar local time'})},
-                               coords={'glat': (['z', 'f'], glat),
-                                       'glon': (['z', 'f'], glon),
-                                       'zalt': (['z', 'f'], zalt),
-                                       'ut': self.ut})
+                               coords={'glat': (['z', 'f'], glat,
+                                                {'units': 'deg',
+                                                 'long_name': 'Geo Latitude',
+                                                 'value_min': -90.0,
+                                                 'value_max': 90.0}),
+                                       'glon': (['z', 'f'], glon,
+                                                {'units': 'deg',
+                                                 'long_name': 'Geo Longitude',
+                                                 'value_min': 0.0,
+                                                 'value_max': 360.0}),
+                                       'zalt': (['z', 'f'], zalt,
+                                                {'units': 'km',
+                                                 'long_name': 'Altitude'}),
+                                       'ut': (['ut'], self.ut,
+                                              {'units': 'hours',
+                                               'long_name': 'Universal Time'})})
         if self.outn:
             denn = np.reshape(denn, (nz, nf, ni, nt), order="F")
             self.data['denn'] = (('z', 'f', 'ion', 'ut'), denn,
@@ -274,14 +297,12 @@ class Model(object):
 
     def _generate_metadata(self, namelist):
         """Reads the namelist and generates MetaData based on Parameters
+
         Parameters
         -----------
         namelist : (list)
             variable namelist from SAMI2 model
-        Returns
-        -------
-        void
-            Model object modified in place
+
         """
 
         def find_float(name, ind):
@@ -352,22 +373,31 @@ class Model(object):
 
     def check_standard_model(self, model_type="all"):
         """Checks for standard atmospheric inputs
+
         Parameters
         ----------
         model_type : (str)
             Limit check to certain models (default='all')
             Not currently implemented
+
         Returns
         -------
         mod_keys : (list)
             List of modified keyword for self.MetaData, empty
             if no modifications were made
+
         Examples
         --------
         Load the model
+        ::
+
             ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
+
         Check the model information for changes to the standard inputs
+        ::
+
             ModelRun.check_standard_model()
+
         """
         mod_keys = list()
         meta_keys = list(self.MetaData.keys())
@@ -390,10 +420,14 @@ class Model(object):
         """saves core data as a netcdf file"""
         if path == '':
             path = 'sami2py_output.nc'
-        attrs = self.MetaData
+        attrs = {}
+        keys = self.MetaData.keys()
+        for key in keys:
+            new_key = key.replace(' ', '_').replace('.', '_')
+            attrs[new_key] = self.MetaData[key]
         attrs['fmtout'] = str(attrs['fmtout'])
-        if attrs['ExB model'] == 'Fourier Series':
-            attrs['Fourier Coeffs'] = str(attrs['Fourier Coeffs'])
+        if attrs['ExB_model'] == 'Fourier Series':
+            attrs['Fourier_Coeffs'] = str(attrs['Fourier_Coeffs'])
 
         self.data.attrs = attrs
         self.data.to_netcdf(path=path, format='NETCDF4')
@@ -401,8 +435,8 @@ class Model(object):
     def plot_lat_alt(self, time_step=0, species=1):
         """Plots input parameter as a function of latitude and altitude
 
-        .. deprecated:: 0.3.0
-          All plotting routines will be removed in 0.4.0 and moved to
+        .. deprecated:: 0.2.0
+          All plotting routines will be removed in 0.3.0 and moved to
           sami2py_vis
 
         Parameters
@@ -425,7 +459,7 @@ class Model(object):
         """
 
         warnings.warn(' '.join(["Model.plot_lat_alt is deprecated and will be",
-                                "removed in a future version. ",
+                                "removed in version 0.3.0+. ",
                                 "Use sami2py_vis instead"]),
                       DeprecationWarning)
 
@@ -440,8 +474,8 @@ class Model(object):
     def plot_exb(self):
         """Plots ExB drifts from the return_fourier function
 
-        .. deprecated:: 0.3.0
-          All plotting routines will be removed in 0.4.0 and moved to
+        .. deprecated:: 0.2.3
+          All plotting routines will be removed in 0.3.0 and moved to
           sami2py_vis
 
         Examples
@@ -454,7 +488,7 @@ class Model(object):
         """
 
         warnings.warn(' '.join(["Model.plot_exb is deprecated and will be",
-                                "removed in a future version. ",
+                                "removed in version 0.3.0. ",
                                 "Use sami2py_vis instead"]),
                       DeprecationWarning)
 

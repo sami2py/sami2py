@@ -2,9 +2,9 @@
 """
 import os
 
-import xarray as xr
 import matplotlib
 import pytest
+import xarray as xr
 
 import sami2py
 

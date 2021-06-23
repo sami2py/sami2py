@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.4] - 2021-06-23
+- Updated the unit attributes to consistently use 'hrs' instead of 'hours'.
+
 ## [0.2.3] - 2021-06-16
 - Updated Variable and dataset attributes for netcdf export
   - Updated netcdf file in test_data

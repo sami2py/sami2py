@@ -278,7 +278,7 @@ class Model(object):
                                                 {'units': 'km',
                                                  'long_name': 'Altitude'}),
                                        'ut': (['ut'], self.ut,
-                                              {'units': 'hours',
+                                              {'units': 'hrs',
                                                'long_name': 'Universal Time'})})
         if self.outn:
             denn = np.reshape(denn, (nz, nf, ni, nt), order="F")

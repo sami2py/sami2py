@@ -16,7 +16,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         include:
           - python-version: 3.7
-            numpy_ver: 1.17
+            numpy_ver: 1.18
             os: ubuntu-latest
 
     name: Python ${{ matrix.python-version }} on ${{ matrix.os }} with numpy ${{ matrix.numpy_ver }}

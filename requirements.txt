@@ -3,4 +3,4 @@ netCDF4
 numpy
 pandas
 scipy
-xarray
+xarray<=1.18

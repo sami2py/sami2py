@@ -3,7 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.2.5] - 2021-08-13
-- Improve compatibility with xarray 0.19.0
+- Add basic metadata for ExB Fourier Coefficients
+- Fixed a bug with xarray 0.19.0
 - Update NEP-29 minimum version to numpy 1.18
 
 ## [0.2.4] - 2021-06-23

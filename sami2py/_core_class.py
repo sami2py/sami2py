@@ -293,7 +293,9 @@ class Model(object):
         if self.MetaData['ExB model'] == 'Fourier Series':
             exb = return_fourier(self.data['slt'],
                                  self.MetaData['Fourier Coeffs'])
-            self.data['exb'] = (('ut'), exb)
+            self.data['exb'] = (('ut'), exb.data,
+                                {'units': 'm/s',
+                                 'long_name': 'ExB Foureir Coefficients'})
 
     def _generate_metadata(self, namelist):
         """Reads the namelist and generates MetaData based on Parameters

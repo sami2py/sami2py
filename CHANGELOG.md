@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   * Implement flake8-docstring and hacking packages to lint code
   * Update docstring standards
   * Updated NEP 29 compliance in CI tests
+  * Deprecated camel case keys in `run_model`
 
 ## [0.2.5] - 2021-10-19
 * Add basic metadata for ExB Fourier Coefficients

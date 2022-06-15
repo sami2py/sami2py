@@ -7,7 +7,8 @@ import shutil
 import pytest
 
 import sami2py
-from sami2py import fortran_dir, test_data_dir
+from sami2py import fortran_dir
+from sami2py import test_data_dir
 from sami2py.utils import generate_path
 
 

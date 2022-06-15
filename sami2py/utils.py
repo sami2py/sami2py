@@ -22,10 +22,11 @@ get_unformatted_data(dat_dir, var_name, nz, nf, ni, nt, reshape=False)
 
 """
 
-import os
 import numpy as np
-from scipy.optimize import curve_fit
+import os
 import warnings
+
+from scipy.optimize import curve_fit
 
 
 def generate_path(tag, lon, year, day, test=False):

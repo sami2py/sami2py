@@ -67,7 +67,7 @@ del home_dir, env_name, on_rtd
 
 # import main functions
 try:
-    from sami2py import _core, _core_class, utils  # noqa: F401
+    from sami2py import utils  # noqa: F401
     from sami2py._core import run_model  # noqa: F401
     from sami2py._core_class import Model  # noqa: F401
 except ImportError as errstr:

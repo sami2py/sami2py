@@ -48,7 +48,7 @@ jobs:
       run: python setup.py install --user
 
     - name: Test PEP8 compliance
-      run: flake8 . --count --select=E,F,W --show-source --statistics
+      run: flake8 . --count --select=D,E,F,H,W --show-source --statistics
 
     - name: Evaluate complexity
       run: flake8 . --count --exit-zero --max-complexity=10 --statistics

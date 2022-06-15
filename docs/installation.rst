@@ -49,4 +49,4 @@ If you don't have a fortran compiler, gfortran is included as part of the latest
 
 For Mac OS X, you can install gcc through package managers such as `brew <https://brew.sh/>`_.
 
-For windows, multiple setup options are discussed at https://www.scivision.co/windows-gcc-gfortran-cmake-make-install/
+For windows, multiple setup options are discussed at https://www.scivision.dev/windows-gcc-gfortran-cmake-make-install/

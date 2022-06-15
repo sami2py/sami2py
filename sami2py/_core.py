@@ -15,9 +15,9 @@ run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
           dt0=30., maxstep=100000000, denmin=1.e-6,
           nion1=1, nion2=7, mmass=48, h_scale=1, o_scale=1,
           no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
-          Tinf_scale=1, Tn_scale=1., euv_scale=1,
+          tinf_scale=1, tn_scale=1., euv_scale=1,
           wind_scale=1, hwm_model=14,
-          fejer=True, ExB_drifts=np.zeros((10, 2)), ve01=0., exb_scale=1,
+          fejer=True, exb_drifts=np.zeros((10, 2)), ve01=0., exb_scale=1,
           alt_crit=150., cqe=7.e-14,
           clean=False, test=False, fmtout=True, outn=False)
 
@@ -35,6 +35,7 @@ import numpy as np
 import os
 import shutil
 import subprocess
+import warnings
 
 from sami2py import __version__
 from sami2py import fortran_dir
@@ -48,11 +49,11 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
               dt0=30., maxstep=100000000, denmin=1.e-6,
               nion1=1, nion2=7, mmass=48, h_scale=1, o_scale=1,
               no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
-              Tinf_scale=1, Tn_scale=1., euv_scale=1,
+              tinf_scale=1, tn_scale=1., euv_scale=1,
               wind_scale=1, hwm_model=14,
-              fejer=True, ExB_drifts=None, ve01=0., exb_scale=1,
+              fejer=True, exb_drifts=None, ve01=0., exb_scale=1,
               alt_crit=150., cqe=7.e-14,
-              clean=False, test=False, fmtout=True, outn=False):
+              clean=False, test=False, fmtout=True, outn=False, **kwargs):
     """Run SAMI2 and archives the data in path.
 
     Parameters
@@ -182,11 +183,11 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
         A True value will use the Fejer-Scherliess model of ExB drifts
         A False value will use a user-specified Fourier series for ExB drifts
         (default = True)
-    ExB_drifts : 10x2 ndarray of floats, string, or NoneType
+    exb_drifts : 10x2 ndarray of floats, string, or NoneType
         Matrix of Fourier series coefficients dependent on solar local time
         (SLT) in hours where
-        ExB_total = ExB_drifts[i,0] * cos((i + 1) * pi * SLT / 12)
-                  + ExB_drifts[i,1] * sin((i + 1) * pi * SLT / 12)
+        exb_total = exb_drifts[i,0] * cos((i + 1) * pi * SLT / 12)
+                  + exb_drifts[i,1] * sin((i + 1) * pi * SLT / 12)
         Alternatively, None will produce 24 lt hrs of 0 m/s drifts everywhere.
         Using the string 'default' will produce a cosine wave with a
         maximum magnitude of 30 m/s at local noon and a minimum of -30 m/s
@@ -249,12 +250,31 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
             'nion1': nion1, 'nion2': nion2, 'mmass': mmass, 'h_scale': h_scale,
             'o_scale': o_scale, 'no_scale': no_scale, 'o2_scale': o2_scale,
             'he_scale': he_scale, 'n2_scale': n2_scale, 'n_scale': n_scale,
-            'exb_scale': exb_scale, 've01': ve01, 'alt_crit': alt_crit,
-            'cqe': cqe, 'euv_scale': euv_scale,
-            'Tinf_scale': Tinf_scale, 'Tn_scale': Tn_scale,
+            'exb_drifts': exb_drifts, 'exb_scale': exb_scale, 've01': ve01,
+            'alt_crit': alt_crit, 'cqe': cqe, 'euv_scale': euv_scale,
+            'tinf_scale': tinf_scale, 'tn_scale': tn_scale,
             'wind_scale': wind_scale, 'hwm_model': hwm_model}
 
-    info['fejer'] = _generate_drift_info(fejer, ExB_drifts)
+    # TODO(#150): Remove once deprecated keywords are removed.
+    dep_keys = {'ExB_drifts': 'exb_drifts',
+                'Tinf_scale': 'tinf_scale',
+                'Tn_scale': 'tn_scale'}
+    # Replace each deprecated key with new name and warn
+    for key in dep_keys.keys():
+        if key in kwargs.keys():
+            warnings.warn(' '.join(["keyword `{:}` is deprecated".format(key),
+                                    "and will be removed in version 0.4.0+.",
+                                    "Use `{:}` instead".format(dep_keys[key])]),
+                          DeprecationWarning)
+            info[dep_keys[key]] = kwargs[key]
+    # Check for non-supported keys in kwargs
+    for key in kwargs.keys():
+        if key not in dep_keys.keys():
+            raise KeyError("Unsupported key `{:}`".format(key))
+
+    # TODO(#150): exb_drifts can be passed through directly rather than stored
+    # in info once ExB_drifts kwarg is removed.
+    info['fejer'] = _generate_drift_info(fejer, info.pop('exb_drifts'))
     info['fmtout'] = _generate_fortran_bool(fmtout)
     info['outn'] = _generate_fortran_bool(outn)
     _generate_namelist(info)
@@ -268,7 +288,7 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
     os.chdir(current_dir)
 
 
-def _generate_drift_info(fejer, ExB_drifts=None):
+def _generate_drift_info(fejer, exb_drifts=None):
     """Generate the information regarding the ExB drifts used by the model.
 
     This information is later stored in the namelist file for SAMI2
@@ -278,11 +298,11 @@ def _generate_drift_info(fejer, ExB_drifts=None):
     fejer : bool
         Specifies whether Fejer-Scherliess model is used
         If False, then 'exb.inp' is also archived
-    ExB_drifts : 10x2 ndarray of floats, string, or NoneType
+    exb_drifts : 10x2 ndarray of floats, string, or NoneType
         Matrix of Fourier series coefficients dependent on solar local time
         (SLT) in hours where
-        ExB_total = ExB_drifts[i,0] * cos((i + 1) * pi * SLT / 12)
-                  + ExB_drifts[i,1] * sin((i + 1) * pi * SLT / 12)
+        ExB_total = exb_drifts[i,0] * cos((i + 1) * pi * SLT / 12)
+                  + exb_drifts[i,1] * sin((i + 1) * pi * SLT / 12)
         Alternatively, None will produce 24 lt hrs of 0 m/s drifts everywhere.
         Using the string 'default' will produce a cosine wave with a
         maximum magnitude of 30 m/s at local noon and a minimum of -30 m/s
@@ -291,21 +311,20 @@ def _generate_drift_info(fejer, ExB_drifts=None):
     """
 
     drift_info = _generate_fortran_bool(fejer)
-    if not fejer:
-        if ExB_drifts is None:
-            ExB_drifts = np.zeros((10, 2))
+    if exb_drifts is None:
+        exb_drifts = np.zeros((10, 2))
+    elif not fejer:
+        if isinstance(exb_drifts, str) and exb_drifts == 'default':
+            exb_drifts = np.zeros((10, 2))
+            exb_drifts[0, 0] = -30
 
-        if isinstance(ExB_drifts, str) and ExB_drifts == 'default':
-            ExB_drifts = np.zeros((10, 2))
-            ExB_drifts[0, 0] = -30
-
-        if isinstance(ExB_drifts, np.ndarray) and ExB_drifts.shape != (10, 2):
+        if isinstance(exb_drifts, np.ndarray) and exb_drifts.shape != (10, 2):
             raise ValueError('Invalid ExB drift shape!  Must be 10x2 ndarray.')
 
-        if isinstance(ExB_drifts, str) and ExB_drifts != 'default':
+        if isinstance(exb_drifts, str) and exb_drifts != 'default':
             raise ValueError('Unrecognized drift name')
 
-        np.savetxt('exb.inp', ExB_drifts)
+    np.savetxt('exb.inp', exb_drifts)
     return drift_info
 
 
@@ -386,11 +405,11 @@ def _generate_namelist(info):
                                he=info['he_scale'],
                                n2=info['n2_scale'],
                                n=info['n_scale']))  # 28
-    file.write(('  stn      =  {:f},\n').format(info['Tn_scale']))  # 29
+    file.write(('  stn      =  {:f},\n').format(info['tn_scale']))  # 29
     file.write(('  denmin   =  {:e},\n').format(info['denmin']))  # 30
     file.write(('  alt_crit =  {:f},\n').format(info['alt_crit']))  # 31
     file.write(('  cqe      =  {:e},\n').format(info['cqe']))  # 32
-    file.write(('  Tinf_scl =  {:f},\n').format(info['Tinf_scale']))  # 33
+    file.write(('  Tinf_scl =  {:f},\n').format(info['tinf_scale']))  # 33
     file.write(('  euv_scl  =  {:f},\n').format(info['euv_scale']))  # 34
     file.write(('  hwm_mod  =  {:d},\n').format(info['hwm_model']))  # 35
     file.write(('  outn     = {:s}\n').format(info['outn']))  # 36

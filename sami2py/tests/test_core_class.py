@@ -137,7 +137,13 @@ class TestModelObjectUnformatted(TestModelObject):
 
 
 class TestModelPlot(object):
-    """Test plotting functions.  To be moved to sami2py_vis."""
+    """Test plotting functions.
+
+    Note
+    ----
+    To be moved to sami2py_vis.
+
+    """
 
     def setup(self):
         """Create a clean testing setup before each method."""

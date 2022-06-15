@@ -4,6 +4,14 @@
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
 
+"""Setup routine for sami2py.
+
+Note
+----
+package metadata stored in setup.cfg
+
+"""
+
 import os
 import sys
 from setuptools import setup

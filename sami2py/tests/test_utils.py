@@ -116,25 +116,25 @@ class TestGetUnformattedData(object):
     def setup(self):
         """Create a clean testing setup before each method."""
 
-        self.model_fpath = sami2py.utils.generate_path('test', 256, 1999, 256,
-                                                       test=True)
-        self.model_upath = sami2py.utils.generate_path('test', 256, 1999, 257,
-                                                       test=True)
+        self.model_f_path = sami2py.utils.generate_path('test', 256, 1999, 256,
+                                                        test=True)
+        self.model_u_path = sami2py.utils.generate_path('test', 256, 1999, 257,
+                                                        test=True)
 
         return
 
     def teardown(self):
         """Clean up the test env after each method."""
 
-        del self.model_fpath, self.model_upath
+        del self.model_f_path, self.model_u_path
 
         return
 
     def test_successful_get(self):
         """Test data retrieval."""
 
-        ret_data = sami2py.utils.get_unformatted_data(self.model_upath, 'glat')
-        glat = np.loadtxt(os.path.join(self.model_fpath, 'glatf.dat'))
+        ret_data = sami2py.utils.get_unformatted_data(self.model_u_path, 'glat')
+        glat = np.loadtxt(os.path.join(self.model_f_path, 'glatf.dat'))
 
         assert ret_data.size == glat.size
 
@@ -145,10 +145,10 @@ class TestGetUnformattedData(object):
 
         dim0 = 98 * 101 * 7 + 2  # nf*nz*ni + 2
         dim1 = 6             # nt
-        udata = sami2py.utils.get_unformatted_data(self.model_upath, 'deni',
+        udata = sami2py.utils.get_unformatted_data(self.model_u_path, 'deni',
                                                    dim=(dim0, dim1),
                                                    reshape=True)
-        fdata = np.loadtxt(os.path.join(self.model_fpath, 'denif.dat'))
+        fdata = np.loadtxt(os.path.join(self.model_f_path, 'denif.dat'))
         # unformatted test data has 6 time steps, formatted has 2
         assert udata.size == 3 * fdata.size
 
@@ -160,7 +160,7 @@ class TestGetUnformattedData(object):
         with pytest.raises(ValueError):
             dim0 = 2
             dim1 = 2
-            sami2py.utils.get_unformatted_data(self.model_upath, 'deni',
+            sami2py.utils.get_unformatted_data(self.model_u_path, 'deni',
                                                dim=(dim0, dim1),
                                                reshape=True)
 
@@ -170,7 +170,7 @@ class TestGetUnformattedData(object):
         """Test that file raises an error if invalid file path provided."""
 
         with pytest.raises(IOError):
-            sami2py.utils.get_unformatted_data(self.model_upath, 'glat')
+            sami2py.utils.get_unformatted_data(self.model_u_path, 'glat')
 
         return
 

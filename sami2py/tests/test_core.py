@@ -3,6 +3,7 @@
 import numpy as np
 import os
 import shutil
+import warnings
 
 import pytest
 
@@ -218,4 +219,59 @@ class TestDriftGeneration(object):
         with pytest.raises(Exception):
             sami2py._core._generate_drift_info(False, 'really_cool_drifts')
 
+        return
+
+
+class TestDeprecation(object):
+    """Unit test for deprecation warnings."""
+
+    def setup(self):
+        """Set up the unit test environment for each method."""
+
+        warnings.simplefilter("always", DeprecationWarning)
+        return
+
+    def teardown(self):
+        """Clean up the unit test environment after each method."""
+
+        return
+
+    @pytest.mark.parametrize("key", ['ExB_drifts', 'Tinf_scale', 'Tn_scale'])
+    def test_key_deprecation(self, key):
+        """Check that camel case variables are deprecated.
+
+        parameters
+        ----------
+        key : str
+            Name of deprecated key
+
+        """
+
+        dep_keys = {'ExB_drifts': np.ones((10, 2)),
+                    'Tinf_scale': 0.75,
+                    'Tn_scale': 0.75}
+        kwargs = {key: dep_keys[key]}
+
+        with warnings.catch_warnings(record=True) as war:
+            # Using minimum runtime since the check has occurred before
+            # sami2 executable is run
+            sami2py.run_model(hrmax=0.0, **kwargs)
+
+        warn_msg = "keyword `{:}` is deprecated".format(key)
+        msg_found = []
+        for item in war:
+            msg_found.append(warn_msg in str(item.message))
+
+        # Check that desired warning appears in list of warnings
+        assert np.any(msg_found)
+
+        return
+
+    def test_key_error(self):
+        """Test that invalid keys error for the deprecated keyword handler."""
+
+        with pytest.raises(KeyError):
+            # Using minimum runtime since the check has occurred before
+            # sami2 executable is run
+            sami2py.run_model(hrmax=0.0, dinosaur=True)
         return

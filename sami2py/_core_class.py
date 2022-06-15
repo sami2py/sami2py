@@ -18,10 +18,10 @@ from os import path
 import re
 import warnings
 
-import xarray as xr
 import matplotlib.pyplot as plt
+import xarray as xr
 
-from sami2py.utils import generate_path, get_unformatted_data, return_fourier
+import sami2py
 
 
 class Model(object):
@@ -165,8 +165,8 @@ class Model(object):
         nz = 101
         ni = 7
 
-        model_path = generate_path(self.tag, self.lon0, self.year, self.day,
-                                   self.test)
+        model_path = sami2py.utils.generate_path(self.tag, self.lon0, self.year,
+                                                 self.day, self.test)
 
         # Get NameList
         namelist_file = open(path.join(model_path, 'sami2py-1.00.namelist'))
@@ -201,33 +201,39 @@ class Model(object):
                 u4 = np.loadtxt(path.join(model_path, 'u4f.dat'))
         else:
             # Get Location
-            glat = get_unformatted_data(model_path, 'glat')
-            glon = get_unformatted_data(model_path, 'glon')
-            zalt = get_unformatted_data(model_path, 'zalt')
+            glat = sami2py.utils.get_unformatted_data(model_path, 'glat')
+            glon = sami2py.utils.get_unformatted_data(model_path, 'glon')
+            zalt = sami2py.utils.get_unformatted_data(model_path, 'zalt')
 
             # Get plasma values
             dim0 = nz * nf * ni + 2
             dim1 = nt
-            deni = get_unformatted_data(model_path, 'deni',
-                                        dim=(dim0, dim1), reshape=True)
-            vsi = get_unformatted_data(model_path, 'vsi',
-                                       dim=(dim0, dim1), reshape=True)
-            ti = get_unformatted_data(model_path, 'ti',
-                                      dim=(dim0, dim1), reshape=True)
+            deni = sami2py.utils.get_unformatted_data(model_path, 'deni',
+                                                      dim=(dim0, dim1),
+                                                      reshape=True)
+            vsi = sami2py.utils.get_unformatted_data(model_path, 'vsi',
+                                                     dim=(dim0, dim1),
+                                                     reshape=True)
+            ti = sami2py.utils.get_unformatted_data(model_path, 'ti',
+                                                    dim=(dim0, dim1),
+                                                    reshape=True)
 
             # Electron Temperatures have only one species
             dim0 = nz * nf + 2
-            te = get_unformatted_data(model_path, 'te',
-                                      dim=(dim0, dim1), reshape=True)
+            te = sami2py.utils.get_unformatted_data(model_path, 'te',
+                                                    dim=(dim0, dim1),
+                                                    reshape=True)
             if self.outn:
                 # Multiple neutral species
                 dim0 = nz * nf * ni + 2
-                denn = get_unformatted_data(model_path, 'denn',
-                                            dim=(dim0, dim1), reshape=True)
+                denn = sami2py.utils.get_unformatted_data(model_path, 'denn',
+                                                          dim=(dim0, dim1),
+                                                          reshape=True)
                 # Only one wind
                 dim0 = nz * nf + 2
-                u4 = get_unformatted_data(model_path, 'u4',
-                                          dim=(dim0, dim1), reshape=True)
+                u4 = sami2py.utils.get_unformatted_data(model_path, 'u4',
+                                                        dim=(dim0, dim1),
+                                                        reshape=True)
 
         glat = np.reshape(glat, (nz, nf), order="F")
         glon = np.reshape(glon, (nz, nf), order="F")
@@ -278,8 +284,8 @@ class Model(object):
                                 'long_name': 'neutral wind velocity'})
 
         if self.MetaData['ExB model'] == 'Fourier Series':
-            exb = return_fourier(self.data['slt'],
-                                 self.MetaData['Fourier Coeffs'])
+            exb = sami2py.utils.return_fourier(self.data['slt'],
+                                               self.MetaData['Fourier Coeffs'])
             self.data['exb'] = (('ut'), exb.data,
                                 {'units': 'm/s',
                                  'long_name': 'ExB Foureir Coefficients'})
@@ -296,10 +302,12 @@ class Model(object):
 
         def find_float(name, ind):
             """Search for regular expression float vals."""
+
             return float(re.findall(r"\d*\.\d+|\d+", name)[ind])
 
         def find_int(name, ind):
             """Search for regular expression int vals."""
+
             return int(re.findall(r"\d+", name)[ind])
 
         self.MetaData['fmtout'] = ('.true.' in namelist[1])
@@ -335,8 +343,9 @@ class Model(object):
         if '.true.' in namelist[10]:
             self.MetaData['ExB model'] = 'Fejer-Scherliess'
         else:
-            model_path = generate_path(self.tag, self.lon0, self.year,
-                                       self.day, self.test)
+            model_path = sami2py.utils.generate_path(self.tag, self.lon0,
+                                                     self.year, self.day,
+                                                     self.test)
             self.MetaData['ExB model'] = 'Fourier Series'
             self.MetaData['Fourier Coeffs'] = np.loadtxt(path.join(model_path,
                                                                    'exb.inp'))
@@ -487,6 +496,7 @@ class Model(object):
         plt.plot(self.data['slt'], self.data['exb'], '.')
         plt.xlabel('Time (hrs)')
         plt.ylabel('ExB Drifts')
-        plt.plot(return_fourier(self.slt, self.MetaData['Fourier Coeffs']))
+        plt.plot(sami2py.utils.return_fourier(self.slt,
+                                              self.MetaData['Fourier Coeffs']))
 
         return fig

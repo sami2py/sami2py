@@ -2,8 +2,9 @@
 
 import numpy as np
 import os
-import pytest
 import shutil
+
+import pytest
 
 import sami2py
 from sami2py import fortran_dir, test_data_dir

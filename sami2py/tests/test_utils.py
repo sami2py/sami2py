@@ -4,8 +4,9 @@
 # -----------------------------------------------------------------------------
 """Test the utilities functions."""
 
-import os
 import numpy as np
+import os
+
 import pytest
 import sami2py
 

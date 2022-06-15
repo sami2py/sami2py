@@ -13,9 +13,9 @@ package metadata stored in setup.cfg
 """
 
 import os
-import sys
 from setuptools import setup
 import subprocess
+import sys
 
 # get home directory
 home_dir = os.path.expanduser('~')

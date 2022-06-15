@@ -36,7 +36,8 @@ import os
 import shutil
 import subprocess
 
-from sami2py import fortran_dir, __version__
+from sami2py import fortran_dir
+from sami2py import __version__
 from sami2py.utils import generate_path
 
 

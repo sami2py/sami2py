@@ -8,13 +8,13 @@ contributions.
 Short version
 -------------
 
-* Submit bug reports and feature requests through [GitHub](https://github.com/jklenzing/sami2py/issues)
+* Submit bug reports and feature requests through [GitHub](https://github.com/sami2py/sami2py/issues)
 * Make pull requests to the ``develop`` branch
 
 Bug reports
 -----------
 
-When [reporting a bug](https://github.com/jklenzing/sami2py/issues>) please
+When [reporting a bug](https://github.com/sami2py/sami2py/issues>) please
 include:
 
 * Your operating system name and version
@@ -25,7 +25,7 @@ Feature requests and feedback
 -----------------------------
 
 The best way to send feedback is to file an issue at
-`GitHub <https://github.com/jklenzing/sami2py/issues>`_.
+`GitHub <https://github.com/sami2py/sami2py/issues>`_.
 
 If you are proposing a feature:
 
@@ -39,7 +39,7 @@ Development
 
 To set up `sami2py` for local development:
 
-1. [Fork sami2py on GitHub](https://github.com/jklenzing/sami2py/fork).
+1. [Fork sami2py on GitHub](https://github.com/sami2py/sami2py/fork).
 2. Clone your fork locally
 
 ::

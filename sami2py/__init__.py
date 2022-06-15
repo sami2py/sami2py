@@ -3,9 +3,7 @@
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
-"""
-sami2py - sami2py is another model of the ionosphere python style
-=================================================================
+"""sami2py - sami2py is another model of the ionosphere python style.
 
 Sami2py is a python module that runs the SAMI2 model, as well as archives,
 loads and plots the resulting modeled values. SAMI2 is a model developed

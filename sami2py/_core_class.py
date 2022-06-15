@@ -3,16 +3,13 @@
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
-"""Wrapper for running sami2 model
+"""Wrapper for running sami2 model.
+
 Classes
 -------
 Model
     Loads, reshapes, and holds SAMI2 output for a given model run
     specified by the user.
-
-Moduleauthor
-------------
-Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 
 """
 
@@ -28,27 +25,25 @@ from sami2py.utils import generate_path, get_unformatted_data, return_fourier
 
 
 class Model(object):
-    """Python object to handle SAMI2 model output data
-    """
+    """Python object to handle SAMI2 model output data."""
 
     def __init__(self, tag, lon, year, day, outn=False, test=False):
-        """ Loads a previously run sami2 model and sorts into
-            appropriate array shapes
+        """Load a previously run sami2 model and sorts into array shapes.
 
         Parameters
         ----------
-        tag : (string)
+        tag : string
             name of run (top-level directory)
-        lon : (float)
+        lon : float
             longitude reference
-        year : (int)
+        year : int
             year
-        day : (int)
+        day : int
             day of year from Jan 1
-        outn : (boolean)
+        outn : bool
             if true : look for neutral density and wind files
             if false :  only look for default sami2 output
-        test : (boolean)
+        test : bool
             if true : use test model output
             if false : look for user made model output
 
@@ -58,23 +53,23 @@ class Model(object):
 
         Attributes
         ----------
-        ut : (1D ndarray)
+        ut : 1D ndarray
             Universal Time (hrs)
-        slt : (1D ndarray)
+        slt : 1D ndarray
             Solar Local Time (hr)
-        glat : (2D ndarray)
+        glat : 2D ndarray
             Geographic Latitude (deg)
-        glon : (2D ndarray)
+        glon : 2D ndarray
             Geographic Longitude (deg)
-        zalt : (2D ndarray)
+        zalt : 2D ndarray
             Altitude (km)
-        deni : (4D ndarray)
+        deni : 4D ndarray
             Ion density for each species (cm^-3)
-        vsi : (4D ndarray)
+        vsi : 4D ndarray
             Ion Velocity for each species (cm/s)
-        ti : (4D ndarray)
+        ti : 4D ndarray
             Ion Temperature for each species (K)
-        te : (3D ndarray)
+        te : 3D ndarray
             Electron Temperature (K)
 
         Examples
@@ -94,11 +89,11 @@ class Model(object):
         self._load_model()
 
     def __repr__(self):
-        """Make a printable representation of a Model object
+        """Make a printable representation of a Model object.
 
         Returns
         -------
-        out : (string)
+        out : string
             string containing a printable representation of a Model object
 
         Examples
@@ -155,14 +150,7 @@ class Model(object):
         return '\n'.join(out)
 
     def _calculate_slt(self):
-        """Calculates Solar Local Time for reference point of model
-
-        Returns
-        -------
-        self.slt : (float)
-            Solar Local Time in hours
-
-        """
+        """Calculate Solar Local Time for reference point of model."""
 
         local_time = np.mod((self.ut * 60 + self.lon0 * 4), 1440) / 60.0
         mean_anomaly = 2 * np.pi * self.day / 365.242
@@ -171,8 +159,7 @@ class Model(object):
         self.slt = local_time - delta_t / 60.0
 
     def _load_model(self):
-        """Loads model results
-        """
+        """Load model results."""
 
         nf = 98
         nz = 101
@@ -298,21 +285,21 @@ class Model(object):
                                  'long_name': 'ExB Foureir Coefficients'})
 
     def _generate_metadata(self, namelist):
-        """Reads the namelist and generates MetaData based on Parameters
+        """Read the namelist and generates MetaData based on Parameters.
 
         Parameters
         -----------
-        namelist : (list)
+        namelist : list
             variable namelist from SAMI2 model
 
         """
 
         def find_float(name, ind):
-            """regular expression search for float vals"""
+            """Search for regular expression float vals."""
             return float(re.findall(r"\d*\.\d+|\d+", name)[ind])
 
         def find_int(name, ind):
-            """regular expression search for int vals"""
+            """Search for regular expression int vals."""
             return int(re.findall(r"\d+", name)[ind])
 
         self.MetaData['fmtout'] = ('.true.' in namelist[1])
@@ -374,17 +361,17 @@ class Model(object):
         self.MetaData['denmin'] = find_float(namelist[30], 0)
 
     def check_standard_model(self, model_type="all"):
-        """Checks for standard atmospheric inputs
+        """Check for standard atmospheric inputs.
 
         Parameters
         ----------
-        model_type : (str)
+        model_type : str
             Limit check to certain models (default='all')
             Not currently implemented
 
         Returns
         -------
-        mod_keys : (list)
+        mod_keys : list
             List of modified keyword for self.MetaData, empty
             if no modifications were made
 
@@ -401,6 +388,7 @@ class Model(object):
             ModelRun.check_standard_model()
 
         """
+
         mod_keys = list()
         meta_keys = list(self.MetaData.keys())
 
@@ -419,7 +407,8 @@ class Model(object):
         return mod_keys
 
     def to_netcdf(self, path=''):
-        """saves core data as a netcdf file"""
+        """Save core data as a netcdf file."""
+
         if path == '':
             path = 'sami2py_output.nc'
         attrs = {}
@@ -435,7 +424,7 @@ class Model(object):
         self.data.to_netcdf(path=path, format='NETCDF4')
 
     def plot_lat_alt(self, time_step=0, species=1):
-        """Plots input parameter as a function of latitude and altitude
+        """Plot input parameter as a function of latitude and altitude.
 
         .. deprecated:: 0.2.0
           All plotting routines will be removed in 0.3.0 and moved to
@@ -443,9 +432,9 @@ class Model(object):
 
         Parameters
         ----------
-        time_step : (int)
+        time_step : int
             time index for SAMI2 model results
-        species : (int)
+        species : int
             ion species index :
             0: H+, 1: O+, 2: NO+, 3: O2+, 4: He+, 5: N2+, 6: N+
 
@@ -474,7 +463,7 @@ class Model(object):
         return fig
 
     def plot_exb(self):
-        """Plots ExB drifts from the return_fourier function
+        """Plot ExB drifts from the return_fourier function.
 
         .. deprecated:: 0.2.3
           All plotting routines will be removed in 0.3.0 and moved to

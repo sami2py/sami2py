@@ -9,7 +9,7 @@ import xarray as xr
 import sami2py
 
 
-class TestModelObject():
+class TestModelObject(object):
     """Test basic model object functionality."""
 
     def setup(self):

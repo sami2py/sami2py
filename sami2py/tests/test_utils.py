@@ -24,8 +24,6 @@ class TestGeneratePath(object):
     def teardown(self):
         """Clean up the test env after each method."""
 
-        del self.archive_dir
-
         return
 
     def test_successful_path_generation(self):

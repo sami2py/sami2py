@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.3.0] - 2022-08-31
+* Maintenance
+  * Implement flake8-docstring and hacking packages to lint code
+  * Update docstring standards
+
 ## [0.2.5] - 2021-10-19
 - Add basic metadata for ExB Fourier Coefficients
 - Fixed a bug with xarray 0.19.0

@@ -13,7 +13,7 @@ jobs:
       matrix:
         python-version: [3.8, 3.9]
         numpy_ver: [latest]
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         include:
           - python-version: 3.7
             numpy_ver: 1.18
@@ -44,6 +44,10 @@ jobs:
         pip install -r requirements.txt
         pip install --no-binary :numpy: numpy==${{ matrix.numpy_ver }};
 
+    - name: Install fortran on MacOS
+      if: ${{ matrix.os == 'macos-latest' }}
+      run: brew reinstall gcc
+          
     - name: Manually install sami2py
       run: python setup.py install --user
 

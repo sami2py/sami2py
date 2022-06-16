@@ -3,7 +3,7 @@
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
-"""Wrapper for running sami2 model
+"""Wrapper for running sami2 model.
 
 Functions
 -------------------------------------------------------------------------------
@@ -36,7 +36,8 @@ import os
 import shutil
 import subprocess
 
-from sami2py import fortran_dir, __version__
+from sami2py import __version__
+from sami2py import fortran_dir
 from sami2py.utils import generate_path
 
 
@@ -52,143 +53,136 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
               fejer=True, ExB_drifts=None, ve01=0., exb_scale=1,
               alt_crit=150., cqe=7.e-14,
               clean=False, test=False, fmtout=True, outn=False):
-    """Runs SAMI2 and archives the data in path
+    """Run SAMI2 and archives the data in path.
 
     Parameters
     ----------
-    tag : (string)
+    tag : string
         Name of run for data archive.  First-level directory under save
         directory
         Note that this is not passed through to sami2 executable
         (default = 'model_run')
-    lat : (float)
+    lat : float
         latitude intercept of sami2 plane
         (default = 0)
-    lon : (float)
+    lon : float
         longitude intercept of sami2 plane
         (default = 0)
-    alt : (float)
+    alt : float
         The input altitude in km.
         (default = 300)
-    year : (int)
+    year : int
         year of desired run, integer
-    day : (int)
+    day : int
         day of year from Jan 1, acceptable range is [1,366]
-
-    f107 : (float)
+    f107 : float
         Daily F10.7 solar flux value in SFU
         (default = 120)
-    f107a : (float)
+    f107a : float
         81-day average of F10.7 in SFU
         (default = 120)
-    ap : (float)
+    ap : float
         quasi-logarithmic geomagnetic index of 3-hour range relative to an
         assumed quiet-day curve.  Integer version of Kp index.
         (default = 0)
-
-    rmin : (float)
+    rmin : float
         Maximum altitude of the lowest field line in km
         (default = 100)
-    rmax : (float)
+    rmax : float
         Maximum altitude of the highest field line in km
         This has to be less than 20,000 km.
         (default = 2000)
-    gams : (int)
+    gams : int
         Determines grid spacing along the geomagnetic field. As this
         parameter is increased, the spacing between grid points along
         the field line increases at high altitudes. As it is decreased,
         the spacing becomes more uniform.
         (default=3)
-    gamp : (int)
+    gamp : int
         Determines grid spacing orthogonal to the geomagnetic field.
         As this parameter is increased, the spacing between field lines
         increases at high altitudes. As it is decreased, the spacing
         becomes more uniform.
         (default=3)
-    altmin : (float)
+    altmin : float
         Altitude of the base of a field line (km).
         (default=85)
-
-    dthr : (float)
+    dthr : float
         Defines how often the data is output (hr).
         (default = 0.25)
-    hrinit : (float)
+    hrinit : float
         Universal time at the start of the run (hr).
         (default=0)
-    hrpr : (float)
+    hrpr : float
         The time period that elapses before the data is output (hr).
         (default = 24)
-    hrmax : (float)
+    hrmax : float
         The number of hours for the run (hr). The first 24 hrs
         allows transients to clear the system.
         (default = 48)
-    dt0 : (float)
+    dt0 : float
          The maximum time step allowed (sec). This shouldn't be changed.
         (default=30)
-    maxstep : (int)
+    maxstep : int
         The maximum number of time steps allowed.
         (default = 100000000)
-    denmin : (float)
+    denmin : float
         Miniumum ion density allowed.
         (default=1.e-6)
-
-    nion1 : (int)
+    nion1 : int
         Minimum ion specie index.
         1: H+, 2: O+, 3: NO+, 4: O2+, 5: He+, 6: N2+, 7: N+
         (default=1)
-    nion2 : (int)
+    nion2 : int
         Maximum ion specie index (see above). One can use 4 and consider
         only the dominant ions in the ionosphere (H, O, NO, O2). This will
         speed up the run time of the code by about 30%.
         (default=7)
-    mmass : (int)
+    mmass : int
         Average neutral mass density.
         (default = 48)
-
-    h_scale : (float)
+    h_scale : float
         Multiplier to scale MSIS neutral H densities
         (default = 1)
-    o_scale : (float)
+    o_scale : float
         Multiplier to scale MSIS neutral O densities
         (default = 1)
-    no_scale : (float)
+    no_scale : float
         Multiplier to scale MSIS neutral NO densities
         (default = 1)
-    o2_scale : (float)
+    o2_scale : float
         Multiplier to scale MSIS neutral O2 densities
         (default = 1)
-    he_scale : (float)
+    he_scale : float
         Multiplier to scale MSIS neutral He densities
         (default = 1)
-    n2_scale : (float)
+    n2_scale : float
         Multiplier to scale MSIS neutral N2 densities
         (default = 1)
-    n_scale : (float)
+    n_scale : float
         Multiplier to scale MSIS neutral all other densities
         (default = 1)
-
-    Tinf_scale : (float)
+    Tinf_scale : float
         Multiplier to scale Exospheric temperature in MSIS
         (default = 1)
-    Tn_scale : (float)
+    Tn_scale : float
         Multiplier to scale Neutral temperature in MSIS
         (default = 1)
-    euv_scale : (float)
+    euv_scale : float
         Multiplier to scale total ionization in EUVAC
         (default = 1)
-    wind_scale : (float)
+    wind_scale : float
         Multiplier to scale Neutral Winds from HWM
         (default = 1)
-    hwm_model : (int)
+    hwm_model : int
         Specifies which version of HWM to use.
         Allowable values are 93, 7, 14
         (default = 14)
-
-    fejer : (boolean)
+    fejer : bool
         A True value will use the Fejer-Scherliess model of ExB drifts
         A False value will use a user-specified Fourier series for ExB drifts
         (default = True)
-    ExB_drifts : (10x2 ndarray of floats, string, or NoneType)
+    ExB_drifts : 10x2 ndarray of floats, string, or NoneType
         Matrix of Fourier series coefficients dependent on solar local time
         (SLT) in hours where
         ExB_total = ExB_drifts[i,0] * cos((i + 1) * pi * SLT / 12)
@@ -198,48 +192,41 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
         maximum magnitude of 30 m/s at local noon and a minimum of -30 m/s
         at midnight.
         (default = None)
-    ve01 : (float)
+    ve01 : float
         Constant offset for Fourier ExB drifts (m/s)
         (default=0)
-    exb_scale : (float)
+    exb_scale : float
         Multiplier for ExB model to scale vertical drifts
         (default=1)
-    alt_crit : (float)
+    alt_crit : float
         The E x B drift is exponentially decreased below this
         altitude with a scale length 20 km.  [This is done to
         allow rmin to be less than 150 km without using an
         extremely small time step.]
         (default=150)
-    cqe : (float)
+    cqe : float
         Constant used in the subroutine 'etemp' associated
         with photoelectron heating. The typical range is
         3e-14 -- 8e-14. The higher this value, the lower
         the electron temperature above 300 km.
         (default=7e-14)
-
-    clean : (boolean)
+    clean : bool
         A True value will delete the local files after archiving
         A False value will not delete local save files
         Note that this is not passed through to sami2 executable
         (default = False)
-    test : (boolean)
+    test : bool
         A True value will not run the sami2 executable.  Used for debugging
         the framework.
         A False value will run the sami2 executable
         Note that this is not passed through to sami2 executable
         (default = False)
-    fmtout : (boolean)
+    fmtout : bool
         If true, sami2 will output as text files.
         If false, sami2 will output as binary.
-    outn : (boolean)
+    outn : bool
         if true, sami2 will include neutral density and wind in output
         if false, sami2 will not include neutral density and wind
-
-    Methods
-    -------
-    _generate_namelist(info)
-
-    archive_model(path,clean,fejer)
 
     Examples
     --------
@@ -282,9 +269,27 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
 
 
 def _generate_drift_info(fejer, ExB_drifts=None):
-    """Generates the information regarding the ExB drifts used by the model.
+    """Generate the information regarding the ExB drifts used by the model.
+
     This information is later stored in the namelist file for SAMI2
+
+    Parameters
+    ----------
+    fejer : bool
+        Specifies whether Fejer-Scherliess model is used
+        If False, then 'exb.inp' is also archived
+    ExB_drifts : 10x2 ndarray of floats, string, or NoneType
+        Matrix of Fourier series coefficients dependent on solar local time
+        (SLT) in hours where
+        ExB_total = ExB_drifts[i,0] * cos((i + 1) * pi * SLT / 12)
+                  + ExB_drifts[i,1] * sin((i + 1) * pi * SLT / 12)
+        Alternatively, None will produce 24 lt hrs of 0 m/s drifts everywhere.
+        Using the string 'default' will produce a cosine wave with a
+        maximum magnitude of 30 m/s at local noon and a minimum of -30 m/s
+        at midnight.
+        (default = None)
     """
+
     drift_info = _generate_fortran_bool(fejer)
     if not fejer:
         if ExB_drifts is None:
@@ -305,21 +310,34 @@ def _generate_drift_info(fejer, ExB_drifts=None):
 
 
 def _generate_fortran_bool(pybool):
-    """Generates a fortran bool as a string for the namelist generator
+    """Generate a fortran bool as a string for the namelist generator.
+
+    Parameters
+    ----------
+    pybool : bool
+        Python format boolean (True, False)
+
+    Returns
+    -------
+    fbool : str
+        Fortran format boolean
+
     """
+
     if pybool:
         fbool = '.true.'
     else:
         fbool = '.false.'
+
     return fbool
 
 
 def _generate_namelist(info):
-    """Generates namelist file for sami2
+    """Generate namelist file for sami2.
 
     Parameters
     ----------
-    info : (dict)
+    info : dict
         Contains variables for each line of the namelist file
 
     """
@@ -382,15 +400,15 @@ def _generate_namelist(info):
 
 
 def _archive_model(path, clean, fejer, fmtout, outn):
-    """Moves the model output files to a common archive
+    """Move the model output files to a common archive.
 
     Parameters
     ----------
-    path : (string)
+    path : string
         full path of file destination
-    clean : (boolean)
+    clean : bool
         If True, then delete dat files locally
-    fejer : (boolean)
+    fejer : bool
         Specifies whether Fejer-Scherliess model is used
         If False, then 'exb.inp' is also archived
 

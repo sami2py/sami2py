@@ -11,13 +11,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.8, 3.9]
-        numpy_ver: [latest]
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.9", "3.10"]
+        numpy_ver: ["latest"]
+        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
         include:
-          - python-version: 3.7
-            numpy_ver: 1.18
-            os: ubuntu-latest
+          - python-version: "3.8"
+            numpy_ver: "1.20"
+            os: "ubuntu-latest"
 
     name: Python ${{ matrix.python-version }} on ${{ matrix.os }} with numpy ${{ matrix.numpy_ver }}
     runs-on: ${{ matrix.os }}
@@ -47,12 +47,12 @@ jobs:
     - name: Install fortran on MacOS
       if: ${{ matrix.os == 'macos-latest' }}
       run: brew reinstall gcc
-          
+
     - name: Manually install sami2py
       run: python setup.py install --user
 
     - name: Test PEP8 compliance
-      run: flake8 . --count --select=E,F,W --show-source --statistics
+      run: flake8 . --count --select=D,E,F,H,W --show-source --statistics
 
     - name: Evaluate complexity
       run: flake8 . --count --exit-zero --max-complexity=10 --statistics

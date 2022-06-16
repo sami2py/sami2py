@@ -3,7 +3,7 @@
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
-""" Wrapper for running sami2 model
+"""Wrapper for running sami2 model.
 
 Functions
 ---------
@@ -19,38 +19,36 @@ return_fourier(x, coeffs)
 get_unformatted_data(dat_dir, var_name, nz, nf, ni, nt, reshape=False)
     routine to interpret unformatted binary files created by the SAMI2 model
 
-Moduleauthor
-------------
-Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
 
 """
 
-import os
 import numpy as np
-from scipy.optimize import curve_fit
+import os
 import warnings
+
+from scipy.optimize import curve_fit
 
 
 def generate_path(tag, lon, year, day, test=False):
-    """Creates a path based on run tag, date, and longitude
+    """Create a path based on run tag, date, and longitude.
 
     Parameters
     ----------
-    tag : (string)
+    tag : str
         specifies name of model run
-    lon : (int or float)
+    lon : int or float
         longitude of model run
-    year : (int)
+    year : int
         year of model run
-    day : (int)
+    day : int
         day of year of model run
-    test : (bool)
+    test : bool
         If True, use directory for test data.  If False, use archive_dir
         (default = False)
 
     Returns
     -------
-    archive_path : (string)
+    archive_path : str
         Complete path pointing to model archive for a given run
 
     Note
@@ -126,27 +124,58 @@ def set_archive_dir(path=None, store=True):
 
 
 def return_fourier(x, coeffs):
-    """
-    Returns a Fourier series up to NumF coefficients
+    """Return a Fourier series up to NumF coefficients.
 
     Parameters
     ----------
-    x : (1d ndarray)
+    x : 1d ndarray
         solar local time in hours (slt)
-    coeffs : (array)
+    coeffs : array
         10x2 array of fourier coefficients
 
     Returns
     --------
-    y : (array)
+    y : array
         result of the fourier series
+
     """
+
     def cos_a(x, n):
-        """simple cosine"""
+        """Calculate a simple cosine.
+
+        Parameters
+        ----------
+        x : np.ndarray
+            Values of Solar Local Time
+        n : int
+            Number of oscillations
+
+        Returns
+        -------
+        y : np.ndarray
+            Cosine wave over x.
+
+        """
+
         return np.cos(n * np.pi * x / 12.0)
 
     def sin_a(x, n):
-        """simple sine"""
+        """Calculate a simple sine.
+
+        Parameters
+        ----------
+        x : np.ndarray
+            Values of Solar Local Time
+        n : int
+            Number of oscillations
+
+        Returns
+        -------
+        y : np.ndarray
+            Sine wave over x.
+
+        """
+
         return np.sin(n * np.pi * x / 12.0)
 
     shape = coeffs.shape
@@ -159,29 +188,29 @@ def return_fourier(x, coeffs):
 
 
 def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
-    """Routine to interpret unformatted binary files created by the SAMI2 model
+    """Interpret unformatted binary files created by the SAMI2 model.
 
     Parameters
     -----------
-    data_dir : (str)
+    data_dir : str
         directory where the SAMI2 data is stored
-    var_name : (str)
+    var_name : str
         name of unformatted data variable to be loaded
-    nz : (int)
+    nz : int
         number of mesh points along the geomagnetic field line
-    nf : (int)
+    nf : int
         number of mesh points transverse to the geomagnetic field line i.e.
         number of field lines
-    ni : (int)
+    ni : int
         number of ion species
-    nt : (int)
+    nt : int
         number of time steps
-    reshape : (bool)
+    reshape : bool
         if true the data is reshaped by the mesh geometry
 
     Returns
     -----------
-    float_data : (numpy.ndarray)
+    float_data : numpy.ndarray
         unformatted data organized into a numpy array for handling in python
 
     """
@@ -197,14 +226,14 @@ def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
         return float_data[1:-1]
 
 
-def __make_fourier(na, nb):
-    """ The function for the curve fit
+def _make_fourier(na, nb):
+    """Make a fourier series to use in the curve fits.
 
     Parameters
     ----------
-    na : (int)
+    na : int
         number of cosine terms/coefficients
-    nb : (int)
+    nb : int
         number of sin terms/coefficients
 
     """
@@ -216,19 +245,20 @@ def __make_fourier(na, nb):
         for deg in range(na, na + nb):
             ret += a[deg + 1] * np.sin((deg - na + 1) * np.pi * x / 12)
         return ret
+
     return fourier
 
 
 def fourier_fit(local_times, drifts, num_co):
-    """ Here the terms in the fourier fit are actually determined
+    """Determine the terms in a fourier fit to data.
 
     Parameters
     ----------
-    local_times : (array-like)
+    local_times : array-like
         xdim for fit; local time values
-    drifts : (array-like)
+    drifts : array-like
         ydim for fit; median drift values from data
-    num_co : (int)
+    num_co : int
         'number of coefficients) how many sin/cosine pairs for the fit
 
     Returns
@@ -241,6 +271,7 @@ def fourier_fit(local_times, drifts, num_co):
         covariance of the coefficients
 
     """
+
     coefficients = np.zeros((num_co, 2))
     covariance = np.zeros((num_co, 2))
     ind, = np.where(~np.isnan(drifts))
@@ -249,7 +280,7 @@ def fourier_fit(local_times, drifts, num_co):
                       'returning zero value \"flat fit\"', Warning)
         return 0, coefficients, covariance
     # popt contains the coeficients. First ten are cosines, second ten are sins
-    popt, pcov = curve_fit(__make_fourier(num_co, num_co), local_times[ind],
+    popt, pcov = curve_fit(_make_fourier(num_co, num_co), local_times[ind],
                            drifts[ind], [0.0] * (num_co * 2 + 1))
     # format the coefficients for input ito the SAMI2 model
     # the shape is np.zeroes((10,2))

@@ -229,6 +229,11 @@ class TestDeprecation(object):
         """Set up the unit test environment for each method."""
 
         warnings.simplefilter("always", DeprecationWarning)
+
+        self.model_path = generate_path(tag='test', lon=0, year=2012, day=211,
+                                        test=True)
+        if not os.path.exists(self.model_path):
+            os.makedirs(self.model_path)
         return
 
     def teardown(self):
@@ -255,7 +260,7 @@ class TestDeprecation(object):
         with warnings.catch_warnings(record=True) as war:
             # Using minimum runtime since the check has occurred before
             # sami2 executable is run
-            sami2py.run_model(hrmax=0.0, **kwargs)
+            sami2py.run_model(tag='test', hrmax=0.0, **kwargs)
 
         warn_msg = "keyword `{:}` is deprecated".format(key)
         msg_found = []
@@ -273,5 +278,5 @@ class TestDeprecation(object):
         with pytest.raises(KeyError):
             # Using minimum runtime since the check has occurred before
             # sami2 executable is run
-            sami2py.run_model(hrmax=0.0, dinosaur=True)
+            sami2py.run_model(tag='test', hrmax=0.0, dinosaur=True)
         return

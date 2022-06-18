@@ -99,7 +99,7 @@ def set_archive_dir(path=None, store=True):
 
     Parameters
     ----------
-    path : string
+    path : str
         valid path to directory sami2py uses to look for data
     store : bool
         if True, store data directory for future runs

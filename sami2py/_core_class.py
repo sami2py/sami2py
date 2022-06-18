@@ -32,7 +32,7 @@ class Model(object):
 
         Parameters
         ----------
-        tag : string
+        tag : str
             name of run (top-level directory)
         lon : float
             longitude reference
@@ -93,7 +93,7 @@ class Model(object):
 
         Returns
         -------
-        out : string
+        out : str
             string containing a printable representation of a Model object
 
         Examples

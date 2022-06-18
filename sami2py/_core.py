@@ -57,7 +57,7 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
 
     Parameters
     ----------
-    tag : string
+    tag : str
         Name of run for data archive.  First-level directory under save
         directory
         Note that this is not passed through to sami2 executable
@@ -278,7 +278,7 @@ def _generate_drift_info(fejer, ExB_drifts=None):
     fejer : bool
         Specifies whether Fejer-Scherliess model is used
         If False, then 'exb.inp' is also archived
-    ExB_drifts : 10x2 ndarray of floats, string, or NoneType
+    exb_drifts : 10x2 ndarray of float, str, or NoneType
         Matrix of Fourier series coefficients dependent on solar local time
         (SLT) in hours where
         ExB_total = ExB_drifts[i,0] * cos((i + 1) * pi * SLT / 12)
@@ -404,7 +404,7 @@ def _archive_model(path, clean, fejer, fmtout, outn):
 
     Parameters
     ----------
-    path : string
+    path : str
         full path of file destination
     clean : bool
         If True, then delete dat files locally

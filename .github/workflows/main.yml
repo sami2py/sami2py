@@ -51,6 +51,10 @@ jobs:
     - name: Manually install sami2py
       run: python setup.py install --user
 
+    - name: Manually compile fortran on windows
+      if: ${{ matrix.os == 'windows-latest' }}
+      run: make -C sami2py\fortran compile
+
     - name: Test PEP8 compliance
       run: flake8 . --count --select=D,E,F,H,W --show-source --statistics
 

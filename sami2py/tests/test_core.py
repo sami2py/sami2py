@@ -234,10 +234,22 @@ class TestDeprecation(object):
                                         test=True)
         if not os.path.exists(self.model_path):
             os.makedirs(self.model_path)
+
+        # Set tmp directory
+        self.tmp_archive_dir = sami2py.archive_dir
+        sami2py.utils.set_archive_dir(path=test_data_dir)
+
         return
 
     def teardown(self):
         """Clean up the unit test environment after each method."""
+
+        if os.path.isdir(self.tmp_archive_dir):
+            sami2py.utils.set_archive_dir(path=self.tmp_archive_dir)
+        else:
+            with open(sami2py._archive_path, 'w') as archive_file:
+                archive_file.write('')
+                sami2py.archive_dir = ''
 
         return
 

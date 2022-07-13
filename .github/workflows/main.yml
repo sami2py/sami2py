@@ -48,7 +48,7 @@ jobs:
       if: ${{ matrix.os == 'macos-latest' }}
       run: brew reinstall gcc
 
-    - name: Reinstall MinGW on Windows
+    - name: Reinstall and set up MinGW-64 on Windows
       if: ${{ matrix.os == 'windows-latest' }}
       uses: egor-tensin/setup-mingw@v1
       with:

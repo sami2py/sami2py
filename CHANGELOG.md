@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   * Update docstring standards
   * Updated NEP 29 compliance in CI tests
   * Add CI tests for Mac Os X
+  * Fixed a bug in Windows CI environment in usage of mingw-64
 
 ## [0.2.5] - 2021-10-19
 * Add basic metadata for ExB Fourier Coefficients

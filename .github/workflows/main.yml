@@ -48,6 +48,12 @@ jobs:
       if: ${{ matrix.os == 'macos-latest' }}
       run: brew reinstall gcc
 
+    - name: Set up MinGW
+      if: ${{ matrix.os == 'windows-latest' }}
+      uses: egor-tensin/setup-mingw@v2
+      with:
+        platform: x64
+
     - name: Manually install sami2py
       run: python setup.py install --user
 

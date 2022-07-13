@@ -53,6 +53,7 @@ jobs:
       uses: egor-tensin/setup-mingw@v2
       with:
         platform: x64
+        cygwin: 1
 
     - name: Manually install sami2py
       run: python setup.py install --user

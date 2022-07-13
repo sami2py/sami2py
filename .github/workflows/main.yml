@@ -44,11 +44,11 @@ jobs:
         pip install -r requirements.txt
         pip install --no-binary :numpy: numpy==${{ matrix.numpy_ver }};
 
-    - name: Install fortran on MacOS
+    - name: Reinstall fortran on MacOS
       if: ${{ matrix.os == 'macos-latest' }}
       run: brew reinstall gcc
 
-    - name: Set up MinGW on Windows
+    - name: Reinstall MinGW on Windows
       if: ${{ matrix.os == 'windows-latest' }}
       uses: egor-tensin/setup-mingw@v1
       with:

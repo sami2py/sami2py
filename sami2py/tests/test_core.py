@@ -102,7 +102,7 @@ class TestBasicModelRun(object):
 
         return
 
-    def test_run_model_ExB_wrong_size(self):
+    def test_run_model_exb_wrong_size(self):
         """Test that the ExB has proper shape."""
 
         with pytest.raises(Exception):

@@ -92,12 +92,12 @@ class TestBasicModelRun(object):
 
         return
 
-    def test_run_model_ExB_files(self):
+    def test_run_model_exb_files(self):
         """Test that the ExB files are copied properly."""
 
         sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
                           fmtout=self.format,
-                          fejer=False, ExB_drifts=np.zeros((10, 2)))
+                          fejer=False, exb_drifts=np.zeros((10, 2)))
         assert os.stat(os.path.join(self.model_path, 'exb.inp'))
 
         return
@@ -108,7 +108,7 @@ class TestBasicModelRun(object):
         with pytest.raises(Exception):
             sami2py.run_model(year=2012, day=211, test=True,
                               fmtout=self.format, fejer=False,
-                              ExB_drifts=np.zeros((1, 2)))
+                              exb_drifts=np.zeros((1, 2)))
 
         return
 

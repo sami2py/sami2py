@@ -2,7 +2,6 @@
 
 import os
 
-import matplotlib
 import pytest
 import xarray as xr
 
@@ -132,57 +131,5 @@ class TestModelObjectUnformatted(TestModelObject):
             with open(archive_path, 'w') as archive_file:
                 archive_file.write('')
                 sami2py.archive_dir = ''
-
-        return
-
-
-class TestModelPlot(object):
-    """Test plotting functions.
-
-    Note
-    ----
-    To be moved to sami2py_vis.
-
-    """
-
-    def setup(self):
-        """Create a clean testing setup before each method."""
-
-        self.tmp_archive_dir = sami2py.archive_dir
-        sami2py.utils.set_archive_dir(path=sami2py.test_data_dir)
-        self.lon = 256.1
-        self.year = 1999
-        self.day = 257
-        self.model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
-                                   day=self.day, test=True)
-
-        return
-
-    def teardown(self):
-        """Clean up the test env after each method."""
-
-        if os.path.isdir(self.tmp_archive_dir):
-            sami2py.utils.set_archive_dir(path=self.tmp_archive_dir)
-        else:
-            archive_path = os.path.join(sami2py.sami2py_dir, 'archive_path.txt')
-            with open(archive_path, 'w') as archive_file:
-                archive_file.write('')
-                sami2py.archive_dir = ''
-
-        return
-
-    def test_plot_lat_alt(self):
-        """Test that a plot has been created."""
-
-        fig = self.model.plot_lat_alt()
-        assert isinstance(fig, matplotlib.figure.Figure)
-
-        return
-
-    def test_plot_exb(self):
-        """Test that an ExB plot has been created."""
-
-        fig = self.model.plot_exb()
-        assert isinstance(fig, matplotlib.figure.Figure)
 
         return

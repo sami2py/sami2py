@@ -16,9 +16,7 @@ Model
 import numpy as np
 from os import path
 import re
-import warnings
 
-import matplotlib.pyplot as plt
 import xarray as xr
 
 import sami2py
@@ -431,72 +429,3 @@ class Model(object):
 
         self.data.attrs = attrs
         self.data.to_netcdf(path=path, format='NETCDF4')
-
-    def plot_lat_alt(self, time_step=0, species=1):
-        """Plot input parameter as a function of latitude and altitude.
-
-        .. deprecated:: 0.2.0
-          All plotting routines will be removed in 0.3.0 and moved to
-          sami2py_vis
-
-        Parameters
-        ----------
-        time_step : int
-            time index for SAMI2 model results
-        species : int
-            ion species index :
-            0: H+, 1: O+, 2: NO+, 3: O2+, 4: He+, 5: N2+, 6: N+
-
-        Examples
-        --------
-        Load the model
-            ModelRun = sami2py.Model(tag='run_name', lon=0, year=2012, day=210)
-        Plot the O+ density at the beginning of the model
-            ModelRun.plot_lat_alt()
-        Plot the H+ density at the 100th time step (initial step is 0)
-            ModelRun.plot_lat_alt(time_step=99, species=0)
-
-        """
-
-        warnings.warn(' '.join(["Model.plot_lat_alt is deprecated and will be",
-                                "removed in version 0.3.0+. ",
-                                "Use sami2py_vis instead"]),
-                      DeprecationWarning)
-
-        fig = plt.gcf()
-        plt.pcolor(self.data['glat'], self.data['zalt'],
-                   self.data['deni'][:, :, species, time_step])
-        plt.xlabel('Geo Lat (deg)')
-        plt.ylabel('Altitude (km)')
-
-        return fig
-
-    def plot_exb(self):
-        """Plot ExB drifts from the return_fourier function.
-
-        .. deprecated:: 0.2.3
-          All plotting routines will be removed in 0.3.0 and moved to
-          sami2py_vis
-
-        Examples
-        --------
-        Load the model
-            ModelRun = sami2py.Model(tag='exb', lon=0, year=2012, day=210)
-        Plot ExB drifts
-            ModelRun.plot_exb()
-
-        """
-
-        warnings.warn(' '.join(["Model.plot_exb is deprecated and will be",
-                                "removed in version 0.3.0. ",
-                                "Use sami2py_vis instead"]),
-                      DeprecationWarning)
-
-        fig = plt.gcf()
-        plt.plot(self.data['slt'], self.data['exb'], '.')
-        plt.xlabel('Time (hrs)')
-        plt.ylabel('ExB Drifts')
-        plt.plot(sami2py.utils.return_fourier(self.slt,
-                                              self.MetaData['Fourier Coeffs']))
-
-        return fig

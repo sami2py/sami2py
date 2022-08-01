@@ -156,7 +156,7 @@ man_pages = [(master_doc, project, title, [author], 1)]
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [(master_doc, project, title, author, project,
-                      'Generate, read, and plot SAMI2 model runs',
+                      'Generate, read, and save SAMI2 model runs',
                       'Miscellaneous')]
 
 # -- Options for Epub output -------------------------------------------------

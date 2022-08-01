@@ -3,6 +3,7 @@
 import numpy as np
 import os
 import shutil
+import warnings
 
 import pytest
 
@@ -91,23 +92,23 @@ class TestBasicModelRun(object):
 
         return
 
-    def test_run_model_ExB_files(self):
+    def test_run_model_exb_files(self):
         """Test that the ExB files are copied properly."""
 
         sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
                           fmtout=self.format,
-                          fejer=False, ExB_drifts=np.zeros((10, 2)))
+                          fejer=False, exb_drifts=np.zeros((10, 2)))
         assert os.stat(os.path.join(self.model_path, 'exb.inp'))
 
         return
 
-    def test_run_model_ExB_wrong_size(self):
+    def test_run_model_exb_wrong_size(self):
         """Test that the ExB has proper shape."""
 
         with pytest.raises(Exception):
             sami2py.run_model(year=2012, day=211, test=True,
                               fmtout=self.format, fejer=False,
-                              ExB_drifts=np.zeros((1, 2)))
+                              exb_drifts=np.zeros((1, 2)))
 
         return
 
@@ -218,4 +219,76 @@ class TestDriftGeneration(object):
         with pytest.raises(Exception):
             sami2py._core._generate_drift_info(False, 'really_cool_drifts')
 
+        return
+
+
+class TestDeprecation(object):
+    """Unit test for deprecation warnings."""
+
+    def setup(self):
+        """Set up the unit test environment for each method."""
+
+        warnings.simplefilter("always", DeprecationWarning)
+
+        self.model_path = generate_path(tag='test', lon=0, year=2012, day=211,
+                                        test=True)
+        if not os.path.exists(self.model_path):
+            os.makedirs(self.model_path)
+
+        # Set tmp directory
+        self.tmp_archive_dir = sami2py.archive_dir
+        sami2py.utils.set_archive_dir(path=test_data_dir)
+
+        return
+
+    def teardown(self):
+        """Clean up the unit test environment after each method."""
+
+        if os.path.isdir(self.tmp_archive_dir):
+            sami2py.utils.set_archive_dir(path=self.tmp_archive_dir)
+        else:
+            with open(sami2py._archive_path, 'w') as archive_file:
+                archive_file.write('')
+                sami2py.archive_dir = ''
+
+        return
+
+    @pytest.mark.parametrize("key", ['ExB_drifts', 'Tinf_scale', 'Tn_scale'])
+    def test_key_deprecation(self, key):
+        """Check that camel case variables are deprecated.
+
+        parameters
+        ----------
+        key : str
+            Name of deprecated key
+
+        """
+
+        dep_keys = {'ExB_drifts': np.ones((10, 2)),
+                    'Tinf_scale': 0.75,
+                    'Tn_scale': 0.75}
+        kwargs = {key: dep_keys[key]}
+
+        with warnings.catch_warnings(record=True) as war:
+            # Using minimum runtime since the check has occurred before
+            # sami2 executable is run
+            sami2py.run_model(tag='test', hrmax=0.0, **kwargs)
+
+        warn_msg = "keyword `{:}` is deprecated".format(key)
+        msg_found = []
+        for item in war:
+            msg_found.append(warn_msg in str(item.message))
+
+        # Check that desired warning appears in list of warnings
+        assert np.any(msg_found)
+
+        return
+
+    def test_key_error(self):
+        """Test that invalid keys error for the deprecated keyword handler."""
+
+        with pytest.raises(KeyError):
+            # Using minimum runtime since the check has occurred before
+            # sami2 executable is run
+            sami2py.run_model(tag='test', hrmax=0.0, dinosaur=True)
         return

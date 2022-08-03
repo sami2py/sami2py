@@ -6,8 +6,8 @@
 Introduction
 ============
 
-sami2py is a python module that runs the SAMI2 model, as well as archives, loads
-and plots the resulting modeled values. SAMI2 is a model developed by the Naval
+sami2py is a python module that runs the SAMI2 model, as well as archives and
+loads the resulting modeled values. SAMI2 is a model developed by the Naval
 Research Laboratory to simulate the motions of plasma in a 2D ionospheric
 environment along a dipole magnetic field [Huba et al, 2000].  SAMI2 solves for
 the chemical and dynamical evolution of seven ion species in this environment

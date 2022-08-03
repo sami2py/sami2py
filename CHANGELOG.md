@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   * Add CI tests for Mac Os X
   * Fixed a bug in Windows CI environment in usage of mingw-64
   * Deprecated camel case keys in `run_model`
+  * Remove deprecated plotting functions (moved to `sami2py_vis`)
 
 ## [0.2.5] - 2021-10-19
 * Add basic metadata for ExB Fourier Coefficients

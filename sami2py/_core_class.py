@@ -172,7 +172,7 @@ class Model(object):
         namelist_file.close()
 
         self.MetaData = dict()
-        self._generate_metadata(self.namelist)
+        self._generate_metadata(self.namelist, model_path)
 
         # Get times
         time = np.loadtxt(path.join(model_path, 'time.dat'))
@@ -288,7 +288,7 @@ class Model(object):
                                 {'units': 'm/s',
                                  'long_name': 'ExB Foureir Coefficients'})
 
-    def _generate_metadata(self, namelist):
+    def _generate_metadata(self, namelist, model_path):
         """Read the namelist and generates MetaData based on Parameters.
 
         Parameters
@@ -348,9 +348,6 @@ class Model(object):
             self.MetaData['Fourier Coeffs'] = np.loadtxt(path.join(model_path,
                                                                    'exb.inp'))
         else:
-            model_path = sami2py.utils.generate_path(self.tag, self.lon0,
-                                                     self.year, self.day,
-                                                     self.test)
             self.MetaData['ExB model'] = 'Fourier Series'
             self.MetaData['Fourier Coeffs'] = np.loadtxt(path.join(model_path,
                                                                    'exb.inp'))
@@ -429,10 +426,15 @@ class Model(object):
         keys = self.MetaData.keys()
         for key in keys:
             new_key = key.replace(' ', '_').replace('.', '_')
-            attrs[new_key] = self.MetaData[key]
+            if key == 'Fourier Coeffs':
+                terms = [", ".join(item) for item
+                         in self.MetaData[key].astype(str)]
+                coeffs = '; '.join(terms)
+                attrs[new_key] = coeffs
+            else:
+                attrs[new_key] = self.MetaData[key]
+
         attrs['fmtout'] = str(attrs['fmtout'])
-        if attrs['ExB_model'] == 'Fourier Series':
-            attrs['Fourier_Coeffs'] = str(attrs['Fourier_Coeffs'])
 
         self.data.attrs = attrs
         self.data.to_netcdf(path=path, format='NETCDF4')

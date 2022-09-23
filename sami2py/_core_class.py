@@ -308,6 +308,11 @@ class Model(object):
 
             return int(re.findall(r"\d+", name)[ind])
 
+        self.MetaData['Model Run Name'] = self.tag
+        self.MetaData['Day'] = '{day:03d}, {year:4d}'.format(day=self.day,
+                                                              year=self.year)
+        self.MetaData['Longitude'] = '{:5.1f}'.format(self.lon0)
+
         self.MetaData['fmtout'] = ('.true.' in namelist[1])
 
         self.MetaData['F10.7A'] = find_float(namelist[14], 0)
@@ -340,6 +345,8 @@ class Model(object):
 
         if '.true.' in namelist[10]:
             self.MetaData['ExB model'] = 'Fejer-Scherliess'
+            self.MetaData['Fourier Coeffs'] = np.loadtxt(path.join(model_path,
+                                                                   'exb.inp'))
         else:
             model_path = sami2py.utils.generate_path(self.tag, self.lon0,
                                                      self.year, self.day,

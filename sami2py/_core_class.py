@@ -311,7 +311,7 @@ class Model(object):
         self.MetaData['Model Run Name'] = self.tag
         self.MetaData['Day'] = '{day:03d}, {year:4d}'.format(day=self.day,
                                                               year=self.year)
-        self.MetaData['Longitude'] = '{:5.1f}'.format(self.lon0)
+        self.MetaData['Longitude'] = '{:.1f}'.format(self.lon0)
 
         self.MetaData['fmtout'] = ('.true.' in namelist[1])
 

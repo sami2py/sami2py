@@ -295,6 +295,8 @@ class Model(object):
         -----------
         namelist : list
             variable namelist from SAMI2 model
+        model_path : str
+            valid path to directory sami2py uses to look for data
 
         """
 

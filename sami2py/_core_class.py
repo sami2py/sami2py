@@ -286,7 +286,7 @@ class Model(object):
                                                self.MetaData['Fourier Coeffs'])
             self.data['exb'] = (('ut'), exb.data,
                                 {'units': 'm/s',
-                                 'long_name': 'ExB Foureir Coefficients'})
+                                 'long_name': 'ExB Fourier Coefficients'})
 
     def _generate_metadata(self, namelist, model_path):
         """Read the namelist and generates MetaData based on Parameters.

@@ -61,7 +61,7 @@ class TestModelObject(object):
 
         if self.day == 256:
             # This day should be the standard output
-            assert keys == list()
+            assert keys == ['Fourier Coeffs']
         else:
             # This day uses a modified output
             assert 'EUV Multiplier' in keys

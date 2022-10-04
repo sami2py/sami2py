@@ -85,8 +85,12 @@ or, on windows,
 
   make -C sami2py\fortran compile
 
-Note that you will need a fortran compiler (gfortran is the default setup) and make installed on your system.  For more information, please refer to the
+Note that you will need a fortran compiler and make installed on your system.
+For more information, please refer to the
 `documentation <https://sami2py.readthedocs.io/en/latest/installation.html#fortran-compilers>`_.
+The recommended compiler is gfortran, which is distributed under an open source
+license and can be installed through multiple tools such as brew and github.
+The default fortran compiler under xtools on Mac OS X has known issues.
 
 
 Example

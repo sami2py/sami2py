@@ -32,21 +32,24 @@ or, on windows,
 Fortran Compilers
 -----------------
 
-By default, sami2py uses gfortran and make to compile the fortran executables.  You can get make through pip
+By default, sami2py uses gfortran and make to compile the fortran executables.
+If you don't have a fortran compiler, gfortran is included as part of the latest
+gcc package.  You can get this from several locations.
+
+For Mac OS X, you can install gcc through package managers such as `brew <https://brew.sh/>`_.
+
+For windows, multiple setup options are discussed at https://www.scivision.dev/cmake-install-windows
+
+Additionally, make is required to compile the code.  You can get make through pip.
 
 .. code-block:: console
 
   pip install make
 
-If you have a different compiler, you can modify the first line of the fortran Makefile accordingly by using "gf" to point to your compiler of choice.  Note that several options are included to ensure the compile is successful.
+If you have a different compiler, you can modify the first line of the fortran
+Makefile accordingly by using "gf" to point to your compiler of choice.  Note
+that several options are included to ensure the compile is successful.
 
 .. code-block::
 
   gf = gfortran -fno-range-check -fno-automatic -ffixed-line-length-none
-
-
-If you don't have a fortran compiler, gfortran is included as part of the latest gcc package.  You can get this from several locations.
-
-For Mac OS X, you can install gcc through package managers such as `brew <https://brew.sh/>`_.
-
-For windows, multiple setup options are discussed at https://www.scivision.dev/cmake-install-windows

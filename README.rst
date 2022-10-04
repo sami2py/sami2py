@@ -59,7 +59,11 @@ these include:
 Installation
 ------------
 
-First, checkout the repository:
+First, sami2py depends on fortran. Information on installing the GFortran compiler can be found here:
+
+https://gcc.gnu.org/wiki/GFortranBinaries
+
+Next, checkout the repository:
 
 .. code-block:: console
 

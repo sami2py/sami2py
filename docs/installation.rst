@@ -38,7 +38,7 @@ gcc package.  You can get this from several locations.
 
 For Mac OS X, you can install gcc through package managers such as `brew <https://brew.sh/>`_.
 
-For windows, multiple setup options are discussed at https://www.scivision.dev/cmake-install-windows
+For windows, make sure that mingw-64 is installed.  This may need to be reinstalled to make sure links work properly.  See discussion at https://www.scivision.dev/cmake-install-windows
 
 Additionally, make is required to compile the code.  You can get make through pip.
 

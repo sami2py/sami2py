@@ -59,7 +59,13 @@ these include:
 Installation
 ------------
 
-First, checkout the repository:
+First, sami2py depends on fortran. Information on installing the GFortran compiler
+can be found `here <https://gcc.gnu.org/wiki/GFortranBinaries>`_.
+
+For additional information, please refer to the
+`sami2py documentation <https://sami2py.readthedocs.io/en/latest/installation.html#fortran-compilers>`_.
+
+Next, checkout the repository:
 
 .. code-block:: console
 
@@ -84,9 +90,6 @@ or, on windows,
 .. code-block:: console
 
   make -C sami2py\fortran compile
-
-Note that you will need a fortran compiler (gfortran is the default setup) and make installed on your system.  For more information, please refer to the
-`documentation <https://sami2py.readthedocs.io/en/latest/installation.html#fortran-compilers>`_.
 
 
 Example

@@ -28,17 +28,19 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
+    - name: Install requirements for testing setup
+      run: |
+        pip install -r test_requirements.txt
+
     - name: Install standard dependencies
       if: ${{ matrix.numpy_ver == 'latest'}}
       run: |
         pip install -r requirements.txt
-        pip install -r test_requirements.txt
 
     - name: Install NEP29 dependencies
       if: ${{ matrix.numpy_ver != 'latest'}}
       run: |
         pip install -r requirements_nep29.txt
-        pip install -r test_requirements.txt
 
     - name: Reinstall fortran on MacOS
       if: ${{ matrix.os == 'macos-latest' }}

@@ -29,6 +29,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install standard dependencies
+      if: ${{ matrix.numpy_ver == 'latest'}}
       run: |
         pip install -r requirements.txt
         pip install -r test_requirements.txt
@@ -36,9 +37,8 @@ jobs:
     - name: Install NEP29 dependencies
       if: ${{ matrix.numpy_ver != 'latest'}}
       run: |
-        pip install --no-binary :numpy: numpy==${{ matrix.numpy_ver }}
-        # Latest xarray not compatible with numpy 1.20
-        pip install xarray==2022.3
+        pip install -r requirements_nep29.txt
+        pip install -r test_requirements.txt
 
     - name: Reinstall fortran on MacOS
       if: ${{ matrix.os == 'macos-latest' }}

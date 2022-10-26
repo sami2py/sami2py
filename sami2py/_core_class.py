@@ -51,24 +51,24 @@ class Model(object):
 
         Attributes
         ----------
-        ut : 1D ndarray
-            Universal Time (hrs)
-        slt : 1D ndarray
-            Solar Local Time (hr)
-        glat : 2D ndarray
-            Geographic Latitude (deg)
-        glon : 2D ndarray
-            Geographic Longitude (deg)
-        zalt : 2D ndarray
-            Altitude (km)
-        deni : 4D ndarray
-            Ion density for each species (cm^-3)
-        vsi : 4D ndarray
-            Ion Velocity for each species (cm/s)
-        ti : 4D ndarray
-            Ion Temperature for each species (K)
-        te : 3D ndarray
-            Electron Temperature (K)
+        ut : np.ndarray
+            Universal Time (hrs). 1D
+        slt : np.ndarray
+            Solar Local Time (hr). 1D
+        glat : np.ndarray
+            Geographic Latitude (deg). 2D
+        glon : np.ndarray
+            Geographic Longitude (deg). 2D
+        zalt : np.ndarray
+            Altitude (km). 2D
+        deni : np.ndarray
+            Ion density for each species (cm^-3). 4D
+        vsi : np.ndarray
+            Ion Velocity for each species (cm/s). 4D
+        ti : np.ndarray
+            Ion Temperature for each species (K). 4D
+        te : np.ndarray
+            Electron Temperature (K). 3D
 
         Examples
         --------
@@ -420,7 +420,15 @@ class Model(object):
         return mod_keys
 
     def to_netcdf(self, path=''):
-        """Save core data as a netcdf file."""
+        """Save core data as a netcdf file.
+
+        Parameters
+        ----------
+        path : str
+            A filename specifying where to save the data.
+            (default = '')
+
+        """
 
         if path == '':
             path = 'sami2py_output.nc'

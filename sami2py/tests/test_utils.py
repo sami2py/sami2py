@@ -37,7 +37,7 @@ class TestGeneratePath(object):
         return
 
     def test_generate_path_w_blank_archive_dir(self):
-        """Test that generation of a path without archive_dir will error."""
+        """Test that generation of a path without `archive_dir` will error."""
 
         with pytest.raises(NameError):
             sami2py.archive_dir = ''
@@ -73,7 +73,7 @@ class TestGeneratePath(object):
 
 
 class TestArchiveDir(object):
-    """Test basic functionality of the set_archive_dir function."""
+    """Test basic functionality of the `set_archive_dir` function."""
 
     def test_set_archive_dir(self):
         """Test that set_archive_dir has set and stored the archive directory.

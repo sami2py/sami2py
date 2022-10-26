@@ -6,7 +6,7 @@
 
 """Setup routine for sami2py.
 
-Note
+Notes
 ----
 package metadata stored in setup.cfg
 

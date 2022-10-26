@@ -3,7 +3,7 @@
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
-"""Wrapper for running sami2 model.
+"""Utilities for sami2py operations.
 
 Functions
 ---------
@@ -227,7 +227,7 @@ def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
 
 
 def _make_fourier(na, nb):
-    """Make a fourier series to use in the curve fits.
+    """Construct a Fourier series using user-specified coefficients.
 
     Parameters
     ----------

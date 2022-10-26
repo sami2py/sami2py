@@ -36,7 +36,8 @@ class TestModelObject(object):
         return
 
     def test_model_input_exception(self):
-        """Test for error if the file does not exist."""
+        """Test for IOError if the file does not exist."""
+
 
         with pytest.raises(IOError):
             sami2py.Model(tag='none', lon=428, day=428, year=1969)
@@ -69,7 +70,8 @@ class TestModelObject(object):
         return
 
     def test_model_repr(self):
-        """Test that __repr__ returns a string of information."""
+        """Test that `__repr__` returns a string of information."""
+
 
         model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
                               day=self.day, test=True)

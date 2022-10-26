@@ -69,7 +69,8 @@ class TestBasicModelRun(object):
         return
 
     def test_run_model_namelist_w_invalid_hwm(self):
-        """Test that an invalid hwm version reverts to 14."""
+        """Test that an invalid HWM version reverts to version 14."""
+
 
         sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
                           fmtout=self.format, hwm_model=15)
@@ -120,6 +121,7 @@ class TestBasicModelRun(object):
         file.write should throw the error when using string formatting to
         create the file name. Will happen for any variable in the namelist
         set with the wrong type
+
         """
         with pytest.raises(ValueError):
             sami2py.run_model(tag='test', year='2012', day='211', test=True,

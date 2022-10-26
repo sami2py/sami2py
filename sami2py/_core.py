@@ -163,10 +163,10 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
     n_scale : float
         Multiplier to scale MSIS neutral all other densities
         (default = 1)
-    Tinf_scale : float
+    tinf_scale : float
         Multiplier to scale Exospheric temperature in MSIS
         (default = 1)
-    Tn_scale : float
+    tn_scale : float
         Multiplier to scale Neutral temperature in MSIS
         (default = 1)
     euv_scale : float
@@ -308,6 +308,7 @@ def _generate_drift_info(fejer, exb_drifts=None):
         maximum magnitude of 30 m/s at local noon and a minimum of -30 m/s
         at midnight.
         (default = None)
+
     """
 
     drift_info = _generate_fortran_bool(fejer)
@@ -424,7 +425,7 @@ def _archive_model(path, clean, fejer, fmtout, outn):
     Parameters
     ----------
     path : str
-        full path of file destination
+        Full path of file destination
     clean : bool
         If True, then delete dat files locally
     fejer : bool

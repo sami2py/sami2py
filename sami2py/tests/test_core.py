@@ -71,7 +71,6 @@ class TestBasicModelRun(object):
     def test_run_model_namelist_w_invalid_hwm(self):
         """Test that an invalid HWM version reverts to version 14."""
 
-
         sami2py.run_model(tag='test', lon=0, year=2012, day=211, test=True,
                           fmtout=self.format, hwm_model=15)
         namelist_file = os.path.join(self.model_path, 'sami2py-1.00.namelist')

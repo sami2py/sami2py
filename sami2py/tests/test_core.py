@@ -29,7 +29,7 @@ def cmp_lines(path_1, path_2):
 class TestBasicModelRun(object):
     """Basic tests of the run_model script."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         self.format = True
@@ -148,7 +148,7 @@ class TestBasicModelRun(object):
 class TestBasicModelRunUnformatted(TestBasicModelRun):
     """Basic tests of the run_model script w/ unformatted output."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         self.format = False
@@ -178,7 +178,7 @@ class TestBasicModelRunUnformatted(TestBasicModelRun):
 class TestDriftGeneration(object):
     """Tests for the _core function _generate_drift_info."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         f = open('exb.inp', 'w')
@@ -226,7 +226,7 @@ class TestDriftGeneration(object):
 class TestDeprecation(object):
     """Unit test for deprecation warnings."""
 
-    def setup(self):
+    def setup_method(self):
         """Set up the unit test environment for each method."""
 
         warnings.simplefilter("always", DeprecationWarning)

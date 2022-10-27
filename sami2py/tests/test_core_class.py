@@ -11,7 +11,7 @@ import sami2py
 class TestModelObject(object):
     """Test basic model object functionality."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         self.tmp_archive_dir = sami2py.archive_dir
@@ -110,7 +110,7 @@ class TestModelObject(object):
 class TestModelObjectUnformatted(TestModelObject):
     """Test basic model object functionality."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         self.tmp_archive_dir = sami2py.archive_dir

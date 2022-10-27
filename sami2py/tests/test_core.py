@@ -46,7 +46,7 @@ class TestBasicModelRun(object):
 
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up the test env after each method."""
 
         for filename in self.filelist:
@@ -165,7 +165,7 @@ class TestBasicModelRunUnformatted(TestBasicModelRun):
 
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up the test env after each method."""
 
         for filename in self.filelist:
@@ -186,7 +186,7 @@ class TestDriftGeneration(object):
 
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up the test env after each method."""
 
         os.remove('exb.inp')
@@ -242,7 +242,7 @@ class TestDeprecation(object):
 
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up the unit test environment after each method."""
 
         if os.path.isdir(self.tmp_archive_dir):

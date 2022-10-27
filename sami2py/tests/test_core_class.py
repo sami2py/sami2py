@@ -22,7 +22,7 @@ class TestModelObject(object):
 
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up the test env after each method."""
 
         if os.path.isdir(self.tmp_archive_dir):
@@ -121,7 +121,7 @@ class TestModelObjectUnformatted(TestModelObject):
 
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up the test env after each method."""
 
         if os.path.isdir(self.tmp_archive_dir):

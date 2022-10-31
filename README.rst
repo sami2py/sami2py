@@ -41,19 +41,21 @@ Overview
 Sami2py is a python module that runs the SAMI2 model, archives the output, and
 loads the resulting modeled values. SAMI2 is a model developed by the Naval
 Research Laboratory to simulate the motions of plasma in a 2D ionospheric
-environment along a dipole magnetic field [Huba et al, 2000].  SAMI2 solves for
-the chemical and dynamical evolution of seven ion species in this environment
-(H\ :sup:`+`\, He\ :sup:`+`\, N\ :sup:`+`\, O\ :sup:`+`\, N\ :sub:`2`\ :sup:`+`\,
-NO\ :sup:`+`\, and O\ :sub:`2`\ :sup:`+`\).
+environment along a dipole magnetic field
+`[Huba et al, 2000] <https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2000JA000035>`_.
+SAMI2 solves for the chemical and dynamical evolution of seven ion species in
+this environment (H\ :sup:`+`\, He\ :sup:`+`\, N\ :sup:`+`\, O\ :sup:`+`\,
+N\ :sub:`2`\ :sup:`+`\, NO\ :sup:`+`\, and O\ :sub:`2`\ :sup:`+`\).
 
 The implementation used here includes several added options to the original
 release of SAMI2.  A full list is included in
 https://sami2py.readthedocs.io/en/latest/modifications.html, but several of
 these include:
- - The ability to scale the neutral atmosphere in which the ions form through direct modification of the exospheric neutral temperature for extreme solar minimum conditions, as discussed by Emmert et al [2010].
+ - The ability to scale the neutral atmosphere in which the ions form through direct modification of the exospheric neutral temperature for extreme solar minimum conditions, as discussed by `Emmert et al [2010] <https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2010GL043671>`_.
  - The ability to input custom ExB drifts as a Fourier series.
 
- This implementation is based on the matlab version used in Klenzing et al [2013].
+ This implementation is based on the matlab version used in
+ `Klenzing et al [2013] <https://angeo.copernicus.org/articles/31/2147/2013/>`_`.
 
 
 Installation

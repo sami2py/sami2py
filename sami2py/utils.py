@@ -128,14 +128,14 @@ def return_fourier(x, coeffs):
 
     Parameters
     ----------
-    x : 1d ndarray
+    x : np.ndarray
         solar local time in hours (slt)
-    coeffs : array
+    coeffs : np.ndarray
         10x2 array of fourier coefficients
 
     Returns
     --------
-    y : array
+    y : np.ndarray
         result of the fourier series
 
     """
@@ -254,9 +254,9 @@ def fourier_fit(local_times, drifts, num_co):
 
     Parameters
     ----------
-    local_times : array-like
+    local_times : np.ndarray
         xdim for fit; local time values
-    drifts : array-like
+    drifts : np.ndarray
         ydim for fit; median drift values from data
     num_co : int
         'number of coefficients) how many sin/cosine pairs for the fit

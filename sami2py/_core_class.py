@@ -379,7 +379,7 @@ class Model(object):
         Parameters
         ----------
         model_type : str
-            Limit check to certain models (default='all')
+            Limit check to certain models (default = 'all')
             Not currently implemented
 
         Returns

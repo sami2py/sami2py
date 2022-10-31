@@ -98,22 +98,22 @@ def run_model(tag='model_run', lat=0.0, lon=0.0, alt=300.0, year=2018, day=1,
         parameter is increased, the spacing between grid points along
         the field line increases at high altitudes. As it is decreased,
         the spacing becomes more uniform.
-        (default=3)
+        (default = 3)
     gamp : int
         Determines grid spacing orthogonal to the geomagnetic field.
         As this parameter is increased, the spacing between field lines
         increases at high altitudes. As it is decreased, the spacing
         becomes more uniform.
-        (default=3)
+        (default = 3)
     altmin : float
         Altitude of the base of a field line (km).
-        (default=85.0)
+        (default = 85.0)
     dthr : float
         Defines how often the data is output (hr).
         (default = 0.25)
     hrinit : float
         Universal time at the start of the run (hr).
-        (default=0.0)
+        (default = 0.0)
     hrpr : float
         The time period that elapses before the data is output (hr).
         (default = 24.0)
@@ -123,7 +123,7 @@ def run_model(tag='model_run', lat=0.0, lon=0.0, alt=300.0, year=2018, day=1,
         (default = 48.0)
     dt0 : float
          The maximum time step allowed (sec). This shouldn't be changed.
-        (default=30.0)
+        (default = 30.0)
     maxstep : int
         The maximum number of time steps allowed.
         (default = 100000000)
@@ -195,22 +195,22 @@ def run_model(tag='model_run', lat=0.0, lon=0.0, alt=300.0, year=2018, day=1,
         (default = None)
     ve01 : float
         Constant offset for Fourier ExB drifts (m/s)
-        (default=0.0)
+        (default = 0.0)
     exb_scale : float
         Multiplier for ExB model to scale vertical drifts
-        (default=1.0)
+        (default = 1.0)
     alt_crit : float
         The E x B drift is exponentially decreased below this
         altitude with a scale length 20 km.  [This is done to
         allow rmin to be less than 150 km without using an
         extremely small time step.]
-        (default=150.0)
+        (default = 150.0)
     cqe : float
         Constant used in the subroutine 'etemp' associated
         with photoelectron heating. The typical range is
         3e-14 -- 8e-14. The higher this value, the lower
         the electron temperature above 300 km.
-        (default=7e-14)
+        (default = 7e-14)
     clean : bool
         A True value will delete the local files after archiving
         A False value will not delete local save files

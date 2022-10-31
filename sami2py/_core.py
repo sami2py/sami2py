@@ -41,6 +41,8 @@ from sami2py import __version__
 from sami2py import fortran_dir
 from sami2py.utils import generate_path
 
+_exb_default = np.zeros((10, 2))
+
 
 def run_model(tag='model_run', lat=0.0, lon=0.0, alt=300.0, year=2018, day=1,
               f107=120.0, f107a=120.0, ap=0,
@@ -313,14 +315,19 @@ def _generate_drift_info(fejer, exb_drifts=None):
 
     drift_info = _generate_fortran_bool(fejer)
     if exb_drifts is None:
-        exb_drifts = np.zeros((10, 2))
+        exb_drifts = _exb_default
     elif not fejer:
         if isinstance(exb_drifts, str) and exb_drifts == 'default':
-            exb_drifts = np.zeros((10, 2))
+            exb_drifts = _exb_default
             exb_drifts[0, 0] = -30
 
-        if isinstance(exb_drifts, np.ndarray) and exb_drifts.shape != (10, 2):
-            raise ValueError('Invalid ExB drift shape!  Must be 10x2 ndarray.')
+        if isinstance(exb_drifts, np.ndarray):
+            if exb_drifts.shape != _exb_default.shape:
+                raise ValueError(
+                    ' '.join(('Invalid ExB drift shape!  Must be',
+                              '{:}x{:}'.format(_exb_default.shape[0],
+                                               _exb_default.shape[1]),
+                              'ndarray.')))
 
         if isinstance(exb_drifts, str) and exb_drifts != 'default':
             raise ValueError('Unrecognized drift name')

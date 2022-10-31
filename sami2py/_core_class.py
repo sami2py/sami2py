@@ -18,7 +18,7 @@ class Model(object):
     """Python object to handle SAMI2 model output data."""
 
     def __init__(self, tag, lon, year, day, outn=False, test=False):
-        """Load a previously run sami2 model and sorts into array shapes.
+        """Load a previously run SAMI2 model output and sorts into array shapes.
 
         Parameters
         ----------
@@ -79,12 +79,12 @@ class Model(object):
         self._load_model()
 
     def __repr__(self):
-        """Make a printable representation of a Model object.
+        """Make an executable representation of a Model object.
 
         Returns
         -------
         out : str
-            string containing a printable representation of a Model object
+            An executable representation of a Model object
 
         Examples
         --------
@@ -286,9 +286,9 @@ class Model(object):
         Parameters
         -----------
         namelist : list
-            variable namelist from SAMI2 model
+            Variable namelist from SAMI2 model
         model_path : str
-            valid path to directory sami2py uses to look for data
+            Valid path to directory sami2py uses to look for data
 
         """
 
@@ -371,7 +371,7 @@ class Model(object):
         Parameters
         ----------
         model_type : str
-            Limit check to certain models (default='all')
+            Limit check to certain models (default = 'all')
             Not currently implemented
 
         Returns

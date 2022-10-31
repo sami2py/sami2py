@@ -15,6 +15,8 @@ from sami2py import __version__
 from sami2py import fortran_dir
 from sami2py.utils import generate_path
 
+_exb_default = np.zeros((10, 2))
+
 
 def run_model(tag='model_run', lat=0.0, lon=0.0, alt=300.0, year=2018, day=1,
               f107=120.0, f107a=120.0, ap=0,
@@ -72,22 +74,22 @@ def run_model(tag='model_run', lat=0.0, lon=0.0, alt=300.0, year=2018, day=1,
         parameter is increased, the spacing between grid points along
         the field line increases at high altitudes. As it is decreased,
         the spacing becomes more uniform.
-        (default=3)
+        (default = 3)
     gamp : int
         Determines grid spacing orthogonal to the geomagnetic field.
         As this parameter is increased, the spacing between field lines
         increases at high altitudes. As it is decreased, the spacing
         becomes more uniform.
-        (default=3)
+        (default = 3)
     altmin : float
         Altitude of the base of a field line (km).
-        (default=85.0)
+        (default = 85.0)
     dthr : float
         Defines how often the data is output (hr).
         (default = 0.25)
     hrinit : float
         Universal time at the start of the run (hr).
-        (default=0.0)
+        (default = 0.0)
     hrpr : float
         The time period that elapses before the data is output (hr).
         (default = 24.0)
@@ -97,7 +99,7 @@ def run_model(tag='model_run', lat=0.0, lon=0.0, alt=300.0, year=2018, day=1,
         (default = 48.0)
     dt0 : float
          The maximum time step allowed (sec). This shouldn't be changed.
-        (default=30.0)
+        (default = 30.0)
     maxstep : int
         The maximum number of time steps allowed.
         (default = 100000000)
@@ -169,22 +171,22 @@ def run_model(tag='model_run', lat=0.0, lon=0.0, alt=300.0, year=2018, day=1,
         (default = None)
     ve01 : float
         Constant offset for Fourier ExB drifts (m/s)
-        (default=0.0)
+        (default = 0.0)
     exb_scale : float
         Multiplier for ExB model to scale vertical drifts
-        (default=1.0)
+        (default = 1.0)
     alt_crit : float
         The E x B drift is exponentially decreased below this
         altitude with a scale length 20 km.  [This is done to
         allow rmin to be less than 150 km without using an
         extremely small time step.]
-        (default=150.0)
+        (default = 150.0)
     cqe : float
         Constant used in the subroutine 'etemp' associated
         with photoelectron heating. The typical range is
         3e-14 -- 8e-14. The higher this value, the lower
         the electron temperature above 300 km.
-        (default=7e-14)
+        (default = 7e-14)
     clean : bool
         A True value will delete the local files after archiving
         A False value will not delete local save files
@@ -287,14 +289,19 @@ def _generate_drift_info(fejer, exb_drifts=None):
 
     drift_info = _generate_fortran_bool(fejer)
     if exb_drifts is None:
-        exb_drifts = np.zeros((10, 2))
+        exb_drifts = _exb_default
     elif not fejer:
         if isinstance(exb_drifts, str) and exb_drifts == 'default':
-            exb_drifts = np.zeros((10, 2))
+            exb_drifts = _exb_default
             exb_drifts[0, 0] = -30
 
-        if isinstance(exb_drifts, np.ndarray) and exb_drifts.shape != (10, 2):
-            raise ValueError('Invalid ExB drift shape!  Must be 10x2 ndarray.')
+        if isinstance(exb_drifts, np.ndarray):
+            if exb_drifts.shape != _exb_default.shape:
+                raise ValueError(
+                    ' '.join(('Invalid ExB drift shape!  Must be',
+                              '{:}x{:}'.format(_exb_default.shape[0],
+                                               _exb_default.shape[1]),
+                              'ndarray.')))
 
         if isinstance(exb_drifts, str) and exb_drifts != 'default':
             raise ValueError('Unrecognized drift name')

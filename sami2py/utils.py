@@ -210,7 +210,7 @@ def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
 
     Returns
     -----------
-    float_data : numpy.ndarray
+    float_data : np.ndarray
         unformatted data organized into a numpy array for handling in python
 
     """

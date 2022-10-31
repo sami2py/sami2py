@@ -134,7 +134,7 @@ def return_fourier(x, coeffs):
         10x2 array of fourier coefficients
 
     Returns
-    --------
+    -------
     y : np.ndarray
         result of the fourier series
 
@@ -191,7 +191,7 @@ def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
     """Interpret unformatted binary files created by the SAMI2 model.
 
     Parameters
-    -----------
+    ----------
     data_dir : str
         directory where the SAMI2 data is stored
     var_name : str
@@ -209,7 +209,7 @@ def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
         if true the data is reshaped by the mesh geometry
 
     Returns
-    -----------
+    -------
     float_data : np.ndarray
         unformatted data organized into a numpy array for handling in python
 

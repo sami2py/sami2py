@@ -43,7 +43,7 @@ from sami2py.utils import generate_path
 
 
 def run_model(tag='model_run', lat=0.0, lon=0.0, alt=300.0, year=2018, day=1,
-              f107=120.0, f107a=120.0, ap=0.0,
+              f107=120.0, f107a=120.0, ap=0,
               rmin=100.0, rmax=2000.0, gams=3, gamp=3, altmin=85.0,
               dthr=0.25, hrinit=0.0, hrpr=24.0, hrmax=48.0,
               dt0=30., maxstep=100000000, denmin=1.e-6,
@@ -82,10 +82,10 @@ def run_model(tag='model_run', lat=0.0, lon=0.0, alt=300.0, year=2018, day=1,
     f107a : float
         81-day average of F10.7 in SFU
         (default = 120.0)
-    ap : float
+    ap : int
         quasi-logarithmic geomagnetic index of 3-hour range relative to an
         assumed quiet-day curve.  Integer version of Kp index.
-        (default = 0.0)
+        (default = 0)
     rmin : float
         Maximum altitude of the lowest field line in km
         (default = 100.0)

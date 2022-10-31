@@ -258,7 +258,7 @@ class TestDeprecation(object):
     def test_key_deprecation(self, key):
         """Check that camel case variables are deprecated.
 
-        parameters
+        Parameters
         ----------
         key : str
             Name of deprecated key

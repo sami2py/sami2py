@@ -8,7 +8,7 @@
 
 Notes
 ----
-package metadata stored in setup.cfg
+Package metadata stored in setup.cfg
 
 """
 

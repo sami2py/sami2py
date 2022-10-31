@@ -11,7 +11,7 @@ import sami2py
 class TestModelObject(object):
     """Test basic model object functionality."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         self.tmp_archive_dir = sami2py.archive_dir
@@ -22,7 +22,7 @@ class TestModelObject(object):
 
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up the test env after each method."""
 
         if os.path.isdir(self.tmp_archive_dir):
@@ -110,7 +110,7 @@ class TestModelObject(object):
 class TestModelObjectUnformatted(TestModelObject):
     """Test basic model object functionality."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         self.tmp_archive_dir = sami2py.archive_dir
@@ -121,7 +121,7 @@ class TestModelObjectUnformatted(TestModelObject):
 
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up the test env after each method."""
 
         if os.path.isdir(self.tmp_archive_dir):

@@ -3,15 +3,7 @@
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
-"""Wrapper for running the SAMI2 model.
-
-Classes
--------
-Model
-    Loads, reshapes, and holds SAMI2 output for a given model run
-    specified by the user.
-
-"""
+"""Class to load, reshape, and manage SAMI2 output."""
 
 import numpy as np
 from os import path

@@ -41,7 +41,7 @@ Overview
 Sami2py is a python module that runs the SAMI2 model, archives the output, and
 loads the resulting modeled values. SAMI2 is a model developed by the Naval
 Research Laboratory to simulate the motions of plasma in a 2D ionospheric
-environment along a dipole magnetic field [Huba et al, 2000][1]_.
+environment along a dipole magnetic field [Huba et al, 2000] [1]_.
 SAMI2 solves for the chemical and dynamical evolution of seven ion species in
 this environment (H\ :sup:`+`\, He\ :sup:`+`\, N\ :sup:`+`\, O\ :sup:`+`\,
 N\ :sub:`2`\ :sup:`+`\, NO\ :sup:`+`\, and O\ :sub:`2`\ :sup:`+`\).
@@ -126,7 +126,7 @@ Now load the resultant data:
 How to Cite
 -----------
 When referring to this software package, please cite the original paper by
-Huba [1]_ as well as the package by Klenzing [4]_. Note that this doi will always
+Huba [1]_ as well as the package [4]_. Note that this doi will always
 point to the latest version of the code.  The specific version doi can be found
 at the top of this page.
 

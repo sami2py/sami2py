@@ -339,8 +339,6 @@ class Model(object):
 
         if '.true.' in namelist[10]:
             self.MetaData['ExB model'] = 'Fejer-Scherliess'
-            self.MetaData['Fourier Coeffs'] = np.loadtxt(path.join(model_path,
-                                                                   'exb.inp'))
         else:
             self.MetaData['ExB model'] = 'Fourier Series'
             self.MetaData['Fourier Coeffs'] = np.loadtxt(path.join(model_path,

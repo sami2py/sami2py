@@ -3,7 +3,7 @@
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
-"""Wrapper for running sami2 model.
+"""Utilities for sami2py operations.
 
 Functions
 ---------
@@ -128,14 +128,14 @@ def return_fourier(x, coeffs):
 
     Parameters
     ----------
-    x : 1d ndarray
+    x : np.ndarray
         solar local time in hours (slt)
-    coeffs : array
+    coeffs : np.ndarray
         10x2 array of fourier coefficients
 
     Returns
-    --------
-    y : array
+    -------
+    y : np.ndarray
         result of the fourier series
 
     """
@@ -191,7 +191,7 @@ def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
     """Interpret unformatted binary files created by the SAMI2 model.
 
     Parameters
-    -----------
+    ----------
     data_dir : str
         directory where the SAMI2 data is stored
     var_name : str
@@ -209,8 +209,8 @@ def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
         if true the data is reshaped by the mesh geometry
 
     Returns
-    -----------
-    float_data : numpy.ndarray
+    -------
+    float_data : np.ndarray
         unformatted data organized into a numpy array for handling in python
 
     """
@@ -227,7 +227,7 @@ def get_unformatted_data(dat_dir, var_name, reshape=False, dim=(0, 0)):
 
 
 def _make_fourier(na, nb):
-    """Make a fourier series to use in the curve fits.
+    """Construct a Fourier series using user-specified coefficients.
 
     Parameters
     ----------
@@ -254,9 +254,9 @@ def fourier_fit(local_times, drifts, num_co):
 
     Parameters
     ----------
-    local_times : array-like
+    local_times : np.ndarray
         xdim for fit; local time values
-    drifts : array-like
+    drifts : np.ndarray
         ydim for fit; median drift values from data
     num_co : int
         'number of coefficients) how many sin/cosine pairs for the fit

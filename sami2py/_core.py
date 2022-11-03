@@ -3,33 +3,7 @@
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
-"""Wrapper for running sami2 model.
-
-Functions
--------------------------------------------------------------------------------
-
-run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
-          f107=120, f107a=120, ap=0,
-          rmin=100, rmax=2000, gams=3, gamp=3, altmin=85.,
-          dthr=0.25, hrinit=0., hrpr=24., hrmax=48.,
-          dt0=30., maxstep=100000000, denmin=1.e-6,
-          nion1=1, nion2=7, mmass=48, h_scale=1, o_scale=1,
-          no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
-          tinf_scale=1, tn_scale=1., euv_scale=1,
-          wind_scale=1, hwm_model=14,
-          fejer=True, exb_drifts=np.zeros((10, 2)), ve01=0., exb_scale=1,
-          alt_crit=150., cqe=7.e-14,
-          clean=False, test=False, fmtout=True, outn=False)
-
-    Initializes a run of the SAMI2 model and archives the data.
--------------------------------------------------------------------------------
-
-Moduleauthor
--------------------------------------------------------------------------------
-Jeff Klenzing (JK), 1 Dec 2017, Goddard Space Flight Center (GSFC)
--------------------------------------------------------------------------------
-
-"""
+"""Methods for running and archiving the results of SAMI2."""
 
 import numpy as np
 import os
@@ -41,18 +15,20 @@ from sami2py import __version__
 from sami2py import fortran_dir
 from sami2py.utils import generate_path
 
+_exb_default = np.zeros((10, 2))
 
-def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
-              f107=120, f107a=120, ap=0,
-              rmin=100, rmax=2000, gams=3, gamp=3, altmin=85.,
-              dthr=0.25, hrinit=0., hrpr=24., hrmax=48.,
+
+def run_model(tag='model_run', lat=0.0, lon=0.0, alt=300.0, year=2018, day=1,
+              f107=120.0, f107a=120.0, ap=0,
+              rmin=100.0, rmax=2000.0, gams=3, gamp=3, altmin=85.0,
+              dthr=0.25, hrinit=0.0, hrpr=24.0, hrmax=48.0,
               dt0=30., maxstep=100000000, denmin=1.e-6,
-              nion1=1, nion2=7, mmass=48, h_scale=1, o_scale=1,
-              no_scale=1, o2_scale=1, he_scale=1, n2_scale=1, n_scale=1,
-              tinf_scale=1, tn_scale=1., euv_scale=1,
-              wind_scale=1, hwm_model=14,
-              fejer=True, exb_drifts=None, ve01=0., exb_scale=1,
-              alt_crit=150., cqe=7.e-14,
+              nion1=1, nion2=7, mmass=48, h_scale=1.0, o_scale=1.0,
+              no_scale=1.0, o2_scale=1.0, he_scale=1.0, n2_scale=1.0,
+              n_scale=1.0, tinf_scale=1.0, tn_scale=1., euv_scale=1.0,
+              wind_scale=1.0, hwm_model=14,
+              fejer=True, exb_drifts=None, ve01=0.0, exb_scale=1.0,
+              alt_crit=150.0, cqe=7.e-14,
               clean=False, test=False, fmtout=True, outn=False, **kwargs):
     """Run SAMI2 and archives the data in path.
 
@@ -65,116 +41,116 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
         (default = 'model_run')
     lat : float
         latitude intercept of sami2 plane
-        (default = 0)
+        (default = 0.0)
     lon : float
         longitude intercept of sami2 plane
-        (default = 0)
+        (default = 0.0)
     alt : float
         The input altitude in km.
-        (default = 300)
+        (default = 300.0)
     year : int
         year of desired run, integer
     day : int
-        day of year from Jan 1, acceptable range is [1,366]
+        day of year from Jan 1, acceptable range is [1, 366]
     f107 : float
         Daily F10.7 solar flux value in SFU
-        (default = 120)
+        (default = 120.0)
     f107a : float
         81-day average of F10.7 in SFU
-        (default = 120)
-    ap : float
+        (default = 120.0)
+    ap : int
         quasi-logarithmic geomagnetic index of 3-hour range relative to an
         assumed quiet-day curve.  Integer version of Kp index.
         (default = 0)
     rmin : float
         Maximum altitude of the lowest field line in km
-        (default = 100)
+        (default = 100.0)
     rmax : float
         Maximum altitude of the highest field line in km
         This has to be less than 20,000 km.
-        (default = 2000)
+        (default = 2000.0)
     gams : int
         Determines grid spacing along the geomagnetic field. As this
         parameter is increased, the spacing between grid points along
         the field line increases at high altitudes. As it is decreased,
         the spacing becomes more uniform.
-        (default=3)
+        (default = 3)
     gamp : int
         Determines grid spacing orthogonal to the geomagnetic field.
         As this parameter is increased, the spacing between field lines
         increases at high altitudes. As it is decreased, the spacing
         becomes more uniform.
-        (default=3)
+        (default = 3)
     altmin : float
         Altitude of the base of a field line (km).
-        (default=85)
+        (default = 85.0)
     dthr : float
         Defines how often the data is output (hr).
         (default = 0.25)
     hrinit : float
         Universal time at the start of the run (hr).
-        (default=0)
+        (default = 0.0)
     hrpr : float
         The time period that elapses before the data is output (hr).
-        (default = 24)
+        (default = 24.0)
     hrmax : float
         The number of hours for the run (hr). The first 24 hrs
         allows transients to clear the system.
-        (default = 48)
+        (default = 48.0)
     dt0 : float
          The maximum time step allowed (sec). This shouldn't be changed.
-        (default=30)
+        (default = 30.0)
     maxstep : int
         The maximum number of time steps allowed.
         (default = 100000000)
     denmin : float
         Miniumum ion density allowed.
-        (default=1.e-6)
+        (default = 1.e-6)
     nion1 : int
         Minimum ion specie index.
         1: H+, 2: O+, 3: NO+, 4: O2+, 5: He+, 6: N2+, 7: N+
-        (default=1)
+        (default = 1)
     nion2 : int
         Maximum ion specie index (see above). One can use 4 and consider
         only the dominant ions in the ionosphere (H, O, NO, O2). This will
         speed up the run time of the code by about 30%.
-        (default=7)
+        (default = 7)
     mmass : int
         Average neutral mass density.
         (default = 48)
     h_scale : float
         Multiplier to scale MSIS neutral H densities
-        (default = 1)
+        (default = 1.0)
     o_scale : float
         Multiplier to scale MSIS neutral O densities
-        (default = 1)
+        (default = 1.0)
     no_scale : float
         Multiplier to scale MSIS neutral NO densities
-        (default = 1)
+        (default = 1.0)
     o2_scale : float
         Multiplier to scale MSIS neutral O2 densities
-        (default = 1)
+        (default = 1.0)
     he_scale : float
         Multiplier to scale MSIS neutral He densities
-        (default = 1)
+        (default = 1.0)
     n2_scale : float
         Multiplier to scale MSIS neutral N2 densities
-        (default = 1)
+        (default = 1.0)
     n_scale : float
         Multiplier to scale MSIS neutral all other densities
-        (default = 1)
-    Tinf_scale : float
+        (default = 1.0)
+    tinf_scale : float
         Multiplier to scale Exospheric temperature in MSIS
-        (default = 1)
-    Tn_scale : float
+        (default = 1.0)
+    tn_scale : float
         Multiplier to scale Neutral temperature in MSIS
-        (default = 1)
+        (default = 1.0)
     euv_scale : float
         Multiplier to scale total ionization in EUVAC
-        (default = 1)
+        (default = 1.0)
     wind_scale : float
         Multiplier to scale Neutral Winds from HWM
-        (default = 1)
+        (default = 1.0)
     hwm_model : int
         Specifies which version of HWM to use.
         Allowable values are 93, 7, 14
@@ -195,22 +171,22 @@ def run_model(tag='model_run', lat=0, lon=0, alt=300, year=2018, day=1,
         (default = None)
     ve01 : float
         Constant offset for Fourier ExB drifts (m/s)
-        (default=0)
+        (default = 0.0)
     exb_scale : float
         Multiplier for ExB model to scale vertical drifts
-        (default=1)
+        (default = 1.0)
     alt_crit : float
         The E x B drift is exponentially decreased below this
         altitude with a scale length 20 km.  [This is done to
         allow rmin to be less than 150 km without using an
         extremely small time step.]
-        (default=150)
+        (default = 150.0)
     cqe : float
         Constant used in the subroutine 'etemp' associated
         with photoelectron heating. The typical range is
         3e-14 -- 8e-14. The higher this value, the lower
         the electron temperature above 300 km.
-        (default=7e-14)
+        (default = 7e-14)
     clean : bool
         A True value will delete the local files after archiving
         A False value will not delete local save files
@@ -308,18 +284,24 @@ def _generate_drift_info(fejer, exb_drifts=None):
         maximum magnitude of 30 m/s at local noon and a minimum of -30 m/s
         at midnight.
         (default = None)
+
     """
 
     drift_info = _generate_fortran_bool(fejer)
     if exb_drifts is None:
-        exb_drifts = np.zeros((10, 2))
+        exb_drifts = _exb_default
     elif not fejer:
         if isinstance(exb_drifts, str) and exb_drifts == 'default':
-            exb_drifts = np.zeros((10, 2))
+            exb_drifts = _exb_default
             exb_drifts[0, 0] = -30
 
-        if isinstance(exb_drifts, np.ndarray) and exb_drifts.shape != (10, 2):
-            raise ValueError('Invalid ExB drift shape!  Must be 10x2 ndarray.')
+        if isinstance(exb_drifts, np.ndarray):
+            if exb_drifts.shape != _exb_default.shape:
+                raise ValueError(
+                    ' '.join(('Invalid ExB drift shape!  Must be',
+                              '{:}x{:}'.format(_exb_default.shape[0],
+                                               _exb_default.shape[1]),
+                              'ndarray.')))
 
         if isinstance(exb_drifts, str) and exb_drifts != 'default':
             raise ValueError('Unrecognized drift name')
@@ -424,7 +406,7 @@ def _archive_model(path, clean, fejer, fmtout, outn):
     Parameters
     ----------
     path : str
-        full path of file destination
+        Full path of file destination
     clean : bool
         If True, then delete dat files locally
     fejer : bool

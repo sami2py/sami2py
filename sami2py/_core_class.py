@@ -3,15 +3,7 @@
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
-"""Wrapper for running sami2 model.
-
-Classes
--------
-Model
-    Loads, reshapes, and holds SAMI2 output for a given model run
-    specified by the user.
-
-"""
+"""Class to load, reshape, and manage SAMI2 output."""
 
 import numpy as np
 from os import path
@@ -26,7 +18,7 @@ class Model(object):
     """Python object to handle SAMI2 model output data."""
 
     def __init__(self, tag, lon, year, day, outn=False, test=False):
-        """Load a previously run sami2 model and sorts into array shapes.
+        """Load a previously run SAMI2 model output and sorts into array shapes.
 
         Parameters
         ----------
@@ -51,24 +43,24 @@ class Model(object):
 
         Attributes
         ----------
-        ut : 1D ndarray
-            Universal Time (hrs)
-        slt : 1D ndarray
-            Solar Local Time (hr)
-        glat : 2D ndarray
-            Geographic Latitude (deg)
-        glon : 2D ndarray
-            Geographic Longitude (deg)
-        zalt : 2D ndarray
-            Altitude (km)
-        deni : 4D ndarray
-            Ion density for each species (cm^-3)
-        vsi : 4D ndarray
-            Ion Velocity for each species (cm/s)
-        ti : 4D ndarray
-            Ion Temperature for each species (K)
-        te : 3D ndarray
-            Electron Temperature (K)
+        ut : np.ndarray
+            Universal Time (hrs). 1D
+        slt : np.ndarray
+            Solar Local Time (hr). 1D
+        glat : np.ndarray
+            Geographic Latitude (deg). 2D
+        glon : np.ndarray
+            Geographic Longitude (deg). 2D
+        zalt : np.ndarray
+            Altitude (km). 2D
+        deni : np.ndarray
+            Ion density for each species (cm^-3). 4D
+        vsi : np.ndarray
+            Ion Velocity for each species (cm/s). 4D
+        ti : np.ndarray
+            Ion Temperature for each species (K). 4D
+        te : np.ndarray
+            Electron Temperature (K). 3D
 
         Examples
         --------
@@ -87,12 +79,12 @@ class Model(object):
         self._load_model()
 
     def __repr__(self):
-        """Make a printable representation of a Model object.
+        """Make an executable representation of a Model object.
 
         Returns
         -------
         out : str
-            string containing a printable representation of a Model object
+            An executable representation of a Model object
 
         Examples
         --------
@@ -172,7 +164,7 @@ class Model(object):
         namelist_file.close()
 
         self.MetaData = dict()
-        self._generate_metadata(self.namelist)
+        self._generate_metadata(self.namelist, model_path)
 
         # Get times
         time = np.loadtxt(path.join(model_path, 'time.dat'))
@@ -286,15 +278,17 @@ class Model(object):
                                                self.MetaData['Fourier Coeffs'])
             self.data['exb'] = (('ut'), exb.data,
                                 {'units': 'm/s',
-                                 'long_name': 'ExB Foureir Coefficients'})
+                                 'long_name': 'ExB Fourier Coefficients'})
 
-    def _generate_metadata(self, namelist):
+    def _generate_metadata(self, namelist, model_path):
         """Read the namelist and generates MetaData based on Parameters.
 
         Parameters
         -----------
         namelist : list
-            variable namelist from SAMI2 model
+            Variable namelist from SAMI2 model
+        model_path : str
+            Valid path to directory sami2py uses to look for data
 
         """
 
@@ -307,6 +301,11 @@ class Model(object):
             """Search for regular expression int vals."""
 
             return int(re.findall(r"\d+", name)[ind])
+
+        self.MetaData['Model Run Name'] = self.tag
+        self.MetaData['Day'] = '{day:03d}, {year:4d}'.format(day=self.day,
+                                                             year=self.year)
+        self.MetaData['Longitude'] = '{:.1f}'.format(self.lon0)
 
         self.MetaData['fmtout'] = ('.true.' in namelist[1])
 
@@ -341,9 +340,6 @@ class Model(object):
         if '.true.' in namelist[10]:
             self.MetaData['ExB model'] = 'Fejer-Scherliess'
         else:
-            model_path = sami2py.utils.generate_path(self.tag, self.lon0,
-                                                     self.year, self.day,
-                                                     self.test)
             self.MetaData['ExB model'] = 'Fourier Series'
             self.MetaData['Fourier Coeffs'] = np.loadtxt(path.join(model_path,
                                                                    'exb.inp'))
@@ -373,7 +369,7 @@ class Model(object):
         Parameters
         ----------
         model_type : str
-            Limit check to certain models (default='all')
+            Limit check to certain models (default = 'all')
             Not currently implemented
 
         Returns
@@ -414,7 +410,15 @@ class Model(object):
         return mod_keys
 
     def to_netcdf(self, path=''):
-        """Save core data as a netcdf file."""
+        """Save core data as a netcdf file.
+
+        Parameters
+        ----------
+        path : str
+            A filename specifying where to save the data.
+            (default = '')
+
+        """
 
         if path == '':
             path = 'sami2py_output.nc'
@@ -422,10 +426,15 @@ class Model(object):
         keys = self.MetaData.keys()
         for key in keys:
             new_key = key.replace(' ', '_').replace('.', '_')
-            attrs[new_key] = self.MetaData[key]
+            if key == 'Fourier Coeffs':
+                terms = [", ".join(item) for item
+                         in self.MetaData[key].astype(str)]
+                coeffs = '; '.join(terms)
+                attrs[new_key] = coeffs
+            else:
+                attrs[new_key] = self.MetaData[key]
+
         attrs['fmtout'] = str(attrs['fmtout'])
-        if attrs['ExB_model'] == 'Fourier Series':
-            attrs['Fourier_Coeffs'] = str(attrs['Fourier_Coeffs'])
 
         self.data.attrs = attrs
         self.data.to_netcdf(path=path, format='NETCDF4')

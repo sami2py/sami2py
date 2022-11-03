@@ -16,29 +16,29 @@ jobs:
         os: ["ubuntu-latest", "macos-latest", "windows-latest"]
         include:
           - python-version: "3.8"
-            numpy_ver: "1.20"
+            numpy_ver: "1.20.0"
             os: "ubuntu-latest"
 
     name: Python ${{ matrix.python-version }} on ${{ matrix.os }} with numpy ${{ matrix.numpy_ver }}
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install standard dependencies
-      run: |
-        pip install -r requirements.txt
-        pip install -r test_requirements.txt
+    - name: Install requirements for testing setup
+      run: pip install -r test_requirements.txt
 
     - name: Install NEP29 dependencies
       if: ${{ matrix.numpy_ver != 'latest'}}
       run: |
         pip install --no-binary :numpy: numpy==${{ matrix.numpy_ver }}
-        # Latest xarray not compatible with numpy 1.20
-        pip install xarray==2022.3
+        pip install "pandas<1.5"
+
+    - name: Install standard dependencies
+      run: pip install -r requirements.txt
 
     - name: Reinstall fortran on MacOS
       if: ${{ matrix.os == 'macos-latest' }}
@@ -68,4 +68,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: coveralls --rcfile=setup.cfg --service=github
 
-    - uses: codecov/codecov-action@v1
+    - uses: codecov/codecov-action@v3

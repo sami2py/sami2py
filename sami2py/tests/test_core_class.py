@@ -11,7 +11,7 @@ import sami2py
 class TestModelObject(object):
     """Test basic model object functionality."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         self.tmp_archive_dir = sami2py.archive_dir
@@ -22,7 +22,7 @@ class TestModelObject(object):
 
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up the test env after each method."""
 
         if os.path.isdir(self.tmp_archive_dir):
@@ -36,7 +36,7 @@ class TestModelObject(object):
         return
 
     def test_model_input_exception(self):
-        """Test for error if the file does not exist."""
+        """Test for IOError if the file does not exist."""
 
         with pytest.raises(IOError):
             sami2py.Model(tag='none', lon=428, day=428, year=1969)
@@ -61,7 +61,7 @@ class TestModelObject(object):
 
         if self.day == 256:
             # This day should be the standard output
-            assert keys == list()
+            assert len(keys) == 0
         else:
             # This day uses a modified output
             assert 'EUV Multiplier' in keys
@@ -69,7 +69,7 @@ class TestModelObject(object):
         return
 
     def test_model_repr(self):
-        """Test that __repr__ returns a string of information."""
+        """Test that `__repr__` returns a string of information."""
 
         model = sami2py.Model(tag='test', lon=self.lon, year=self.year,
                               day=self.day, test=True)
@@ -110,7 +110,7 @@ class TestModelObject(object):
 class TestModelObjectUnformatted(TestModelObject):
     """Test basic model object functionality."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         self.tmp_archive_dir = sami2py.archive_dir
@@ -121,7 +121,7 @@ class TestModelObjectUnformatted(TestModelObject):
 
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up the test env after each method."""
 
         if os.path.isdir(self.tmp_archive_dir):

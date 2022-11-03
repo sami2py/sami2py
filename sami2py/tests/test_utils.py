@@ -14,14 +14,14 @@ import sami2py
 class TestGeneratePath(object):
     """Test basic functionality of the generate_path function."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         sami2py.archive_dir = 'test'
 
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up the test env after each method."""
 
         return
@@ -37,7 +37,7 @@ class TestGeneratePath(object):
         return
 
     def test_generate_path_w_blank_archive_dir(self):
-        """Test that generation of a path without archive_dir will error."""
+        """Test that generation of a path without `archive_dir` will error."""
 
         with pytest.raises(NameError):
             sami2py.archive_dir = ''
@@ -73,7 +73,7 @@ class TestGeneratePath(object):
 
 
 class TestArchiveDir(object):
-    """Test basic functionality of the set_archive_dir function."""
+    """Test basic functionality of the `set_archive_dir` function."""
 
     def test_set_archive_dir(self):
         """Test that set_archive_dir has set and stored the archive directory.
@@ -113,7 +113,7 @@ class TestArchiveDir(object):
 class TestGetUnformattedData(object):
     """Test basic functionality of the get_unformatted_data function."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         self.model_f_path = sami2py.utils.generate_path('test', 256, 1999, 256,
@@ -123,7 +123,7 @@ class TestGetUnformattedData(object):
 
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up the test env after each method."""
 
         del self.model_f_path, self.model_u_path
@@ -178,7 +178,7 @@ class TestGetUnformattedData(object):
 class TestFourierFunction(object):
     """Test basic functionality of the return_fourier function."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
         self.x = np.array([0.11, 0.36, 0.61, 0.86, 1.12, 1.37, 1.62, 1.88,
                            2.13, 2.38, 2.64, 2.89, 3.14, 3.4, 3.65, 3.9,
@@ -198,7 +198,7 @@ class TestFourierFunction(object):
 
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up the test env after each method."""
 
         del self.x, self.coeffs
@@ -231,7 +231,7 @@ class TestFourierFunction(object):
 class TestFourierFit(object):
     """Test basic functionality of the fourier fitting function."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         self.lt = np.linspace(0, 24, 49)
@@ -241,7 +241,7 @@ class TestFourierFit(object):
 
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up the test env after each method."""
 
         del self.lt, self.coeffs, self.v

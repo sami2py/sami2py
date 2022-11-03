@@ -1,5 +1,5 @@
 netCDF4
-numpy==1.20
+numpy==1.22.0
 pandas
 scipy
 xarray

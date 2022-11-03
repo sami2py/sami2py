@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.3.0] - 2022-08-31
+## [0.3.0] - 2022-11-03
 * Maintenance
   * Implement flake8-docstring and hacking packages to lint code
   * Update docstring standards

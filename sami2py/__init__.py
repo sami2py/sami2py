@@ -3,12 +3,10 @@
 # Copyright (C) 2017, JK & JH
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
-"""
-sami2py - sami2py is another model of the ionosphere python style
-=================================================================
+"""sami2py - sami2py is another model of the ionosphere python style.
 
-Sami2py is a python module that runs the SAMI2 model, as well as archives,
-loads and plots the resulting modeled values. SAMI2 is a model developed
+Sami2py is a python module that runs the SAMI2 model, as well as archives
+and loads the resulting modeled values. SAMI2 is a model developed
 by the Naval Research Laboratory to simulate the motions of plasma in a
 2D ionospheric environment along a dipole magnetic field [Huba et al, 2000].
 SAMI2 solves for the chemical and dynamical evolution of seven ion species
@@ -69,8 +67,8 @@ del home_dir, env_name, on_rtd
 
 # import main functions
 try:
-    from sami2py import _core, _core_class, utils  # noqa: F401
     from sami2py._core import run_model  # noqa: F401
     from sami2py._core_class import Model  # noqa: F401
+    from sami2py import utils  # noqa: F401
 except ImportError as errstr:
     logging.exception('problem importing sami2py: ' + str(errstr))

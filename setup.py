@@ -4,10 +4,18 @@
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
 
+"""Setup routine for sami2py.
+
+Notes
+-----
+Package metadata stored in setup.cfg
+
+"""
+
 import os
-import sys
 from setuptools import setup
 import subprocess
+import sys
 
 # get home directory
 home_dir = os.path.expanduser('~')

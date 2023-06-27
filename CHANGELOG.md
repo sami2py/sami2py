@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.3.1] - 2023-XX-XX
+* Maintenance
+  * Update NEP 29 minimum version to 1.21
+  * Add Python 3.11 tests
+  * Add scheduled weekly tests to GitHub Actions
+
 ## [0.3.0] - 2022-11-03
 * Maintenance
   * Implement flake8-docstring and hacking packages to lint code

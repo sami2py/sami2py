@@ -8,5 +8,5 @@ numpydoc
 pytest
 pytest-cov
 pytest-ordering
-sphinx
+sphinx<7.0
 sphinx_rtd_theme

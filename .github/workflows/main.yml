@@ -3,20 +3,23 @@
 
 name: Pytest with Flake8
 
-on: [push, pull_request]
-
+on: 
+  push:
+  pull_request:
+  schedule:
+    - cron: "0 3 * * 1"  # Runs 03:00 UT on Mondays 
 jobs:
   build:
 
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10"]
+        python-version: ["3.10", "3.11"]
         numpy_ver: ["latest"]
         os: ["ubuntu-latest", "macos-latest", "windows-latest"]
         include:
-          - python-version: "3.8"
-            numpy_ver: "1.20.0"
+          - python-version: "3.9"
+            numpy_ver: "1.21"
             os: "ubuntu-latest"
 
     name: Python ${{ matrix.python-version }} on ${{ matrix.os }} with numpy ${{ matrix.numpy_ver }}
@@ -35,7 +38,6 @@ jobs:
       if: ${{ matrix.numpy_ver != 'latest'}}
       run: |
         pip install --no-binary :numpy: numpy==${{ matrix.numpy_ver }}
-        pip install "pandas<1.5"
 
     - name: Install standard dependencies
       run: pip install -r requirements.txt

@@ -32,8 +32,8 @@ How to Cite
 -----------
 
 When referring to this software package, please cite the original paper by Huba
-et al [2000] https://doi.org/10.1029/2000JA000035 as well as the package by
-Klenzing et al. [2019] https://doi.org/10.5281/zenodo.2875800.
+et al [2000] as well as the package paper by
+Klenzing et al. [2022] https://doi.org/10.3389/fspas.2022.1066480.
 
 Additionally, please include the following text in the acknowledgements: "This
 work uses the SAMI2 ionosphere model written and developed by the Naval Research
@@ -45,11 +45,14 @@ References
 
  - Huba, J.D., G. Joyce, and J.A. Fedder, Sami2 is Another Model of the
    Ionosphere (SAMI2): A new low‐latitude ionosphere model, *J. Geophys. Res.*,
-   105, Pages 23035-23053, https://doi.org/10.1029/2000JA000035, 2000.
+   105, Pages 23035-23053, DOI: 10.1029/2000JA000035, 2000.
  - Emmert, J.T., J.L. Lean, and J.M. Picone, Record‐low thermospheric density
    during the 2008 solar minimum, *Geophys. Res. Lett.*, 37,
-   https://doi.org/10.1029/2010GL043671, 2010.
+   DOI: 10.1029/2010GL043671, 2010.
  - Klenzing, J., A. G. Burrell, R. A. Heelis, J. D. Huba, R. Pfaff, and F.
    Simões, Exploring the role of ionospheric drivers during the extreme solar
    minimum of 2008, *Ann. Geophys.*, 31, 2147-2156,
    https://doi.org/10.5194/angeo-31-2147-2013, 2013.
+ - Klenzing, J., Smith, J.M., Halford, A.J, Huba, J.D., and Burrell, A.G., 
+   sami2py--Overview and applications, *Frontiers in Astron. and Space Sci.*, 9,
+   https://doi.org/10.3389/fspas.2022.1066480, 2022
